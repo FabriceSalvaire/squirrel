@@ -13,6 +13,12 @@ import subprocess
 
 ####################################################################################################
 
+def file_name_has_extension(file_name, extension):
+
+    return file_name.endswith(extension)
+
+####################################################################################################
+
 def file_extension(filename):
 
     # index = filename.rfind(os.path.extsep)

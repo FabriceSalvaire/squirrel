@@ -1,2 +1,5 @@
 doc/sphinx/build
 doc/sphinx/old-api
+Babel/GUI/ui/critical_error_form_ui.py
+Babel/GUI/ui/email_bug_form_ui.py
+Babel/GUI/ui/new_issue_form_ui.py
