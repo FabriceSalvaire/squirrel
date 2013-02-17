@@ -1,26 +1,14 @@
 ####################################################################################################
-#
-# How to Start
-#
+# 
+# Babel - A Bibliography Manager 
+# Copyright (C) Salvaire Fabrice 2013 
+# 
 ####################################################################################################
 
-# Set the environment
-. setenv.sh 
-
-# PyQt
-./tools/make-gui
-
-# Build
-python setup.py build
-
-# Update TAGS file
-./tools/update-tags 
-
-# Generate RST files
-##./tools/generate-rst 
-# Generate HTML Documentation
-# cd sphinx/
-##./make-html --clean
+####################################################################################################
+    
+def rint(f):
+    return int(round(f))
 
 ####################################################################################################
 #

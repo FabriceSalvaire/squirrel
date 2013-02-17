@@ -15,7 +15,7 @@ from PyQt4 import QtGui
 
 from Babel.Logging.Email import Email
 from Babel.Tools.Platform import Platform
-#import Config
+import Babel.Config.Config as Config
 import Babel.Version as Version
 
 ####################################################################################################
@@ -34,7 +34,7 @@ class EmailBugForm(QtGui.QDialog):
 
         self._traceback = traceback
 
-        form = self.form = Ui_email_bug_form()
+        form = self._form = Ui_email_bug_form()
         form.setupUi(self)
 
         form.send_email_button.clicked.connect(self.send_email)
@@ -43,7 +43,7 @@ class EmailBugForm(QtGui.QDialog):
 
     def send_email(self):
 
-        form = self.form
+        form = self._form
 
         from_address = str(form.from_line_edit.text())
         if not from_address:
@@ -52,7 +52,7 @@ class EmailBugForm(QtGui.QDialog):
         # Fixme: test field ?
         # QtGui.QMessageBox.critical(None, title, message)
 
-        template_message = '''
+        template_message = """
 Bug description:
 %(description)s
 
@@ -61,39 +61,21 @@ Babel Version:
   %(babel_version)s
 
 ---------------------------------------------------------------------------------
-Slide Information:
-
-  Slide:       %(slide_file_name)s
-  SQlite File: %(sqlite_file_name)s
-
----------------------------------------------------------------------------------
 %(traceback)s
 
 ---------------------------------------------------------------------------------
 %(platform)s
 
 ---------------------------------------------------------------------------------
-'''   
+"""
 
         application = QtGui.QApplication.instance()
 
         # Fixme: singleton ?
         platform = Platform(application)
         platform.query_opengl()
-
-        if hasattr(application, 'slide') and application.slide is not None:
-            slide_file_name = application.slide.slide_path.slide_file_name()
-        else:
-            slide_file_name = str(None)
-
-        if hasattr(application, 'sqlitedb') and  application.sqlitedb is not None:
-            sqlite_file_name = application.sqlitedb.filename
-        else:
-            sqlite_file_name = str(None)
-        
+       
         message = template_message % {'description': str(form.description_plain_text_edit.toPlainText()),
-                                      'slide_file_name': slide_file_name,
-                                      'sqlite_file_name': sqlite_file_name,
                                       'babel_version': str(Version.babel),
                                       'platform': str(platform),
                                       'traceback': self._traceback,

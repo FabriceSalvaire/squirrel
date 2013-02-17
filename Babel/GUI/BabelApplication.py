@@ -7,7 +7,7 @@
 
 ###################################################################################################
 
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 
 ####################################################################################################
 
@@ -24,17 +24,35 @@ class BabelApplication(ApplicationBase):
          super(BabelApplication, self).__init__(args)
 
          from Babel.GUI.BabelMainWindow import MainWindow
-         self.main_window = MainWindow()
-         self.main_window.showMaximized()
+         self._main_window = MainWindow()
+         self._main_window.showMaximized()
        
          self.post_init()
 
     ##############################################
 
-    def show_message(self, message=None, echo=False, timeout=0):
+    def _init_actions(self):
 
-        self.main_window.show_message(message, echo)
+        super(BabelApplication, self)._init_actions()
+
+        self.open_files_action = \
+            QtGui.QAction('Open Files',
+                          self,
+                          triggered=self.open_files)
+
+    ##############################################
+ 
+    def open_files(self):
+ 
+        dialog = QtGui.QFileDialog.getOpenFileName
+        files = dialog(self.main_window, 'Open Files')
+
+    ##############################################
+
+    def add_files(self):
          
+        pass
+
 ####################################################################################################
 #
 # End

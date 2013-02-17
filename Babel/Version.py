@@ -7,29 +7,19 @@
 
 ####################################################################################################
 
-import argparse
+# cf. http://en.wikipedia.org/wiki/Software_versioning
 
 ####################################################################################################
 
-from Babel.Tools.Path import to_absolute_path
+from Babel.Tools.RevisionVersion import RevisionVersion
 
 ####################################################################################################
 
-class PathAction(argparse.Action):
-
-    ##############################################
-
-    def __call__(self, parser, namespace, values, option_string=None):
-
-        # print '%r %r %r' % (namespace, values, option_string)
-        if values is not None:
-            if isinstance(values, list):
-                absolute_path = [to_absolute_path(x) for x in values]
-            else:    
-                absolute_path = to_absolute_path(values)
-        else:
-            absolute_path = None
-        setattr(namespace, self.dest, absolute_path)
+babel = RevisionVersion({'major':0,
+                         'minor':1,
+                         'revision':0,
+                         'suffix':'/bzr-revision-x',
+                         })
 
 ####################################################################################################
 #

@@ -7,29 +7,38 @@
 
 ####################################################################################################
 
-import argparse
+from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import Qt
+from PyQt4.QtGui import QColor
 
 ####################################################################################################
 
-from Babel.Tools.Path import to_absolute_path
+class Email(object):
+
+    from_address = 'fabrice.salvaire@orange.fr'
+    to_address = ['fabrice.salvaire@orange.fr',]
 
 ####################################################################################################
 
-class PathAction(argparse.Action):
+class Help(object):
 
-    ##############################################
+    host = 'localhost'
+    url_scheme = 'http'
+    url_path_pattern = '/'
 
-    def __call__(self, parser, namespace, values, option_string=None):
+####################################################################################################
 
-        # print '%r %r %r' % (namespace, values, option_string)
-        if values is not None:
-            if isinstance(values, list):
-                absolute_path = [to_absolute_path(x) for x in values]
-            else:    
-                absolute_path = to_absolute_path(values)
-        else:
-            absolute_path = None
-        setattr(namespace, self.dest, absolute_path)
+class RedmineRest(object):
+
+    url = 'http://loalhost/redmine/'
+    key = '02caaf292242bbfde9000291cb9955337fa87518'
+    project = 'Babel'
+
+####################################################################################################
+
+class Shortcut(object):
+
+    pass
 
 ####################################################################################################
 #

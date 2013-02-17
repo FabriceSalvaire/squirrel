@@ -22,44 +22,18 @@ from PyQt4 import QtGui, QtCore
 
 ####################################################################################################
 
-from Babel.Tools.PathTools import to_absolute_path
-from Babel.Tools.Platform import Platform
 from Babel.GUI.CriticalErrorForm import CriticalErrorForm
 from Babel.GUI.EmailBugForm import EmailBugForm
-#import Config
+from Babel.Tools.Path import to_absolute_path
+from Babel.Tools.Platform import Platform
+import Babel.Config.Config as Config
+import Babel.Config.Messages as Messages
 import Babel.Version as Version
-#import BabelMessages
 
 # Load RC
 #import Babel.gui.ui.babel_rc
 
 ####################################################################################################
-
-system_information_message_pattern = """
-<h2>Babel %(babel_version)s</h2>
-<h2>Host %(node)s</h2>
-<h3>Hardware</h3>
-<ul>
-<li>Machine: %(machine)s</li>
-<li>Architecture: %(architecture)s</li>
-<li>CPU: %(cpu)s</li>
-<li>Number of cores: %(number_of_cores)u</li>
-<li>Memory Size: %(memory_size)u MB</li>
-</ul>
-<h3>OpenGL</h3>
-<ul>
-<li>Render: %(gl_renderer)s</li>
-<li>Version: %(gl_version)s</li>
-<li>Vendor: %(gl_vendor)s</li>
-</ul>
-<h3>Software Versions</h3>
-<ul>
-<li>OS: %(os)s %(distribution)s</li>
-<li>Python %(python_version)s</li>
-<li>Qt %(qt_version)s</li>
-<li>PyQt %(pyqt_version)s</li>
-</ul>
-"""
 
 ####################################################################################################
 
@@ -72,23 +46,32 @@ class ApplicationBase(QtGui.QApplication):
         super(ApplicationBase, self).__init__(sys.argv)
 
         sys.excepthook = self._exception_hook
-
-        self.args = args
-
         self._display_splash_screen()
 
-        self.main_window = None
-        self.platform = Platform(self)
-        
+        self._args = args
+        self._main_window = None
+        self._platform = Platform(self)
         self._init_actions()
+
+    ##############################################
+
+    @property
+    def args(self):
+        return self._args
+
+    @property
+    def main_window(self):
+        return self._main_window
+
+    @property
+    def platform(self):
+        return self._platform
 
     ##############################################
 
     def _exception_hook(self, exception_type, exception_value, exception_traceback):
 
-        # print 'ApplicationBase._exception_hook'
-
-        print traceback.print_exception(exception_type, exception_value, exception_traceback)
+        sys.stderr.write(traceback.print_exception(exception_type, exception_value, exception_traceback))
         dialog = CriticalErrorForm(exception_type, exception_value, exception_traceback)
         dialog.exec_()
 
@@ -98,11 +81,10 @@ class ApplicationBase(QtGui.QApplication):
 
     def _display_splash_screen(self):
 
-        print 'Babel start ...'
         pixmap = QtGui.QPixmap(':/splash screen/images/splash_screen.png')
-        self.splash = QtGui.QSplashScreen(pixmap)
-        self.splash.show()
-        # self.splash.showMessage('<h2>Babel %(version)s</h2>' % {'version':str(Version.babel)})
+        self._splash = QtGui.QSplashScreen(pixmap)
+        self._splash.show()
+        self._splash.showMessage('<h2>Babel %(version)s</h2>' % {'version':str(Version.babel)})
         self.processEvents()
 
     ##############################################
@@ -138,11 +120,13 @@ class ApplicationBase(QtGui.QApplication):
     
     def post_init(self):
          
-        self.splash.finish(self.main_window)
+        self._splash.finish(self._main_window)
         self.processEvents()
-        del self.splash
+        del self._splash
 
         QtCore.QTimer.singleShot(0, self._execute_user_script_slot)
+
+        self.show_message('Welcome to Babel')
 
         # return to main and then enter to event loop
 
@@ -150,8 +134,8 @@ class ApplicationBase(QtGui.QApplication):
     
     def _execute_user_script_slot(self):
 
-        if self.args.user_script is not None:
-            self.execute_user_script(self.args.user_script)
+        if self._args.user_script is not None:
+            self.execute_user_script(self._args.user_script)
         
     ##############################################
     
@@ -180,8 +164,8 @@ class ApplicationBase(QtGui.QApplication):
 
     def show_message(self, message=None, echo=False, timeout=0):
 
-        if self.main_window is not None:
-            self.main_window.show_message(message, echo, timeout)
+        if self._main_window is not None:
+            self._main_window.show_message(message, echo, timeout)
 
     ##############################################
     
@@ -201,41 +185,25 @@ class ApplicationBase(QtGui.QApplication):
         url = QtCore.QUrl()
         url.setScheme(Config.Help.url_scheme)
         url.setHost(Config.Help.host)
-        url.setPath(Config.Help.url_path_pattern % str(Version.babel))
+        url.setPath(Config.Help.url_path_pattern) # % str(Version.babel))
         QtGui.QDesktopServices.openUrl(url)
 
     ##############################################
 
     def about(self):
         
-        message = BabelMessages.about_babel % {'version':str(Version.babel)}
+        message = Messages.about_babel % {'version':str(Version.babel)}
         QtGui.QMessageBox.about(self.main_window, 'About Babel', message)
 
     ##############################################
 
     def show_system_information(self):
 
-        # Fixme: add getattr method to Platform
-        platform = self.platform
-        fields = {'node': platform.node,
-                  'os': platform.os,
-                  'distribution': platform.distribution,
-                  'cpu': platform.cpu,
-                  'machine': platform.machine,
-                  'architecture': platform.architecture,
-                   'number_of_cores': 0, # Fixme: platform.number_of_cores,
-                  'memory_size': platform.memory_size_kb/1024,
-                  'gl_renderer': platform.gl_renderer,
-                  'gl_version': platform.gl_version,
-                  'gl_vendor': platform.gl_vendor,
-                  'gl_extensions': platform.gl_extensions,
-                  'python_version': platform.python_version,
-                  'qt_version': platform.qt_version,
-                  'pyqt_version': platform.pyqt_version,
-                  'babel_version': str(Version.babel),
-                  }
-
-        message = system_information_message_pattern % fields
+        fields = dict(self._platform.__dict__)
+        fields.update({
+                'babel_version': str(Version.babel),
+                })  
+        message = Messages.system_information_message_pattern % fields
         QtGui.QMessageBox.about(self.main_window, 'System Information', message)
 
     ###############################################

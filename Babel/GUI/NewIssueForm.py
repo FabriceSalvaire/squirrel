@@ -15,8 +15,7 @@ from PyQt4 import QtGui, QtCore
 
 from Babel.Tools.Platform import Platform
 from Babel.Tools.RedmineRest import RedmineRest
-
-#import Config
+import Babel.Config.Config as Config
 
 ####################################################################################################
 
