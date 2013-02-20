@@ -38,6 +38,11 @@ argument_parser.add_argument('--user-script',
                              default=None,
                              help='user script to execute')
 
+argument_parser.add_argument('--user-script-args',
+                             dest='user_script_args',
+                             default='',
+                             help="user script args (don't forget to quote)")
+
 args = argument_parser.parse_args()
 
 ####################################################################################################

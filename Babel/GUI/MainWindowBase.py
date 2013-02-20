@@ -26,9 +26,9 @@ class MainWindowBase(QtGui.QMainWindow):
     
     ##############################################
     
-    def __init__(self, title=''):
+    def __init__(self, title='', parent=None):
 
-        super(MainWindowBase, self).__init__()
+        super(MainWindowBase, self).__init__(parent)
 
         self.setWindowTitle(title)
 
@@ -71,12 +71,6 @@ class MainWindowBase(QtGui.QMainWindow):
 
     ##############################################
 
-    def closeEvent(self, event=None):
-
-        self._application.exit()
-
-    ##############################################
-
     def show_message(self, message=None, echo=False, timeout=0):
 
         status_bar = self.statusBar()
@@ -86,6 +80,15 @@ class MainWindowBase(QtGui.QMainWindow):
             status_bar.showMessage(message, timeout)
 
         # self.application.processEvents()
+
+    ##############################################
+
+    def translate(self, text):
+
+        return self._application.translate(self.__class__.__name__,
+                                           text,
+                                           None,
+                                           QtGui.QApplication.UnicodeUTF8)
 
 ####################################################################################################
 #

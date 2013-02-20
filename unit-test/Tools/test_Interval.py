@@ -1,0 +1,316 @@
+####################################################################################################
+# 
+# Babel - A Bibliography Manager 
+# Copyright (C) Salvaire Fabrice 2013 
+# 
+####################################################################################################
+
+####################################################################################################
+
+import unittest
+
+####################################################################################################
+
+from Babel.Tools.Interval import *
+
+####################################################################################################
+
+class TestInterval(unittest.TestCase):
+
+    ##############################################
+        
+    def test(self):
+
+        ###########################################
+        #
+        # Test argument validity
+
+        with self.assertRaises(ValueError):
+            Interval(1, 0)
+
+        ###########################################
+        #
+        # Test __getitem__ interface
+
+        i1 = Interval(1, 10)
+        for i in (i1,
+                  (1, 10),
+                  [1, 10],
+                  ):
+            self.assertEqual(i1, Interval(i))
+
+        ###########################################
+        #
+        # Test copy
+
+        self.assertEqual(i1, i1.copy())
+
+        ###########################################
+        #
+        # Test length
+
+        self.assertEqual(i1.length(), 9)
+
+        i1 = IntervalInt(1.1, 10.1)
+        self.assertEqual(i1.length(), 10)
+
+        ###########################################
+        #
+        # Test empty
+
+        empty = Interval(None, None)
+        self.assertTrue(empty.is_empty())
+
+        ###########################################
+        #
+        # Test union
+
+        # Indenp
+        i1 = Interval(1, 10)
+        self.assertEqual(i1 | i1, i1)
+
+        # Inside
+        i1 = Interval(1, 20)
+        i2 = Interval(5, 15)
+        self.assertEqual(i1 | i2, i1)
+        self.assertEqual(i2 | i1, i1)
+
+        # Overlap
+        i1 = Interval(1, 10)
+        i2 = Interval(5, 15)
+        i1_i2_union = Interval(1, 15)
+        self.assertEqual(i1 | i2, i1_i2_union)
+        self.assertEqual(i2 | i1, i1_i2_union)
+
+        # Inf = Sup
+        i1 = Interval(1, 10)
+        i2 = Interval(10, 15)
+        self.assertEqual(i1 | i2, i1_i2_union)
+        self.assertEqual(i2 | i1, i1_i2_union)
+
+        # Outside
+        i1 = Interval(1, 10)
+        i2 = Interval(11, 15)
+        self.assertEqual(i1 | i2, i1_i2_union)
+        self.assertEqual(i2 | i1, i1_i2_union)
+
+        # |=
+        i1 = Interval(0, 10)
+        i2 = Interval(5, 15)
+        i1 |= i2
+        self.assertEqual(i1, Interval(0, 15))
+
+        ###########################################
+        #
+        # Test intersection
+        
+        # Indenp
+        i1 = Interval(1, 10)
+        self.assertEqual(i1 & i1, i1)
+
+        # Inside
+        i1 = Interval(1, 20)
+        i2 = Interval(5, 15)
+        self.assertEqual(i1 & i2, i2)
+        self.assertEqual(i2 & i1, i2)
+
+        # Overlap
+        i1 = Interval(1, 10)
+        i2 = Interval(5, 15)
+        i1_i2_intersection = Interval(5, 10)
+        self.assertEqual(i1 & i2, i1_i2_intersection)
+        self.assertEqual(i2 & i1, i1_i2_intersection)
+
+        # Inf = Sup
+        i1 = Interval(1, 10)
+        i2 = Interval(10, 15)
+        i1_i2_intersection = Interval(10, 10)
+        self.assertEqual(i1 & i2, i1_i2_intersection)
+        self.assertEqual(i2 & i1, i1_i2_intersection)
+
+        # Outside
+        i1 = Interval(1, 10)
+        i2 = Interval(11, 15)
+        self.assertEqual(i1 & i2, empty)
+        self.assertEqual(i2 & i1, empty)
+
+        # &=
+        i1 = Interval(0, 10)
+        i2 = Interval(5, 15)
+        i1 &= i2
+        self.assertEqual(i1, Interval(5, 10))
+
+        ###########################################
+        #
+        # Test init with Interval isntance
+
+        i1 = Interval(0, 10)
+        self.assertEqual(i1, Interval(i1))
+        self.assertEqual(i1, IntervalInt(i1))
+
+####################################################################################################
+
+class TestInterval2D(unittest.TestCase):
+
+    ##############################################
+        
+    def test(self):
+
+        ###########################################
+        #
+        # Test __getitem__ interface
+
+        i1 = Interval2D((1, 10), (10, 100))
+
+        for x, y in ((Interval(1, 10), Interval(10, 100)),
+                     ([1, 10], [10, 100]),
+                     ):
+            self.assertEqual(i1, Interval2D(x, y))
+
+        ###########################################
+        #
+        # Test copy
+
+        self.assertEqual(i1, i1.copy())
+
+        ###########################################
+        #
+        # Test union
+
+        i1 = Interval2D((1, 10), (10, 100))
+        i2 = Interval2D((5, 15), (50, 150))
+
+        i1_i2_union = Interval2D((1, 15), (10, 150))
+        self.assertEqual(i1 | i2, i1_i2_union)
+
+        i1 |= i2
+        self.assertEqual(i1, i1_i2_union)
+
+        ###########################################
+        #
+        # Test intersection
+
+        i1 = Interval2D((1, 10), (10, 100))
+        i2 = Interval2D((5, 15), (50, 150))
+
+        i1_i2_intersection = Interval2D((5, 10), (50, 100))
+        self.assertEqual(i1 & i2, i1_i2_intersection)
+
+        i1 &= i2
+        self.assertEqual(i1, i1_i2_intersection)
+
+        ###########################################
+        #
+        # Test size
+
+        i1 = Interval2D((1, 10), (10, 100))
+
+        self.assertEqual(i1.size(), (9, 90))
+
+        i1 = IntervalInt2D((1.1, 10.1), (10.1, 100.1))
+        self.assertEqual(i1.size(), (10, 91))
+
+####################################################################################################
+
+class TestIntervalIntSupOpen(unittest.TestCase):
+
+    ##############################################
+        
+    def test(self):
+
+        ###########################################
+        #
+        # Test intersection
+
+        empty = IntervalIntSupOpen(None, None)
+
+        # Indenp
+        i1 = IntervalIntSupOpen(1, 10)
+        self.assertEqual(i1 & i1, i1)
+
+        # Inside
+        i1 = IntervalIntSupOpen(1, 20)
+        i2 = IntervalIntSupOpen(5, 15)
+        self.assertEqual(i1 & i2, i2)
+        self.assertEqual(i2 & i1, i2)
+
+        # Overlap
+        i1 = IntervalIntSupOpen(1, 10)
+        i2 = IntervalIntSupOpen(5, 15)
+        i1_i2_intersection = IntervalIntSupOpen(5, 10)
+        self.assertEqual(i1 & i2, i1_i2_intersection)
+        self.assertEqual(i2 & i1, i1_i2_intersection)
+
+        # Inf = Sup
+        i1 = IntervalIntSupOpen(1, 10)
+        i2 = IntervalIntSupOpen(10, 15)
+        i1_i2_intersection = IntervalIntSupOpen(10, 10)
+        self.assertEqual(i1 & i2, empty)
+        self.assertEqual(i2 & i1, empty)
+
+        # Outside
+        i1 = IntervalIntSupOpen(1, 10)
+        i2 = IntervalIntSupOpen(11, 15)
+        self.assertEqual(i1 & i2, empty)
+        self.assertEqual(i2 & i1, empty)
+
+        ###########################################
+        #
+        # Minus Test
+        #
+
+        # Overlap sup
+        i1 = IntervalIntSupOpen(0, 20)
+        i2 = IntervalIntSupOpen(10, 20)
+        i1_minus_i2 = i1.minus(i2)
+        self.assertTupleEqual(i1_minus_i2, (IntervalIntSupOpen(0, 10),))
+
+        # Overlap inf
+        i1 = IntervalIntSupOpen(0, 20)
+        i2 = IntervalIntSupOpen(0, 10)
+        i1_minus_i2 = i1.minus(i2)
+        self.assertTupleEqual(i1_minus_i2, (IntervalIntSupOpen(10, 20),))
+
+        # Indemp
+        i1 = IntervalIntSupOpen(1, 10)
+        i1_minus_i2 = i1.minus(i1)
+        self.assertTupleEqual(i1_minus_i2, (empty,))
+
+        # Inside
+        i1 = IntervalIntSupOpen(0, 20)
+        i2 = IntervalIntSupOpen(5, 15)
+        i1_minus_i2 = i1.minus(i2)
+        self.assertTupleEqual(i1_minus_i2,
+                              (IntervalIntSupOpen(0, 5),
+                               IntervalIntSupOpen(15, 20)))
+
+        # Excluded
+        i1 = IntervalIntSupOpen(5, 15)
+        i2 = IntervalIntSupOpen(0, 20)
+        i1_minus_i2 = i1.minus(i2)
+        self.assertTupleEqual(i1_minus_i2, (empty,))
+
+        ###########################################
+        #
+        # Split Test
+        #
+
+        # Overlap sup
+        i1 = IntervalIntSupOpen(4, 16)
+        i2 = IntervalIntSupOpen(8, 16)
+        split = i1.split(i2)
+        self.assertTupleEqual(split,
+                              ((IntervalIntSupOpen(4,  8), True),
+                               (IntervalIntSupOpen(8, 16), False)))
+
+####################################################################################################
+
+if __name__ == '__main__':
+
+    unittest.main()
+
+####################################################################################################
+#
+# End
+#
+####################################################################################################

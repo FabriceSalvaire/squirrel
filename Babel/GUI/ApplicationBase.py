@@ -71,7 +71,7 @@ class ApplicationBase(QtGui.QApplication):
 
     def _exception_hook(self, exception_type, exception_value, exception_traceback):
 
-        sys.stderr.write(traceback.print_exception(exception_type, exception_value, exception_traceback))
+        traceback.print_exception(exception_type, exception_value, exception_traceback)
         dialog = CriticalErrorForm(exception_type, exception_value, exception_traceback)
         dialog.exec_()
 

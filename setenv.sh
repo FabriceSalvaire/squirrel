@@ -1,6 +1,9 @@
 ####################################################################################################
 
+append_to_ld_library_path_if_not ${PWD}/../mupdf-fabrice
+
 append_to_python_path_if_not ${PWD}
+append_to_python_path_if_not ${PWD}/../mupdf-fabrice/bindings/
 
 ####################################################################################################
 # 

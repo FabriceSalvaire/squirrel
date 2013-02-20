@@ -7,6 +7,8 @@
 
 ###################################################################################################
 
+import logging
+
 from PyQt4 import QtCore, QtGui
 
 ####################################################################################################
@@ -16,6 +18,8 @@ from Babel.GUI.ApplicationBase import ApplicationBase
 ####################################################################################################
 
 class BabelApplication(ApplicationBase):
+
+    _logger = logging.getLogger(__name__)
     
     ###############################################
     
@@ -52,6 +56,17 @@ class BabelApplication(ApplicationBase):
     def add_files(self):
          
         pass
+
+    ##############################################
+
+    def open_pdf(self, path):
+       
+        path = path.absolut()
+        self._logger.info("Open PDF %s" % (str(path)))
+
+        from Babel.GUI.PdfViewerMainWindow import PdfViewerMainWindow
+        pdf_viewer_main_window = PdfViewerMainWindow(path, parent=self._main_window)
+        pdf_viewer_main_window.showMaximized()
 
 ####################################################################################################
 #

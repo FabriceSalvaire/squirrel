@@ -126,9 +126,9 @@ class MainWindow(MainWindowBase):
 
     ##############################################
 
-    def translate(self, text):
+    def closeEvent(self, event=None):
 
-        return self._application.translate('MainWindow', text, None, QtGui.QApplication.UnicodeUTF8)
+        self._application.exit()
 
 ####################################################################################################
 #
