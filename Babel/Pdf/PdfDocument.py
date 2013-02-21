@@ -7,6 +7,8 @@
 
 ####################################################################################################
 
+import unicodedata
+
 import numpy as np
 
 import mupdf as cmupdf
@@ -69,6 +71,23 @@ class PdfDocument(object):
         for i in xrange(self._number_of_pages):
             yield PdfPage(self, i)
 
+    ##############################################
+
+    def words(self):
+
+        words = {}
+        for pdf_page in self:
+            pdf_text_page = pdf_page.to_text()
+            for word in pdf_text_page.word_iterator():
+                if word in words:
+                    words[word] += 1
+                else:
+                    words[word] = 1
+
+        words_array = sorted(words.items(), cmp=lambda a, b: cmp(a[1], b[1]), reverse=True)
+
+        return words_array
+
 ####################################################################################################
 
 class PdfMetaData(ReadOnlyAttributeDictionaryInterface):
@@ -91,10 +110,10 @@ class PdfMetaData(ReadOnlyAttributeDictionaryInterface):
             'ModDate',
             ):
             # Fixme: buffer size
-            self._dictionary[key] = cmupdf.get_meta_info(document, key, 1024)
-    
+            self._dictionary[key] = unicode(cmupdf.get_meta_info(document, key, 1024), 'utf-8')
+
         fz_buffer = cmupdf.pdf_metadata(document)
-        self._dictionary['metadata'] = cmupdf.fz_buffer_data(fz_buffer)
+        self._dictionary['metadata'] = unicode(cmupdf.fz_buffer_data(fz_buffer), 'utf-8')
         cmupdf.fz_drop_buffer(pdf_document._context, fz_buffer)
 
 ####################################################################################################
@@ -110,6 +129,12 @@ class PdfPage():
         self._document = self._pdf_document._document
         self._page_number = page_number
         self._page = cmupdf.fz_load_page(self._document, page_number)
+
+    ##############################################
+
+    @property
+    def page_number(self):
+        return self._page_number
 
     ##############################################
 
@@ -206,6 +231,27 @@ class PdfTextPage():
 
     ##############################################
 
+    def word_iterator(self):
+
+        word = 'u'
+        for block in TextBlockIterator(self._text_page):
+            for line in TextLineIterator(block):
+                for span in TextSpanIterator(line):
+                    for char in TextCharIterator(span):
+                        unicode_char = unichr(char.c)
+                        category = unicodedata.category(unicode_char)
+                        # Take only letters, and numbers when it is not the first character
+                        print unicode_char, category, word
+                        if ((category in ('Ll', 'Lu')) or (category == 'Nd' and word)):
+                            word += unicode_char.lower()
+                        elif word:
+                            yield word
+                            word = u''
+            if word: # Last char was a letter/number
+                yield word
+
+    ##############################################
+
     @staticmethod
     def _get_font_name(font):
 
@@ -264,9 +310,9 @@ class PdfTextPage():
                     font_name = self._get_font_name(style.font)
                     text += u' '*4 + u'<span bbox="' + self._format_bounding_box(span) + \
                         u'" font="%s" size="%g">\n' % (font_name, style.size)
-                    for ch in TextCharIterator(span):
-                        text += u' '*6 + u'<char bbox="' + self._format_bounding_box(ch) + \
-                            u'" c="%s"/>\n' % (unichr(ch.c))
+                    for char in TextCharIterator(span):
+                        text += u' '*6 + u'<char bbox="' + self._format_bounding_box(char) + \
+                            u'" c="%s"/>\n' % (unichr(char.c))
                     text += u' '*4 + u'</span>\n'
                 text += u' '*2 + u'</line>\n'
             text += u'</block>\n'
@@ -288,8 +334,8 @@ class PdfTextPage():
                 line_text = u''
                 for span in TextSpanIterator(line):
                     span_text = u''
-                    for ch in TextCharIterator(span):
-                        span_text += unichr(ch.c)
+                    for char in TextCharIterator(span):
+                        span_text += unichr(char.c)
                     span_text = span_text.rstrip()
                     if span_text:
                         line_text += span_text
@@ -309,8 +355,8 @@ class PdfTextPage():
                 line_text = u''
                 for span in TextSpanIterator(line):
                     span_text = u''
-                    for ch in TextCharIterator(span):
-                        span_text += unichr(ch.c)
+                    for char in TextCharIterator(span):
+                        span_text += unichr(char.c)
                     span_text = span_text.rstrip()
                     if span_text: # Append span to line
                         line_text += span_text

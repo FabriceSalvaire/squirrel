@@ -39,11 +39,51 @@ class PdfViewerMainWindow(MainWindowBase):
     def open_pdf(self, path):
 
         self._pdf_document = PdfDocument(path)
-        for page in (self._info_page,
-                     self._image_page,
-                     self._text_page,
-                     ):
-            page.open_pdf()
+        self._info_page.open_pdf()
+        self._last_page_number_label.setText('of %u' % self._pdf_document.number_of_pages)
+        self._set_page_number(0)
+        # Fixme: page cache, speed-up
+        word_array = self._pdf_document.words()
+        for word, count in word_array:
+            if len(word) > 2 and word not in ( 
+                'a',
+                'an',
+                'and',
+                'as',
+                'by',
+                'for',
+                'have',
+                'in',
+                'is',
+                'of',
+                'the',
+                'to',
+                ):
+                print "%6u" % count, word
+
+    ##############################################
+
+    def _set_page_number(self, page_number):
+
+        if 0 <= page_number < self._pdf_document.number_of_pages:
+            self._page_number_line_edit.setText(str(page_number +1))
+            self._pdf_page = self._pdf_document[page_number]
+            for page in (self._image_page,
+                         self._text_page,
+                         ):
+                page.update_page()
+
+    ##############################################
+
+    def previous_page(self):
+
+        self._set_page_number(self._pdf_page.page_number -1)
+
+    ##############################################
+
+    def next_page(self):
+
+        self._set_page_number(self._pdf_page.page_number +1)
 
     ##############################################
     
@@ -80,17 +120,47 @@ class PdfViewerMainWindow(MainWindowBase):
                        ):
             self._action_group.addAction(action)
 
+        self._previous_page_action = \
+            QtGui.QAction('Previous',
+                          self,
+                          toolTip='Previous Page',
+                          triggered=lambda: self.previous_page(),
+                          )
+
+        self._next_page_action = \
+            QtGui.QAction('Next',
+                          self,
+                          toolTip='Next Page',
+                          triggered=lambda: self.next_page(),
+                          )
+
     ##############################################
     
     def _create_toolbar(self):
 
         self._show_info_action.setChecked(True)
-        self._tool_bar = self.addToolBar('Tools')
+        self._mode_tool_bar = self.addToolBar('Mode')
         for action in (self._show_info_action,
                        self._show_image_action,
                        self._show_text_action,
                        ):
-            self._tool_bar.addAction(action)
+            self._mode_tool_bar.addAction(action)
+
+        self._page_number_line_edit = QtGui.QLineEdit()
+        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        self._page_number_line_edit.setSizePolicy(size_policy)
+        self._last_page_number_label = QtGui.QLabel()
+
+        self._page_tool_bar = self.addToolBar('Pages')
+        for item in (self._previous_page_action,
+                     self._page_number_line_edit,
+                     self._last_page_number_label,
+                     self._next_page_action,
+                     ):
+            if isinstance(item,QtGui.QAction):
+                self._page_tool_bar.addAction(item)
+            else:
+                self._page_tool_bar.addWidget(item)
 
     ##############################################
 
@@ -199,14 +269,13 @@ class InfoPage(QtGui.QWidget):
 
         pdf_document = self._main_window._pdf_document
         pdf_metadata = pdf_document.metadata
-        key_value_pairs = [('path', pdf_document.path),
-                           ('number_of_pages', pdf_document.number_of_pages),
+        key_value_pairs = [('path', unicode(pdf_document.path)),
+                           ('number_of_pages', str(pdf_document.number_of_pages)),
                            ]
         for key in ('Title', 'Subject', 'Author', 'Creator', 'Producer', 'CreationDate', 'ModDate'):
             key_value_pairs.append((key, pdf_metadata[key]))
         for key, value in key_value_pairs:
-            self._widgets[key].setText(str(value))
-            # unicode(value, encoding=codecs.utf_8_encode))
+            self._widgets[key].setText(value)
         self._text_browser.setPlainText(pdf_metadata.metadata)
 
 ####################################################################################################
@@ -233,10 +302,10 @@ class ImagePage(QtGui.QScrollArea):
 
     ##############################################
 
-    def open_pdf(self):
+    def update_page(self):
 
-        pdf_document = self._main_window._pdf_document
-        np_array = pdf_document[0].to_pixmap()
+        pdf_page = self._main_window._pdf_page
+        np_array = pdf_page.to_pixmap()
         height, width = np_array.shape[:2]
         image = QtGui.QImage(np_array.data, width, height, QtGui.QImage.Format_ARGB32)
         self._pixmap_label.setPixmap(QtGui.QPixmap.fromImage(image))
@@ -271,10 +340,23 @@ class TextPage(QtGui.QScrollArea):
 
     ##############################################
 
-    def open_pdf(self):
+    def _clear_layout(self):
 
-        pdf_document = self._main_window._pdf_document
-        text_page = pdf_document[0].to_text()
+        layout = self._vertical_layout
+        while layout.count():
+            sub_layout = layout.takeAt(0).layout()
+            if sub_layout is not None: # else it is the spacer_item
+                while sub_layout.count():
+                    widget = sub_layout.takeAt(0).widget()
+                    widget.deleteLater()
+
+    ##############################################
+
+    def update_page(self):
+
+        self._clear_layout()
+        pdf_page = self._main_window._pdf_page
+        text_page = pdf_page.to_text()
         for block_text in text_page.block_iterator():
             self._append_block(block_text)
 
@@ -283,10 +365,10 @@ class TextPage(QtGui.QScrollArea):
     def _append_block(self, block_text):
 
         horizontal_layout = QtGui.QHBoxLayout()
-        combo_box = QtGui.QComboBox(self._container_widget)
+        combo_box = QtGui.QComboBox() # self._container_widget
         for item in ('Text', 'Title', 'Authors', 'Abstract', 'Refrences'):
             combo_box.addItem(item)
-        text_browser = GrowingTextBrowser(self._container_widget)
+        text_browser = GrowingTextBrowser() # self._container_widget
         text_browser.setPlainText(block_text)
         horizontal_layout.addWidget(combo_box, 0, QtCore.Qt.AlignTop)
         horizontal_layout.addWidget(text_browser, 0, QtCore.Qt.AlignTop)

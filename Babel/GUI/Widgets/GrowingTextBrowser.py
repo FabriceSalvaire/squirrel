@@ -42,15 +42,15 @@ class GrowingTextBrowser(QtGui.QTextBrowser):
         if document is None:
             document = self.document()
         document_size = document.size()
-        print "Document width", document_size.width(), 'height', document_size.height()
+        # print "Document width", document_size.width(), 'height', document_size.height()
 
     ##############################################
 
     def sizePolicy(self):
 
         size_policy = super(GrowingTextBrowser, self).sizePolicy()
-        print 'GrowingTextBrowser.sizePolicy', self._id, \
-            size_policy.horizontalPolicy(), size_policy.verticalPolicy()
+        # print 'GrowingTextBrowser.sizePolicy', self._id, \
+        #     size_policy.horizontalPolicy(), size_policy.verticalPolicy()
         return size_policy
 
     ##############################################
@@ -58,7 +58,7 @@ class GrowingTextBrowser(QtGui.QTextBrowser):
     def sizeHint(self):
 
         size = super(GrowingTextBrowser, self).sizeHint()
-        print 'GrowingTextBrowser.sizeHint', self._id, size.width(), size.height()
+        # print 'GrowingTextBrowser.sizeHint', self._id, size.width(), size.height()
         return QtCore.QSize(0, 0)
 
     ##############################################
@@ -66,14 +66,14 @@ class GrowingTextBrowser(QtGui.QTextBrowser):
     def minimumSizeHint(self):
 
         size = super(GrowingTextBrowser, self).minimumSizeHint()
-        print 'GrowingTextBrowser.minimumSizeHint', self._id, size.width(), size.height()
+        # print 'GrowingTextBrowser.minimumSizeHint', self._id, size.width(), size.height()
         return QtCore.QSize(0, 0)
 
     ##############################################
 
     def heightForWidth(self, width):
 
-        print 'GrowingTextBrowser.heightForWidth', self._id, width
+        # print 'GrowingTextBrowser.heightForWidth', self._id, width
         document = QtGui.QTextDocument(self._text)
         document.setPageSize(QtCore.QSizeF(width, -1))
         height = document.documentLayout().documentSize().toSize().height()
@@ -84,10 +84,10 @@ class GrowingTextBrowser(QtGui.QTextBrowser):
 
     def resizeEvent(self, event):
 
-        print 'GrowingTextBrowser.resizeEvent', self._id, \
-            'old', event.oldSize().width(), event.oldSize().height(), \
-            'new', event.size().width(), event.size().height()
-        self.print_document_size()
+        # print 'GrowingTextBrowser.resizeEvent', self._id, \
+        #     'old', event.oldSize().width(), event.oldSize().height(), \
+        #     'new', event.size().width(), event.size().height()
+        # self.print_document_size()
         return super(GrowingTextBrowser, self).resizeEvent(event)
 
 ####################################################################################################
