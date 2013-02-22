@@ -15,7 +15,7 @@ import uuid
 ####################################################################################################
 
 from Babel.FileSystem.File import *
-from Babel.FileSystem.FileDataBase import *
+from Babel.DataBase.FileDataBase import *
 
 ####################################################################################################
 
@@ -48,15 +48,16 @@ class TestFile(unittest.TestCase):
 
         file_database = FileDataBase(os.path.join(self.tmp_directory, 'file-database.sqlite'),
                                      echo=False)
+        file_table = file_database.file_table
 
         directory = Directory(self.tmp_directory)
         for file_path in directory.iter_file():
             relative_file_path = file_path.relative_to(self.tmp_directory)
             print relative_file_path, file_path.mime_type, file_path.inode, file_path.shasum
-            file_database.add(file_path)
-        file_database.commit()
+            file_table.add(file_path)
+        file_table.commit()
 
-        print file_database.select_by(path=os.path.join(self.tmp_directory, 'file1.pdf')).one()
+        print file_table.select_by(path=os.path.join(self.tmp_directory, 'file1.pdf')).one()
 
 ####################################################################################################
 

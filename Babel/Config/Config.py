@@ -7,9 +7,20 @@
 
 ####################################################################################################
 
+import os
+
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QColor
+
+####################################################################################################
+
+class Path(object):
+
+    config_directory = os.path.join(os.environ['HOME'], '.config', 'babel')
+
+    # data_directory = os.path.join(os.environ['HOME'], '.local', 'share', 'data', 'babel')
+    data_directory = os.path.join(os.environ['HOME'], '.local', 'babel')
 
 ####################################################################################################
 
