@@ -35,22 +35,9 @@ import Babel.Version as Version
 
 ####################################################################################################
 
-class QApplication(QtGui.QApplication):
+class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
 
-    _logger = logging.getLogger(__name__ + '.QApplication')
-    
-    ##############################################
-    
-    def __init__(self, **kwargs):
-
-        super(QApplication, self).__init__(sys.argv)
-        self._logger.debug('QApplication ' + str(kwargs))
-
-####################################################################################################
-
-class GuiApplicationBase(ApplicationBase, QApplication):
-
-    _logger = logging.getLogger(__name__ + '.GuiApplicationBase')
+    _logger = logging.getLogger(__name__)
 
     has_gui = True
     
@@ -59,12 +46,9 @@ class GuiApplicationBase(ApplicationBase, QApplication):
     def __init__(self, args, **kwargs):
 
         super(GuiApplicationBase, self).__init__(args=args, **kwargs)
-        QApplication.__init__(self)
+        self._logger.debug("QtGui.QApplication " + str(sys.argv))
+        QtGui.QApplication.__init__(self, sys.argv)
         self._logger.debug('GuiApplicationBase ' + str(args) + ' ' + str(kwargs))
-
-    ##############################################
-    
-    def pre_init(self):
 
         self._display_splash_screen()
 

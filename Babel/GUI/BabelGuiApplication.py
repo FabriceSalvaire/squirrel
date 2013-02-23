@@ -18,7 +18,7 @@ from Babel.Application.BabelApplication import BabelApplication
 
 ####################################################################################################
 
-class BabelGuiApplication(BabelApplication, GuiApplicationBase):
+class BabelGuiApplication(GuiApplicationBase, BabelApplication):
 
     _logger = logging.getLogger(__name__)
     
@@ -29,8 +29,6 @@ class BabelGuiApplication(BabelApplication, GuiApplicationBase):
         super(BabelGuiApplication, self).__init__(args=args)
         self._logger.debug(str(args))
         
-        self.pre_init()
-
         from Babel.GUI.BabelMainWindow import MainWindow
         self._main_window = MainWindow()
         self._main_window.showMaximized()
