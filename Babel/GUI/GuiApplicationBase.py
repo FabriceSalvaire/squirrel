@@ -15,6 +15,7 @@
 
 ####################################################################################################
 
+import logging
 import sys
 import traceback
 
@@ -22,10 +23,9 @@ from PyQt4 import QtGui, QtCore
 
 ####################################################################################################
 
+from Babel.Application.ApplicationBase import ApplicationBase
 from Babel.GUI.CriticalErrorForm import CriticalErrorForm
 from Babel.GUI.EmailBugForm import EmailBugForm
-from Babel.Tools.Path import to_absolute_path
-from Babel.Tools.Platform import Platform
 import Babel.Config.Config as Config
 import Babel.Config.Messages as Messages
 import Babel.Version as Version
@@ -35,37 +35,47 @@ import Babel.Version as Version
 
 ####################################################################################################
 
-####################################################################################################
+class QApplication(QtGui.QApplication):
 
-class ApplicationBase(QtGui.QApplication):
+    _logger = logging.getLogger(__name__ + '.QApplication')
     
     ##############################################
     
-    def __init__(self, args):
+    def __init__(self, **kwargs):
 
-        super(ApplicationBase, self).__init__(sys.argv)
+        super(QApplication, self).__init__(sys.argv)
+        self._logger.debug('QApplication ' + str(kwargs))
 
-        sys.excepthook = self._exception_hook
+####################################################################################################
+
+class GuiApplicationBase(ApplicationBase, QApplication):
+
+    _logger = logging.getLogger(__name__ + '.GuiApplicationBase')
+
+    has_gui = True
+    
+    ##############################################
+    
+    def __init__(self, args, **kwargs):
+
+        super(GuiApplicationBase, self).__init__(args=args, **kwargs)
+        QApplication.__init__(self)
+        self._logger.debug('GuiApplicationBase ' + str(args) + ' ' + str(kwargs))
+
+    ##############################################
+    
+    def pre_init(self):
+
         self._display_splash_screen()
 
-        self._args = args
         self._main_window = None
-        self._platform = Platform(self)
         self._init_actions()
 
     ##############################################
 
     @property
-    def args(self):
-        return self._args
-
-    @property
     def main_window(self):
         return self._main_window
-
-    @property
-    def platform(self):
-        return self._platform
 
     ##############################################
 
@@ -124,42 +134,12 @@ class ApplicationBase(QtGui.QApplication):
         self.processEvents()
         del self._splash
 
-        QtCore.QTimer.singleShot(0, self._execute_user_script_slot)
+        QtCore.QTimer.singleShot(0, self.execute_given_user_script)
 
         self.show_message('Welcome to Babel')
 
         # return to main and then enter to event loop
-
-    ##############################################
-    
-    def _execute_user_script_slot(self):
-
-        if self._args.user_script is not None:
-            self.execute_user_script(self._args.user_script)
         
-    ##############################################
-    
-    def execute_user_script(self, file_name):
-
-        """ Execute an user script provided by file *file_name* in a context where is defined a
-        variable *application* that is a reference to the application instance.
-        """
-        
-        file_name = to_absolute_path(file_name)
-        self.show_message(message='Execute user script: ' + file_name, echo=True)
-        source = open(file_name).read()
-        bytecode = compile(source, file_name, 'exec')
-        exec bytecode in {'application':self}
-        self.show_message(message='User script done', echo=True)
-        
-    ##############################################
-    
-    def exit(self):
-
-        # Fixme: right?
-
-        sys.exit(0)
-
     ##############################################
 
     def show_message(self, message=None, echo=False, timeout=0):

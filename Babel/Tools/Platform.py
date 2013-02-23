@@ -48,7 +48,7 @@ class Platform(object):
 
     ##############################################
 
-    def __init__(self, application=None):
+    def __init__(self):
 
         self.python_version = platform.python_version()
         self.qt_version = QtCore.QT_VERSION_STR
@@ -71,10 +71,11 @@ class Platform(object):
         self.memory_size_mb = rint(self.memory_size_kb/float(1024))
         
         # Screen
-        if application is not None:
+        try:
+            application = QtGui.QApplication.instance()
             self.desktop = application.desktop()
             self.number_of_screens = self.desktop.screenCount() 
-        else:
+        except:
             self.desktop = None
             self.number_of_screens = 0
         self.screens = []

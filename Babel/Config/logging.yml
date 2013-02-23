@@ -28,9 +28,9 @@ handlers:
 ####################################################################################################
 
 root:
-  #level: DEBUG
+  level: DEBUG
   #level: INFO
-  level: WARNING
+  #level: WARNING
   #handlers: [console]
 
 ####################################################################################################
@@ -43,7 +43,8 @@ loggers:
 #
 
   babel:
-    level: INFO
+    level: DEBUG
+    #level: INFO
     handlers: [console]
     propagate: no
 
@@ -53,8 +54,8 @@ loggers:
 #
 
   Babel:
-    #level: DEBUG
-    level: INFO
+    level: DEBUG
+    #level: INFO
     #level: WARNING
     handlers: [console]
 

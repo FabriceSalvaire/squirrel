@@ -22,7 +22,7 @@ import argparse
 
 ####################################################################################################
 
-from Babel.GUI.BabelGuiApplication import BabelGuiApplication
+from Babel.Application.BabelApplication import BabelApplication
 from Babel.Tools.ProgramOptions import PathAction
 
 ####################################################################################################
@@ -47,9 +47,9 @@ args = argument_parser.parse_args()
 
 ####################################################################################################
 
-print BabelGuiApplication.__mro__
-application = BabelGuiApplication(args=args)
-application.exec_()
+application = BabelApplication(args=args)
+print application.platform
+1/0
 
 ####################################################################################################
 # 
