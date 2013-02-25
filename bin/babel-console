@@ -48,8 +48,7 @@ args = argument_parser.parse_args()
 ####################################################################################################
 
 application = BabelApplication(args=args)
-print application.platform
-1/0
+application.execute_given_user_script()
 
 ####################################################################################################
 # 

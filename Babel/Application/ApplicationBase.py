@@ -31,7 +31,6 @@ class ApplicationBase(object):
     def __init__(self, args, **kwargs):
 
         self._logger.debug(str(args) + ' ' + str(kwargs))
-        print 'BaseApplication.__init__'
 
         sys.excepthook = self._exception_hook
 

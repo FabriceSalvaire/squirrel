@@ -17,6 +17,7 @@ from PyQt4 import QtCore, QtGui
 
 from Babel.GUI.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.GrowingTextBrowser import GrowingTextBrowser
+from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.RowLayoutManager import RowLayoutManager
 from Babel.Pdf.PdfDocument import PdfDocument
 
@@ -89,6 +90,8 @@ class PdfViewerMainWindow(MainWindowBase):
     
     def _create_actions(self):
 
+        icon_loader = IconLoader()
+
         self._show_info_action = \
             QtGui.QAction('Info',
                           self,
@@ -121,14 +124,16 @@ class PdfViewerMainWindow(MainWindowBase):
             self._action_group.addAction(action)
 
         self._previous_page_action = \
-            QtGui.QAction('Previous',
+            QtGui.QAction(icon_loader['arrow-left'],
+                          'Previous page',
                           self,
                           toolTip='Previous Page',
                           triggered=lambda: self.previous_page(),
                           )
 
         self._next_page_action = \
-            QtGui.QAction('Next',
+            QtGui.QAction(icon_loader['arrow-right'],
+                          'Next page',
                           self,
                           toolTip='Next Page',
                           triggered=lambda: self.next_page(),
@@ -147,7 +152,7 @@ class PdfViewerMainWindow(MainWindowBase):
             self._mode_tool_bar.addAction(action)
 
         self._page_number_line_edit = QtGui.QLineEdit()
-        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
         self._page_number_line_edit.setSizePolicy(size_policy)
         self._last_page_number_label = QtGui.QLabel()
 
@@ -287,7 +292,7 @@ class ImagePage(QtGui.QScrollArea):
     def __init__(self, main_window):
 
         super(ImagePage, self).__init__()
-        
+
         self._main_window = main_window
         self._init_ui()
 
@@ -298,7 +303,16 @@ class ImagePage(QtGui.QScrollArea):
         # self._scroll_area = QtGui.QScrollArea(self)
         self.setWidgetResizable(True)
         self._pixmap_label = QtGui.QLabel()
-        self.setWidget(self._pixmap_label)
+        # self.setWidget(self._pixmap_label)
+
+        widget = QtGui.QWidget()
+        horizontal_layout = QtGui.QHBoxLayout(widget)
+        spacer_item1 = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacer_item2 = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        horizontal_layout.addItem(spacer_item1)
+        horizontal_layout.addWidget(self._pixmap_label)
+        horizontal_layout.addItem(spacer_item2)
+        self.setWidget(widget)
 
     ##############################################
 
@@ -334,7 +348,7 @@ class TextPage(QtGui.QScrollArea):
         self._container_widget = QtGui.QWidget()
         self._vertical_layout = QtGui.QVBoxLayout(self._container_widget) # Set container_widget layout
         self.setWidget(self._container_widget)
-
+ 
         spacer_item = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self._vertical_layout.addItem(spacer_item)
 

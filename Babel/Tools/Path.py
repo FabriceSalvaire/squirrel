@@ -8,6 +8,7 @@
 ####################################################################################################
 
 import os
+import types
 
 ####################################################################################################
 
@@ -29,7 +30,9 @@ def parent_directory_of(file_name, step=1):
 ####################################################################################################
 
 def find(file_name, directories):
-
+    
+    if isinstance(directories, types.StringType):
+        directories = (directories,)
     for directory in directories:
         for directory_path, sub_directories, file_names in os.walk(directory):
             if file_name in file_names:

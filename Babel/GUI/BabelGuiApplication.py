@@ -26,6 +26,25 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
     
     def __init__(self, args):
 
+        #
+        # <class 'Babel.GUI.BabelGuiApplication.BabelGuiApplication'>
+        # <class 'Babel.GUI.GuiApplicationBase.GuiApplicationBase'>
+        # <class 'Babel.Application.BabelApplication.BabelApplication'>
+        # <class 'Babel.Application.ApplicationBase.ApplicationBase'>
+        # <class 'PyQt4.QtGui.QApplication'>
+        # <class 'PyQt4.QtCore.QCoreApplication'>
+        # <class 'PyQt4.QtCore.QObject'>
+        # <type 'sip.wrapper'>
+        # <type 'sip.simplewrapper'>
+        # <type 'object'>
+        # 
+        # ApplicationBase.__init__
+        # BabelApplication.__init__
+        # QtGui.QApplication
+        # GuiApplicationBase.__init__
+        # BabelGuiApplication.__init__
+        #
+
         super(BabelGuiApplication, self).__init__(args=args)
         self._logger.debug(str(args))
         

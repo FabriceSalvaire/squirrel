@@ -7,6 +7,7 @@
 
 ####################################################################################################
 
+import logging
 import os
 
 from sqlalchemy import create_engine
@@ -18,9 +19,13 @@ class SqliteDataBase(object):
 
     __base__ = None
 
+    _logger = logging.getLogger(__name__)
+
     ##############################################
     
     def __init__(self, filename, echo=False):
+
+        self._logger.debug("Open SQLite Database %s" % (filename))
     
         self._filename = filename
 

@@ -113,7 +113,10 @@ class PdfMetaData(ReadOnlyAttributeDictionaryInterface):
             self._dictionary[key] = unicode(cmupdf.get_meta_info(document, key, 1024), 'utf-8')
 
         fz_buffer = cmupdf.pdf_metadata(document)
-        self._dictionary['metadata'] = unicode(cmupdf.fz_buffer_data(fz_buffer), 'utf-8')
+        # Fixme: UnicodeDecodeError: 'utf8' codec can't decode byte 0xdb in position 2330: invalid
+        #   continuation byte
+        string = cmupdf.fz_buffer_data(fz_buffer)
+        self._dictionary['metadata'] = unicode(string, 'utf-8')
         cmupdf.fz_drop_buffer(pdf_document._context, fz_buffer)
 
 ####################################################################################################

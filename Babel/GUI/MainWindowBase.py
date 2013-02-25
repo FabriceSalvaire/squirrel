@@ -18,11 +18,15 @@
 
 ####################################################################################################
 
+import logging
+
 from PyQt4 import QtGui, QtCore
 
 ####################################################################################################
 
 class MainWindowBase(QtGui.QMainWindow):
+
+    _logger = logging.getLogger(__name__)
     
     ##############################################
     
@@ -73,12 +77,22 @@ class MainWindowBase(QtGui.QMainWindow):
 
     def show_message(self, message=None, echo=False, timeout=0):
 
+        """ Hides the normal status indications and displays the given message for the specified
+        number of milli-seconds (timeout). If timeout is 0 (default), the message remains displayed
+        until the clearMessage() slot is called or until the showMessage() slot is called again to
+        change the message.
+        
+        Note that showMessage() is called to show temporary explanations of tool tip texts, so
+        passing a timeout of 0 is not sufficient to display a permanent message.
+        """
+
         status_bar = self.statusBar()
         if message is None:
             status_bar.clearMessage()
         else:
             status_bar.showMessage(message, timeout)
-
+            if echo:
+                self._logger.info(message)
         # self.application.processEvents()
 
     ##############################################

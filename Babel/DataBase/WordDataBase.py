@@ -49,6 +49,34 @@ class LanguageSqlTable(SqlTable):
 
 ####################################################################################################
 
+class PartOfSpeechTagRow(SqlAlchemyBase, SqlRow):
+
+    __tablename__ = 'part_of_speech_tags'
+
+    id = Column(Integer, primary_key=True)
+    tag = Column(String)
+    comment = Column(String)
+
+    ##############################################
+        
+    def __repr__(self):
+        
+        message = '''
+Part-Of-Speech Tags Row
+  id: %(id)u
+  tag: %(tag)s
+  comment: %(comment)s
+'''
+        return message % self.get_column_dict()
+
+####################################################################################################
+
+class PartOfSpeechTagTable(SqlTable):
+
+    ROW_CLASS = PartOfSpeechTagRow
+
+####################################################################################################
+
 class WordRow(SqlAlchemyBase, SqlRow):
 
     __tablename__ = 'words'
@@ -56,8 +84,10 @@ class WordRow(SqlAlchemyBase, SqlRow):
     id = Column(Integer, primary_key=True)
     word = Column(String) # , primary_key=True
     language_id = Column(Integer, ForeignKey('languages.id'))
+    post_tag_id = Column(Integer, ForeignKey('part_of_speech_tags.id'))
     count = Column(Integer, default=0)
-    common = Column(Boolean,default=False)
+    file_count = Column(Integer, default=0)
+    rank = Column(Integer, default=0)
 
     # language = relationship('LanguageRow')
 
