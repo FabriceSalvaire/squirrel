@@ -1,0 +1,35 @@
+states:
+  INITIAL            @ is forbidden
+  Comment            matched @Comment
+  Preambule          matched @Preambule
+  StringDefinition   matched @String
+  Entry              matched @Identifier
+  Value
+
+{} = () for block
+"" = {} for string
+
+Comment : @COMMENT{ ... }
+
+Preamble : @PREAMBLE{ ... }
+
+StringDefinition : @STRING{ StringIdentifier = StringExpression }
+
+Entry : @Identifier{ URI, KeyValuePairSequence }
+
+KeyValuePairSequence : KeyValuePair , KeyValuePairSequence
+		     | KeyValuePair
+		     | empty
+key value pair list can end by ,
+
+KeyValuePair : Key = StringExpression
+	     | Key = Number
+
+StringExpression : StringIdentifier # String
+		 | String # StringIdentifier
+		 | String # StringIdentifier
+
+String : " ... "
+       | { ... }
+
+Number : number
