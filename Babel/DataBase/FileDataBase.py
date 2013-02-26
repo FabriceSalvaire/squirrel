@@ -43,6 +43,16 @@ File Row
 '''
         return message % self.get_column_dict()
 
+    ##############################################
+
+    def update(self, file_path):
+
+        if self.path != str(file_path):
+            raise NameError("Attempt to update with a different path")
+        self.shasum = file_path.shasum
+        self.inode = file_path.inode
+        self.creation_time = file_path.creation_time
+
 ####################################################################################################
 
 class FileSqlTable(SqlTable):

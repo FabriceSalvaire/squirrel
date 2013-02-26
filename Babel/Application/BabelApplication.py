@@ -16,11 +16,15 @@ from Babel.Application.ApplicationBase import ApplicationBase
 from Babel.DataBase.FileDataBase import FileDataBase
 from Babel.DataBase.WordDataBase import WordDataBase
 from Babel.DataBase.WordDocumentDataBase import WordDocumentDataBase
+from Babel.FileSystem.File import Directory, File
+from Babel.Tools.Singleton import MetaSingleton
 import Babel.Config.Config as Config
 
 ####################################################################################################
 
 class BabelApplication(ApplicationBase):
+
+    __metaclass__ = MetaSingleton
 
     _logger = logging.getLogger(__name__)
     
@@ -33,6 +37,9 @@ class BabelApplication(ApplicationBase):
 
         self._make_user_directory()
         self._open_database()
+
+        from Babel.Importer.Importer import Importer
+        self._importer = Importer(self)
 
     ###############################################
     
@@ -47,9 +54,16 @@ class BabelApplication(ApplicationBase):
     
     def _open_database(self):
 
-        self._file_database = FileDataBase(Config.DataBase.file_database)
-        self._word_database = WordDataBase(Config.DataBase.word_database)
-        self._word_document_database = WordDocumentDataBase(Config.DataBase.word_document_database)
+        self.file_database = FileDataBase(Config.DataBase.file_database)
+        self.word_database = WordDataBase(Config.DataBase.word_database)
+        self.word_document_database = WordDocumentDataBase(Config.DataBase.word_document_database)
+
+    ###############################################
+    
+    def import_path(self, path):
+
+        import_session = self._importer.new_session()
+        import_session.import_path(Directory(path))
 
 ####################################################################################################
 #
