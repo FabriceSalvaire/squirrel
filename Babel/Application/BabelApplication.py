@@ -24,7 +24,7 @@ import Babel.Config.Config as Config
 
 class BabelApplication(ApplicationBase):
 
-    __metaclass__ = MetaSingleton
+    # __metaclass__ = MetaSingleton
 
     _logger = logging.getLogger(__name__)
     

@@ -110,13 +110,21 @@ class PdfMetaData(ReadOnlyAttributeDictionaryInterface):
             'ModDate',
             ):
             # Fixme: buffer size
-            self._dictionary[key] = unicode(cmupdf.get_meta_info(document, key, 1024), 'utf-8')
+            string = cmupdf.get_meta_info(document, key, 1024)
+            if string is not None:
+                string = unicode(string, 'utf-8')
+            self._dictionary[key] = string
 
+        # Fixme:
+        # UnicodeDecodeError: 'utf8' codec can't decode byte 0xdb in position 2330: invalid continuation byte
+        # UnicodeDecodeError: 'utf8' codec can't decode byte 0xff in position 814: invalid start byte
         fz_buffer = cmupdf.pdf_metadata(document)
-        # Fixme: UnicodeDecodeError: 'utf8' codec can't decode byte 0xdb in position 2330: invalid
-        #   continuation byte
-        string = cmupdf.fz_buffer_data(fz_buffer)
-        self._dictionary['metadata'] = unicode(string, 'utf-8')
+        if False: # fz_buffer is not None:
+            string = cmupdf.fz_buffer_data(fz_buffer)
+            string = unicode(string, 'utf-8')
+        else:
+            string = None
+        self._dictionary['metadata'] = string
         cmupdf.fz_drop_buffer(pdf_document._context, fz_buffer)
 
 ####################################################################################################

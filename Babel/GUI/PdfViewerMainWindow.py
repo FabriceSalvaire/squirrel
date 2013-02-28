@@ -278,10 +278,10 @@ class InfoPage(QtGui.QWidget):
                            ('number_of_pages', str(pdf_document.number_of_pages)),
                            ]
         for key in ('Title', 'Subject', 'Author', 'Creator', 'Producer', 'CreationDate', 'ModDate'):
-            key_value_pairs.append((key, pdf_metadata[key]))
+            key_value_pairs.append((key, pdf_metadata[key] or ''))
         for key, value in key_value_pairs:
             self._widgets[key].setText(value)
-        self._text_browser.setPlainText(pdf_metadata.metadata)
+        self._text_browser.setPlainText(pdf_metadata.metadata or '')
 
 ####################################################################################################
 
