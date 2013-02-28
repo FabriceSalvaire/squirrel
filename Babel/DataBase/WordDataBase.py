@@ -83,8 +83,8 @@ class WordRow(SqlAlchemyBase, SqlRow):
 
     id = Column(Integer, primary_key=True)
     word = Column(String) # , primary_key=True
-    language_id = Column(Integer, ForeignKey('languages.id'))
-    post_tag_id = Column(Integer, ForeignKey('part_of_speech_tags.id'))
+    ### language_id = Column(Integer, ForeignKey('languages.id'))
+    part_of_speech_tag_id = Column(Integer) #, ForeignKey('part_of_speech_tags.id'))
     count = Column(Integer, default=0)
     file_count = Column(Integer, default=0)
     rank = Column(Integer, default=0)
@@ -123,6 +123,7 @@ class WordDataBase(SqliteDataBase):
         super(WordDataBase, self).__init__(filename, echo)
 
         self.language_table = LanguageSqlTable(self)
+        self.part_of_speech_tag_table = PartOfSpeechTagTable(self)
         self.word_table = WordSqlTable(self)
 
 ####################################################################################################

@@ -86,7 +86,7 @@ class SqlTable(object):
     def add(self, row):
 
         self._session.add(row)
-        self.commit()
+        # self.commit()
 
     ###############################################
 
