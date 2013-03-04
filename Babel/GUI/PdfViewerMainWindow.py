@@ -45,22 +45,22 @@ class PdfViewerMainWindow(MainWindowBase):
         self._set_page_number(0)
         # Fixme: page cache, speed-up
         word_array = self._pdf_document.words()
-        for word, count in word_array:
-            if len(word) > 2 and word not in ( 
-                'a',
-                'an',
-                'and',
-                'as',
-                'by',
-                'for',
-                'have',
-                'in',
-                'is',
-                'of',
-                'the',
-                'to',
-                ):
-                print "%6u" % count, word
+        # for word, count in word_array:
+        #     if len(word) > 2 and word not in ( 
+        #         'a',
+        #         'an',
+        #         'and',
+        #         'as',
+        #         'by',
+        #         'for',
+        #         'have',
+        #         'in',
+        #         'is',
+        #         'of',
+        #         'the',
+        #         'to',
+        #         ):
+        #         print "%6u" % count, word
 
     ##############################################
 
@@ -347,11 +347,9 @@ class TextPage(QtGui.QScrollArea):
 
         self._container_widget = QtGui.QWidget()
         self._vertical_layout = QtGui.QVBoxLayout(self._container_widget) # Set container_widget layout
+        self._spacer_item = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.setWidget(self._container_widget)
  
-        spacer_item = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self._vertical_layout.addItem(spacer_item)
-
     ##############################################
 
     def _clear_layout(self):
@@ -371,8 +369,12 @@ class TextPage(QtGui.QScrollArea):
         self._clear_layout()
         pdf_page = self._main_window._pdf_page
         text_page = pdf_page.to_text()
+        with codecs.open('log%u.txt' % self._main_window._pdf_page.page_number,
+                         encoding='utf-8', mode='w+') as log_file:
+            log_file.write(text_page.dump_text_page_xml(dump_char=True))
         for block_text in text_page.block_iterator():
             self._append_block(block_text)
+        self._vertical_layout.addItem(self._spacer_item)
 
     ##############################################
             
@@ -383,7 +385,7 @@ class TextPage(QtGui.QScrollArea):
         for item in ('Text', 'Title', 'Authors', 'Abstract', 'Refrences'):
             combo_box.addItem(item)
         text_browser = GrowingTextBrowser() # self._container_widget
-        text_browser.setPlainText(block_text)
+        text_browser.setPlainText(str(block_text.y_inf) + ' ' + unicode(block_text))
         horizontal_layout.addWidget(combo_box, 0, QtCore.Qt.AlignTop)
         horizontal_layout.addWidget(text_browser, 0, QtCore.Qt.AlignTop)
         self._vertical_layout.addLayout(horizontal_layout)

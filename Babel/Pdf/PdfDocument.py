@@ -17,7 +17,19 @@ from MuPDF import *
 ####################################################################################################
 
 from Babel.Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
+from Babel.Tools.Interval import IntervalInt2D
 from Babel.Tools.Object import clone
+
+####################################################################################################
+
+def span_to_string(span):
+    
+    span_text = u''
+    for char in TextCharIterator(span):
+        span_text += unichr(char.c)
+    span_text = span_text.rstrip()
+
+    return span_text
 
 ####################################################################################################
 
@@ -243,23 +255,22 @@ class PdfTextPage():
     ##############################################
 
     def word_iterator(self):
-
-        word = 'u'
+        
         for block in TextBlockIterator(self._text_page):
             for line in TextLineIterator(block):
+                word = u''
                 for span in TextSpanIterator(line):
                     for char in TextCharIterator(span):
                         unicode_char = unichr(char.c)
                         category = unicodedata.category(unicode_char)
                         # Take only letters, and numbers when it is not the first character
-                        print unicode_char, category, word
                         if ((category in ('Ll', 'Lu')) or (category == 'Nd' and word)):
                             word += unicode_char.lower()
                         elif word:
                             yield word
                             word = u''
-            if word: # Last char was a letter/number
-                yield word
+                if word: # Last char was a letter/number
+                    yield word
 
     ##############################################
 
@@ -280,6 +291,14 @@ class PdfTextPage():
 
         return "[%g %g %g %g]" % (obj.bbox.x0, obj.bbox.y0,
                                   obj.bbox.x1, obj.bbox.y1)
+
+    ##############################################
+
+    @staticmethod
+    def _to_interval(obj):
+
+        return IntervalInt2D((obj.bbox.x0, obj.bbox.x1),
+                             (obj.bbox.y0, obj.bbox.y1))
 
     ##############################################
 
@@ -309,7 +328,7 @@ class PdfTextPage():
 
     ##############################################
 
-    def dump_text_page_xml(self):
+    def dump_text_page_xml(self, dump_char=True):
 
         text = u'<page page_number="%u">\n' % (self._page_number)
         for block in TextBlockIterator(self._text_page):
@@ -321,9 +340,12 @@ class PdfTextPage():
                     font_name = self._get_font_name(style.font)
                     text += u' '*4 + u'<span bbox="' + self._format_bounding_box(span) + \
                         u'" font="%s" size="%g">\n' % (font_name, style.size)
-                    for char in TextCharIterator(span):
-                        text += u' '*6 + u'<char bbox="' + self._format_bounding_box(char) + \
-                            u'" c="%s"/>\n' % (unichr(char.c))
+                    if dump_char:
+                        for char in TextCharIterator(span):
+                            text += u' '*6 + '<char bbox="' + self._format_bounding_box(char) + \
+                                u'" c="%s"/>\n' % (unichr(char.c))
+                    else:
+                        text += u' '*4 + u'<p>' + span_to_string(span) + u'</p>\n'
                     text += u' '*4 + u'</span>\n'
                 text += u' '*2 + u'</line>\n'
             text += u'</block>\n'
@@ -344,10 +366,7 @@ class PdfTextPage():
             for line in TextLineIterator(block):
                 line_text = u''
                 for span in TextSpanIterator(line):
-                    span_text = u''
-                    for char in TextCharIterator(span):
-                        span_text += unichr(char.c)
-                    span_text = span_text.rstrip()
+                    span_text = span_to_string(span)
                     if span_text:
                         line_text += span_text
                 if line_text:
@@ -362,26 +381,67 @@ class PdfTextPage():
         
         for block in TextBlockIterator(self._text_page):
             block_text = u''
+            block_interval = None
             for line in TextLineIterator(block):
+                # Concatenate span to line
                 line_text = u''
                 for span in TextSpanIterator(line):
-                    span_text = u''
-                    for char in TextCharIterator(span):
-                        span_text += unichr(char.c)
-                    span_text = span_text.rstrip()
-                    if span_text: # Append span to line
-                        line_text += span_text
-                    else: # Empty span then append a block
-                        if block_text:
-                            yield block_text
-                        block_text = u''
-                        line_text = u''
-                # Append line to block
+                    # spaces are included
+                    line_text += span_to_string(span)
+                if line_text:
+                    line_interval = self._to_interval(line)
+                    if block_interval is not None:
+                        block_interval |= line_interval
+                    else:
+                        block_interval = line_interval
+                elif block_text:
+                    # If the line is empty then start a new block
+                    yield PdfTextBlock(block_text, block_interval)
+                    block_text = u''
+                    block_interval = None
+                # Concatenate line to block
                 if block_text:
-                    block_text += ' '
+                    block_text += u' '
                 block_text += line_text
             if block_text:
-                yield block_text
+                yield PdfTextBlock(block_text, block_interval)
+
+####################################################################################################
+
+class PdfTextBlock():
+
+    ##############################################
+
+    def __init__(self, text, interval):
+
+        self._text = text
+        self._interval = interval
+
+    ##############################################
+
+    @property
+    def interval(self):
+
+        return self._interval
+
+    ##############################################
+
+    @property
+    def y_inf(self):
+
+        return self._interval.y.inf
+
+    ##############################################
+
+    def __unicode__(self):
+
+        return self._text
+
+    ##############################################
+
+    def __cmp__(self, other):
+
+        return cmp(self.y_inf, other.y_inf)
 
 ####################################################################################################
 # 
