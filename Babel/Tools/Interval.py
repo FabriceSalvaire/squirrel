@@ -10,11 +10,11 @@
 
 ####################################################################################################
 
-__ALL__ = ['Interval',
+__all__ = ['Interval',
            'IntervalInt',
-           'IntervalIntSupOpen',
+           'IntervalSupOpen',
            'Interval2D',
-           'Interval2DInt',
+           'IntervalInt2D',
            ]
 
 ####################################################################################################
@@ -36,6 +36,8 @@ class Interval(object):
 
     """ One-dimension Interval
     """
+
+    __format_string__ =  '[%s, %s]'
 
     ##############################################
 
@@ -122,21 +124,19 @@ class Interval(object):
 
     ##############################################
     
+    def _format_value(self, x):
+
+        return '%g' % x
+
+    ##############################################
+    
     def __str__(self):
 
         if self.is_empty():
             return empty_interval_string
         else:
-            return '[%f, %f]' % (self.inf, self.sup)
-
-    ##############################################
-    
-    def print_object(self):
-
-        """ Print the interval
-        """
-
-        print str(self)
+            return self.__format_string__ % (self._format_value(self.inf),
+                                             self._format_value(self.sup))
 
     ##############################################
 
@@ -299,8 +299,6 @@ class Interval(object):
         """ Is the interval included in i1?
         """
 
-        # print '(%f <= %f and %f <= %f)' % (i2.inf, i1.inf, i1.sup, i2.sup)
-        
         return i2.inf <= i1.inf and i1.sup <= i2.sup
 
     ##############################################
@@ -387,31 +385,13 @@ class IntervalInt(Interval):
 
     ##############################################
 
-    # Fixme: better name than array ?
-    
-    def __init__(self, *args):
+    def _check_arguments(self, args):
 
-        """ Initialise an interval
-
-        array must support the __getitem__ interface
-        """
-
-        array = self._check_arguments(args)
-
-        if None not in array:
+        array = super(IntervalInt, self)._check_arguments(args)
+        if None not in array: # Fixme: ?
             array = [int(x) for x in array[:2]] # Fixme: rint ?
-        # Fixme: else:
 
-        super(IntervalInt, self).__init__(array)
-
-    ##############################################
-    
-    def __str__(self):
-
-        if self.is_empty():
-            return empty_interval_string
-        else:
-            return '[%i, %i]' % (self.inf, self.sup)
+        return array
         
     ##############################################
   
@@ -433,36 +413,21 @@ class IntervalInt(Interval):
     
 ####################################################################################################
     
-class IntervalIntSupOpen(IntervalInt):
+class IntervalSupOpen(Interval):
 
-    """ One-dimension Integer Interval [inf, sup[
+    """ One-dimension Interval [inf, sup[
     """
 
-    ##############################################
-
-    def __init__(self, *args):
-
-        """ Initialise an interval
-
-        array must support the __getitem__ interface
-        """
-
-        array = self._check_arguments(args)
-
-        super(IntervalInt, self).__init__(args)
-
+    __format_string__ =  '[%s, %s['
+    
     ##############################################
     
-    def __str__(self):
+    def _format_value(self, x):
 
-        if self.is_empty():
-            return empty_interval_string
+        if x == sys.maxint:
+            return '+oo'
         else:
-            if self.sup == sys.maxint:
-                sup_str = '+oo'
-            else:
-                sup_str = str(self.sup)
-            return '[%i, %s[' % (self.inf, sup_str)
+            return super(IntervalSupOpen, self)._format_value(x)
 
     ##############################################
 
@@ -473,73 +438,6 @@ class IntervalIntSupOpen(IntervalInt):
 
         return ((i1.inf < i2.sup and i2.inf < i1.sup) or
                 (i2.inf < i1.sup and i1.inf < i2.sup))
-
-   ###############################################
-
-    def minus(i1, i2):
-
-        """ Return i1 - i1 intersect i2
-        """
-
-        if i1.intersect(i2):
-
-            # i2.inf < i1.inf < i1.sup < i2.sup
-            if i1.is_included_in(i2):
-                return (IntervalIntSupOpen(None, None),)
-
-            # i1.inf < i2.inf < i2.sup < i1.sup
-            elif i2.is_included_in(i1):
-                r = []
-                if i1.inf != i2.inf:
-                    r.append(IntervalIntSupOpen(i1.inf, i2.inf))
-                if i2.sup != i1.sup:
-                    r.append(IntervalIntSupOpen(i2.sup, i1.sup))
-                return tuple(r)
-
-            # i1.inf < i2.inf < i1.sup < i2.sup
-            elif i1.inf <= i2.inf:
-                return (IntervalIntSupOpen(i1.inf, i2.inf),)
-
-            # i2.inf < i1.inf < i2.sup < i1.sup
-            else:
-                return (IntervalIntSupOpen(i2.sup, i1.sup),)
-
-        else:
-            return (IntervalIntSupOpen(None, None),)
-
-   ###############################################
-
-    def split(i1, i2):
-
-        """ Split
-        """
-
-        if i1.intersect(i2):
-
-            # i2.inf < i1.inf < i1.sup < i2.sup
-            if i1.is_included_in(i2):
-                return ((i2, False),)
-
-            # i1.inf < i2.inf < i2.sup < i1.sup
-            elif i2.is_included_in(i1):
-                r = []
-                if i1.inf != i2.inf: r.append((IntervalIntSupOpen(i1.inf, i2.inf), True))
-                r.append((i2, False))
-                if i2.sup != i1.sup: r.append((IntervalIntSupOpen(i2.sup, i1.sup), True))
-                return tuple(r)
-
-            # i1.inf < i2.inf < i1.sup < i2.sup
-            elif i1.inf <= i2.inf:
-                return ((IntervalIntSupOpen(i1.inf, i2.inf), True),
-                        (i2, False))
-
-            # i2.inf < i1.inf < i2.sup < i1.sup
-            else:
-                return ((i2, False),
-                        (IntervalIntSupOpen(i2.sup, i1.sup), True))
-
-        else:
-            return None
        
 #################################################################################
 
@@ -547,6 +445,8 @@ class Interval2D(object):
 
     """ Two-dimension Interval
     """
+
+    __interval_class__ = Interval
 
     ##############################################
 
@@ -557,8 +457,8 @@ class Interval2D(object):
         x and y must support the __getitem__ interface
         """
 
-        self.x = Interval(x)
-        self.y = Interval(y)
+        self.x = self.__interval_class__(x)
+        self.y = self.__interval_class__(y)
 
     ##############################################
 
@@ -605,15 +505,6 @@ class Interval2D(object):
 
     ##############################################
 
-    def print_object(self):
-
-        """ Print the interval
-        """
-
-        print str(self)
-
-    ##############################################
-
     def is_empty(self):
 
         return self.x.is_empty() or self.y.is_empty()
@@ -638,8 +529,6 @@ class Interval2D(object):
         return self
 
     ##############################################
-
-    # Union
 
     def __or__(i1, i2):
 
@@ -666,19 +555,6 @@ class Interval2D(object):
         """
 
         return i1.x == i2.x and i1.y == i2.y
-
-    ##############################################
-
-    def shift(self, dx, dy):
-
-        # Fixme: deprecated
-
-        """ Shift the interval of dx
-        """
-
-        self.x += dx
-        self.y += dy
-        return self
 
     ##############################################
 
@@ -833,17 +709,7 @@ class IntervalInt2D(Interval2D):
     """ Two-dimension Integer Interval
     """
 
-    ##############################################
-
-    def __init__(self, x, y):
-
-        """ Initialise a 2D Integer interval
-
-        x and y must support the __getitem__ interface
-        """
-
-        self.x = IntervalInt(x)
-        self.y = IntervalInt(y)
+    __interval_class__ = IntervalInt
 
 ####################################################################################################
 #

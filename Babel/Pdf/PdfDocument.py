@@ -377,8 +377,9 @@ class PdfTextPage():
 
     ##############################################
 
-    def block_iterator(self):
+    def to_blocks(self):
         
+        blocks = PdfTextBlocks()
         for block in TextBlockIterator(self._text_page):
             block_text = u''
             block_interval = None
@@ -396,7 +397,7 @@ class PdfTextPage():
                         block_interval = line_interval
                 elif block_text:
                     # If the line is empty then start a new block
-                    yield PdfTextBlock(block_text, block_interval)
+                    blocks.append(PdfTextBlock(block_text, block_interval))
                     block_text = u''
                     block_interval = None
                 # Concatenate line to block
@@ -404,7 +405,13 @@ class PdfTextPage():
                     block_text += u' '
                 block_text += line_text
             if block_text:
-                yield PdfTextBlock(block_text, block_interval)
+                blocks.append(PdfTextBlock(block_text, block_interval))
+        return blocks
+
+####################################################################################################
+
+class PdfTextBlocks(list):
+    pass
 
 ####################################################################################################
 

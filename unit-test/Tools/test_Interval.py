@@ -212,7 +212,7 @@ class TestInterval2D(unittest.TestCase):
 
 ####################################################################################################
 
-class TestIntervalIntSupOpen(unittest.TestCase):
+class TestIntervalSupOpen(unittest.TestCase):
 
     ##############################################
         
@@ -222,86 +222,37 @@ class TestIntervalIntSupOpen(unittest.TestCase):
         #
         # Test intersection
 
-        empty = IntervalIntSupOpen(None, None)
+        empty = IntervalSupOpen(None, None)
 
         # Indenp
-        i1 = IntervalIntSupOpen(1, 10)
+        i1 = IntervalSupOpen(1, 10)
         self.assertEqual(i1 & i1, i1)
 
         # Inside
-        i1 = IntervalIntSupOpen(1, 20)
-        i2 = IntervalIntSupOpen(5, 15)
+        i1 = IntervalSupOpen(1, 20)
+        i2 = IntervalSupOpen(5, 15)
         self.assertEqual(i1 & i2, i2)
         self.assertEqual(i2 & i1, i2)
 
         # Overlap
-        i1 = IntervalIntSupOpen(1, 10)
-        i2 = IntervalIntSupOpen(5, 15)
-        i1_i2_intersection = IntervalIntSupOpen(5, 10)
+        i1 = IntervalSupOpen(1, 10)
+        i2 = IntervalSupOpen(5, 15)
+        i1_i2_intersection = IntervalSupOpen(5, 10)
         self.assertEqual(i1 & i2, i1_i2_intersection)
         self.assertEqual(i2 & i1, i1_i2_intersection)
 
         # Inf = Sup
-        i1 = IntervalIntSupOpen(1, 10)
-        i2 = IntervalIntSupOpen(10, 15)
-        i1_i2_intersection = IntervalIntSupOpen(10, 10)
+        i1 = IntervalSupOpen(1, 10)
+        i2 = IntervalSupOpen(10, 15)
+        i1_i2_intersection = IntervalSupOpen(10, 10)
         self.assertEqual(i1 & i2, empty)
         self.assertEqual(i2 & i1, empty)
 
         # Outside
-        i1 = IntervalIntSupOpen(1, 10)
-        i2 = IntervalIntSupOpen(11, 15)
+        i1 = IntervalSupOpen(1, 10)
+        i2 = IntervalSupOpen(11, 15)
         self.assertEqual(i1 & i2, empty)
         self.assertEqual(i2 & i1, empty)
-
-        ###########################################
-        #
-        # Minus Test
-        #
-
-        # Overlap sup
-        i1 = IntervalIntSupOpen(0, 20)
-        i2 = IntervalIntSupOpen(10, 20)
-        i1_minus_i2 = i1.minus(i2)
-        self.assertTupleEqual(i1_minus_i2, (IntervalIntSupOpen(0, 10),))
-
-        # Overlap inf
-        i1 = IntervalIntSupOpen(0, 20)
-        i2 = IntervalIntSupOpen(0, 10)
-        i1_minus_i2 = i1.minus(i2)
-        self.assertTupleEqual(i1_minus_i2, (IntervalIntSupOpen(10, 20),))
-
-        # Indemp
-        i1 = IntervalIntSupOpen(1, 10)
-        i1_minus_i2 = i1.minus(i1)
-        self.assertTupleEqual(i1_minus_i2, (empty,))
-
-        # Inside
-        i1 = IntervalIntSupOpen(0, 20)
-        i2 = IntervalIntSupOpen(5, 15)
-        i1_minus_i2 = i1.minus(i2)
-        self.assertTupleEqual(i1_minus_i2,
-                              (IntervalIntSupOpen(0, 5),
-                               IntervalIntSupOpen(15, 20)))
-
-        # Excluded
-        i1 = IntervalIntSupOpen(5, 15)
-        i2 = IntervalIntSupOpen(0, 20)
-        i1_minus_i2 = i1.minus(i2)
-        self.assertTupleEqual(i1_minus_i2, (empty,))
-
-        ###########################################
-        #
-        # Split Test
-        #
-
-        # Overlap sup
-        i1 = IntervalIntSupOpen(4, 16)
-        i2 = IntervalIntSupOpen(8, 16)
-        split = i1.split(i2)
-        self.assertTupleEqual(split,
-                              ((IntervalIntSupOpen(4,  8), True),
-                               (IntervalIntSupOpen(8, 16), False)))
 
 ####################################################################################################
 

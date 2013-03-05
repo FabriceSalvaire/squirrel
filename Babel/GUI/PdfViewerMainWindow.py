@@ -372,7 +372,7 @@ class TextPage(QtGui.QScrollArea):
         with codecs.open('log%u.txt' % self._main_window._pdf_page.page_number,
                          encoding='utf-8', mode='w+') as log_file:
             log_file.write(text_page.dump_text_page_xml(dump_char=True))
-        for block_text in text_page.block_iterator():
+        for block_text in text_page.to_blocks():
             self._append_block(block_text)
         self._vertical_layout.addItem(self._spacer_item)
 
