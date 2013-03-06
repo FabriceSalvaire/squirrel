@@ -12,7 +12,7 @@ import numpy as np
 ####################################################################################################
 
 from Babel.Tools.Math import rint
-from Babel.Tools.Interval import IntervalSupOpen
+from Babel.Tools.Interval import IntervalInfOpen, IntervalSupOpen
 
 ####################################################################################################
 
@@ -46,13 +46,28 @@ class Histogram(object):
         interval, number_of_bins, bin_size = compute_binning(interval, number_of_bins, bin_size)
 
         self._interval = interval
-        self._inf = self._interval.inf
         self._number_of_bins = number_of_bins
         self._bin_size = bin_size
-        self._bins = np.arange(start=self._interval.inf,
-                               stop=self._interval.sup + self._bin_size,
-                               step=self._bin_size)
-        self._bin_contents = np.zeros(number_of_bins)
+        self._bins = self._make_bins()
+        self._bin_contents = self._make_bin_contents()
+
+    ##############################################
+        
+    def _make_bins(self):
+
+        bins = np.zeros(self._number_of_bins +2)
+        bins[0] = bins[self._number_of_bins +1] = float('nan')
+        bins[1:self._number_of_bins +1] = np.arange(start=self._interval.inf,
+                                                    stop=self._interval.sup + self._bin_size,
+                                                    step=self._bin_size)
+
+        return bins
+
+    ##############################################
+        
+    def _make_bin_contents(self):
+
+        return np.zeros(self._number_of_bins +2)
 
     ##############################################
         
@@ -91,6 +106,18 @@ class Histogram(object):
 
     ##############################################
 
+    def bin_index_iterator(self):
+
+        return xrange(1, self._number_of_bins +1)
+
+    ##############################################
+
+    def bin_and_overflow_index_iterator(self):
+
+        return xrange(self._number_of_bins +2)
+
+    ##############################################
+
     def __str__(self):
 
         string_format = """
@@ -101,22 +128,33 @@ Histogram:
 """
 
         message = string_format % (str(self._interval), self._number_of_bins, self._bin_size)
-        for i in xrange(self._number_of_bins):
-            message += '  [%g, %g[ = %g\n' % (self._bins[i], self._bins[i+1], self._bin_contents[i])
+        for i in self.bin_and_overflow_index_iterator():
+            if i:
+                interval_class = IntervalInfOpen
+            else:
+                interval_class = IntervalSupOpen
+            interval = interval_class(self._bins[i], self._bins[i+1])
+            message += '  %s = %g\n' % (str(interval), self._bin_contents[i])
         
         return message
 
     ##############################################
 
-    def find(self, x):
+    def find_bin(self, x):
 
-        return int((x - self._inf) / self._bin_size)
+        inf = self._interval.inf
+        if x < inf:
+            return 0
+        elif x >= self._interval.sup:
+            return self._number_of_bins +1
+        else:
+            return int((x - inf) / self._bin_size) +1
 
     ##############################################
 
     def fill(self, x, weight=1.):
 
-        self._bin_contents[self.find(x)] += weight
+        self._bin_contents[self.find_bin(x)] += weight
 
 ####################################################################################################
 # 

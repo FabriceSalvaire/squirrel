@@ -12,6 +12,7 @@
 
 __all__ = ['Interval',
            'IntervalInt',
+           'IntervalInfOpen',
            'IntervalSupOpen',
            'Interval2D',
            'IntervalInt2D',
@@ -20,7 +21,6 @@ __all__ = ['Interval',
 ####################################################################################################
 
 import math
-import sys
 
 ####################################################################################################
 
@@ -413,6 +413,33 @@ class IntervalInt(Interval):
     
 ####################################################################################################
     
+class IntervalInfOpen(Interval):
+
+    """ One-dimension Interval ]inf, sup]
+    """
+
+    __format_string__ =  ']%s, %s]'
+    
+    ##############################################
+    
+    def _format_value(self, x):
+
+        if x == float(nan):
+            return '-oo'
+        else:
+            return super(IntervalInfOpen, self)._format_value(x)
+
+    ##############################################
+
+    def intersect(i1, i2):
+
+        """ Does the interval intersect with i2?
+        """
+
+        raise NotImplementedError
+
+####################################################################################################
+    
 class IntervalSupOpen(Interval):
 
     """ One-dimension Interval [inf, sup[
@@ -424,7 +451,7 @@ class IntervalSupOpen(Interval):
     
     def _format_value(self, x):
 
-        if x == sys.maxint:
+        if x == float(nan):
             return '+oo'
         else:
             return super(IntervalSupOpen, self)._format_value(x)
