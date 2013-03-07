@@ -11,29 +11,7 @@ import numpy as np
 
 ####################################################################################################
 
-from Babel.Tools.Math import rint
-from Babel.Tools.Interval import IntervalInfOpen, IntervalSupOpen
-
-####################################################################################################
-
-def compute_binning(interval, number_of_bins=None, bin_size=None):
-
-    """ Compute an histogram binning.
-
-    Return the 3-tuple (interval, number_of_bins, bin_size).
-    """
-
-    if number_of_bins is None and bin_size is None:
-        raise ValueError()
-
-    interval = IntervalSupOpen(interval)
-    if bin_size is not None:
-        number_of_bins = rint(interval.length() / float(bin_size))
-        interval.sup = interval.inf + number_of_bins * bin_size
-    else:
-        bin_size = interval.length() / number_of_bins
-
-    return interval, number_of_bins, bin_size
+from Babel.Tools.Binning import Binning1D
 
 ####################################################################################################
 
@@ -41,120 +19,141 @@ class Histogram(object):
 
     ##############################################
 
-    def __init__(self, interval, number_of_bins=None, bin_size=None):
+    def __init__(self, binning):
 
-        interval, number_of_bins, bin_size = compute_binning(interval, number_of_bins, bin_size)
+        # Fixme: direct mode
 
-        self._interval = interval
-        self._number_of_bins = number_of_bins
-        self._bin_size = bin_size
-        self._bins = self._make_bins()
-        self._bin_contents = self._make_bin_contents()
-
-    ##############################################
-        
-    def _make_bins(self):
-
-        bins = np.zeros(self._number_of_bins +2)
-        bins[0] = bins[self._number_of_bins +1] = float('nan')
-        bins[1:self._number_of_bins +1] = np.arange(start=self._interval.inf,
-                                                    stop=self._interval.sup + self._bin_size,
-                                                    step=self._bin_size)
-
-        return bins
-
-    ##############################################
-        
-    def _make_bin_contents(self):
-
-        return np.zeros(self._number_of_bins +2)
-
-    ##############################################
-        
-    @property
-    def interval(self):
-
-        return self._interval
-
-    ##############################################
-        
-    @property
-    def number_of_bins(self):
-
-        return self._number_of_bins
-
-    ##############################################
-        
-    @property
-    def bin_size(self):
-
-        return self._bin_size
-
-    ##############################################
-        
-    @property
-    def bins(self):
-
-        return self._bins
-
-    ##############################################
-        
-    @property
-    def bin_contents(self):
-
-        return self._bin_contents
-
-    ##############################################
-
-    def bin_index_iterator(self):
-
-        return xrange(1, self._number_of_bins +1)
-
-    ##############################################
-
-    def bin_and_overflow_index_iterator(self):
-
-        return xrange(self._number_of_bins +2)
-
-    ##############################################
-
-    def __str__(self):
-
-        string_format = """
-Histogram:
-  interval: %s
-  number of bins: %u
-  bin size: %g
-"""
-
-        message = string_format % (str(self._interval), self._number_of_bins, self._bin_size)
-        for i in self.bin_and_overflow_index_iterator():
-            if i:
-                interval_class = IntervalInfOpen
-            else:
-                interval_class = IntervalSupOpen
-            interval = interval_class(self._bins[i], self._bins[i+1])
-            message += '  %s = %g\n' % (str(interval), self._bin_contents[i])
-        
-        return message
-
-    ##############################################
-
-    def find_bin(self, x):
-
-        inf = self._interval.inf
-        if x < inf:
-            return 0
-        elif x >= self._interval.sup:
-            return self._number_of_bins +1
+        if isinstance(binning, Binning1D):
+            self._binning = binning
         else:
-            return int((x - inf) / self._bin_size) +1
+            raise ValueError
+
+        array_size = self._binning.array_size
+        self._accumulator = np.zeros(array_size)
+        self._sum_weight_square = np.zeros(array_size)
+        self._errors = np.zeros(array_size)
+        
+        self._errors_are_dirty = True
 
     ##############################################
+        
+    @property
+    def binning(self):
 
+        return self._binning
+
+    ##############################################
+        
+    @property
+    def accumulator(self):
+
+        return self._accumulator
+
+    ##############################################
+        
+    def __iadd__(self, obj):
+
+        if self.is_consistent_with(obj):
+            self._accumulator += obj._accumulator
+        else:
+            raise ValueError
+
+    ##############################################
+        
+    def is_consistent_with(self, obj):
+
+        return self._binning == obj._binning
+
+    ##############################################
+        
+    def clear(self, value=.0):
+
+        self._accumulator[:] = value
+        self._sum_weight_square[:] = value**2
+        self._errors_are_dirty = True
+
+    ##############################################
+        
     def fill(self, x, weight=1.):
 
-        self._bin_contents[self.find_bin(x)] += weight
+        if weight < 0:
+            raise ValueError
+
+        i = self._binning.find_bin(x)
+        self._accumulator[i] += weight
+        # if weight == 1.: weight_square = 1.
+        self._sum_weight_square[i] += weight**2
+        self._errors_are_dirty = True
+
+    ##############################################
+        
+    def compute_errors(self):
+
+        if self._errors_are_dirty:
+            self._errors = np.sqrt(self._sum_weight_square)
+
+    ##############################################
+        
+    def get_bin_error(self, i):
+
+        self.compute_errors()
+            
+        return self._errors[i]
+
+    ##############################################
+        
+    def integral(self):
+
+        return self._accumulator.sum()
+
+    ##############################################
+        
+    def normalise(self):
+
+        self._accumulator /= self.integral()
+        self._errors_are_dirty = True
+
+    ##############################################
+        
+    def to_graph(self):
+
+        self.compute_errors()
+
+        binning = self._binning
+        bin_slice = binning.bin_slice()
+
+        x_values = binning.bin_centers()
+
+        y_values = np.copy(self._accumulator[bin_slice])
+        y_errors = np.copy(self._errors[bin_slice])
+
+        x_errors = np.empty(x_values.shape)
+        x_errors[:] = .5*binning.bin_width
+
+        return x_values, y_values, x_errors, y_errors
+
+   ###############################################
+        
+    def __str__(self):
+
+        binning = self._binning
+
+        string_format = """
+Histogram 1D
+  interval: %s
+  number of bins: %u
+  bin width: %g
+"""
+
+        text = string_format % (str(binning._interval), binning._number_of_bins, binning._bin_width)
+        for i in binning.bin_iterator(xflow=True):
+            text += '%3u %s = %g +- %g\n' % (i,
+                                             str(binning.bin_interval(i)),
+                                             self._accumulator[i],
+                                             self.get_bin_error(i),
+                                             )
+
+        return text
 
 ####################################################################################################
 # 

@@ -11,6 +11,7 @@ import unittest
 
 ####################################################################################################
 
+from Babel.Tools.Binning import Binning1D
 from Babel.Tools.Histogram import *
 
 ####################################################################################################
@@ -21,8 +22,9 @@ class TestHistogram(unittest.TestCase):
 
     def test(self):
 
-        histogram = Histogram((0, 10), bin_size=1)
-        histogram.fill(1.5)
+        Binning = Binning1D((0, 10), bin_width=1)
+        histogram = Histogram(Binning)
+        histogram.fill(1.5, weight=10)
         print histogram
         
 ####################################################################################################

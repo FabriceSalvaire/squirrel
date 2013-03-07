@@ -9,11 +9,18 @@
 """
 
 ####################################################################################################
+#
+#                                              Audit
+#
+# - 06/03/2013 Fabrice
+#   open interval check union intersection
+#
+####################################################################################################
+
+####################################################################################################
 
 __all__ = ['Interval',
            'IntervalInt',
-           'IntervalInfOpen',
-           'IntervalSupOpen',
            'Interval2D',
            'IntervalInt2D',
            ]
@@ -28,7 +35,9 @@ from Babel.Tools.Math import middle
 
 ####################################################################################################
 
-empty_interval_string = '[empty]'
+Nan = float('nan')
+MinusInfinity = float('-inf')
+PlusInfinity = float('+inf')
 
 ####################################################################################################
     
@@ -37,13 +46,13 @@ class Interval(object):
     """ One-dimension Interval
     """
 
-    __format_string__ =  '[%s, %s]'
+    __empty_interval_string__ = '[empty]'
 
     ##############################################
 
     # Fixme: better name than array ?
     
-    def __init__(self, *args):
+    def __init__(self, *args, **kwargs):
 
         """ Initialise an interval
 
@@ -59,8 +68,17 @@ class Interval(object):
         self.inf = array[0]
         self.sup = array[1]
 
-        if self.inf > self.sup: # None > None = False
+        # Check interval coherence
+        if self.inf > self.sup:
             raise ValueError("inf <= sup condition is false [%u, %u]" % (self.inf, self.sup))
+
+        self.left_open = kwargs.get('left_open', False)
+        self.right_open = kwargs.get('right_open', False)
+
+        if self.inf == MinusInfinity:
+            self.left_open = True
+        if self.sup == PlusInfinity:
+            self.right_open = True
 
     ##############################################
     
@@ -124,19 +142,15 @@ class Interval(object):
 
     ##############################################
     
-    def _format_value(self, x):
-
-        return '%g' % x
-
-    ##############################################
-    
     def __str__(self):
 
         if self.is_empty():
-            return empty_interval_string
+            return self.__empty_interval_string__
         else:
-            return self.__format_string__ % (self._format_value(self.inf),
-                                             self._format_value(self.sup))
+            s = ']' if self.left_open else '['
+            s += '%g, %g' % (self.inf, self.sup)
+            s += '[' if self.right_open else ']'
+            return s
 
     ##############################################
 
@@ -375,7 +389,7 @@ class Interval(object):
 
         self.inf -= dx
         self.sup += dx
-
+       
 ####################################################################################################
     
 class IntervalInt(Interval):
@@ -411,61 +425,6 @@ class IntervalInt(Interval):
 
         return self.sup - self.inf
     
-####################################################################################################
-    
-class IntervalInfOpen(Interval):
-
-    """ One-dimension Interval ]inf, sup]
-    """
-
-    __format_string__ =  ']%s, %s]'
-    
-    ##############################################
-    
-    def _format_value(self, x):
-
-        if x == float(nan):
-            return '-oo'
-        else:
-            return super(IntervalInfOpen, self)._format_value(x)
-
-    ##############################################
-
-    def intersect(i1, i2):
-
-        """ Does the interval intersect with i2?
-        """
-
-        raise NotImplementedError
-
-####################################################################################################
-    
-class IntervalSupOpen(Interval):
-
-    """ One-dimension Interval [inf, sup[
-    """
-
-    __format_string__ =  '[%s, %s['
-    
-    ##############################################
-    
-    def _format_value(self, x):
-
-        if x == float(nan):
-            return '+oo'
-        else:
-            return super(IntervalSupOpen, self)._format_value(x)
-
-    ##############################################
-
-    def intersect(i1, i2):
-
-        """ Does the interval intersect with i2?
-        """
-
-        return ((i1.inf < i2.sup and i2.inf < i1.sup) or
-                (i2.inf < i1.sup and i1.inf < i2.sup))
-       
 #################################################################################
 
 class Interval2D(object):
