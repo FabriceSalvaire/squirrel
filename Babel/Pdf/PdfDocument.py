@@ -355,57 +355,26 @@ class PdfTextPage():
 
     ##############################################
 
-    def dump_text_page(self):
-
-        text = u''
-        empty_block = False
-        for block in TextBlockIterator(self._text_page):
-            if not empty_block:
-                text += u'\n'
-            empty_block = True
-            for line in TextLineIterator(block):
-                line_text = u''
-                for span in TextSpanIterator(line):
-                    span_text = span_to_string(span)
-                    if span_text:
-                        line_text += span_text
-                if line_text:
-                    text += line_text + u'\n'
-                    empty_block = False
-        
-        return text
-
-    ##############################################
-
     def to_blocks(self):
         
         blocks = PdfTextBlocks()
         for block in TextBlockIterator(self._text_page):
-            block_text = u''
-            block_interval = None
+            pdf_text_block = PdfTextBlock()
             for line in TextLineIterator(block):
-                # Concatenate span to line
-                line_text = u''
+                line_interval = self._to_interval(line)
+                pdf_text_line = PdfTextLine(line_interval)
                 for span in TextSpanIterator(line):
-                    # spaces are included
-                    line_text += span_to_string(span)
-                if line_text:
-                    line_interval = self._to_interval(line)
-                    if block_interval is not None:
-                        block_interval |= line_interval
-                    else:
-                        block_interval = line_interval
-                elif block_text:
-                    # If the line is empty then start a new block
-                    blocks.append(PdfTextBlock(block_text, block_interval))
-                    block_text = u''
-                    block_interval = None
-                # Concatenate line to block
-                if block_text:
-                    block_text += u' '
-                block_text += line_text
-            if block_text:
-                blocks.append(PdfTextBlock(block_text, block_interval))
+                    pdf_text_span = PdfTextSpan(span_to_string(span))
+                    pdf_text_line.append(pdf_text_span)
+                # If the line is empty then start a new block
+                if not bool(pdf_text_line) and bool(pdf_text_block):
+                    blocks.append(pdf_text_block)
+                    pdf_text_block = PdfTextBlock()
+                else:
+                    pdf_text_block.append(pdf_text_line)
+            if bool(pdf_text_block):
+                blocks.append(pdf_text_block)
+
         return blocks
 
 ####################################################################################################
@@ -415,14 +384,44 @@ class PdfTextBlocks(list):
 
 ####################################################################################################
 
-class PdfTextBlock():
+class PdfTextBase(object):
 
     ##############################################
 
-    def __init__(self, text, interval):
+    def __init__(self, text=''):
 
         self._text = text
-        self._interval = interval
+
+    ##############################################
+
+    def __str__(self):
+
+        return self._text
+
+    ##############################################
+
+    def __unicode__(self):
+
+        return self._text
+
+    ##############################################
+
+    def __nonzero__(self):
+
+        return bool(self._text)
+
+####################################################################################################
+
+class PdfTextBlock(PdfTextBase):
+
+    ##############################################
+
+    def __init__(self):
+
+        super(PdfTextBlock, self).__init__()
+
+        self._interval = None
+        self._lines = []
 
     ##############################################
 
@@ -440,15 +439,58 @@ class PdfTextBlock():
 
     ##############################################
 
-    def __unicode__(self):
-
-        return self._text
-
-    ##############################################
-
     def __cmp__(self, other):
 
         return cmp(self.y_inf, other.y_inf)
+
+    ##############################################
+
+    def append(self, line):
+
+        self._lines.append(line)
+        if self._text:
+            self._text += u' '
+        self._text += unicode(line)
+        if self._interval is not None:
+            self._interval |= line.interval
+        else:
+            self._interval = line.interval
+
+####################################################################################################
+
+class PdfTextLine(PdfTextBase):
+
+    ##############################################
+
+    def __init__(self, interval):
+
+        super(PdfTextLine, self).__init__()
+
+        self._interval = interval
+        self._spans = []
+
+    ##############################################
+        
+    @property
+    def interval(self):
+        return self._interval
+
+    ##############################################
+
+    def append(self, span):
+
+        self._spans.append(span)
+        self._text += unicode(span)
+
+####################################################################################################
+
+class PdfTextSpan(PdfTextBase):
+
+    ##############################################
+
+    def __init__(self, text):
+
+        super(PdfTextSpan, self).__init__(text)
 
 ####################################################################################################
 # 
