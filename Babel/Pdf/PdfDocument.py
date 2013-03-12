@@ -17,6 +17,7 @@ from MuPDF import *
 ####################################################################################################
 
 from Babel.Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
+from Babel.Tools.DictionaryTools import DictInitialised
 from Babel.Tools.Interval import IntervalInt2D
 from Babel.Tools.Object import clone
 
@@ -42,9 +43,9 @@ class PdfDocument(object):
         self._path = path
 
         self._context = cmupdf.fz_new_context(None, None, cmupdf.FZ_STORE_UNLIMITED)
-        self._document = cmupdf.fz_open_document(self._context, str(self._path))
-        self._metadata = PdfMetaData(self)
-        self._number_of_pages = cmupdf.fz_count_pages(self._document)
+        self._c_document = cmupdf.fz_open_document(self._context, str(self._path))
+        self._metadata = MetaData(self)
+        self._number_of_pages = cmupdf.fz_count_pages(self._c_document)
 
     ##############################################
 
@@ -64,7 +65,7 @@ class PdfDocument(object):
 
     def __del__(self):
 
-        cmupdf.fz_close_document(self._document)
+        cmupdf.fz_close_document(self._c_document)
         cmupdf.fz_free_context(self._context)
 
     ##############################################
@@ -72,25 +73,25 @@ class PdfDocument(object):
     def __getitem__(self, index):
 
         if isinstance(index, slice):
-            return [PdfPage(self, i) for i in xrange(index.start, index.stop, index.step)]
+            return [Page(self, i) for i in xrange(index.start, index.stop, index.step)]
         else:
-            return PdfPage(self, index)
+            return Page(self, index)
 
     ##############################################
 
     def __iter__(self):
 
         for i in xrange(self._number_of_pages):
-            yield PdfPage(self, i)
+            yield Page(self, i)
 
     ##############################################
 
     def words(self):
 
         words = {}
-        for pdf_page in self:
-            pdf_text_page = pdf_page.to_text()
-            for word in pdf_text_page.word_iterator():
+        for page in self:
+            text_page = page.to_text()
+            for word in text_page.word_iterator():
                 if word in words:
                     words[word] += 1
                 else:
@@ -102,15 +103,15 @@ class PdfDocument(object):
 
 ####################################################################################################
 
-class PdfMetaData(ReadOnlyAttributeDictionaryInterface):
+class MetaData(ReadOnlyAttributeDictionaryInterface):
 
     ##############################################
 
-    def __init__(self, pdf_document):
+    def __init__(self, document):
 
-        super(PdfMetaData, self).__init__()
+        super(MetaData, self).__init__()
 
-        document = pdf_document._document
+        c_document = document._c_document
 
         for key in (
             'Title',
@@ -122,7 +123,7 @@ class PdfMetaData(ReadOnlyAttributeDictionaryInterface):
             'ModDate',
             ):
             # Fixme: buffer size
-            string = cmupdf.get_meta_info(document, key, 1024)
+            string = cmupdf.get_meta_info(c_document, key, 1024)
             if string is not None:
                 string = unicode(string, 'utf-8')
             self._dictionary[key] = string
@@ -130,28 +131,28 @@ class PdfMetaData(ReadOnlyAttributeDictionaryInterface):
         # Fixme:
         # UnicodeDecodeError: 'utf8' codec can't decode byte 0xdb in position 2330: invalid continuation byte
         # UnicodeDecodeError: 'utf8' codec can't decode byte 0xff in position 814: invalid start byte
-        fz_buffer = cmupdf.pdf_metadata(document)
+        fz_buffer = cmupdf.pdf_metadata(c_document)
         if False: # fz_buffer is not None:
             string = cmupdf.fz_buffer_data(fz_buffer)
             string = unicode(string, 'utf-8')
         else:
             string = None
         self._dictionary['metadata'] = string
-        cmupdf.fz_drop_buffer(pdf_document._context, fz_buffer)
+        cmupdf.fz_drop_buffer(document._context, fz_buffer)
 
 ####################################################################################################
 
-class PdfPage():
+class Page():
 
     ##############################################
 
-    def __init__(self, pdf_document, page_number):
+    def __init__(self, document, page_number):
 
-        self._pdf_document = pdf_document
-        self._context = self._pdf_document._context
-        self._document = self._pdf_document._document
+        self._document = document
+        self._context = self._document._context
+        self._c_document = self._document._c_document
         self._page_number = page_number
-        self._page = cmupdf.fz_load_page(self._document, page_number)
+        self._c_page = cmupdf.fz_load_page(self._c_document, page_number)
 
     ##############################################
 
@@ -163,13 +164,13 @@ class PdfPage():
 
     def __del__(self):
 
-        cmupdf.fz_free_page(self._document, self._page)
+        cmupdf.fz_free_page(self._c_document, self._c_page)
 
     ##############################################
 
     def _bounding_box(self):
         
-        return cmupdf.fz_bound_page(self._document, self._page)
+        return cmupdf.fz_bound_page(self._c_document, self._c_page)
 
     ##############################################
 
@@ -207,7 +208,7 @@ class PdfPage():
         
         device = cmupdf.fz_new_draw_device(self._context, pixmap)
         cmupdf.fz_set_aa_level(self._context, antialiasing_level)
-        cmupdf.fz_run_page(self._document, self._page, device, transform, None)
+        cmupdf.fz_run_page(self._c_document, self._c_page, device, transform, None)
         cmupdf.fz_free_device(device)
         cmupdf.fz_drop_pixmap(self._context, pixmap)
 
@@ -224,26 +225,28 @@ class PdfPage():
         text_page = cmupdf.fz_new_text_page(self._context, bounding_box)
 
         device = cmupdf.fz_new_text_device(self._context, text_sheet, text_page)
-        cmupdf.fz_run_page(self._document, self._page, device, transform, None)
+        cmupdf.fz_run_page(self._c_document, self._c_page, device, transform, None)
         cmupdf.fz_free_device(device)
 
-        return PdfTextPage(self, text_sheet, text_page)
+        return PageText(self, text_sheet, text_page)
 
 ####################################################################################################
 
-class PdfTextPage():
+class PageText():
 
     ##############################################
 
-    def __init__(self, pdf_page, text_sheet, text_page):
+    def __init__(self, page, text_sheet, text_page):
 
-        self._pdf_page = pdf_page
+        self._page = page
         self._text_sheet = text_sheet
         self._text_page = text_page
         
-        self._page_number = self._pdf_page._page_number
-        self._pdf_document = self._pdf_page._pdf_document
-        self._context = self._pdf_document._context
+        self._page_number = self._page._page_number
+        self._document = self._page._document
+        self._context = self._document._context
+
+        self._styles = None
 
     ##############################################
 
@@ -309,6 +312,35 @@ class PdfTextPage():
 
     ##############################################
     
+    def _get_styles(self):
+
+        styles = TextStyles()
+
+        style = self._text_sheet.style
+        while style:
+            font = style.font
+            styles.register_style(
+                id=style.id,
+                font_family=self._get_font_name(font),
+                font_size=style.size,
+                is_bold=cmupdf.font_is_bold(font),
+                is_italic=cmupdf.font_is_italic(font),
+                )
+            style = style.next
+
+        return styles
+
+    ##############################################
+
+    @property
+    def styles(self):
+
+        if self._styles is None:
+            self._styles = self._get_styles()
+        return self._styles
+
+    ##############################################
+    
     def dump_text_style(self):
 
         template = 'span.s%u{font-family:"%s";font-size:%gpt'
@@ -356,35 +388,64 @@ class PdfTextPage():
     ##############################################
 
     def to_blocks(self):
+
+        styles = self.styles
         
-        blocks = PdfTextBlocks()
-        for block in TextBlockIterator(self._text_page):
-            pdf_text_block = PdfTextBlock()
-            for line in TextLineIterator(block):
-                line_interval = self._to_interval(line)
-                pdf_text_line = PdfTextLine(line_interval)
-                for span in TextSpanIterator(line):
-                    pdf_text_span = PdfTextSpan(span_to_string(span))
-                    pdf_text_line.append(pdf_text_span)
+        blocks = TextBlocks()
+        for c_block in TextBlockIterator(self._text_page):
+            text_block = TextBlock()
+            for c_line in TextLineIterator(c_block):
+                line_interval = self._to_interval(c_line)
+                text_line = TextLine(line_interval)
+                for c_span in TextSpanIterator(c_line):
+                    text_span = TextSpan(span_to_string(c_span), styles[c_span.style.id])
+                    text_line.append(text_span)
                 # If the line is empty then start a new block
-                if not bool(pdf_text_line) and bool(pdf_text_block):
-                    blocks.append(pdf_text_block)
-                    pdf_text_block = PdfTextBlock()
+                if not bool(text_line) and bool(text_block):
+                    blocks.append(text_block)
+                    text_block = TextBlock()
                 else:
-                    pdf_text_block.append(pdf_text_line)
-            if bool(pdf_text_block):
-                blocks.append(pdf_text_block)
+                    text_block.append(text_line)
+            if bool(text_block):
+                blocks.append(text_block)
 
         return blocks
 
 ####################################################################################################
 
-class PdfTextBlocks(list):
+class TextStyles(dict):
+
+    ##############################################
+
+    def register_style(self, **kwargs):
+
+        style = TextStyle(**kwargs)
+        self[style.id] = style
+        return style
+
+####################################################################################################
+
+class TextStyle(DictInitialised):
+
+    __REQUIRED_ATTRIBUTES__ = (              
+        'id',
+        'font_family',
+        'font_size',
+        )
+
+    __DEFAULT_ATTRIBUTES__ = dict(
+        is_bold=False,
+        is_italic=False,
+        )
+
+####################################################################################################
+
+class TextBlocks(list):
     pass
 
 ####################################################################################################
 
-class PdfTextBase(object):
+class TextBase(object):
 
     ##############################################
 
@@ -412,13 +473,13 @@ class PdfTextBase(object):
 
 ####################################################################################################
 
-class PdfTextBlock(PdfTextBase):
+class TextBlock(TextBase):
 
     ##############################################
 
     def __init__(self):
 
-        super(PdfTextBlock, self).__init__()
+        super(TextBlock, self).__init__()
 
         self._interval = None
         self._lines = []
@@ -458,13 +519,13 @@ class PdfTextBlock(PdfTextBase):
 
 ####################################################################################################
 
-class PdfTextLine(PdfTextBase):
+class TextLine(TextBase):
 
     ##############################################
 
     def __init__(self, interval):
 
-        super(PdfTextLine, self).__init__()
+        super(TextLine, self).__init__()
 
         self._interval = interval
         self._spans = []
@@ -484,13 +545,15 @@ class PdfTextLine(PdfTextBase):
 
 ####################################################################################################
 
-class PdfTextSpan(PdfTextBase):
+class TextSpan(TextBase):
 
     ##############################################
 
-    def __init__(self, text):
+    def __init__(self, text, style):
 
-        super(PdfTextSpan, self).__init__(text)
+        super(TextSpan, self).__init__(text)
+
+        self.style = style
 
 ####################################################################################################
 # 
