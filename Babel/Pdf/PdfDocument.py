@@ -88,6 +88,7 @@ class PdfDocument(object):
 
     def words(self):
 
+        # Register words and count their occurences
         words = {}
         for page in self:
             text_page = page.to_text()
@@ -479,7 +480,8 @@ class TextStyleFrequencies(dict):
 
         for style_id, count in other.iteritems():
             self.fill(style_id, count)
-
+        return self
+            
     ##############################################
 
     def fill(self, style_id, count):
@@ -494,8 +496,8 @@ class TextStyleFrequencies(dict):
 
     def _to_list(self):
 
-        return [TextStyleFrequency(style_id, count)
-                for style_id, count in self.itervalues()]
+        return [TextStyleFrequency(style_id=style_id, count=count)
+                for style_id, count in self.iteritems()]
 
     ##############################################
 
@@ -516,8 +518,8 @@ class TextStyleFrequencies(dict):
 
 class TextStyleFrequency(DictInitialised):
 
-    __REQUIRED_ATTRIBUTES__ = (              
-        'style',
+    __REQUIRED_ATTRIBUTES__ = (
+        'style_id',
         'count',
         )
 
