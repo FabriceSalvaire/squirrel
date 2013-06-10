@@ -17,7 +17,7 @@ SqlAlchemyBase = declarative_base()
 
 ####################################################################################################
 
-from Babel.DataBase.SqlAlchemyBase import (SqlRow, SqlTable, SqlTableModel, ColumnWidthFactory)
+from Babel.DataBase.SqlAlchemyBase import SqlRow, SqlTable
 from Babel.DataBase.SqliteDataBase import SqliteDataBase
 
 ####################################################################################################
@@ -83,7 +83,7 @@ class WordRow(SqlAlchemyBase, SqlRow):
 
     id = Column(Integer, primary_key=True)
     word = Column(String) # , primary_key=True
-    ### language_id = Column(Integer, ForeignKey('languages.id'))
+    # language_id = Column(Integer, ForeignKey('languages.id'))
     part_of_speech_tag_id = Column(Integer) #, ForeignKey('part_of_speech_tags.id'))
     count = Column(Integer, default=0)
     file_count = Column(Integer, default=0)

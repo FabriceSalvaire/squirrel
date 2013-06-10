@@ -17,7 +17,7 @@ import sys
 
 from Babel.DataBase.WordDataBase import WordDataBase, PartOfSpeechTagRow
 from Babel.Tools.ProgramOptions import PathAction
-from PartOfSpeechTags import part_of_speech_tags
+from .PartOfSpeechTags import part_of_speech_tags
 
 ####################################################################################################
 #
@@ -35,7 +35,6 @@ argument_parser.add_argument('--word-count-min',
                              type=int,
                              default=10,
                              help='Minimum word count [10]')
-
 
 args = argument_parser.parse_args()
 

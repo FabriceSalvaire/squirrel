@@ -16,7 +16,7 @@ SqlAlchemyBase = declarative_base()
 
 ####################################################################################################
 
-from Babel.DataBase.SqlAlchemyBase import (SqlRow, SqlTable, SqlTableModel, ColumnWidthFactory)
+from Babel.DataBase.SqlAlchemyBase import SqlRow, SqlTable
 from Babel.DataBase.SqliteDataBase import SqliteDataBase
 
 ####################################################################################################

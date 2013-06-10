@@ -7,7 +7,7 @@
 
 ####################################################################################################
 
-from sqlalchemy import Column, Boolean, Integer, String, ForeignKey
+from sqlalchemy import Column, Boolean, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 ####################################################################################################
@@ -16,7 +16,7 @@ SqlAlchemyBase = declarative_base()
 
 ####################################################################################################
 
-from Babel.DataBase.SqlAlchemyBase import (SqlRow, SqlTable, SqlTableModel, ColumnWidthFactory)
+from Babel.DataBase.SqlAlchemyBase import SqlRow, SqlTable
 from Babel.DataBase.SqliteDataBase import SqliteDataBase
 
 ####################################################################################################

@@ -1,8 +1,0 @@
-2013-02-27 23:45:06,771 - babel - Logging.setup_logging - INFO - Start babel
-Traceback (most recent call last):
-  File "./bin/babel", line 25, in <module>
-    from Babel.GUI.BabelGuiApplication import BabelGuiApplication
-  File "/home/gv/sys/fc14/fabrice/home/unison-osiris/biblio/babel/Babel/GUI/BabelGuiApplication.py", line 21, in <module>
-    class BabelGuiApplication(GuiApplicationBase, BabelApplication):
-TypeError: Error when calling the metaclass bases
-    metaclass conflict: the metaclass of a derived class must be a (non-strict) subclass of the metaclasses of all its bases
