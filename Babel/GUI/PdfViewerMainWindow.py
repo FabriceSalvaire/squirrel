@@ -386,7 +386,8 @@ class TextPage(QtGui.QScrollArea):
             combo_box.addItem(item)
         text_browser = GrowingTextBrowser() # self._container_widget
         # str(block_text.y_inf) + ' ' + 
-        text_browser.setPlainText(unicode(block_text))
+        text_browser.setPlainText(str(block_text.style_frequencies().max().style_id)
+                                  + unicode(block_text))
         horizontal_layout.addWidget(combo_box, 0, QtCore.Qt.AlignTop)
         horizontal_layout.addWidget(text_browser, 0, QtCore.Qt.AlignTop)
         self._vertical_layout.addLayout(horizontal_layout)

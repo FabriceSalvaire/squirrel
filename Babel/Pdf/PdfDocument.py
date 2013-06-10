@@ -315,7 +315,6 @@ class PageText():
     def _get_styles(self):
 
         styles = TextStyles()
-
         style = self._text_sheet.style
         while style:
             font = style.font
@@ -327,6 +326,7 @@ class PageText():
                 is_italic=cmupdf.font_is_italic(font),
                 )
             style = style.next
+        styles.sort()
 
         return styles
 
@@ -423,6 +423,13 @@ class TextStyles(dict):
         self[style.id] = style
         return style
 
+    ##############################################
+
+    def sort(self):
+
+        for rank, style in enumerate(sorted(self.itervalues(), reverse=True)):
+            style.rank = rank
+
 ####################################################################################################
 
 class TextStyle(DictInitialised):
@@ -436,7 +443,89 @@ class TextStyle(DictInitialised):
     __DEFAULT_ATTRIBUTES__ = dict(
         is_bold=False,
         is_italic=False,
+        rank=None,
         )
+
+    ##############################################
+
+    def __cmp__(self, other):
+
+        return cmp(self.font_size, other.font_size)
+
+####################################################################################################
+
+class TextStyleFrequencies(dict):
+
+    ##############################################
+
+    def __init__(self):
+
+        super(TextStyleFrequencies, self).__init__()
+
+        self._sorted_frequencies = None
+
+    ##############################################
+
+    def __iter__(self):
+
+        if self._sorted_frequencies is None:
+            self.sort()
+
+        return iter(self._sorted_frequencies)
+
+    ##############################################
+
+    def __iadd__(self, other):
+
+        for style_id, count in other.iteritems():
+            self.fill(style_id, count)
+
+    ##############################################
+
+    def fill(self, style_id, count):
+
+        if style_id in self:
+            self[style_id] += count
+        else:
+            self[style_id] = count
+        self._sorted_frequencies = None
+
+    ##############################################
+
+    def _to_list(self):
+
+        return [TextStyleFrequency(style_id, count)
+                for style_id, count in self.itervalues()]
+
+    ##############################################
+
+    def sort(self):
+
+        self._sorted_frequencies = sorted(self._to_list(), reverse=True)
+
+    ##############################################
+
+    def max(self):
+
+        if self._sorted_frequencies is None:
+            self.sort()
+
+        return self._sorted_frequencies[0]
+        
+####################################################################################################
+
+class TextStyleFrequency(DictInitialised):
+
+    __REQUIRED_ATTRIBUTES__ = (              
+        'style',
+        'count',
+        )
+
+    ##############################################
+
+    def __cmp__(self, other):
+
+        return cmp(self.count, other.count)
 
 ####################################################################################################
 
@@ -452,6 +541,12 @@ class TextBase(object):
     def __init__(self, text=''):
 
         self._text = text
+
+    ##############################################
+
+    def __len__(self):
+
+        return len(self._text)
 
     ##############################################
 
@@ -488,21 +583,32 @@ class TextBlock(TextBase):
 
     @property
     def interval(self):
-
         return self._interval
 
     ##############################################
 
     @property
     def y_inf(self):
-
         return self._interval.y.inf
+
+    ##############################################
+        
+    @property
+    def number_of_styles(self):
+
+        return sum([line.number_of_styles for line in self._lines])
 
     ##############################################
 
     def __cmp__(self, other):
 
         return cmp(self.y_inf, other.y_inf)
+
+    ##############################################
+
+    def line_iterator(self):
+
+        return iter(self._lines)
 
     ##############################################
 
@@ -516,6 +622,16 @@ class TextBlock(TextBase):
             self._interval |= line.interval
         else:
             self._interval = line.interval
+
+    ##############################################
+        
+    def style_frequencies(self):
+
+        style_frequencies = TextStyleFrequencies()
+        for line in self.line_iterator():
+            style_frequencies += line.style_frequencies()
+
+        return style_frequencies
 
 ####################################################################################################
 
@@ -537,11 +653,35 @@ class TextLine(TextBase):
         return self._interval
 
     ##############################################
+        
+    @property
+    def number_of_styles(self):
+        return len(self._spans)
+
+    ##############################################
+        
+    def __iter__(self):
+        
+        return iter(self._spans)
+
+    ##############################################
 
     def append(self, span):
 
         self._spans.append(span)
         self._text += unicode(span)
+
+    ##############################################
+        
+    def style_frequencies(self):
+
+        style_frequencies = TextStyleFrequencies()
+        for span in self:
+            style_id = span.style.id
+            count = len(span)
+            style_frequencies.fill(style_id, count)
+        
+        return style_frequencies
 
 ####################################################################################################
 
