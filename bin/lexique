@@ -1,0 +1,67 @@
+#! /usr/bin/env python
+
+####################################################################################################
+# 
+# Babel - A Bibliography Manager 
+# Copyright (C) Salvaire Fabrice 2013 
+# 
+####################################################################################################
+
+####################################################################################################
+#
+# Logging
+#
+
+import Babel.Logging.Logging as Logging
+
+logger = Logging.setup_logging('babel')
+
+####################################################################################################
+
+import argparse
+import os
+
+####################################################################################################
+
+from Babel.DataBase.WordDataBase import WordDataBase
+from Babel.Tools.ProgramOptions import PathAction
+
+####################################################################################################
+#
+# Options
+#
+
+argument_parser = argparse.ArgumentParser(description='PDF to Text.')
+
+argument_parser.add_argument('word', metavar='WORD',
+                             help='Word')
+
+args = argument_parser.parse_args()
+
+####################################################################################################
+
+database_path = os.path.join(os.path.dirname(__file__), '../Babel/Lexique/BritishNationalCorpus/bnc.sqlite')
+print os.path.realpath(database_path)
+
+database = WordDataBase(database_path)
+word_table = database.word_table
+part_of_speech_tag_table = database.part_of_speech_tag_table
+
+word_rows = word_table.select_by(word=args.word).all()
+for word_row in word_rows:
+    tag_row = part_of_speech_tag_table.select_by(id=word_row.part_of_speech_tag_id).one()
+    message = '''
+Word
+  word: %s
+  count: %u
+  part of speech tag: %s
+    %s
+'''
+    print message % (word_row.word, word_row.count,
+                     tag_row.tag, tag_row.comment)
+
+####################################################################################################
+# 
+# End
+# 
+####################################################################################################

@@ -94,13 +94,15 @@ class WordRow(SqlAlchemyBase, SqlRow):
     ##############################################
         
     def __repr__(self):
+
+#   language id: %(language_id)u
+#   common: %(common)s
         
         message = '''
 Word Row
   word: %(word)s
-  language id: %(language_id)u
   count: %(count)u
-  common: %(common)s
+  part of speech tag: %(part_of_speech_tag_id)u
 '''
         return message % self.get_column_dict()
 

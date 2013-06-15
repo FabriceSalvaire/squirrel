@@ -73,7 +73,7 @@ class PdfDocument(object):
     def __getitem__(self, index):
 
         if isinstance(index, slice):
-            return [Page(self, i) for i in xrange(index.start, index.stop, index.step)]
+            return [Page(self, i) for i in xrange(index.start, index.stop, index.step or 1)]
         else:
             return Page(self, index)
 
@@ -323,8 +323,8 @@ class PageText():
                 id=style.id,
                 font_family=self._get_font_name(font),
                 font_size=style.size,
-                is_bold=cmupdf.font_is_bold(font),
-                is_italic=cmupdf.font_is_italic(font),
+                is_bold=bool(cmupdf.font_is_bold(font)),
+                is_italic=bool(cmupdf.font_is_italic(font)),
                 )
             style = style.next
         styles.sort()
@@ -349,7 +349,7 @@ class PageText():
         style = self._text_sheet.style
         while style:
             font = style.font
-            text = template % (style.id, self._get_font_name(font), style.size)
+            text += template % (style.id, self._get_font_name(font), style.size)
             if cmupdf.font_is_italic(font):
                 text += ';font-style:italic'
             if cmupdf.font_is_bold(font):
@@ -394,7 +394,7 @@ class PageText():
         
         blocks = TextBlocks()
         for c_block in TextBlockIterator(self._text_page):
-            text_block = TextBlock()
+            text_block = TextBlock(self)
             for c_line in TextLineIterator(c_block):
                 line_interval = self._to_interval(c_line)
                 text_line = TextLine(line_interval)
@@ -404,7 +404,7 @@ class PageText():
                 # If the line is empty then start a new block
                 if not bool(text_line) and bool(text_block):
                     blocks.append(text_block)
-                    text_block = TextBlock()
+                    text_block = TextBlock(self)
                 else:
                     text_block.append(text_line)
             if bool(text_block):
@@ -428,7 +428,15 @@ class TextStyles(dict):
 
     def sort(self):
 
-        for rank, style in enumerate(sorted(self.itervalues(), reverse=True)):
+        rank = 0
+        current_font_size = None
+        sorted_styles = sorted(self.itervalues(), reverse=True)
+        for style in sorted_styles:
+            # Fixme: better way?
+            font_size = style.font_size
+            if current_font_size is not None and font_size < current_font_size:
+                rank += 1
+            current_font_size = font_size
             style.rank = rank
 
 ####################################################################################################
@@ -452,6 +460,21 @@ class TextStyle(DictInitialised):
     def __cmp__(self, other):
 
         return cmp(self.font_size, other.font_size)
+
+    ##############################################
+
+    def __str__(self):
+
+        template = """
+Style ID %(id)u
+  rank        %(rank)u
+  font family %(font_family)s
+  font size   %(font_size).2f
+  bold        %(is_bold)s
+  italic      %(is_italic)s
+"""
+
+        return template % self.__dict__
 
 ####################################################################################################
 
@@ -574,12 +597,27 @@ class TextBlock(TextBase):
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self, text_page):
+
+        # Fixme: parent text_page versus TextBlocks
 
         super(TextBlock, self).__init__()
 
+        self._text_page = text_page
         self._interval = None
         self._lines = []
+
+    ##############################################
+
+    @property
+    def text_page(self):
+        return self._text_page
+
+    ##############################################
+
+    @property
+    def styles(self):
+        return self._text_page.styles
 
     ##############################################
 

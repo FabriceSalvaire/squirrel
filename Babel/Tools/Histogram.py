@@ -12,6 +12,7 @@ import numpy as np
 ####################################################################################################
 
 from Babel.Tools.Binning import Binning1D
+from Babel.Tools.Interval import Interval
 
 ####################################################################################################
 
@@ -154,6 +155,38 @@ Histogram 1D
                                              )
 
         return text
+
+   ###############################################
+        
+    def find_non_zero_bin_range(self):
+
+        inf = 0
+        while self._accumulator[inf] == 0:
+            inf += 1
+
+        sup = len(self._accumulator) -1
+        while self._accumulator[sup] == 0:
+            sup -= 1
+
+        return Interval(inf, sup)
+
+   ###############################################
+        
+    def non_zero_bin_range_histogram(self):
+
+        bin_range = self.find_non_zero_bin_range()
+        print bin_range
+        binning = self._binning.sub_binning(self._binning.sub_interval(bin_range))
+        print binning
+        histogram = self.__class__(binning)
+        src_slice = slice(bin_range.inf, bin_range.sup +1)
+        dst_slice = slice(binning.first_bin, binning.over_flow_bin)
+        histogram._accumulator[dst_slice] = self._accumulator[src_slice]
+        histogram._sum_weight_square[dst_slice] = self._sum_weight_square[src_slice]
+        histogram._errors[dst_slice] = self._errors[src_slice]
+        histogram.errors_are_dirty = False
+
+        return histogram
 
 ####################################################################################################
 # 

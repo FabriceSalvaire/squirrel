@@ -369,12 +369,17 @@ class TextPage(QtGui.QScrollArea):
         self._clear_layout()
         pdf_page = self._main_window._pdf_page
         text_page = pdf_page.to_text()
-        with codecs.open('log%u.txt' % self._main_window._pdf_page.page_number,
+        with codecs.open('log%u.txt' % pdf_page.page_number,
                          encoding='utf-8', mode='w+') as log_file:
             log_file.write(text_page.dump_text_page_xml(dump_char=True))
         for block_text in sorted(text_page.to_blocks()):
             self._append_block(block_text)
         self._vertical_layout.addItem(self._spacer_item)
+
+        print 'Page %u' % pdf_page.page_number
+        page_styles = text_page.styles
+        for style in page_styles.itervalues():
+            print style
 
     ##############################################
             
@@ -386,7 +391,10 @@ class TextPage(QtGui.QScrollArea):
             combo_box.addItem(item)
         text_browser = GrowingTextBrowser() # self._container_widget
         # str(block_text.y_inf) + ' ' + 
-        text_browser.setPlainText(str(block_text.style_frequencies().max().style_id)
+        upper_style_frequency = block_text.style_frequencies().max()
+        upper_style = block_text.styles[upper_style_frequency.style_id]
+        text_browser.setPlainText('Style ID %u rank %u' % (upper_style.id, upper_style.rank)
+                                  + ' >>>'
                                   + unicode(block_text))
         horizontal_layout.addWidget(combo_box, 0, QtCore.Qt.AlignTop)
         horizontal_layout.addWidget(text_browser, 0, QtCore.Qt.AlignTop)

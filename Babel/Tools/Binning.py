@@ -67,6 +67,34 @@ class Binning1D(object):
     ##############################################
         
     @property
+    def under_flow_bin(self):
+
+        return self._under_flow_bin
+
+    ##############################################
+        
+    @property
+    def first_bin(self):
+
+        return self._first_bin
+
+    ##############################################
+        
+    @property
+    def last_bin(self):
+
+        return self._over_flow_bin -1
+
+    ##############################################
+        
+    @property
+    def over_flow_bin(self):
+
+        return self._over_flow_bin
+
+    ##############################################
+        
+    @property
     def array_size(self):
 
         return self._array_size
@@ -207,6 +235,22 @@ Binning 1D
             text += '  %3u ' % i + str(self.bin_interval(i)) + '\n'
 
         return text
+
+   ###############################################
+        
+    def sub_interval(self, bin_range):
+
+        inf = max(self.first_bin, bin_range.inf)
+        sup = min(self.last_bin, bin_range.sup)
+
+        return Interval(self.bin_lower_edge(inf),
+                        self.bin_upper_edge(sup))
+
+   ###############################################
+        
+    def sub_binning(self, interval):
+
+        return self.__class__(interval, self._bin_width)
 
 ####################################################################################################
 #
