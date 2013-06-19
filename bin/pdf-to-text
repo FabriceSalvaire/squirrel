@@ -89,7 +89,7 @@ argument_parser.add_argument('--pages',
 
 argument_parser.add_argument('--format',
                              default='text',
-                             choices=['text', 'style', 'xml'],
+                             choices=['text', 'style', 'xml', 'block'],
                              help='Output format')
 
 args = argument_parser.parse_args()
@@ -106,6 +106,34 @@ def display_page(page, output_format):
             print
             for text_line in block_text.line_iterator():
                 print unicode(text_line)
+    elif output_format == 'block':
+        text_blocks = text_page.to_blocks()
+        for text_block in text_blocks.sorted_iter(): 
+            template = """
+Block %u
+  y rank %u
+  Interval %s
+  Horizontal Margin %s
+  Is centred %s
+  Is left justifier %g
+  Is right justifier %g
+  Number of characters %u
+  main style %s
+"""
+            print template[:-1] % (text_block.block_id,
+                                   text_block.y_rank,
+                                   text_block.interval,
+                                   str(text_block.horizontal_margin),
+                                   text_block.is_centred,
+                                   text_block.is_left_justified,
+                                   text_block.is_right_justified,
+                                   len(text_block),
+                                   str(text_block.main_style)
+                                   )
+            line = '='*100
+            print line
+            print unicode(text_block)
+            print line
     elif output_format == 'style':
         print text_page.dump_text_style()
     elif output_format == 'xml':
@@ -127,12 +155,12 @@ def show_words(pdf_document, main_words):
     main_tag = [part_of_speech_tags[tag].id for tag in
                 ('NN1', 'NN1-NP0', 'NN1-VVB', 'NN1-VVG', 'NN2', 'NN2-VVZ', 'NP0')]
 
-    words = pdf_document.words()
+    document_words = pdf_document.words
 
-    Binning = Binning1D((0, len(words) +1), bin_width=1)
+    Binning = Binning1D((0, len(document_words) +1), bin_width=1)
     histogram = Histogram(Binning)
-    for word, count in words:
-        histogram.fill(count)
+    for word_count in document_words:
+        histogram.fill(word_count.count)
     print histogram
     histogram.normalise()
     sub_histogram = histogram.non_zero_bin_range_histogram()
@@ -141,17 +169,17 @@ def show_words(pdf_document, main_words):
     pylab.show()
 
     print 'Words'
-    for word, count in words:
-        word_rows = word_table.select_by(word=word).all()
+    for word_count in document_words:
+        word_rows = word_table.select_by(word=word_count.word).all()
         if word_rows:
             word_row = word_rows[0]
             # print '%6u' % count, word, str([word_row.part_of_speech_tag_id for word_row in word_rows])
             if ((not args.main_words) or
                 (args.main_words and word_row.part_of_speech_tag_id in main_tag)):
                 tag_row = part_of_speech_tag_table.select_by(id=word_row.part_of_speech_tag_id).one()
-                print '%6u' % count, word, tag_row.tag
+                print '%6u' % word_count.count, word_count.word, tag_row.tag
         else:
-            print '%6u' % count, word
+            print '%6u' % word_count.count, word_count.word
 
 ####################################################################################################
 

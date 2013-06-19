@@ -44,23 +44,6 @@ class PdfViewerMainWindow(MainWindowBase):
         self._last_page_number_label.setText('of %u' % self._pdf_document.number_of_pages)
         self._set_page_number(0)
         # Fixme: page cache, speed-up
-        word_array = self._pdf_document.words()
-        # for word, count in word_array:
-        #     if len(word) > 2 and word not in ( 
-        #         'a',
-        #         'an',
-        #         'and',
-        #         'as',
-        #         'by',
-        #         'for',
-        #         'have',
-        #         'in',
-        #         'is',
-        #         'of',
-        #         'the',
-        #         'to',
-        #         ):
-        #         print "%6u" % count, word
 
     ##############################################
 
@@ -376,11 +359,6 @@ class TextPage(QtGui.QScrollArea):
             self._append_block(block_text)
         self._vertical_layout.addItem(self._spacer_item)
 
-        print 'Page %u' % pdf_page.page_number
-        page_styles = text_page.styles
-        for style in page_styles.itervalues():
-            print style
-
     ##############################################
             
     def _append_block(self, block_text):
@@ -390,12 +368,7 @@ class TextPage(QtGui.QScrollArea):
         for item in ('Text', 'Title', 'Authors', 'Abstract', 'Refrences'):
             combo_box.addItem(item)
         text_browser = GrowingTextBrowser() # self._container_widget
-        # str(block_text.y_inf) + ' ' + 
-        upper_style_frequency = block_text.style_frequencies().max()
-        upper_style = block_text.styles[upper_style_frequency.style_id]
-        text_browser.setPlainText('Style ID %u rank %u' % (upper_style.id, upper_style.rank)
-                                  + ' >>>'
-                                  + unicode(block_text))
+        text_browser.setPlainText(unicode(block_text))
         horizontal_layout.addWidget(combo_box, 0, QtCore.Qt.AlignTop)
         horizontal_layout.addWidget(text_browser, 0, QtCore.Qt.AlignTop)
         self._vertical_layout.addLayout(horizontal_layout)
