@@ -21,7 +21,6 @@ logger = Logging.setup_logging('babel')
 import argparse
 import os
 
-import numpy as np
 import pylab
 
 ####################################################################################################

@@ -56,6 +56,8 @@ class TextPage():
     ##############################################
 
     def word_iterator(self):
+
+        # Fixme: word iterator for block
         
         for block in TextBlockIterator(self._text_page):
             for line in TextLineIterator(block):
@@ -196,9 +198,9 @@ class TextBlocks(object):
 
     ##############################################
 
-    def __getitem__(self, slice_):
-        
-        return self._blocks[slice_.start:slice_.stop]
+    def __getitem__(self, index):
+
+        return self._blocks[index]
 
     ##############################################
 

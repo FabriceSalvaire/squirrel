@@ -37,6 +37,13 @@ class PdfDocument(object):
 
     ##############################################
 
+    def __del__(self):
+
+        cmupdf.fz_close_document(self._c_document)
+        cmupdf.fz_free_context(self._context)
+
+    ##############################################
+
     @property
     def path(self):
         return clone(self._path)
@@ -51,26 +58,33 @@ class PdfDocument(object):
 
     ##############################################
 
-    def __del__(self):
+    def _page(self, index):
 
-        cmupdf.fz_close_document(self._c_document)
-        cmupdf.fz_free_context(self._context)
+        # Fixme: implement a cache
+
+        return Page(self, index)
+
+    ##############################################
+
+    @property
+    def first_page(self):
+        return self._page(0)
 
     ##############################################
 
     def __getitem__(self, index):
 
         if isinstance(index, slice):
-            return [Page(self, i) for i in xrange(index.start, index.stop, index.step or 1)]
+            return [self._page(i) for i in xrange(index.start, index.stop, index.step or 1)]
         else:
-            return Page(self, index)
+            return self._page(index)
 
     ##############################################
 
     def __iter__(self):
 
         for i in xrange(self._number_of_pages):
-            yield Page(self, i)
+            yield self._page(i)
 
     ##############################################
 

@@ -1,0 +1,122 @@
+#! /usr/bin/env python
+
+####################################################################################################
+# 
+# Babel - A Bibliography Manager 
+# Copyright (C) Salvaire Fabrice 2013 
+# 
+####################################################################################################
+
+####################################################################################################
+#
+# Logging
+#
+
+import Babel.Logging.Logging as Logging
+
+logger = Logging.setup_logging('babel')
+
+####################################################################################################
+
+import argparse
+
+####################################################################################################
+
+from Babel.Tools.ProgramOptions import PathAction
+from Babel.Pdf.PdfDocument import PdfDocument
+from Babel.Tools.Statistics import Gaussian
+
+####################################################################################################
+#
+# Options
+#
+
+argument_parser = argparse.ArgumentParser(description='Extract PDF Metadata.')
+
+argument_parser.add_argument('path', metavar='FILE.pdf',
+                             action=PathAction,
+                             help='PDF file')
+args = argument_parser.parse_args()
+
+####################################################################################################
+
+pdf_document = PdfDocument(args.path)
+
+print 'Number of pages:', pdf_document.number_of_pages
+metadata = pdf_document.metadata
+for key in sorted(metadata.iterkeys()):
+    print key + ': ' + unicode(metadata[key])
+
+text_page = pdf_document[0].text
+text_blocks = text_page.to_blocks()
+for text_block in text_blocks.sorted_iter(): 
+
+    template = """
+Block %u
+  y rank %u
+  Interval %s
+  Horizontal Margin %s
+  Is centred %s
+  Is left justifier %g
+  Is right justifier %g
+  Number of characters %u
+  main style %s
+"""
+    print template[:-1] % (text_block.block_id,
+                           text_block.y_rank,
+                           text_block.interval,
+                           str(text_block.horizontal_margin),
+                           text_block.is_centred,
+                           text_block.is_left_justified,
+                           text_block.is_right_justified,
+                           len(text_block),
+                           str(text_block.main_style)
+                           )
+    line = '='*100
+    print line
+    print unicode(text_block)
+    print line
+
+title_probabilities = []
+for text_block in text_blocks.sorted_iter():
+    title_gaussian_style_rank = Gaussian(0, 1)
+    title_gaussian_y_rank = Gaussian(0, 3)
+    p0 = title_gaussian_style_rank(text_block.main_style.rank)
+    p1 = title_gaussian_y_rank(text_block.y_rank)
+    title_probability = p0*p1
+    print 'Title probability', title_probability
+    d = dict(block=text_block, probability=title_probability)
+    title_probabilities.append(d)
+d = sorted(title_probabilities, cmp=lambda a, b: cmp(a['probability'], b['probability']), reverse=True)[0]
+title_block = d['block']
+print unicode(title_block)
+
+author_probabilities = []
+for text_block in text_blocks.sorted_iter():
+    author_gaussian_y_rank = Gaussian(title_block.y_rank +1, 1)
+    author_gaussian_number_of_words = Gaussian(10, 5)
+    number_of_words =  len(unicode(text_block).split(' '))
+    p0 = author_gaussian_y_rank(text_block.y_rank)
+    p1 = author_gaussian_number_of_words(number_of_words)
+    author_probability = p0*p1
+    print 'Author probability', author_probability
+    d = dict(block=text_block, probability=author_probability)
+    author_probabilities.append(d)
+author_probabilities = sorted(author_probabilities, cmp=lambda a, b: cmp(a['probability'], b['probability']), reverse=True)
+author_block = None
+i = 0
+while i < len(author_probabilities):
+    d = author_probabilities[i]
+    block = d['block']
+    if block is not title_block:
+        author_block = block
+        break
+    else:
+        i += 1
+print unicode(author_block)
+ 
+####################################################################################################
+# 
+# End
+# 
+####################################################################################################
