@@ -85,7 +85,7 @@ class TextPage():
             styles.register_style(to_text_style(style))
             style = style.next
         styles.sort()
-
+        
         return styles
 
     ##############################################
@@ -257,6 +257,28 @@ class TextBase(object):
     def __nonzero__(self):
 
         return bool(self._text)
+
+    ##############################################
+
+    def word_iterator(self):
+
+        #if ((category in ('Ll', 'Lu')) or (category == 'Nd' and word)):
+        #    word += unicode_char.lower()
+
+        word = u''
+        non_word = u''
+        for char in self._text:
+            category = unicodedata.category(char)
+            if category in ('Ll', 'Lu', 'Nd'):
+                word += char.lower()
+            elif word:
+                yield word
+                word = u''
+            else:
+                non_word += char
+        if word: # Last char was a letter/number
+            yield word
+        print u'<' + non_word + u'>'
 
 ####################################################################################################
 

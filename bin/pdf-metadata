@@ -25,6 +25,7 @@ import argparse
 from Babel.Tools.ProgramOptions import PathAction
 from Babel.Pdf.PdfDocument import PdfDocument
 from Babel.Tools.Statistics import Gaussian
+from Babel.Pdf.TextTokenizer import TextTokenizer
 
 ####################################################################################################
 #
@@ -114,6 +115,20 @@ while i < len(author_probabilities):
     else:
         i += 1
 print unicode(author_block)
+for line in author_block.line_iterator():
+    for span in line:
+        print span
+
+for text_block in text_blocks.sorted_iter():
+    print "="*100
+    tokenised_text = TextTokenizer().lex(unicode(text_block))
+    for word in tokenised_text:
+        print word.category, '"' + unicode(word) + '"'
+    # for word in text_block.word_iterator():
+    #     print word
+    for word in tokenised_text.word_number_iterator():
+        print unicode(word)
+    print tokenised_text.count_word_number()
  
 ####################################################################################################
 # 
