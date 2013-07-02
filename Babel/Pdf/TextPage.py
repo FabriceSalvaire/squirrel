@@ -7,8 +7,6 @@
 
 ####################################################################################################
 
-import unicodedata
-
 import mupdf as cmupdf
 from MuPDF import *
 
@@ -16,6 +14,7 @@ from MuPDF import *
 
 from .MupdfTools import *
 from .TextStyle import TextStyles, TextStyleFrequencies
+from Babel.Pdf.TextTokenizer import TextTokenizer
 from Babel.Tools.Interval import IntervalInt2D
 
 ####################################################################################################
@@ -35,6 +34,7 @@ class TextPage():
         self._context = self._document._context
 
         self._styles = None
+        self._blocks = None
 
     ##############################################
 
@@ -46,34 +46,18 @@ class TextPage():
     ##############################################
 
     @property
+    def page_number(self):
+        return self._page_number
+
+    ##############################################
+
+    @property
     def interval(self):
 
         mediabox = self._text_page.mediabox
 
         return IntervalInt2D((mediabox.x0, mediabox.x1),
                              (mediabox.y0, mediabox.y1))
-
-    ##############################################
-
-    def word_iterator(self):
-
-        # Fixme: word iterator for block
-        
-        for block in TextBlockIterator(self._text_page):
-            for line in TextLineIterator(block):
-                word = u''
-                for span in TextSpanIterator(line):
-                    for char in TextCharIterator(span):
-                        unicode_char = unichr(char.c)
-                        category = unicodedata.category(unicode_char)
-                        # Take only letters, and numbers when it is not the first character
-                        if ((category in ('Ll', 'Lu')) or (category == 'Nd' and word)):
-                            word += unicode_char.lower()
-                        elif word:
-                            yield word
-                            word = u''
-                if word: # Last char was a letter/number
-                    yield word
 
     ##############################################
     
@@ -98,56 +82,8 @@ class TextPage():
         return self._styles
 
     ##############################################
-    
-    def dump_text_style(self):
 
-        template = 'span.s%u{font-family:"%s";font-size:%gpt'
-        text = ''
-        style = self._text_sheet.style
-        while style:
-            font = style.font
-            text += template % (style.id, get_font_name(font), style.size)
-            if cmupdf.font_is_italic(font):
-                text += ';font-style:italic'
-            if cmupdf.font_is_bold(font):
-                text += ';font-weight:bold;'
-            text += '}\n'
-            style = style.next
-
-        return text
-
-    ##############################################
-
-    def dump_text_page_xml(self, dump_char=True):
-
-        text = u'<page page_number="%u">\n' % (self._page_number)
-        for block in TextBlockIterator(self._text_page):
-            text += u'<block bbox="' + format_bounding_box(block) + u'">\n'
-            for line in TextLineIterator(block):
-                text += u' '*2 + u'<line bbox="' + format_bounding_box(line) + u'">\n'
-                for span in TextSpanIterator(line):
-                    style = span.style
-                    font_name = get_font_name(style.font)
-                    text += u' '*4 + u'<span bbox="' + format_bounding_box(span) + \
-                        u'" font="%s" size="%g">\n' % (font_name, style.size)
-                    if dump_char:
-                        for char in TextCharIterator(span):
-                            text += u' '*6 + '<char bbox="' + format_bounding_box(char) + \
-                                u'" c="%s"/>\n' % (unichr(char.c))
-                    else:
-                        text += u' '*4 + u'<p>' + span_to_string(span) + u'</p>\n'
-                    text += u' '*4 + u'</span>\n'
-                text += u' '*2 + u'</line>\n'
-            text += u'</block>\n'
-        text += u'</page>\n'
-
-        return text
-
-    ##############################################
-
-    def to_blocks(self):
-
-        # Fixme: @property ?
+    def _get_blocks(self):
 
         styles = self.styles
         
@@ -173,6 +109,66 @@ class TextPage():
 
         return blocks
 
+    ##############################################
+
+    @property
+    def blocks(self):
+
+        if self._blocks is None:
+            self._blocks = self._get_blocks()
+
+        return self._blocks
+
+    ##############################################
+    
+    def dump_text_style(self):
+
+        # Fixme: old and historical code, move elsewhere ?
+
+        template = 'span.s%u{font-family:"%s";font-size:%gpt'
+        text = ''
+        style = self._text_sheet.style
+        while style:
+            font = style.font
+            text += template % (style.id, get_font_name(font), style.size)
+            if cmupdf.font_is_italic(font):
+                text += ';font-style:italic'
+            if cmupdf.font_is_bold(font):
+                text += ';font-weight:bold;'
+            text += '}\n'
+            style = style.next
+
+        return text
+
+    ##############################################
+
+    def dump_text_page_xml(self, dump_char=True):
+
+        # Fixme: old and historical code, move elsewhere ?
+
+        text = u'<page page_number="%u">\n' % (self._page_number)
+        for block in TextBlockIterator(self._text_page):
+            text += u'<block bbox="' + format_bounding_box(block) + u'">\n'
+            for line in TextLineIterator(block):
+                text += u' '*2 + u'<line bbox="' + format_bounding_box(line) + u'">\n'
+                for span in TextSpanIterator(line):
+                    style = span.style
+                    font_name = get_font_name(style.font)
+                    text += u' '*4 + u'<span bbox="' + format_bounding_box(span) + \
+                        u'" font="%s" size="%g">\n' % (font_name, style.size)
+                    if dump_char:
+                        for char in TextCharIterator(span):
+                            text += u' '*6 + '<char bbox="' + format_bounding_box(char) + \
+                                u'" c="%s"/>\n' % (unichr(char.c))
+                    else:
+                        text += u' '*4 + u'<p>' + span_to_string(span) + u'</p>\n'
+                    text += u' '*4 + u'</span>\n'
+                text += u' '*2 + u'</line>\n'
+            text += u'</block>\n'
+        text += u'</page>\n'
+
+        return text
+
 ####################################################################################################
 
 class TextBlocks(object):
@@ -183,6 +179,7 @@ class TextBlocks(object):
 
         self._blocks = []
         self._sorted_blocks = None
+        self._tokenised_text = None
 
     ##############################################
 
@@ -224,6 +221,18 @@ class TextBlocks(object):
                 y_rank += 1
             text_block.y_rank = y_rank
 
+    ##############################################
+
+    @property
+    def tokenised_text(self):
+        
+        if self._tokenised_text is None:
+            self._tokenised_text = TextTokenizer()
+            for block in self:
+                self._tokenised_text += block.tokenised_text
+
+        return self._tokenised_text
+
 ####################################################################################################
 
 class TextBase(object):
@@ -233,6 +242,7 @@ class TextBase(object):
     def __init__(self, text=''):
 
         self._text = text
+        self._tokenised_text = None
 
     ##############################################
 
@@ -260,25 +270,13 @@ class TextBase(object):
 
     ##############################################
 
-    def word_iterator(self):
+    @property
+    def tokenised_text(self):
+        
+        if self._tokenised_text is None:
+            self._tokenised_text = TextTokenizer().lex(unicode(self._text))
 
-        #if ((category in ('Ll', 'Lu')) or (category == 'Nd' and word)):
-        #    word += unicode_char.lower()
-
-        word = u''
-        non_word = u''
-        for char in self._text:
-            category = unicodedata.category(char)
-            if category in ('Ll', 'Lu', 'Nd'):
-                word += char.lower()
-            elif word:
-                yield word
-                word = u''
-            else:
-                non_word += char
-        if word: # Last char was a letter/number
-            yield word
-        print u'<' + non_word + u'>'
+        return self._tokenised_text
 
 ####################################################################################################
 

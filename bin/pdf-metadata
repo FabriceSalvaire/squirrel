@@ -48,8 +48,9 @@ metadata = pdf_document.metadata
 for key in sorted(metadata.iterkeys()):
     print key + ': ' + unicode(metadata[key])
 
-text_page = pdf_document[0].text
-text_blocks = text_page.to_blocks()
+# text_page = pdf_document[0].text
+text_page = pdf_document.first_page.text
+text_blocks = text_page.blocks
 for text_block in text_blocks.sorted_iter(): 
 
     template = """
@@ -121,11 +122,9 @@ for line in author_block.line_iterator():
 
 for text_block in text_blocks.sorted_iter():
     print "="*100
-    tokenised_text = TextTokenizer().lex(unicode(text_block))
+    tokenised_text = text_block.tokenised_text
     for word in tokenised_text:
         print word.category, '"' + unicode(word) + '"'
-    # for word in text_block.word_iterator():
-    #     print word
     for word in tokenised_text.word_number_iterator():
         print unicode(word)
     print tokenised_text.count_word_number()
