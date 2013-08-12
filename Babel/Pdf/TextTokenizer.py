@@ -6,25 +6,24 @@
 ####################################################################################################
 
 """
-
-word: [a-zA-z\-]+[0-9]*
-  - could be cesure or hyphenation
-  . as in "e.g." "fig."
-
-number:
-  integer: [0-9]+
-    thousand separator "123 456"
-  float: [0-9]+.[0-9]+
-    ".1" "0.2"
-    French convention "1,2"
-
-punctuation:
-  terminal: . ? !
-  speparator: , ; :
-
-group: ()
-
 """
+
+# word: [a-zA-z\-]+[0-9]*
+#   - could be cesure or hyphenation
+#   . as in "e.g." "fig."
+# 
+# number:
+#   integer: [0-9]+
+#     thousand separator "123 456"
+#   float: [0-9]+.[0-9]+
+#     ".1" "0.2"
+#     French convention "1,2"
+# 
+# punctuation:
+#   terminal: . ? !
+#   speparator: , ; :
+# 
+# group: ()
 
 ####################################################################################################
 
@@ -96,6 +95,8 @@ class TokenisedText(list):
 
     def word_iterator(self):
 
+        """ Iterate over words. """
+
         for token in self:
             if token.category == Token.Category.word:
                 yield token
@@ -103,6 +104,8 @@ class TokenisedText(list):
     ##############################################
 
     def word_number_iterator(self):
+
+        """ Iterate over word and number. """
 
         for token in self:
             if token.category in (Token.Category.word, Token.Category.number):
@@ -112,6 +115,9 @@ class TokenisedText(list):
 
     def count_word_number(self):
 
+        """ Count the number of words and numbers. """
+
+        # Fixme: iterator doesn't have len method
         counter = 0
         for token in self.word_number_iterator():
             counter += 1

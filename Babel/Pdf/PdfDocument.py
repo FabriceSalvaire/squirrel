@@ -6,6 +6,16 @@
 ####################################################################################################
 
 ####################################################################################################
+# 
+#                                              audit 
+# 
+# - 08/08/2013 Fabrice
+#   implement a page cache
+# 
+####################################################################################################
+
+
+####################################################################################################
 
 import numpy as np
 
@@ -14,14 +24,16 @@ from MuPDF import *
 
 ####################################################################################################
 
+from .DocumentWords import DocumentWords
 from .TextPage import TextPage
-from Babel.Pdf.DocumentWords import DocumentWords
 from Babel.Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
 from Babel.Tools.Object import clone
 
 ####################################################################################################
 
 class PdfDocument(object):
+
+    """ This class represents a PDF Document. """
 
     ##############################################
 
@@ -91,6 +103,8 @@ class PdfDocument(object):
     @property
     def words(self):
 
+        """ Return a :obj:`.DocumentWords` instance. """
+
         if self._document_words is None:
             self._document_words = self._compile_document_words()
 
@@ -112,6 +126,26 @@ class PdfDocument(object):
 ####################################################################################################
 
 class MetaData(ReadOnlyAttributeDictionaryInterface):
+
+    """ This class gives access to the PDF metadata.
+    
+    Public Attributes:
+
+      :attr:`Title`
+
+      :attr:`Subject`
+
+      :attr:`Author`
+
+      :attr:`Creator`
+
+      :attr:`Producer`
+
+      :attr:`CreationDate`
+
+      :attr:`ModDate`
+
+    """
 
     ##############################################
 
@@ -150,7 +184,11 @@ class MetaData(ReadOnlyAttributeDictionaryInterface):
 
 ####################################################################################################
 
-class Page():
+class Page(object):
+
+    """ This class represents a PDF Page. Its contents could be rastered to an image or extracted as
+    a text representation.
+    """
 
     ##############################################
 
@@ -225,17 +263,9 @@ class Page():
 
     ##############################################
 
-    @property
-    def text(self):
-
-        if self._text is None:
-            self._text = self.to_text()
-
-        return self._text
-
-    ##############################################
-
     def to_text(self, scale=1, rotation=0):
+
+        """ Return a :obj:`.TextPage` instance. """
 
         transform = self._make_transform(scale, rotation)
         bounding_box = self._transform_bounding_box(transform)
@@ -248,6 +278,16 @@ class Page():
         cmupdf.fz_free_device(device)
 
         return TextPage(self, text_sheet, text_page)
+
+    ##############################################
+
+    @property
+    def text(self):
+
+        if self._text is None:
+            self._text = self.to_text()
+
+        return self._text
 
 ####################################################################################################
 # 

@@ -6,6 +6,15 @@
 ####################################################################################################
 
 ####################################################################################################
+# 
+#                                              audit 
+# 
+# - 08/08/2013 Fabrice
+#   cound or frequency
+# 
+####################################################################################################
+
+####################################################################################################
 
 class WordCount(object):
 
@@ -77,17 +86,21 @@ class DocumentWords(object):
 
     def add(self, word):
 
-        # Register words and count their occurences
+        """ Register the word and count its occurence. """
+
         words = self._words
         if word in words:
             words[word].increment()
         else:
             words[word] = WordCount(word)
+
         self._sorted = False
 
     ##############################################
 
     def sort(self):
+
+        """ Sort the word by frequency in descending order. """
 
         self._sorted_words = sorted(self._words.itervalues(), reverse=True)
 

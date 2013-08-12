@@ -6,6 +6,15 @@
 ####################################################################################################
 
 ####################################################################################################
+# 
+#                                              audit 
+# 
+# - 12/08/2013 Fabrice
+#   xx
+# 
+####################################################################################################
+
+####################################################################################################
 
 import mupdf as cmupdf
 from MuPDF import *
@@ -20,6 +29,8 @@ from Babel.Tools.Interval import IntervalInt2D
 ####################################################################################################
 
 class TextPage():
+
+    """ This class represents the textual content of a page. """
 
     ##############################################
 
@@ -53,15 +64,13 @@ class TextPage():
 
     @property
     def interval(self):
-
-        mediabox = self._text_page.mediabox
-
-        return IntervalInt2D((mediabox.x0, mediabox.x1),
-                             (mediabox.y0, mediabox.y1))
+        return to_interval(self._text_page.mediabox)
 
     ##############################################
     
     def _get_styles(self):
+
+        """ Return an :obj:`.TextStyles` instance for the styles of the page. """
 
         styles = TextStyles()
         style = self._text_sheet.style
@@ -85,13 +94,15 @@ class TextPage():
 
     def _get_blocks(self):
 
+        """ Return an :obj:`TextBlocks` instance for the page. """
+
         styles = self.styles
         
         blocks = TextBlocks()
         for c_block in TextBlockIterator(self._text_page):
             text_block = TextBlock(self)
             for c_line in TextLineIterator(c_block):
-                line_interval = to_interval(c_line)
+                line_interval = to_interval(c_line.bbox)
                 text_line = TextLine(line_interval)
                 for c_span in TextSpanIterator(c_line):
                     text_span = TextSpan(span_to_string(c_span), styles[c_span.style.id])
@@ -116,7 +127,6 @@ class TextPage():
 
         if self._blocks is None:
             self._blocks = self._get_blocks()
-
         return self._blocks
 
     ##############################################
@@ -173,6 +183,8 @@ class TextPage():
 
 class TextBlocks(object):
 
+    """ This class implements a list of text blocks. """
+
     ##############################################
 
     def __init__(self):
@@ -211,6 +223,8 @@ class TextBlocks(object):
 
     def sort(self):
 
+        """ Sort the block by y in ascending order. """
+        
         self._sorted_blocks = sorted(self._blocks)
         y_rank = 0
         y = None
@@ -225,6 +239,8 @@ class TextBlocks(object):
 
     @property
     def tokenised_text(self):
+
+        """ Return an instance of :obj:`TextTokenizer`. """
         
         if self._tokenised_text is None:
             self._tokenised_text = TextTokenizer()
@@ -428,6 +444,8 @@ class TextBlock(TextBase):
     @property
     def style_frequencies(self):
 
+        """ Return an :obj:`TextStyleFrequencies` instance for the line. """
+
         if self._style_frequencies is None:
             self._style_frequencies = TextStyleFrequencies()
             for line in self.line_iterator():
@@ -440,12 +458,20 @@ class TextBlock(TextBase):
     @property
     def main_style(self):
 
+        """ Return the style having the largest occurence. """
+
         main_style_id = self.style_frequencies.max().style_id
         return self.styles[main_style_id]
 
 ####################################################################################################
 
 class TextLine(TextBase):
+
+    """ This class represents a line of text.
+
+    A line is made of several spans where the number of
+    spans is identical to the number of styles of the line.
+    """
 
     ##############################################
 
@@ -485,6 +511,8 @@ class TextLine(TextBase):
         
     def style_frequencies(self):
 
+        """ Return an :obj:`TextStyleFrequencies` instance for the line. """
+
         style_frequencies = TextStyleFrequencies()
         for span in self:
             style_id = span.style.id
@@ -497,6 +525,8 @@ class TextLine(TextBase):
 
 class TextSpan(TextBase):
 
+    """ This class represents a span that is a piece of text having only one style. """
+    
     ##############################################
 
     def __init__(self, text, style):

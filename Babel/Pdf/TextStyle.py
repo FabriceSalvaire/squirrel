@@ -22,6 +22,24 @@ from Babel.Tools.DictionaryTools import DictInitialised
 
 class TextStyle(DictInitialised):
 
+    """
+    
+    Public Attributes:
+
+      :attr:`font_family`
+
+      :attr:`font_size`
+
+      :attr:`id`
+
+      :attr:`is_bold`
+
+      :attr:`is_italic`
+
+      :attr:`rank` font size rank, where 0 is the largest font size.
+
+    """
+
     __REQUIRED_ATTRIBUTES__ = (              
         'id',
         'font_family',
@@ -59,6 +77,9 @@ Style ID %(id)u
 
 class TextStyles(dict):
 
+    """
+    """
+
     ##############################################
 
     def register_style(self, style):
@@ -71,9 +92,11 @@ class TextStyles(dict):
 
         """ Sort the styles by font size. """
 
+        sorted_styles = sorted(self.itervalues(), reverse=True)
+
+        # Compute the font size rank
         rank = 0
         current_font_size = None
-        sorted_styles = sorted(self.itervalues(), reverse=True)
         for style in sorted_styles:
             # Fixme: better way?
             font_size = style.font_size
@@ -85,6 +108,16 @@ class TextStyles(dict):
 ####################################################################################################
 
 class TextStyleFrequency(DictInitialised):
+
+    """
+    
+    Public Attributes:
+
+      :attr:`style_id`
+
+      :attr:`count`
+
+    """
 
     __REQUIRED_ATTRIBUTES__ = (
         'style_id',
@@ -107,6 +140,9 @@ class TextStyleFrequency(DictInitialised):
 
 class TextStyleFrequencies(dict):
 
+    """
+    """
+
     ##############################################
 
     def __init__(self):
@@ -119,8 +155,9 @@ class TextStyleFrequencies(dict):
 
     def __iter__(self):
 
-        if self._sorted_frequencies is None:
-            self.sort()
+        """ iterate from the most frequent to the less frequent font. """
+
+        self._sort_if_required()
 
         return iter(self._sorted_frequencies)
 
@@ -130,6 +167,7 @@ class TextStyleFrequencies(dict):
 
         for style_id, count in other.iteritems():
             self.fill(style_id, count)
+
         return self
             
     ##############################################
@@ -140,6 +178,7 @@ class TextStyleFrequencies(dict):
             self[style_id] += count
         else:
             self[style_id] = count # TextStyleFrequency(style_id, count) ?
+
         self._sorted_frequencies = None
 
     ##############################################
@@ -157,10 +196,18 @@ class TextStyleFrequencies(dict):
 
     ##############################################
 
-    def max(self):
+    def _sort_if_required(self):
 
         if self._sorted_frequencies is None:
             self.sort()
+
+    ##############################################
+
+    def max(self):
+
+        """ Return the :obj:`TextStyleFrequency` instance of the most frequent font. """
+        
+        self._sort_if_required()
 
         return self._sorted_frequencies[0]
 

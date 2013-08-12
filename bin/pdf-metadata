@@ -62,6 +62,7 @@ Block %u
   Is left justifier %g
   Is right justifier %g
   Number of characters %u
+  Number of words %u
   main style %s
 """
     print template[:-1] % (text_block.block_id,
@@ -72,6 +73,7 @@ Block %u
                            text_block.is_left_justified,
                            text_block.is_right_justified,
                            len(text_block),
+                           text_block.tokenised_text.count_word_number(),
                            str(text_block.main_style)
                            )
     line = '='*100
@@ -79,6 +81,34 @@ Block %u
     print unicode(text_block)
     print line
 
+# Pattern
+# probabilities = []
+# for text_block in text_blocks.sorted_iter():
+#     probability = compute_probability(text_block)
+#     d = dict(block=text_block, probability=probability)
+#     probabilities.append(d)
+# best = sorted(probabilities,
+#               cmp=lambda a, b: cmp(a['probability'], b['probability']),
+#               reverse=True)[0]
+# text_block.tag = '...'
+# 
+# i = 0
+# while i < len(probabilities):
+#     d = probabilities[i]
+#     block = d['block']
+#     if not block.tag:
+#         return block
+#     else:
+#         i += 1
+# return None
+#
+# for probability_dict in sorted_probabilities:
+#     block = d['block']
+#     if not block.tag:
+#         return block
+# return None
+
+print '\nTitle Inference'
 title_probabilities = []
 for text_block in text_blocks.sorted_iter():
     title_gaussian_style_rank = Gaussian(0, 1)
@@ -93,11 +123,12 @@ d = sorted(title_probabilities, cmp=lambda a, b: cmp(a['probability'], b['probab
 title_block = d['block']
 print unicode(title_block)
 
+print '\nAuthor Inference '
 author_probabilities = []
 for text_block in text_blocks.sorted_iter():
     author_gaussian_y_rank = Gaussian(title_block.y_rank +1, 1)
     author_gaussian_number_of_words = Gaussian(10, 5)
-    number_of_words =  len(unicode(text_block).split(' '))
+    number_of_words = text_block.tokenised_text.count_word_number()
     p0 = author_gaussian_y_rank(text_block.y_rank)
     p1 = author_gaussian_number_of_words(number_of_words)
     author_probability = p0*p1
@@ -120,14 +151,14 @@ for line in author_block.line_iterator():
     for span in line:
         print span
 
-for text_block in text_blocks.sorted_iter():
-    print "="*100
-    tokenised_text = text_block.tokenised_text
-    for word in tokenised_text:
-        print word.category, '"' + unicode(word) + '"'
-    for word in tokenised_text.word_number_iterator():
-        print unicode(word)
-    print tokenised_text.count_word_number()
+# for text_block in text_blocks.sorted_iter():
+#     print "="*100
+#     tokenised_text = text_block.tokenised_text
+#     for word in tokenised_text:
+#         print word.category, '"' + unicode(word) + '"'
+#     for word in tokenised_text.word_number_iterator():
+#         print unicode(word)
+#     print tokenised_text.count_word_number()
  
 ####################################################################################################
 # 
