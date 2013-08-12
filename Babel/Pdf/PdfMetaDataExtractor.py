@@ -98,47 +98,44 @@ class PdfMetaDataExtractor(object):
 
         # Fixme: inference ?
 
-        title_probabilities = TextBlockProbabilities()
+        probabilities = TextBlockProbabilities()
         for text_block in self._first_text_blocks_iterator():
             title_gaussian_style_rank = Gaussian(0, 1)
             title_gaussian_y_rank = Gaussian(0, 3)
             p0 = title_gaussian_style_rank(text_block.main_style.rank)
             p1 = title_gaussian_y_rank(text_block.y_rank)
-            title_probability = p0*p1
-            print 'Title probability', title_probability
-            text_block_probability = TextBlockProbability(text_block=text_block, probability=title_probability)
-            title_probabilities.append(text_block_probability)
-        title_probabilities.sort()
-        text_block_probability = title_probabilities.most_probable()
+            probability = p0*p1
+            # print 'Title probability', probability
+            probabilities.add_candidate(text_block=text_block, probability=probability)
+        probabilities.sort()
+
+        text_block_probability = probabilities.most_probable()
         self._title_block = text_block_probability.text_block
 
     ##############################################
 
     def _guess_author(self):
 
-        author_probabilities = TextBlockProbabilities()
+        probabilities = TextBlockProbabilities()
         for text_block in self._first_text_blocks.sorted_iter():
             author_gaussian_y_rank = Gaussian(self._title_block.y_rank +1, 1)
             author_gaussian_number_of_words = Gaussian(10, 5)
             number_of_words = text_block.tokenised_text.count_word_number()
             p0 = author_gaussian_y_rank(text_block.y_rank)
             p1 = author_gaussian_number_of_words(number_of_words)
-            author_probability = p0*p1
-            print 'Author probability', author_probability
-            text_block_probability = TextBlockProbability(text_block=text_block, probability=author_probability)
-            author_probabilities.append(text_block_probability)
-        author_probabilities.sort()
-        author_block = None
+            probability = p0*p1
+            # print 'Author probability', probability
+            probabilities.add_candidate(text_block=text_block, probability=probability)
+        probabilities.sort()
 
-        i = 0
-        while i < len(author_probabilities):
-            d = author_probabilities[i]
-            block = d.text_block
-            if block is not self._title_block:
-                author_block = block
+        author_block = None
+        for text_block_probability in probabilities:
+            text_block = text_block_probability.text_block
+            if text_block is not self._title_block:
+                author_block = text_block
                 break
-            else:
-                i += 1
+        else:
+            author_block = None
 
         self._author_block = author_block
 
@@ -175,6 +172,13 @@ class TextBlockProbability(DictInitialised):
 ####################################################################################################
 
 class TextBlockProbabilities(list):
+
+    ##############################################
+
+    def add_candidate(self, **kwargs):
+
+        text_block_probability = TextBlockProbability(**kwargs)
+        self.append(text_block_probability)
 
     ##############################################
 
