@@ -125,7 +125,8 @@ class TestReadOnlyAttributeDictionaryInterface(unittest.TestCase, TestReadOnlyBa
         
     def test_iter(self):
 
-        self.assertListEqual(sorted(list(iter(self.obj))), [1, 2])
+        # self.assertListEqual(sorted(list(iter(self.obj))), [1, 2])
+        self.assertListEqual(sorted(list(iter(self.obj))), ['attribute1', 'attribute2'])
 
 ####################################################################################################
 
@@ -158,7 +159,8 @@ class TestAttributeDictionaryInterface(unittest.TestCase, TestBase):
         
     def test_iter(self):
 
-        self.assertListEqual(sorted(list(iter(self.obj))), [1, 2])
+        # self.assertListEqual(sorted(list(iter(self.obj))), [1, 2])
+        self.assertListEqual(sorted(list(iter(self.obj))), ['attribute1', 'attribute2'])
 
 ####################################################################################################
 
@@ -174,7 +176,8 @@ class TestAttributeDictionaryInterfaceDescriptor(unittest.TestCase, TestBase):
         
     def test_iter(self):
 
-        self.assertListEqual(sorted([x.get() for x in iter(self.obj)]), [1, 2])
+        # self.assertListEqual(sorted([x.get() for x in iter(self.obj)]), [1, 2])
+        self.assertListEqual(sorted(list(iter(self.obj))), ['attribute1', 'attribute2'])
 
 ####################################################################################################
 

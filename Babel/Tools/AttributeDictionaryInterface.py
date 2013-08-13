@@ -6,29 +6,34 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+#                                              Audit
+#
+# - 22/03/2013 Fabrice
+#   read only
+#
+####################################################################################################
+
+####################################################################################################
 
 class ExtendedDictionaryInterface(dict):
 
+    # Fixme: This class don't work as expected
+
     """ This class implements an extended dictionary interface.
 
-      :attr:`clear`
-      :attr:`copy`
-      :attr:`fromkeys`
-      :attr:`get`
-      :attr:`has_key`
-      :attr:`items`
-      :attr:`iteritems`
-      :attr:`iterkeys`
-      :attr:`itervalues`
-      :attr:`keys`
-      :attr:`pop`
-      :attr:`popitem`
-      :attr:`setdefault`
-      :attr:`update`
-      :attr:`values`
-      :attr:`viewitems`
-      :attr:`viewkeys`
-      :attr:`viewvalues`
+    Example::
+
+      extended_dictionary = ExtendedDictionaryInterface()
+
+      extended_dictionary['key1'] = 1
+      print extended_dictionary['key1']
+      print extended_dictionary.key1
+
+      # Unusal use case
+      extended_dictionary.key2 = 1
+      print extended_dictionary.key2
+      # print extended_dictionary['key2'] # Not Implemented
 
     """
 
@@ -36,11 +41,9 @@ class ExtendedDictionaryInterface(dict):
     
     def __setitem__(self, key, value):
 
-        # Fixme: ?
-
         if key not in self and key not in self.__dict__:
-            super(ExtendedDictionaryInterface, self).__setitem__(key, value)
-            self.__dict__[key] = value
+            dict.__setitem__(self, key, value)
+            setattr(self, key, value)
         else:
             raise KeyError
 
@@ -48,7 +51,23 @@ class ExtendedDictionaryInterface(dict):
 
 class ReadOnlyAttributeDictionaryInterface(object):
 
-    """ This class implements a read-only attribute and dictionary interface. """
+    """ This class implements a read-only attribute and dictionary interface.
+
+    Example::
+
+      attribute_dictionary = ReadOnlyAttributeDictionaryInterface()
+
+      attribute_dictionary._dictionary['a'] = 1
+      attribute_dictionary._dictionary['b'] = 2
+
+      print attribute_dictionary['a']
+      print attribute_dictionary.b
+
+      'a' in attribute_dictionary
+      list(attribute_dictionary)
+      # will return [1, 2]
+
+    """
 
     ##############################################
     
@@ -116,7 +135,23 @@ class ReadOnlyAttributeDictionaryInterface(object):
 
 class AttributeDictionaryInterface(ReadOnlyAttributeDictionaryInterface):
 
-    """ This class implements an attribute and dictionary interface. """
+    """ This class implements an attribute and dictionary interface.
+
+    Example::
+
+      attribute_dictionary = AttributeDictionaryInterface()
+
+      attribute_dictionary['a'] = 1
+      print attribute_dictionary['a']
+
+      attribute_dictionary.b = 2
+      print attribute_dictionary.b
+
+      'a' in attribute_dictionary
+      list(attribute_dictionary)
+      # will return [1, 2]
+
+    """
 
     ##############################################
     
@@ -134,6 +169,29 @@ class AttributeDictionaryInterface(ReadOnlyAttributeDictionaryInterface):
 
 class AttributeDictionaryInterfaceDescriptor(AttributeDictionaryInterface):
 
+    """ This class implements an attribute and dictionary interface using Descriptor.
+
+    Example::
+
+      class DescriptorExample(object):
+          def __init__(self, value):
+              self.value = value
+          def get(self):
+              return self.value
+          def set(self, value):
+              self.value = value
+      
+      attribute_dictionary = AttributeDictionaryInterfaceDescriptor()
+      attribute_dictionary._dictionary['attribute1'] = DescriptorExample(1)
+      
+      attribute_dictionary['attribute1'] = 2
+      print attribute_dictionary['attribute1']
+
+      attribute_dictionary.attribute1 = 3
+      print attribute_dictionary.attribute1
+
+    """
+    
     ##############################################
     
     def _get_descriptor(self, name):
