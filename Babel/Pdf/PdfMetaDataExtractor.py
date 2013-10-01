@@ -15,12 +15,9 @@
 
 ####################################################################################################
 
-####################################################################################################
-
-from Babel.Pdf.PdfDocument import PdfDocument
-from Babel.Pdf.TextTokenizer import TextTokenizer
+from .PdfDocument import PdfDocument
+from .TextTokenizer import strip_word_list
 from Babel.Tools.DictionaryTools import DictInitialised
-from Babel.Tools.ProgramOptions import PathAction
 from Babel.Tools.Statistics import Gaussian
 
 ####################################################################################################
@@ -28,6 +25,15 @@ from Babel.Tools.Statistics import Gaussian
 class PdfMetaDataExtractor(object):
 
     """ This class implements a PDF document Metadata Extractor. """
+
+    address_words = set((
+            'avenue',
+            'france',
+            'institute',
+            'rue',
+            'university',
+            'usa',
+            ))
 
     ##############################################
 
@@ -46,6 +52,9 @@ class PdfMetaDataExtractor(object):
         self._first_text_page = self._pdf_document.first_page.text
         self._first_text_blocks = self._first_text_page.blocks
 
+        self._guess_title()
+        self._guess_author()
+
     ##############################################
 
     def _first_text_blocks_iterator(self):
@@ -55,7 +64,6 @@ class PdfMetaDataExtractor(object):
     ##############################################
 
     def dump(self):
-
 
         print 'Number of pages:', self._pdf_document.number_of_pages
         metadata = self._pdf_document.metadata
@@ -139,10 +147,32 @@ class PdfMetaDataExtractor(object):
 
         self._author_block = author_block
 
-        print unicode(author_block)
-        for line in author_block.line_iterator():
-            for span in line:
-                print span
+        author_list_words = []
+        for i, line in enumerate(author_block.line_iterator()):
+            line_words = []
+            for word in line.tokenised_text:
+                if word.is_word and unicode(word).lower() in self.address_words:
+                    break
+                else:
+                    line_words.append(word)
+            else:
+                author_list_words += line_words
+
+        author_separators = []
+        for i, word in enumerate(author_list_words):
+            if word.is_word and unicode(word).lower() == 'and': 
+                author_separators.append(i)
+        lower_index = 0
+        number_of_words = len(author_list_words)
+        if author_separators[-1] != number_of_words -1:
+           author_separators.append(number_of_words) 
+        self._authors = []
+        for upper_index in author_separators:
+            author_words = author_list_words[lower_index:upper_index]
+            author_words = strip_word_list(author_words)
+            self._authors.append(author_words)
+            lower_index = upper_index +1
+        print self._authors
 
 ####################################################################################################
 

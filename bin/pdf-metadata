@@ -42,9 +42,7 @@ args = argument_parser.parse_args()
 ####################################################################################################
 
 pdf_metadata_extractor = PdfMetaDataExtractor(args.path)
-pdf_metadata_extractor.dump()
-pdf_metadata_extractor._guess_title()
-pdf_metadata_extractor._guess_author()
+# pdf_metadata_extractor.dump()
 
 # for text_block in text_blocks.sorted_iter():
 #     print "="*100
