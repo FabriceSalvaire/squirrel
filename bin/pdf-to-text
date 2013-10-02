@@ -19,12 +19,10 @@ logger = Logging.setup_logging('babel')
 ####################################################################################################
 
 import argparse
-import os
-
-import pylab
 
 ####################################################################################################
 
+from Babel.Config import ConfigInstall
 from Babel.DataBase.WordDataBase import WordDataBase
 from Babel.Pdf.PdfDocument import PdfDocument
 from Babel.Tools.Binning import Binning1D
@@ -81,6 +79,11 @@ argument_parser.add_argument('--main-words',
                              default=False,
                              help='Display document main words')
 
+argument_parser.add_argument('--show-histogram',
+                             action='store_true',
+                             default=False,
+                             help='show histogram words')
+
 argument_parser.add_argument('--pages',
                              default=None,
                              action=DecodePageRange,
@@ -101,12 +104,12 @@ def display_page(page, output_format):
     text_page = page.to_text()
 
     if output_format == 'text':
-        for block_text in sorted(text_page.to_blocks()):
+        for block_text in sorted(text_page.blocks):
             print
             for text_line in block_text.line_iterator():
                 print unicode(text_line)
     elif output_format == 'block':
-        text_blocks = text_page.to_blocks()
+        text_blocks = text_page.blocks
         for text_block in text_blocks.sorted_iter(): 
             template = """
 Block %u
@@ -142,9 +145,7 @@ Block %u
 
 def show_words(pdf_document, main_words):
 
-    database_path = os.path.join(os.path.dirname(__file__),
-                                 '../Babel/Lexique/BritishNationalCorpus/bnc.sqlite')
-    print os.path.realpath(database_path)
+    database_path = ConfigInstall.WordDataBase.bnc_database_path
     database = WordDataBase(database_path)
     word_table = database.word_table
     part_of_speech_tag_table = database.part_of_speech_tag_table
@@ -156,25 +157,28 @@ def show_words(pdf_document, main_words):
 
     document_words = pdf_document.words
 
-    Binning = Binning1D((0, len(document_words) +1), bin_width=1)
-    histogram = Histogram(Binning)
-    for word_count in document_words:
-        histogram.fill(word_count.count)
-    print histogram
-    histogram.normalise()
-    sub_histogram = histogram.non_zero_bin_range_histogram()
-    x_values, y_values, x_errors, y_errors = sub_histogram.to_graph()
-    pylab.plot(x_values, y_values, 'o')
-    pylab.show()
+    if args.show_histogram:
+        Binning = Binning1D((0, len(document_words) +1), bin_width=1)
+        histogram = Histogram(Binning)
+        for word_count in document_words:
+            histogram.fill(word_count.count)
+        print histogram
+        histogram.normalise()
+        sub_histogram = histogram.non_zero_bin_range_histogram()
+        x_values, y_values, x_errors, y_errors = sub_histogram.to_graph()
+        import pylab
+        pylab.plot(x_values, y_values, 'o')
+        pylab.show()
 
-    print 'Words'
+    print 'Words:'
     for word_count in document_words:
         word_rows = word_table.select_by(word=word_count.word).all()
         if word_rows:
             word_row = word_rows[0]
             # print '%6u' % count, word, str([word_row.part_of_speech_tag_id for word_row in word_rows])
             if ((not args.main_words) or
-                (args.main_words and word_row.part_of_speech_tag_id in main_tag)):
+                (args.main_words and
+                 len(word_count.word) >= 3 and word_row.part_of_speech_tag_id in main_tag)):
                 tag_row = part_of_speech_tag_table.select_by(id=word_row.part_of_speech_tag_id).one()
                 print '%6u' % word_count.count, word_count.word, tag_row.tag
         else:

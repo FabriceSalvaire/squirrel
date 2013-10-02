@@ -31,7 +31,7 @@ from Babel.Tools.ProgramOptions import PathAction
 # Options
 #
 
-argument_parser = argparse.ArgumentParser(description='PDF to Text.')
+argument_parser = argparse.ArgumentParser(description='A tool to query the British National Corpus database.')
 
 argument_parser.add_argument('word', metavar='WORD',
                              help='Word')
@@ -50,12 +50,13 @@ part_of_speech_tag_table = database.part_of_speech_tag_table
 word_rows = word_table.select_by(word=args.word).all()
 for word_row in word_rows:
     tag_row = part_of_speech_tag_table.select_by(id=word_row.part_of_speech_tag_id).one()
+    # Fixme: comment layout
     message = '''
 Word
   word: %s
   count: %u
   part of speech tag: %s
-    %s
+  %s
 '''
     print message % (word_row.word, word_row.count,
                      tag_row.tag, tag_row.comment)

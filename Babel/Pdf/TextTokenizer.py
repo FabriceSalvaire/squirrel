@@ -227,6 +227,11 @@ def strip_word_list(word_list):
     return word_list[lower_index:upper_index +1]
 
 ####################################################################################################
+
+def join_tokens(tokens):
+    return ''.join([unicode(token) for token in tokens])
+
+####################################################################################################
 # 
 # End
 # 

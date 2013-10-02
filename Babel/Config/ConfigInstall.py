@@ -51,6 +51,15 @@ class Icon(object):
         return PathTools.find(file_name, (Icon.icon_directory,))
 
 ####################################################################################################
+
+class WordDataBase(object):
+
+    lexique_module_path = os.path.join(Path.babel_module_directory, 'Lexique')
+
+    bnc_database_path = os.path.join(lexique_module_path,
+                                     'BritishNationalCorpus', 'bnc.sqlite')
+
+####################################################################################################
 #
 # End
 #

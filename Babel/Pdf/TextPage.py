@@ -23,7 +23,7 @@ from MuPDF import *
 
 from .MupdfTools import *
 from .TextStyle import TextStyles, TextStyleFrequencies
-from Babel.Pdf.TextTokenizer import TextTokenizer
+from Babel.Pdf.TextTokenizer import TextTokenizer, TokenisedText
 from Babel.Tools.Interval import IntervalInt2D
 
 ####################################################################################################
@@ -240,10 +240,10 @@ class TextBlocks(object):
     @property
     def tokenised_text(self):
 
-        """ Return an instance of :obj:`TextTokenizer`. """
+        """ Return an instance of :obj:`TokenisedText`. """
         
         if self._tokenised_text is None:
-            self._tokenised_text = TextTokenizer()
+            self._tokenised_text = TokenisedText()
             for block in self:
                 self._tokenised_text += block.tokenised_text
 

@@ -116,8 +116,9 @@ class PdfDocument(object):
         document_words = DocumentWords()
         for page in self:
             text_page = page.text
-            for word in text_page.word_iterator():
-                document_words.add(word)
+            tokenised_text = text_page.blocks.tokenised_text
+            for token in tokenised_text.word_iterator():
+                document_words.add(unicode(token).lower())
         document_words.sort()
 
         return document_words

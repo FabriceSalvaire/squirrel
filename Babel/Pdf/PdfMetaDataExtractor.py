@@ -53,7 +53,31 @@ class PdfMetaDataExtractor(object):
         self._first_text_blocks = self._first_text_page.blocks
 
         self._guess_title()
-        self._guess_author()
+        self._guess_authors()
+
+    ##############################################
+
+    @property
+    def title(self):
+        return unicode(self._title_block)
+
+    ##############################################
+
+    @property
+    def authors(self):
+        return self._authors
+
+    ##############################################
+
+    @property
+    def number_of_pages(self):
+        return self._document_metadata['number_of_pages']
+
+    ##############################################
+
+    @property
+    def metadata(self):
+        return self._pdf_document.metadata
 
     ##############################################
 
@@ -122,7 +146,7 @@ class PdfMetaDataExtractor(object):
 
     ##############################################
 
-    def _guess_author(self):
+    def _guess_authors(self):
 
         probabilities = TextBlockProbabilities()
         for text_block in self._first_text_blocks.sorted_iter():
@@ -172,7 +196,6 @@ class PdfMetaDataExtractor(object):
             author_words = strip_word_list(author_words)
             self._authors.append(author_words)
             lower_index = upper_index +1
-        print self._authors
 
 ####################################################################################################
 

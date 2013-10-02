@@ -23,9 +23,8 @@ import argparse
 ####################################################################################################
 
 from Babel.Tools.ProgramOptions import PathAction
-from Babel.Pdf.PdfDocument import PdfDocument
 from Babel.Pdf.PdfMetaDataExtractor import PdfMetaDataExtractor
-from Babel.Tools.Statistics import Gaussian
+from Babel.Pdf.TextTokenizer import join_tokens
 
 ####################################################################################################
 #
@@ -37,22 +36,22 @@ argument_parser = argparse.ArgumentParser(description='Extract PDF Metadata.')
 argument_parser.add_argument('path', metavar='FILE.pdf',
                              action=PathAction,
                              help='PDF file')
+
 args = argument_parser.parse_args()
 
 ####################################################################################################
 
 pdf_metadata_extractor = PdfMetaDataExtractor(args.path)
-# pdf_metadata_extractor.dump()
+print 'Metadata:'
+for key, value in sorted(pdf_metadata_extractor.metadata.iteritems()):
+    print ' ', key + ': ' + unicode(value)
+print 'Number of pages:' , pdf_metadata_extractor.number_of_pages
+print "Guessed attributes:"
+print ' Title:', pdf_metadata_extractor.title
+print ' Authors:'
+for author_tokens in pdf_metadata_extractor.authors:
+    print ' '*2, join_tokens(author_tokens)
 
-# for text_block in text_blocks.sorted_iter():
-#     print "="*100
-#     tokenised_text = text_block.tokenised_text
-#     for word in tokenised_text:
-#         print word.category, '"' + unicode(word) + '"'
-#     for word in tokenised_text.word_number_iterator():
-#         print unicode(word)
-#     print tokenised_text.count_word_number()
- 
 ####################################################################################################
 # 
 # End
