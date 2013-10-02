@@ -22,8 +22,7 @@ import argparse
 
 ####################################################################################################
 
-from Babel.Config import ConfigInstall
-from Babel.DataBase.WordDataBase import WordDataBase
+from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpusDataBase
 from Babel.Pdf.PdfDocument import PdfDocument
 from Babel.Tools.Binning import Binning1D
 from Babel.Tools.Histogram import Histogram
@@ -145,16 +144,8 @@ Block %u
 
 def show_words(pdf_document, main_words):
 
-    database_path = ConfigInstall.WordDataBase.bnc_database_path
-    database = WordDataBase(database_path)
+    database = BritishNationalCorpusDataBase()
     word_table = database.word_table
-    part_of_speech_tag_table = database.part_of_speech_tag_table
-    part_of_speech_tags = {part_of_speech_tag_row.tag:part_of_speech_tag_row
-                           for part_of_speech_tag_row in part_of_speech_tag_table.all()}
-
-    main_tag = [part_of_speech_tags[tag].id for tag in
-                ('NN1', 'NN1-NP0', 'NN1-VVB', 'NN1-VVG', 'NN2', 'NN2-VVZ', 'NP0')]
-
     document_words = pdf_document.words
 
     if args.show_histogram:
@@ -178,9 +169,9 @@ def show_words(pdf_document, main_words):
             # print '%6u' % count, word, str([word_row.part_of_speech_tag_id for word_row in word_rows])
             if ((not args.main_words) or
                 (args.main_words and
-                 len(word_count.word) >= 3 and word_row.part_of_speech_tag_id in main_tag)):
-                tag_row = part_of_speech_tag_table.select_by(id=word_row.part_of_speech_tag_id).one()
-                print '%6u' % word_count.count, word_count.word, tag_row.tag
+                 len(word_count.word) >= 3 and database.is_noun(word_row))):
+                tag = database.part_of_speech_tag_from_id(word_row.part_of_speech_tag_id)
+                print '%6u' % word_count.count, word_count.word, tag
         else:
             print '%6u' % word_count.count, word_count.word
 

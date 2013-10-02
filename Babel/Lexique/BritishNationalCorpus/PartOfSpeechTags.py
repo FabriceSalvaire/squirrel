@@ -13,6 +13,10 @@
 #
 ####################################################################################################
 
+__all__ = ['part_of_speech_tags', 'noun_tags']
+
+####################################################################################################
+
 part_of_speech_tags = {
     'AJ0': """adjective (general or positive) e.g. good, old""",
 
@@ -207,6 +211,8 @@ part_of_speech_tags = {
     # Note that some punctuation marks (notably long dashes and ellipses) are not tagged as such in
     # the corpus, but appear simply as entity references.
     }
+
+noun_tags = ('NN1', 'NN1-NP0', 'NN1-VVB', 'NN1-VVG', 'NN2', 'NN2-VVZ', 'NP0')
 
 ####################################################################################################
 # 
