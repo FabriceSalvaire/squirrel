@@ -195,6 +195,18 @@ class TextBlocks(object):
 
     ##############################################
 
+    def __nonzero__(self):
+        
+        return bool(self._blocks)
+
+    ##############################################
+
+    def __len__(self):
+        
+        return len(self._blocks)
+
+    ##############################################
+
     def __iter__(self):
         
         return iter(self._blocks)

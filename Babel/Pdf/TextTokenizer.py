@@ -211,12 +211,18 @@ def strip_word_list(word_list):
 
     """ Return a word list where the leading and trailing spaces was removed. """
 
+    upper_index_max = len(word_list) -1
+    if upper_index_max < 0:
+        return u''
+    
     lower_index = 0
     while True:
         if word_list[lower_index].is_space:
             lower_index += 1
         else:
             break
+        if lower_index > upper_index_max:
+            return []
     upper_index = len(word_list) -1
     while True:
         if word_list[upper_index].is_space:
@@ -230,6 +236,23 @@ def strip_word_list(word_list):
 
 def join_tokens(tokens):
     return ''.join([unicode(token) for token in tokens])
+
+####################################################################################################
+
+def strip_non_alphabetic(text):
+    
+    upper_index = len(text) -1
+    while True:
+        char = text[upper_index]
+        category = unicodedata.category(char)
+        if category not in ('Ll', 'Lu'):
+            upper_index -= 1
+        else:
+            break
+        if upper_index < 0:
+            return u''
+
+    return text[0:upper_index +1]
 
 ####################################################################################################
 # 

@@ -16,7 +16,7 @@
 ####################################################################################################
 
 from .PdfDocument import PdfDocument
-from .TextTokenizer import strip_word_list
+from .TextTokenizer import Token, strip_word_list, strip_non_alphabetic
 from Babel.Tools.DictionaryTools import DictInitialised
 from Babel.Tools.Statistics import Gaussian
 
@@ -28,8 +28,11 @@ class PdfMetaDataExtractor(object):
 
     address_words = set((
             'avenue',
+            'box',
+            'division',
             'france',
             'institute',
+            'laboratory',
             'rue',
             'university',
             'usa',
@@ -52,14 +55,22 @@ class PdfMetaDataExtractor(object):
         self._first_text_page = self._pdf_document.first_page.text
         self._first_text_blocks = self._first_text_page.blocks
 
-        self._guess_title()
-        self._guess_authors()
+        if bool(self._first_text_blocks):
+            self._guess_title()
+            self._guess_authors()
+        else:
+            # First page has not text, could be a scan
+            self._title_block = None
+            self._authors = []
 
     ##############################################
 
     @property
     def title(self):
-        return unicode(self._title_block)
+        if self._title_block is not None:
+            return unicode(self._title_block)
+        else:
+            return None
 
     ##############################################
 
@@ -126,27 +137,49 @@ class PdfMetaDataExtractor(object):
 
     ##############################################
 
+    @staticmethod
+    def word_ratio(block):
+
+        token_counter = 0
+        word_counter = 0
+        for token in block.tokenised_text:
+            token_counter += 1
+            if token.is_word:
+                word_counter += 1
+
+        return word_counter / float(token_counter)
+
+    ##############################################
+
     def _guess_title(self):
 
         # Fixme: inference ?
 
+        title_gaussian_style_rank = Gaussian(0, 1)
+        title_gaussian_y_rank = Gaussian(0, 3)
         probabilities = TextBlockProbabilities()
         for text_block in self._first_text_blocks_iterator():
-            title_gaussian_style_rank = Gaussian(0, 1)
-            title_gaussian_y_rank = Gaussian(0, 3)
-            p0 = title_gaussian_style_rank(text_block.main_style.rank)
-            p1 = title_gaussian_y_rank(text_block.y_rank)
-            probability = p0*p1
-            # print 'Title probability', probability
-            probabilities.add_candidate(text_block=text_block, probability=probability)
+            if self.word_ratio(text_block) > .5:
+                p0 = title_gaussian_style_rank(text_block.main_style.rank)
+                p1 = title_gaussian_y_rank(text_block.y_rank)
+                probability = p0*p1
+                # print 'Title probability', probability
+                probabilities.add_candidate(text_block=text_block, probability=probability)
         probabilities.sort()
 
         text_block_probability = probabilities.most_probable()
-        self._title_block = text_block_probability.text_block
+        if text_block_probability is not None:
+            self._title_block = text_block_probability.text_block
+        else:
+            self._title_block = None
 
     ##############################################
 
     def _guess_authors(self):
+
+        if self._title_block is None:
+            self._authors = []
+            return 
 
         probabilities = TextBlockProbabilities()
         for text_block in self._first_text_blocks.sorted_iter():
@@ -168,27 +201,39 @@ class PdfMetaDataExtractor(object):
                 break
         else:
             author_block = None
-
         self._author_block = author_block
 
+        if author_block is None:
+            self._authors = []
+            return 
+
         author_list_words = []
+        space_token = Token(Token.Category.space, u' ')
         for i, line in enumerate(author_block.line_iterator()):
             line_words = []
             for word in line.tokenised_text:
                 if word.is_word and unicode(word).lower() in self.address_words:
                     break
                 else:
+                    # remove super script like: John Doe^1 Doe\dag
+                    if word.is_word:
+                        word = Token(word.category, strip_non_alphabetic(unicode(word)))
                     line_words.append(word)
             else:
+                if author_list_words:
+                    author_list_words.append(space_token)
                 author_list_words += line_words
 
         author_separators = []
         for i, word in enumerate(author_list_words):
-            if word.is_word and unicode(word).lower() == 'and': 
+            word_string = unicode(word).lower()
+            if (word.is_punctuation and word_string == ',' or
+                (word.is_word and word_string == 'and')): 
                 author_separators.append(i)
         lower_index = 0
         number_of_words = len(author_list_words)
-        if author_separators[-1] != number_of_words -1:
+        if (not author_separators or
+            (author_separators and author_separators[-1] != number_of_words -1)):
            author_separators.append(number_of_words) 
         self._authors = []
         for upper_index in author_separators:
@@ -243,7 +288,10 @@ class TextBlockProbabilities(list):
 
     def most_probable(self):
 
-        return self[0]
+        if self:
+            return self[0]
+        else:
+            return None
 
 ####################################################################################################
 

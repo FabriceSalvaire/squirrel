@@ -21,7 +21,7 @@ import logging
 
 ####################################################################################################
 
-from Babel.Application.BabelApplication import BabelApplication
+# from Babel.Application.BabelApplication import BabelApplication
 from Babel.FileSystem.File import Path, Directory, File
 from Babel.Importer.ImporterRegistry import importer_registry
 
