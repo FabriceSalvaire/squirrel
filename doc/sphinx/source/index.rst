@@ -7,6 +7,7 @@
   :numbered:
 
   api/Babel.rst
+  design/design.rst
 
 =========
  Indexes
