@@ -92,12 +92,18 @@ class TextPage():
 
     ##############################################
 
+    def _append_span_text(self, text_line, span_text, style_id):
+
+        span_text = span_text.rstrip()
+        text_span = TextSpan(span_text, self.styles[style_id])
+        text_line.append(text_span)
+
+    ##############################################
+
     def _get_blocks(self):
 
         """ Return an :obj:`TextBlocks` instance for the page. """
 
-        styles = self.styles
-        
         blocks = TextBlocks()
         for c_block in TextBlockIterator(self._text_page):
             text_block = TextBlock(self)
@@ -105,9 +111,22 @@ class TextPage():
                 line_interval = to_interval(c_line.bbox)
                 text_line = TextLine(line_interval)
                 for c_span in TextSpanIterator(c_line):
-                    text_span = TextSpan(span_to_string(c_span), styles[c_span.style.id])
-                    text_line.append(text_span)
-                # If the line is empty then start a new block
+                    style_id = None
+                    span_text = u''
+                    for c_char in TextCharIterator(c_span):
+                        # Fixme: Style addresses are alternated. Why?
+                        char_style_id = c_char.style.id
+                        char = unichr(c_char.c)
+                        if char_style_id is not style_id:
+                            if span_text:
+                                self._append_span_text(text_line, span_text, style_id)
+                            style_id = char_style_id
+                            span_text = char
+                        else:
+                            span_text += char
+                    if span_text:
+                        self._append_span_text(text_line, span_text, style_id)
+               # If the line is empty then start a new block
                 if not bool(text_line) and bool(text_block):
                     blocks.append(text_block)
                     text_block = TextBlock(self)
@@ -162,17 +181,24 @@ class TextPage():
             for line in TextLineIterator(block):
                 text += u' '*2 + u'<line bbox="' + format_bounding_box(line) + u'">\n'
                 for span in TextSpanIterator(line):
-                    style = span.style
-                    font_name = get_font_name(style.font)
-                    text += u' '*4 + u'<span bbox="' + format_bounding_box(span) + \
-                        u'" font="%s" size="%g">\n' % (font_name, style.size)
+                    style_id = None
                     if dump_char:
                         for char in TextCharIterator(span):
-                            text += u' '*6 + '<char bbox="' + format_bounding_box(char) + \
-                                u'" c="%s"/>\n' % (unichr(char.c))
+                            # Fixme: Style addresses are alternated. Why?
+                            if char.style.id is not style_id:
+                                if style_id is not None:
+                                    text += u' '*4 + u'</span>\n'
+                                style = char.style
+                                style_id = style.id
+                                font_name = get_font_name(style.font)
+                                # Fixme: bounding box is wrong
+                                text += u' '*4 + u'<span bbox="' + format_bounding_box(span) + \
+                                    u'" font="%s" size="%g">\n' % (font_name, style.size)
+                            text += u' '*6 + '<char c="%s"/>\n' % (unichr(char.c))
+                        if style_id is not None:
+                            text += u' '*4 + u'</span>\n'
                     else:
                         text += u' '*4 + u'<p>' + span_to_string(span) + u'</p>\n'
-                    text += u' '*4 + u'</span>\n'
                 text += u' '*2 + u'</line>\n'
             text += u'</block>\n'
         text += u'</page>\n'
@@ -537,7 +563,10 @@ class TextLine(TextBase):
 
 class TextSpan(TextBase):
 
-    """ This class represents a span that is a piece of text having only one style. """
+    """ This class represents a span that is a piece of text having only one style.
+
+    A TextSpan corresponds here to the subset of chars having the same style within a C span.
+    """
     
     ##############################################
 

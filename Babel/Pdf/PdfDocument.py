@@ -216,15 +216,20 @@ class Page(object):
     ##############################################
 
     def _bounding_box(self):
-        
-        return cmupdf.fz_bound_page(self._c_document, self._c_page)
+
+        # Determine the size of a page at 72 dpi.
+        bounds = cmupdf.fz_rect_s()
+        cmupdf.fz_bound_page(self._c_document, self._c_page, bounds)
+
+        return bounds
 
     ##############################################
 
     def _make_transform(self, scale=1, rotation=0):
 
-        transform = cmupdf.fz_scale(scale, scale)
-        transform = cmupdf.fz_concat(transform, cmupdf.fz_rotate(rotation))
+        transform = cmupdf.fz_matrix_s()
+        cmupdf.fz_rotate(transform, rotation)
+        cmupdf.fz_pre_scale(transform, scale, scale)
 
         return transform
 
@@ -232,8 +237,10 @@ class Page(object):
 
     def _transform_bounding_box(self, transform):
 
-        bounding_box = self._bounding_box()
-        bounding_box = cmupdf.fz_transform_rect(transform, bounding_box)
+        bounds = self._bounding_box()
+        cmupdf.fz_transform_rect(bounds, transform)
+        bounding_box = cmupdf.fz_irect_s()
+        cmupdf.fz_round_rect(bounding_box, bounds)
 
         return bounding_box
 
@@ -243,12 +250,11 @@ class Page(object):
 
         transform = self._make_transform(scale, rotation)
         bounding_box = self._transform_bounding_box(transform)
-        bounding_box = cmupdf.fz_round_rect(bounding_box)
 
         width, height = rect_width_height(bounding_box)
         np_array = np.zeros((height, width, 4), dtype=np.uint8)
         pixmap = cmupdf.fz_new_pixmap_with_bbox_and_data(self._context,
-                                                         cmupdf.get_fz_device_rgb(),
+                                                         cmupdf.fz_device_rgb(self._context),
                                                          bounding_box,
                                                          cmupdf.numpy_to_pixmap(np_array))
         cmupdf.fz_clear_pixmap_with_value(self._context, pixmap, 0xff)
@@ -268,10 +274,9 @@ class Page(object):
         """ Return a :obj:`.TextPage` instance. """
 
         transform = self._make_transform(scale, rotation)
-        bounding_box = self._transform_bounding_box(transform)
 
         text_sheet = cmupdf.fz_new_text_sheet(self._context)
-        text_page = cmupdf.fz_new_text_page(self._context, bounding_box)
+        text_page = cmupdf.fz_new_text_page(self._context)
 
         device = cmupdf.fz_new_text_device(self._context, text_sheet, text_page)
         cmupdf.fz_run_page(self._c_document, self._c_page, device, transform, None)
