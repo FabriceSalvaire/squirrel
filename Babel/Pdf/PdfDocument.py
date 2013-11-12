@@ -235,29 +235,105 @@ class Page(object):
 
     ##############################################
 
-    def _transform_bounding_box(self, transform):
+    def _transform_bounding_box(self,
+                                rotation=0,
+                                resolution=72,
+                                width=0, height=0, fit=False):
 
         bounds = self._bounding_box()
-        cmupdf.fz_transform_rect(bounds, transform)
-        bounding_box = cmupdf.fz_irect_s()
-        cmupdf.fz_round_rect(bounding_box, bounds)
+        scale = resolution / 72.
+        transform = cmupdf.fz_matrix_s()
+        cmupdf.fz_pre_scale(cmupdf.fz_rotate(transform, rotation), scale, scale)
+        tmp_bounds = cmupdf.fz_rect_s()
+        cmupdf.fz_copy_rect(tmp_bounds, bounds)
+        ibounds = cmupdf.fz_irect_s()
+        cmupdf.fz_round_rect(ibounds, cmupdf.fz_transform_rect(tmp_bounds, transform))
 
-        return bounding_box
+        # If a resolution is specified, check to see whether width/height are exceeded if not, unset them.
+        if resolution != 72:
+            actual_width = ibounds.x1 - ibounds.x0
+            actual_height = ibounds.y1 - ibounds.y0 
+            if width and actual_width <= width:
+                width = 0
+            if height and actual_height <= height:
+                height = 0
+
+        # Now width or height will be 0 unless they need to be enforced.
+        if width or height:
+            scale_x = width  / (tmp_bounds.x1 - tmp_bounds.x0)
+            scale_y = height / (tmp_bounds.y1 - tmp_bounds.y0)
+            if fit: # ignore aspect
+                if not scale_x:
+                    scale_x = 1.0 # keep computed width
+                elif not scale_y:
+                    scale_y = 1.0 # keep computed height
+            else:
+                if not scale_x:
+                    scale_x = scale_y
+                elif not scale_y:
+                    scale_y = scale_x
+                else:
+                    # take the smallest scale
+                    if scale_x > scale_y:
+                        scale_x = scale_y
+                    else:
+                        scale_y = scale_x
+            scale_mat = cmupdf.fz_matrix_s()
+            cmupdf.fz_scale(scale_mat, scale_x, scale_y)
+            cmupdf.fz_concat(transform, transform, scale_mat)
+            cmupdf.fz_copy_rect(tmp_bounds, bounds)
+            cmupdf.fz_transform_rect(tmp_bounds, transform)
+
+        cmupdf.fz_round_rect(ibounds, tmp_bounds)
+
+        return transform, ibounds
 
     ##############################################
 
-    def to_pixmap(self, scale=1, rotation=0, antialiasing_level=8):
+    def to_png(self, path,
+               rotation=0,
+               resolution=72,
+               width=0, height=0, fit=False,
+               antialiasing_level=8,
+               ):
 
-        transform = self._make_transform(scale, rotation)
-        bounding_box = self._transform_bounding_box(transform)
+        transform, bounding_box = self. _transform_bounding_box(rotation,
+                                                                resolution,
+                                                                width, height, fit)
+        
+        pixmap = cmupdf.fz_new_pixmap_with_bbox(self._context,
+                                                cmupdf.fz_device_rgb(self._context),
+                                                bounding_box)
+        cmupdf.fz_pixmap_set_resolution(pixmap, resolution) # purpose ?
+        cmupdf.fz_clear_pixmap_with_value(self._context, pixmap, 255)
 
+        device = cmupdf.fz_new_draw_device(self._context, pixmap)
+        cmupdf.fz_set_aa_level(self._context, antialiasing_level)
+        cmupdf.fz_run_page(self._c_document, self._c_page, device, transform, None)
+        cmupdf.fz_write_png(self._context, pixmap, path, False)
+        cmupdf.fz_free_device(device)
+        cmupdf.fz_drop_pixmap(self._context, pixmap)
+
+    ##############################################
+
+    def to_pixmap(self,
+                  rotation=0,
+                  resolution=72,
+                  width=None, height=None, fit=False,
+                  antialiasing_level=8,
+                  ):
+
+        transform, bounding_box = self. _transform_bounding_box(rotation,
+                                                                resolution,
+                                                                width, height, fit)
+        
         width, height = rect_width_height(bounding_box)
         np_array = np.zeros((height, width, 4), dtype=np.uint8)
         pixmap = cmupdf.fz_new_pixmap_with_bbox_and_data(self._context,
                                                          cmupdf.fz_device_rgb(self._context),
                                                          bounding_box,
                                                          cmupdf.numpy_to_pixmap(np_array))
-        cmupdf.fz_clear_pixmap_with_value(self._context, pixmap, 0xff)
+        cmupdf.fz_clear_pixmap_with_value(self._context, pixmap, 255)
         
         device = cmupdf.fz_new_draw_device(self._context, pixmap)
         cmupdf.fz_set_aa_level(self._context, antialiasing_level)
