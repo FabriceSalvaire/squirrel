@@ -1,0 +1,92 @@
+#! /usr/bin/env python
+
+####################################################################################################
+# 
+# Babel - A Bibliography Manager 
+# Copyright (C) Salvaire Fabrice 2013 
+# 
+####################################################################################################
+
+####################################################################################################
+#
+# Logging
+#
+
+import Babel.Logging.Logging as Logging
+
+logger = Logging.setup_logging('babel')
+
+####################################################################################################
+
+import argparse
+import codecs
+
+####################################################################################################
+
+from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpusDataBase
+from Babel.Pdf.DocumentWords import DocumentWords
+from Babel.Pdf.TextTokenizer import TextTokenizer
+from Babel.Tools.ProgramOptions import PathAction
+
+####################################################################################################
+#
+# Options
+#
+
+argument_parser = argparse.ArgumentParser(description='Analyse a text file.')
+
+argument_parser.add_argument('path', metavar='FILE.txt',
+                             action=PathAction,
+                             help='PDF file')
+
+argument_parser.add_argument('--words',
+                             action='store_true',
+                             default=False,
+                             help='Display document words')
+
+argument_parser.add_argument('--main-words',
+                             action='store_true',
+                             default=False,
+                             help='Display document main words')
+
+args = argument_parser.parse_args()
+
+####################################################################################################
+
+def show_words(text, main_words):
+
+    database = BritishNationalCorpusDataBase()
+    word_table = database.word_table
+
+    tokenised_text = TextTokenizer().lex(text)
+    document_words = DocumentWords()
+    for token in tokenised_text.word_iterator():
+        document_words.add(unicode(token).lower())
+
+    print 'Words:'
+    for word_count in document_words:
+        word_rows = word_table.select_by(word=word_count.word).all()
+        if word_rows:
+            word_row = word_rows[0]
+            # print '%6u' % count, word, str([word_row.part_of_speech_tag_id for word_row in word_rows])
+            if ((not main_words) or
+                (main_words and
+                 len(word_count.word) >= 3 and database.is_noun(word_row))):
+                tag = database.part_of_speech_tag_from_id(word_row.part_of_speech_tag_id)
+                print '%6u' % word_count.count, word_count.word, tag
+        else:
+            print '%6u' % word_count.count, word_count.word
+
+####################################################################################################
+
+with codecs.open(args.path, encoding='utf-8') as f:
+    text = f.read()
+
+if args.words or args.main_words:
+    show_words(text, args.main_words)
+
+####################################################################################################
+# 
+# End
+# 
+####################################################################################################
