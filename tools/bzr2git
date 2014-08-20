@@ -1,0 +1,10 @@
+#! /bin/bash
+mv .git .git-backup
+git init
+# Fix .git
+bzr fast-export --plain --rewrite-tag-names --git-branch=master \
+  | sed -e 's/mendeley-oapi-example\/\.git/mendeley-oapi-example\/git/' \
+  | git fast-import
+git remote add origin git@github.com:FabriceSalvaire/Biblio.git
+git push origin master # --force
+# End
