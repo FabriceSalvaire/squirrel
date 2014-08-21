@@ -9,6 +9,8 @@
 #
 #                                              Audit
 #
+# - 21/08/2014 simplify ?
+#
 # - 13/02/2013 Fabrice
 #   - add dict interface ?
 #   - property
@@ -32,16 +34,6 @@ from Babel.Tools.Math import rint
 
 platform_enum = EnumFactory('PlatformEnum', ('linux', 'windows', 'macosx'))
 
-####################################################################################################
-#
-# xdpyinfo
-# screen #0:
-#   dimensions:    1280x1024 pixels (382x302 millimeters)
-#   resolution:    85x86 dots per inch
-#
-# x11info = QtGui.QX11Info()
-# dpi = x11info.appDpiX(screen), x11info.appDpiY(screen)
-#
 ####################################################################################################
 
 class Platform(object):

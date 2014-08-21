@@ -13,17 +13,13 @@ from PyQt4 import QtCore, QtGui
 
 ####################################################################################################
 
-from Babel.FileSystem.File import Path, Directory
+from .DocumentDirectory import DocumentDirectory
 from Babel.GUI.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
-from Babel.Pdf.PdfDocument import PdfDocument
 
 ####################################################################################################
 
 class PdfBrowserMainWindow(MainWindowBase):
-
-    importable_mime_types = ('application/pdf',
-                             )
 
     ##############################################
 
@@ -33,56 +29,54 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         self._init_ui()
         if path is not None:
-            self.open_directory(Directory(path))
-
-    ##############################################
-
-    def _is_file_importable(self, file_path):
-
-        return file_path.mime_type in self.importable_mime_types
+            self.open_directory(path)
 
     ##############################################
 
     def open_directory(self, path):
 
-        self._file_paths = [file_path
-                            for file_path in path.iter_file()
-                            if self._is_file_importable(file_path)]
-        # implement a ring or linked list
-        self._file_index = 0
-        self.open_document()
-
-    ##############################################
-
-    def current_document(self):
-
-        return self._file_paths[self._file_index]
-
-    ##############################################
-
-    def open_document(self):
-
-        path = self.current_document()
-
-        self._pdf_document = PdfDocument(path)
-        self._pdf_page = self._pdf_document[0]
-        self._image_viewer.update_page(self._pdf_page)
+        self._document_directory = DocumentDirectory(path)
+        self._show_document()
 
     ##############################################
 
     def previous_document(self):
 
-        if self._file_index > 0:
-            self._file_index -= 1
-            self.open_document()
+        try:
+            self._document_directory.previous()
+            self._show_document()
+        except StopIteration:
+            pass
 
     ##############################################
 
     def next_document(self):
 
-        if self._file_index < len(self._file_paths) -1:
-            self._file_index += 1
-            self.open_document()
+        try:
+            self._document_directory.next()
+            self._show_document()
+        except StopIteration:
+            pass
+
+    ##############################################
+
+    def current_document(self):
+
+        return self._document_directory.current_item
+
+    ##############################################
+
+    def _show_document(self):
+
+        self._image_viewer.update(self.current_document())
+
+    ##############################################
+
+    def select_document(self):
+
+        document = self.current_document()
+        document.selected = not document.selected
+        self._image_viewer.update_style(document)
 
     ##############################################
     
@@ -96,6 +90,8 @@ class PdfBrowserMainWindow(MainWindowBase):
                           self,
                           toolTip='Previous Document',
                           triggered=lambda: self.previous_document(),
+                          shortcut='Backspace',
+                          shortcutContext=QtCore.Qt.ApplicationShortcut,
                           )
 
         self._next_document_action = \
@@ -104,6 +100,18 @@ class PdfBrowserMainWindow(MainWindowBase):
                           self,
                           toolTip='Next Document',
                           triggered=lambda: self.next_document(),
+                          shortcut='Space',
+                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          )
+
+        self._select_action = \
+            QtGui.QAction(icon_loader['get-hot-new-stuff'],
+                          'Select document',
+                          self,
+                          toolTip='Select Document',
+                          triggered=lambda: self.select_document(),
+                          shortcut='Ctrl+S',
+                          shortcutContext=QtCore.Qt.ApplicationShortcut,
                           )
 
     ##############################################
@@ -113,6 +121,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._page_tool_bar = self.addToolBar('Documents')
         for item in (self._previous_document_action,
                      self._next_document_action,
+                     self._select_action,
                     ):
             if isinstance(item,QtGui.QAction):
                 self._page_tool_bar.addAction(item)
@@ -176,12 +185,27 @@ class ImageViewer(QtGui.QScrollArea):
 
     ##############################################
 
-    def update_page(self, pdf_page):
+    def update(self, document):
 
-        np_array = pdf_page.to_pixmap(resolution=150)
-        height, width = np_array.shape[:2]
-        image = QtGui.QImage(np_array.data, width, height, QtGui.QImage.Format_ARGB32)
-        self._pixmap_label.setPixmap(QtGui.QPixmap.fromImage(image))
+        self.update_style(document)
+
+        image = document.image
+        height, width = image.shape[:2]
+        qimage = QtGui.QImage(image.data, width, height, QtGui.QImage.Format_ARGB32)
+        self._pixmap_label.setPixmap(QtGui.QPixmap.fromImage(qimage))
+
+    ##############################################
+
+    def update_style(self, document):
+
+        if document.selected:
+            margin = 15
+            colour = QtGui.QColor()
+            colour.setHsv(210, 150, 250)
+        else:
+            margin = 0
+            colour = QtGui.QColor(QtCore.Qt.white)
+        self._pixmap_label.setStyleSheet("border: {}px solid {};".format(margin, colour.name()))
             
 ####################################################################################################
 #
