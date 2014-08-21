@@ -1,0 +1,60 @@
+#! /usr/bin/env python
+
+####################################################################################################
+# 
+# Babel - A Bibliography Manager 
+# Copyright (C) Salvaire Fabrice 2013 
+# 
+####################################################################################################
+
+####################################################################################################
+#
+# Logging
+#
+
+import Babel.Logging.Logging as Logging
+
+logger = Logging.setup_logging('babel')
+
+####################################################################################################
+
+import argparse
+
+####################################################################################################
+
+from Babel.GUI.PdfBrowser.PdfBrowserApplication import PdfBrowserApplication
+from Babel.Tools.ProgramOptions import PathAction
+
+####################################################################################################
+#
+# Options
+#
+
+argument_parser = argparse.ArgumentParser(description='PDF Brower')
+
+argument_parser.add_argument('--path',
+                             action=PathAction,
+                             default=None,
+                             help='path')
+
+argument_parser.add_argument('--user-script',
+                             action=PathAction,
+                             default=None,
+                             help='user script to execute')
+
+argument_parser.add_argument('--user-script-args',
+                             default='',
+                             help="user script args (don't forget to quote)")
+
+args = argument_parser.parse_args()
+
+####################################################################################################
+
+application = PdfBrowserApplication(args=args)
+application.exec_()
+
+####################################################################################################
+# 
+# End
+# 
+####################################################################################################
