@@ -128,13 +128,30 @@ class Path(object):
 
     ##############################################
         
+    def split_iterator(self):
+
+        path = Directory(os.path.sep)
+        for part in self._path.split(os.path.sep):
+            path = path.join_directory(part)
+            yield path
+
+    ##############################################
+        
     def directory_part(self):
 
         return Directory(os.path.dirname(self._path))
 
     ##############################################
         
+    def basename(self):
+
+        return os.path.basename(self._path)
+
+    ##############################################
+        
     def filename_part(self):
+
+        # Fixme: -> basename
 
         return os.path.basename(self._path)
 
@@ -190,6 +207,8 @@ class Directory(Path):
 
     def iter_file(self, followlinks=False):
 
+        # Fime: -> walk
+
         for root, directories, files in os.walk(self._path, followlinks=followlinks):
             for filename in files:
                 yield File(filename, root)
@@ -198,9 +217,21 @@ class Directory(Path):
 
     def iter_directories(self, followlinks=False):
 
+        # Fime: -> walk
+
         for root, directories, files in os.walk(self._path, followlinks=followlinks):
             for directory in directories:
                 yield Path(os.path.join(root, directory))
+
+    ##############################################
+
+    def directories(self):
+
+        # Fixme: hidden directories
+
+        for item in os.listdir(self._path):
+            if os.path.isdir(os.path.join(self._path, item)):
+                yield item
 
 ####################################################################################################
 

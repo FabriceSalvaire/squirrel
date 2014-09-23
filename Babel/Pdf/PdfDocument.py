@@ -297,9 +297,9 @@ class Page(object):
                antialiasing_level=8,
                ):
 
-        transform, bounding_box = self. _transform_bounding_box(rotation,
-                                                                resolution,
-                                                                width, height, fit)
+        transform, bounding_box = self._transform_bounding_box(rotation,
+                                                               resolution,
+                                                               width, height, fit)
         
         pixmap = cmupdf.fz_new_pixmap_with_bbox(self._context,
                                                 cmupdf.fz_device_rgb(self._context),
@@ -323,9 +323,9 @@ class Page(object):
                   antialiasing_level=8,
                   ):
 
-        transform, bounding_box = self. _transform_bounding_box(rotation,
-                                                                resolution,
-                                                                width, height, fit)
+        transform, bounding_box = self._transform_bounding_box(rotation,
+                                                               resolution,
+                                                               width, height, fit)
         
         width, height = rect_width_height(bounding_box)
         np_array = np.zeros((height, width, 4), dtype=np.uint8)

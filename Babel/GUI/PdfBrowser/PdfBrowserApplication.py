@@ -33,7 +33,7 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
         self._logger.debug(str(args))
         
         from .PdfBrowserMainWindow import PdfBrowserMainWindow
-        self._main_window = PdfBrowserMainWindow(path=args.path)
+        self._main_window = PdfBrowserMainWindow()
         self._main_window.showMaximized()
         
         self.post_init()
@@ -43,6 +43,13 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
     def _init_actions(self):
 
         super(PdfBrowserApplication, self)._init_actions()
+
+    ##############################################
+
+    def post_init(self):
+
+        super(PdfBrowserApplication, self).post_init()
+        self._main_window.open_directory(self._args.path)
 
 ####################################################################################################
 #

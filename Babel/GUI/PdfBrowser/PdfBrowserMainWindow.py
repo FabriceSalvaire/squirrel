@@ -9,6 +9,8 @@
 
 ####################################################################################################
 
+import logging
+
 from PyQt4 import QtCore, QtGui
 
 ####################################################################################################
@@ -16,26 +18,32 @@ from PyQt4 import QtCore, QtGui
 from .DocumentDirectory import DocumentDirectory
 from Babel.GUI.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
+from Babel.GUI.Widgets.PathNavigator import PathNavigator
+
+####################################################################################################
+
+_module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
 class PdfBrowserMainWindow(MainWindowBase):
 
+    _logger = _module_logger.getChild('PdfBrowserMainWindow')
+
     ##############################################
 
-    def __init__(self, path=None, parent=None):
+    def __init__(self, parent=None):
 
         super(PdfBrowserMainWindow, self).__init__(title='Babel PDF Browser', parent=parent)
 
         self._init_ui()
-        if path is not None:
-            self.open_directory(path)
 
     ##############################################
 
     def open_directory(self, path):
 
         self._document_directory = DocumentDirectory(path)
+        self._path_navigator.path = path
         self._show_document()
 
     ##############################################
@@ -89,7 +97,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           'Previous document',
                           self,
                           toolTip='Previous Document',
-                          triggered=lambda: self.previous_document(),
+                          triggered=self.previous_document,
                           shortcut='Backspace',
                           shortcutContext=QtCore.Qt.ApplicationShortcut,
                           )
@@ -99,7 +107,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           'Next document',
                           self,
                           toolTip='Next Document',
-                          triggered=lambda: self.next_document(),
+                          triggered=self.next_document,
                           shortcut='Space',
                           shortcutContext=QtCore.Qt.ApplicationShortcut,
                           )
@@ -109,8 +117,28 @@ class PdfBrowserMainWindow(MainWindowBase):
                           'Select document',
                           self,
                           toolTip='Select Document',
-                          triggered=lambda: self.select_document(),
+                          triggered=self.select_document,
                           shortcut='Ctrl+S',
+                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          )
+
+        self._fit_width_action = \
+            QtGui.QAction(icon_loader['zoom-fit-width'],
+                          'Fit width',
+                          self,
+                          toolTip='Fit width',
+                          triggered=self._image_viewer.fit_width,
+                          shortcut='Ctrl+W',
+                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          )
+
+        self._fit_document_action = \
+            QtGui.QAction(icon_loader['zoom-fit-best'],
+                          'Fit document',
+                          self,
+                          toolTip='Fit document',
+                          triggered=self._image_viewer.fit_document,
+                          shortcut='Ctrl+B',
                           shortcutContext=QtCore.Qt.ApplicationShortcut,
                           )
 
@@ -122,6 +150,8 @@ class PdfBrowserMainWindow(MainWindowBase):
         for item in (self._previous_document_action,
                      self._next_document_action,
                      self._select_action,
+                     self._fit_width_action,
+                     self._fit_document_action,
                     ):
             if isinstance(item,QtGui.QAction):
                 self._page_tool_bar.addAction(item)
@@ -138,8 +168,14 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def _init_ui(self):
 
+        self._path_navigator = PathNavigator(self)
+        self._path_navigator.path_changed.connect(self.open_directory)
         self._image_viewer = ImageViewer(self)
-        self.setCentralWidget(self._image_viewer)
+        self._central_widget = QtGui.QWidget(self)
+        self._vertical_layout = QtGui.QVBoxLayout(self._central_widget)
+        self._vertical_layout.addWidget(self._path_navigator)
+        self._vertical_layout.addWidget(self._image_viewer)
+        self.setCentralWidget(self._central_widget)
         self.statusBar()
         self._create_actions()
         self._create_toolbar()
@@ -156,6 +192,8 @@ class PdfBrowserMainWindow(MainWindowBase):
 
 class ImageViewer(QtGui.QScrollArea):
 
+    _logger = _module_logger.getChild('ImageViewer')
+
     ##############################################
 
     def __init__(self, main_window):
@@ -164,6 +202,8 @@ class ImageViewer(QtGui.QScrollArea):
 
         self._main_window = main_window
         self._init_ui()
+
+        self._document = None
 
     ##############################################
 
@@ -187,18 +227,14 @@ class ImageViewer(QtGui.QScrollArea):
 
     def update(self, document):
 
-        self.update_style(document)
-
-        image = document.image
-        height, width = image.shape[:2]
-        qimage = QtGui.QImage(image.data, width, height, QtGui.QImage.Format_ARGB32)
-        self._pixmap_label.setPixmap(QtGui.QPixmap.fromImage(qimage))
+        self._document = document
+        self.fit_document()
 
     ##############################################
 
-    def update_style(self, document):
+    def update_style(self):
 
-        if document.selected:
+        if self._document.selected:
             margin = 15
             colour = QtGui.QColor()
             colour.setHsv(210, 150, 250)
@@ -206,6 +242,32 @@ class ImageViewer(QtGui.QScrollArea):
             margin = 0
             colour = QtGui.QColor(QtCore.Qt.white)
         self._pixmap_label.setStyleSheet("border: {}px solid {};".format(margin, colour.name()))
+
+    ##############################################
+
+    def fit_width(self):
+
+        # self._logger.info('')
+        # Fixme: resolution versus dimension
+        image = self._document.load(width=self.width(), height=0, resolution=1000)
+        self._set_pixmap(image)
+
+    ##############################################
+
+    def fit_document(self):
+
+        # self._logger.info('')
+        image = self._document.load(width=self.width(), height=self.height(), resolution=1000)
+        self._set_pixmap(image)
+
+    ##############################################
+
+    def _set_pixmap(self, image):
+
+        self.update_style()
+        height, width = image.shape[:2]
+        qimage = QtGui.QImage(image.data, width, height, QtGui.QImage.Format_ARGB32)
+        self._pixmap_label.setPixmap(QtGui.QPixmap.fromImage(qimage))
             
 ####################################################################################################
 #

@@ -46,24 +46,23 @@ class PdfDocumentItem(DocumentItem):
 
         self._pdf_document = None
         self._cover_page = None
-        self._image = None
+        self._image_cache = {}
 
     ##############################################
 
-    @property
-    def image(self):
-
-        self.load()
-        return self._image
-
-    ##############################################
-
-    def load(self, resolution=150):
+    def load(self, width=None, height=None, resolution=150):
 
         if self._pdf_document is None:
             self._pdf_document = PdfDocument(self._path)
             self._cover_page = self._pdf_document[0]
-            self._image = self._cover_page.to_pixmap(resolution=resolution)
+
+        key = '{}-{}-{}'.format(width, height, resolution)
+        if key in self._image_cache:
+            return self._image_cache[key]
+        else:
+            image = self._cover_page.to_pixmap(resolution=resolution, width=width, height=height)
+            self._image_cache[key] = image
+            return image
 
 ####################################################################################################
 

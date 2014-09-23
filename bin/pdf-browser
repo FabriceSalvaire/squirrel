@@ -19,6 +19,7 @@ logger = Logging.setup_logging('babel')
 ####################################################################################################
 
 import argparse
+import os
 
 ####################################################################################################
 
@@ -32,9 +33,9 @@ from Babel.Tools.ProgramOptions import PathAction
 
 argument_parser = argparse.ArgumentParser(description='PDF Brower')
 
-argument_parser.add_argument('--path',
+argument_parser.add_argument('path', metavar='PATH',
                              action=PathAction,
-                             default=None,
+                             nargs='?', default='.',
                              help='path')
 
 argument_parser.add_argument('--user-script',
