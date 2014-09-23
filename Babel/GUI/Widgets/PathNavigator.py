@@ -238,7 +238,7 @@ class PathNavigatorButton(QtGui.QPushButton):
         self._set_display_hint_enabled(self.__POPUP_ACTIVE_HINT__, True)
         self.update() # ensure the button is drawn highlighted
 
-        directories = sorted(self._path.directories())
+        directories = sorted([directory.basename() for directory in self._path.iter_directories()])
         if not directories:
             return
 

@@ -73,7 +73,7 @@ class ImportSession(object):
 
     def import_recursively_path(self, path):
 
-        for file_path in path.iter_file():
+        for file_path in path.walk_files():
             if self.is_file_importable(file_path):
                 self.import_file(file_path)
             else:

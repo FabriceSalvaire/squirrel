@@ -104,7 +104,7 @@ class DocumentDirectory(Ring):
 
     def _open_directory(self):
 
-        for file_path in self._path.iter_file():
+        for file_path in self._path.iter_files():
             if self._is_file_importable(file_path):
                 document_class = self.__classes__[file_path.mime_type]
                 document = document_class(file_path)

@@ -7,6 +7,11 @@
 
 ####################################################################################################
 
+class EmptyRingError(Exception):
+    pass
+
+####################################################################################################
+
 class Ring(object):
 
     ##############################################
@@ -20,6 +25,11 @@ class Ring(object):
             self._current_index = 0
         else:
             self._current_index = None
+
+    ##############################################
+
+    def __nonzero__(self):
+        return bool(self._items)
 
     ##############################################
 
@@ -52,7 +62,7 @@ class Ring(object):
         if self._current_index is not None:
             return self._items[self._current_index]
         else:
-            raise IndexError
+            raise EmptyRingError()
 
     ##############################################
 

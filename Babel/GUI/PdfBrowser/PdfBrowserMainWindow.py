@@ -42,9 +42,13 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def open_directory(self, path):
 
+        # Fixme: move to application?
         self._document_directory = DocumentDirectory(path)
         self._path_navigator.path = path
-        self._show_document()
+        if self._document_directory:
+            self._show_document()
+        else:
+            self._image_viewer.clear()
 
     ##############################################
 
@@ -84,7 +88,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         document = self.current_document()
         document.selected = not document.selected
-        self._image_viewer.update_style(document)
+        self._image_viewer.update_style()
 
     ##############################################
     
@@ -268,6 +272,12 @@ class ImageViewer(QtGui.QScrollArea):
         height, width = image.shape[:2]
         qimage = QtGui.QImage(image.data, width, height, QtGui.QImage.Format_ARGB32)
         self._pixmap_label.setPixmap(QtGui.QPixmap.fromImage(qimage))
+
+    ##############################################
+
+    def clear(self):
+
+        self._pixmap_label.clear()
             
 ####################################################################################################
 #

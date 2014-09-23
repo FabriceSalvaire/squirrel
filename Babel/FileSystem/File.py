@@ -116,6 +116,12 @@ class Path(object):
 
     ##############################################
 
+    def join_path(self, path):
+
+        return self.__class__(os.path.join(self._path, str(path)))
+
+    ##############################################
+
     def clone_for_path(self, path):
 
         return self.__class__(path)
@@ -131,7 +137,7 @@ class Path(object):
     def split_iterator(self):
 
         path = Directory(os.path.sep)
-        for part in self._path.split(os.path.sep):
+        for part in self.split():
             path = path.join_directory(part)
             yield path
 
@@ -152,8 +158,7 @@ class Path(object):
     def filename_part(self):
 
         # Fixme: -> basename
-
-        return os.path.basename(self._path)
+        return self.basename()
 
     ##############################################
         
@@ -166,6 +171,12 @@ class Path(object):
     def is_file(self):
 
         return os.path.isfile(self._path)
+
+    ##############################################
+        
+    def is_hidden(self):
+
+        return self.basename().startswith('.')
 
     ##############################################
         
@@ -205,9 +216,26 @@ class Directory(Path):
 
     ##############################################
 
-    def iter_file(self, followlinks=False):
+    def iter_directories(self, hidden=False):
 
-        # Fime: -> walk
+        # Fixme: hidden directories
+        for item in os.listdir(self._path):
+            path = self.join_path(item)
+            if path.is_directory() and (hidden or not path.is_hidden()):
+                yield Directory(path)
+
+    ##############################################
+
+    def iter_files(self, hidden=False):
+
+        for item in os.listdir(self._path):
+            path = self.join_path(item)
+            if path.is_file() and (hidden or not path.is_hidden()):
+                yield File(path.filename_part(), path.directory_part())
+
+    ##############################################
+
+    def walk_files(self, followlinks=False):
 
         for root, directories, files in os.walk(self._path, followlinks=followlinks):
             for filename in files:
@@ -215,23 +243,11 @@ class Directory(Path):
 
     ##############################################
 
-    def iter_directories(self, followlinks=False):
-
-        # Fime: -> walk
+    def walk_directories(self, followlinks=False):
 
         for root, directories, files in os.walk(self._path, followlinks=followlinks):
             for directory in directories:
-                yield Path(os.path.join(root, directory))
-
-    ##############################################
-
-    def directories(self):
-
-        # Fixme: hidden directories
-
-        for item in os.listdir(self._path):
-            if os.path.isdir(os.path.join(self._path, item)):
-                yield item
+                yield Directory(os.path.join(root, directory))
 
 ####################################################################################################
 
