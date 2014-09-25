@@ -181,6 +181,8 @@ class PathNavigatorButton(QtGui.QPushButton):
 
     def _foreground_color(self):
 
+        # Fixme: remove ? = foreground_color
+
         is_highlighted = (self._is_display_hint_enabled(self.__ENTERED_HINT__) or
                           self._is_display_hint_enabled(self.__DRAGGED_HINT__) or
                           self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__))
@@ -251,7 +253,8 @@ class PathNavigatorButton(QtGui.QPushButton):
         self._set_display_hint_enabled(self.__POPUP_ACTIVE_HINT__, True)
         self.update() # ensure the button is drawn highlighted
 
-        directories = sorted([directory.basename() for directory in self._path.iter_directories()])
+        directories = sorted([directory.basename() for directory in self._path.iter_directories()],
+                             cmp=lambda a, b: cmp(a.lower(), b.lower()))
         if not directories:
             return
 

@@ -28,6 +28,8 @@ from PyQt4 import QtCore, QtGui
 
 ####################################################################################################
 
+from .DirectoryToc import DirectoryToc
+from .DirectoryTocWidget import DirectoryTocWidget
 from .DocumentDirectory import DocumentDirectory
 from Babel.GUI.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
@@ -56,6 +58,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def open_directory(self, path):
 
         # Fixme: move to application?
+        self._directory_toc.update(DirectoryToc(path))
         self._document_directory = DocumentDirectory(path)
         self._path_navigator.path = path
         if self._document_directory:
@@ -159,6 +162,26 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcutContext=QtCore.Qt.ApplicationShortcut,
                           )
 
+        self._pdf_browser_mode_action = \
+            QtGui.QAction(icon_loader['application-pdf'],
+                          'PDF browser mode',
+                          self,
+                          toolTip='PDF browser mode',
+                          triggered=self._pdf_browser_mode,
+                          shortcut='Ctrl+P',
+                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          )
+
+        self._directory_toc_mode_action = \
+            QtGui.QAction(icon_loader['folder-blue'],
+                          'Directory toc mode',
+                          self,
+                          toolTip='Directory toc mode',
+                          triggered=self._directory_toc_mode,
+                          shortcut='Ctrl+D',
+                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          )
+
     ##############################################
     
     def _create_toolbar(self):
@@ -169,6 +192,8 @@ class PdfBrowserMainWindow(MainWindowBase):
                      self._select_action,
                      self._fit_width_action,
                      self._fit_document_action,
+                     self._directory_toc_mode_action,
+                     self._pdf_browser_mode_action,
                     ):
             if isinstance(item,QtGui.QAction):
                 self._page_tool_bar.addAction(item)
@@ -186,11 +211,15 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _init_ui(self):
 
         self._path_navigator = PathNavigator(self)
+        self._directory_toc = DirectoryTocWidget()
         self._path_navigator.path_changed.connect(self.open_directory)
+        self._directory_toc.path_changed.connect(self.open_directory)
         self._image_viewer = ImageViewer(self)
+        self._image_viewer.hide()
         self._central_widget = QtGui.QWidget(self)
         self._vertical_layout = QtGui.QVBoxLayout(self._central_widget)
         self._vertical_layout.addWidget(self._path_navigator)
+        self._vertical_layout.addWidget(self._directory_toc)
         self._vertical_layout.addWidget(self._image_viewer)
         self.setCentralWidget(self._central_widget)
         self.statusBar()
@@ -205,6 +234,20 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         pass
 
+    ##############################################
+
+    def _directory_toc_mode(self):
+
+        self._directory_toc.show()
+        self._image_viewer.hide()
+
+    ##############################################
+
+    def _pdf_browser_mode(self):
+
+        self._directory_toc.hide()
+        self._image_viewer.show()
+        
 ####################################################################################################
 
 class ImageViewer(QtGui.QScrollArea):
