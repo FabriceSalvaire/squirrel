@@ -18,7 +18,9 @@
 # 
 ####################################################################################################
 
-""" Inspired from kdelibs/kfile/kurlnavigator.cpp
+"""This code corresponds to a simplified translation of kdelibs/kfile/kurlnavigator.cpp to Python. I
+don't want to rely on PyKDE4.
+
 """
 
 ####################################################################################################
@@ -162,14 +164,6 @@ class PathNavigatorButton(QtGui.QPushButton):
                           self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__))
 
         if is_highlighted:
-            background_color = self.palette().color(QtGui.QPalette.Highlight)
-        else:
-            background_color = Qt.transparent
-        active = True
-        if active and is_highlighted:
-            background_color.setAlpha(128)
-
-        if background_color != Qt.transparent:
             # TODO: the backgroundColor should be applied to the style
             option = QtGui.QStyleOptionViewItemV4()
             option.initFrom(self)
@@ -188,12 +182,7 @@ class PathNavigatorButton(QtGui.QPushButton):
                           self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__))
 
         foreground_color = self.palette().color(self.foregroundRole())
-
-        active = True
-        alpha = 255 if active else 128
-        if not active and not is_highlighted:
-            alpha -= alpha / 4
-        foreground_color.setAlpha(alpha)
+        foreground_color.setAlpha(255)
 
         return foreground_color
 
@@ -305,7 +294,7 @@ class PathNavigator(QtGui.QWidget):
 
     @path.setter
     def path(self, path):
-        self._set_path(path, False)
+        self._set_path(path, emit=False)
 
     ##############################################
 
