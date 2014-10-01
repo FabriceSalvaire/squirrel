@@ -46,7 +46,7 @@ class BabelApplication(ApplicationBase):
     def __init__(self, args, **kwargs):
          
         super(BabelApplication, self).__init__(args=args, **kwargs)
-        self._logger.debug(str(args) + ' ' + str(kwargs))
+        self._logger.debug(unicode(args) + ' ' + unicode(kwargs))
 
         self._make_user_directory()
         self._open_database()

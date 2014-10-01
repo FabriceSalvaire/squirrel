@@ -70,7 +70,7 @@ class Path(object):
 
     def __init__(self, path):
 
-        self._path = str(path)
+        self._path = unicode(path)
 
     ##############################################
         
@@ -80,7 +80,7 @@ class Path(object):
 
     ##############################################
         
-    def __str__(self):
+    def __unicode__(self):
 
         return self._path
 
@@ -125,13 +125,13 @@ class Path(object):
 
     def relative_to(self, directory):
 
-        return self.clone_for_path(os.path.relpath(self._path, str(directory)))
+        return self.clone_for_path(os.path.relpath(self._path, unicode(directory)))
 
     ##############################################
 
     def join_path(self, path):
 
-        return self.__class__(os.path.join(self._path, str(path)))
+        return self.__class__(os.path.join(self._path, unicode(path)))
 
     ##############################################
 
@@ -219,7 +219,7 @@ class Directory(Path):
 
     def join_directory(self, directory):
 
-        return self.__class__(os.path.join(self._path, str(directory)))
+        return self.__class__(os.path.join(self._path, unicode(directory)))
 
     ##############################################
 
@@ -272,7 +272,7 @@ class File(Path):
 
     def __init__(self, filename, path=''):
 
-        super(File, self).__init__(os.path.join(str(path), str(filename)))
+        super(File, self).__init__(os.path.join(unicode(path), unicode(filename)))
 
         self._filename = self.filename_part()
         if not self._filename:

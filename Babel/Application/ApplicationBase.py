@@ -43,7 +43,7 @@ class ApplicationBase(object):
     
     def __init__(self, args, **kwargs):
 
-        self._logger.debug(str(args) + ' ' + str(kwargs))
+        self._logger.debug(unicode(args) + ' ' + unicode(kwargs))
 
         sys.excepthook = self._exception_hook
 

@@ -60,9 +60,9 @@ class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
 
         super(GuiApplicationBase, self).__init__(args=args, **kwargs)
         # Fixme: Why ?
-        self._logger.debug("QtGui.QApplication " + str(sys.argv))
+        self._logger.debug("QtGui.QApplication " + unicode(sys.argv))
         QtGui.QApplication.__init__(self, sys.argv)
-        self._logger.debug('GuiApplicationBase ' + str(args) + ' ' + str(kwargs))
+        self._logger.debug('GuiApplicationBase ' + unicode(args) + ' ' + unicode(kwargs))
 
         self._display_splash_screen()
 

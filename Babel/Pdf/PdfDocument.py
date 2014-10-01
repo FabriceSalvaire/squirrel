@@ -54,7 +54,8 @@ class PdfDocument(object):
         self._path = path
 
         self._context = cmupdf.fz_new_context(None, None, cmupdf.FZ_STORE_UNLIMITED)
-        self._c_document = cmupdf.fz_open_document(self._context, str(self._path))
+        encoded_path = unicode(self._path).encode('utf-8')
+        self._c_document = cmupdf.fz_open_document(self._context, encoded_path)
         self._metadata = MetaData(self)
         self._number_of_pages = cmupdf.fz_count_pages(self._c_document)
         self._document_words = None

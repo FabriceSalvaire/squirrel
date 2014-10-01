@@ -265,7 +265,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
             drag = QtGui.QDrag(self)
             mime_data = QtCore.QMimeData()
-            document_path = str(self.current_document().path)
+            document_path = unicode(self.current_document().path)
             url = QtCore.QUrl.fromLocalFile(document_path)
             mime_data.setUrls((url,))
             drag.setMimeData(mime_data)

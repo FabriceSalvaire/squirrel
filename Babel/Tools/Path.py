@@ -51,7 +51,7 @@ def find(file_name, directories):
             if file_name in file_names:
                 return os.path.join(directory_path, file_name)
 
-    raise NameError("File %s not found in directories %s" % (file_name, str(directories)))
+    raise NameError("File %s not found in directories %s" % (file_name, unicode(directories)))
 
 ####################################################################################################
 
@@ -62,7 +62,7 @@ def find_alias(directory, file_names):
         if os.path.exists(absolut_file_name):
             return absolut_file_name
 
-    raise NameError("Any file in %s found in directory %s" % (str(file_names), directory))
+    raise NameError("Any file in %s found in directory %s" % (unicode(file_names), directory))
             
 ####################################################################################################
 #

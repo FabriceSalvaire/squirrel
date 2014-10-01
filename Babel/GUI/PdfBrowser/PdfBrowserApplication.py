@@ -43,7 +43,7 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
 
 
         super(PdfBrowserApplication, self).__init__(args=args)
-        self._logger.debug(str(args))
+        self._logger.debug(unicode(args))
         
         from .PdfBrowserMainWindow import PdfBrowserMainWindow
         self._main_window = PdfBrowserMainWindow()
