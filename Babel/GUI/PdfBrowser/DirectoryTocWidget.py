@@ -231,7 +231,7 @@ class DirectoryTocWidget(QtGui.QScrollArea):
             self._letter_widgets[letter] = letter_widget
             self._letter_column_layouts[letter] = column_layout
 
-        self._vertical_layout.addStretch()
+        self._vertical_layout.addStretch(10)
 
     ##############################################
 
