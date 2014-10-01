@@ -320,6 +320,10 @@ class ImageViewer(QtGui.QScrollArea):
 
     zoom_mode_enum = EnumFactory('ZoomModeEnum', ('fit_document', 'fit_width'))
 
+    # Fixme
+    horizontal_margin = 40 # scroller width
+    vertical_margin = 15 # widget margin?
+
     ##############################################
 
     def __init__(self, main_window):
@@ -370,7 +374,9 @@ class ImageViewer(QtGui.QScrollArea):
         self._logger.info('')
         # Fixme: resolution versus dimension
         self._zoom_mode = self.zoom_mode_enum.fit_width
-        image = self._document.load(width=self.width(), height=0, resolution=1000)
+        image = self._document.load(width=self.width() -self.horizontal_margin,
+                                    height=0,
+                                    resolution=1000)
         self._set_pixmap(image)
 
     ##############################################
@@ -379,7 +385,9 @@ class ImageViewer(QtGui.QScrollArea):
 
         self._logger.info('')
         self._zoom_mode = self.zoom_mode_enum.fit_document
-        image = self._document.load(width=self.width(), height=self.height(), resolution=1000)
+        image = self._document.load(width=self.width() -self.horizontal_margin,
+                                    height=self.height() -self.vertical_margin,
+                                    resolution=1000)
         self._set_pixmap(image)
 
     ##############################################
