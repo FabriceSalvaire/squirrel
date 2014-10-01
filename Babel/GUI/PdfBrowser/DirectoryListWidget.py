@@ -21,6 +21,7 @@
 ####################################################################################################
 
 import logging
+import os
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import Qt, pyqtSignal
@@ -28,7 +29,7 @@ from PyQt4.QtCore import Qt, pyqtSignal
 ####################################################################################################
 
 from .DirectorySelector import DirectorySelector
-from Babel.FileSystem.File import Directory
+from Babel.FileSystem.File import Directory, File
 from Babel.GUI.Widgets.IconLoader import IconLoader
 
 ####################################################################################################
@@ -42,6 +43,7 @@ class DirectoryWidget(QtGui.QWidget):
     _logger = _module_logger.getChild('DirectoryWidget')
 
     deleted = pyqtSignal(QtGui.QWidget)
+    dropped_file = pyqtSignal(File, Directory)
 
     ##############################################
 
@@ -88,6 +90,7 @@ class DirectoryWidget(QtGui.QWidget):
         if mime_data.hasUrls():
             urls = [unicode(url.path()) for url in mime_data.urls()]
             self._logger.info(unicode(urls))
+            self.dropped_file.emit(File(urls[0]), self._path)
         self.setBackgroundRole(QtGui.QPalette.Window)
         event.acceptProposedAction()
 
@@ -104,6 +107,8 @@ class DirectoryWidget(QtGui.QWidget):
 class DirectoryListWidget(QtGui.QWidget):
 
     _logger = _module_logger.getChild('DirectoryListWidget')
+
+    move_file = pyqtSignal(File, Directory)
 
     ##############################################
 
@@ -163,6 +168,7 @@ class DirectoryListWidget(QtGui.QWidget):
             path = directory_selector.path
             widget = DirectoryWidget(path, self)
             widget.deleted.connect(self._delete_item)
+            widget.dropped_file.connect(self.move_file)
             index = self._vertical_layout.count() -1
             self._vertical_layout.insertWidget(index, widget)
             self._widgets.append(widget)

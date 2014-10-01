@@ -122,7 +122,12 @@ class Ring(object):
 
     def delete(self, item):
 
-        index = self._items.index(item)
+        self.delete_index(self._items.index(item))
+
+    ##############################################
+
+    def delete_index(self, index):
+
         if index != -1:
             if len(self._items) == 1:
                 self._current_index = None
@@ -143,6 +148,11 @@ class Ring(object):
         current_item = self.current_item
         self._items.sort(cmp=cmp, reverse=reverse)
         self._current_index = self._items.index(current_item)
+
+    ##############################################
+
+    def __iter__(self):
+        return iter(self._items)
 
 ####################################################################################################
 # 

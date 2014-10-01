@@ -23,6 +23,7 @@
 ####################################################################################################
 
 import logging
+import os
 import subprocess
 
 from PyQt4 import QtCore, QtGui
@@ -248,6 +249,8 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._directory_list_dock_widget.setWidget(self._directory_list)
         self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
 
+        self._directory_list.move_file.connect(self.move_file)
+
         self._translate_ui()
 
     ##############################################
@@ -294,6 +297,20 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         document_path = unicode(self.current_document().path)
         subprocess.call(('xdg-open', document_path))
+
+    ##############################################
+
+    def move_file(self, file_path, dst_path):
+
+        to_file_path = dst_path.join_filename(file_path.filename_part())
+        os.rename(unicode(file_path), unicode(to_file_path))
+        current_document = self.current_document()
+        if current_document.path != file_path:
+            self._document_directory.delete(current_document)
+        else:
+            if not self._document_directory.delete_path(file_path):
+                raise NameError("File {} not in the current directory".format(file_path))
+        self._show_document()
         
 ####################################################################################################
 

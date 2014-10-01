@@ -131,6 +131,25 @@ class DocumentDirectory(Ring):
                 document = document_class(file_path)
                 self.add(document)
 
+    ##############################################
+
+    def find_path(self, file_path):
+
+        for document in self:
+            if file_path == document.path:
+                return document
+        return None
+
+    ##############################################
+
+    def delete_path(self, file_path):
+
+        for i, document in enumerate(self):
+            if file_path == document.path:
+                self.delete_index(i)
+                return True
+        return False
+
 ####################################################################################################
 # 
 # End

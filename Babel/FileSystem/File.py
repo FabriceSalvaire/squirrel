@@ -80,6 +80,12 @@ class Path(object):
 
     ##############################################
         
+    def __eq__(self, other):
+
+        return self._path == unicode(other)
+
+    ##############################################
+        
     def __unicode__(self):
 
         return self._path
