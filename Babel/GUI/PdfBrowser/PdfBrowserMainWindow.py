@@ -23,6 +23,7 @@
 ####################################################################################################
 
 import logging
+import subprocess
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import Qt
@@ -185,6 +186,17 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcutContext=Qt.ApplicationShortcut,
                           )
 
+
+        self._open_pdf_action = \
+            QtGui.QAction(icon_loader['document-export'],
+                          'Open PDF',
+                          self,
+                          toolTip='Open PDF',
+                          triggered=self.open_current_document,
+                          shortcut='Ctrl+O',
+                          shortcutContext=Qt.ApplicationShortcut,
+                          )
+
     ##############################################
     
     def _create_toolbar(self):
@@ -197,6 +209,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                      self._fit_document_action,
                      self._directory_toc_mode_action,
                      self._pdf_browser_mode_action,
+                     self._open_pdf_action,
                     ):
             if isinstance(item,QtGui.QAction):
                 self._page_tool_bar.addAction(item)
@@ -274,6 +287,13 @@ class PdfBrowserMainWindow(MainWindowBase):
             drag.setPixmap(icon_loader['application-pdf'].pixmap(32, 32))
 
             drop_action = drag.exec_()
+
+    ##############################################
+
+    def open_current_document(self):
+
+        document_path = unicode(self.current_document().path)
+        subprocess.call(('xdg-open', document_path))
         
 ####################################################################################################
 
