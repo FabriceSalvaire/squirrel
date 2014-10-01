@@ -8,10 +8,11 @@
 ####################################################################################################
 
 import argparse
+import os
 
 ####################################################################################################
 
-from Babel.FileSystem.File import File
+from Babel.FileSystem.File import File, Path
 
 ####################################################################################################
 
@@ -25,7 +26,8 @@ args = argument_parser.parse_args(application.args.user_script_args.split())
 
 ####################################################################################################
 
-application.open_pdf(File(args.filename))
+file_path = File(os.path.expanduser(args.filename)) # Fixme:
+application.open_pdf(file_path)
 
 ####################################################################################################
 #
