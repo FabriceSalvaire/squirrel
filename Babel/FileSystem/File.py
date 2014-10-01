@@ -210,6 +210,11 @@ class Path(object):
 class Directory(Path):
 
     ##############################################
+
+    # alias
+    parent = Path.directory_part
+
+    ##############################################
         
     def __nonzero__(self):
 

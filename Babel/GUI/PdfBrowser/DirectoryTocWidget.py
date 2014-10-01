@@ -32,6 +32,7 @@ from PyQt4.QtCore import Qt, pyqtSignal
 
 from Babel.FileSystem.File import Directory
 from Babel.GUI.Widgets.ColumnLayout import ColumnLayout
+from Babel.GUI.Widgets.IconLoader import IconLoader
 
 ####################################################################################################
 
@@ -175,6 +176,14 @@ class DirectoryTocWidget(QtGui.QScrollArea):
 
         super(DirectoryTocWidget, self).__init__(parent)
 
+        self._directory_toc = None
+
+        self._init_ui()
+
+    ##############################################
+
+    def _init_ui(self):
+
         self.setWidgetResizable(True)
 
         self._widget = QtGui.QWidget()
@@ -184,6 +193,12 @@ class DirectoryTocWidget(QtGui.QScrollArea):
         self._vertical_layout = QtGui.QVBoxLayout(self._widget)
         self._vertical_layout.setSpacing(0)
         self._vertical_layout.setMargin(10)
+
+        icon_loader = IconLoader()
+        self._go_up_button = QtGui.QToolButton(self)
+        self._go_up_button.setIcon(icon_loader['go-up'])
+        self._go_up_button.clicked.connect(self._go_up)
+        self._vertical_layout.addWidget(self._go_up_button)
 
         font = QtGui.QFont()
         font.setPointSize(16)
@@ -215,7 +230,8 @@ class DirectoryTocWidget(QtGui.QScrollArea):
             horizontal_layout.addLayout(column_layout)
             self._letter_widgets[letter] = letter_widget
             self._letter_column_layouts[letter] = column_layout
-            # self._vertical_layout.addStretch()
+
+        self._vertical_layout.addStretch()
 
     ##############################################
 
@@ -229,6 +245,8 @@ class DirectoryTocWidget(QtGui.QScrollArea):
     def update(self, directory_toc):
 
         self._logger.info('')
+
+        self._directory_toc = directory_toc
 
         for letter in self.letter_iterator():
             letter_widget = self._letter_widgets[letter]
@@ -250,6 +268,13 @@ class DirectoryTocWidget(QtGui.QScrollArea):
 
         # self._widget.updateGeometry()
         self.setWidget(self._widget)
+
+    ##############################################
+
+    def _go_up(self):
+
+        path = self._directory_toc.path.parent()
+        self.path_changed.emit(path)
 
 ####################################################################################################
 # 
