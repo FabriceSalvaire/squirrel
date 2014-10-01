@@ -36,6 +36,7 @@ from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.GUI.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.PathNavigator import PathNavigator
+from Babel.Tools.EnumFactory import EnumFactory
 
 ####################################################################################################
 
@@ -280,6 +281,8 @@ class ImageViewer(QtGui.QScrollArea):
 
     _logger = _module_logger.getChild('ImageViewer')
 
+    zoom_mode_enum = EnumFactory('ZoomModeEnum', ('fit_document', 'fit_width'))
+
     ##############################################
 
     def __init__(self, main_window):
@@ -290,24 +293,18 @@ class ImageViewer(QtGui.QScrollArea):
         self._init_ui()
 
         self._document = None
+        self._zoom_mode = None
 
     ##############################################
 
     def _init_ui(self):
 
-        # self._scroll_area = QtGui.QScrollArea(self)
+        self.setWidgetResizable(True)
+
         self.setWidgetResizable(True)
         self._pixmap_label = QtGui.QLabel()
-        # self.setWidget(self._pixmap_label)
-
-        widget = QtGui.QWidget()
-        horizontal_layout = QtGui.QHBoxLayout(widget)
-        spacer_item1 = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        spacer_item2 = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        horizontal_layout.addItem(spacer_item1)
-        horizontal_layout.addWidget(self._pixmap_label)
-        horizontal_layout.addItem(spacer_item2)
-        self.setWidget(widget)
+        self._pixmap_label.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        self.setWidget(self._pixmap_label)
 
     ##############################################
 
@@ -333,8 +330,9 @@ class ImageViewer(QtGui.QScrollArea):
 
     def fit_width(self):
 
-        # self._logger.info('')
+        self._logger.info('')
         # Fixme: resolution versus dimension
+        self._zoom_mode = self.zoom_mode_enum.fit_width
         image = self._document.load(width=self.width(), height=0, resolution=1000)
         self._set_pixmap(image)
 
@@ -342,7 +340,8 @@ class ImageViewer(QtGui.QScrollArea):
 
     def fit_document(self):
 
-        # self._logger.info('')
+        self._logger.info('')
+        self._zoom_mode = self.zoom_mode_enum.fit_document
         image = self._document.load(width=self.width(), height=self.height(), resolution=1000)
         self._set_pixmap(image)
 
@@ -360,6 +359,16 @@ class ImageViewer(QtGui.QScrollArea):
     def clear(self):
 
         self._pixmap_label.clear()
+
+    ##############################################
+
+    def resizeEvent(self, event):
+
+        # self._logger.info('')
+        if self._zoom_mode == self.zoom_mode_enum.fit_document:
+            self.fit_document()
+        else:
+            self.fit_width()
             
 ####################################################################################################
 #

@@ -175,6 +175,8 @@ class DirectoryTocWidget(QtGui.QScrollArea):
 
         super(DirectoryTocWidget, self).__init__(parent)
 
+        self.setWidgetResizable(True)
+
         self._widget = QtGui.QWidget()
         size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         self._widget.setSizePolicy(size_policy)
