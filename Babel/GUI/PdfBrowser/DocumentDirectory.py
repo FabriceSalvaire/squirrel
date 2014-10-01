@@ -18,6 +18,8 @@
 # 
 ####################################################################################################
 
+# Fixme: move elsewhere? not an importer or FileSystem
+
 ####################################################################################################
 
 from Babel.FileSystem.File import Directory
@@ -34,6 +36,12 @@ class DocumentItem(object):
 
         self._path = path
         self._selected = False
+
+    ##############################################
+
+    @property
+    def path(self):
+        return self._path
 
     ##############################################
 

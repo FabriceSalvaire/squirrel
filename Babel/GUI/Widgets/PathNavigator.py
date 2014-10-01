@@ -294,6 +294,11 @@ class PathNavigator(QtGui.QWidget):
 
     @path.setter
     def path(self, path):
+        self.set_path(path)
+
+    ##############################################
+
+    def set_path(self, path):
         self._set_path(path, emit=False)
 
     ##############################################

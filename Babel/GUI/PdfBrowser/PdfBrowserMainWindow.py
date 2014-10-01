@@ -25,12 +25,14 @@
 import logging
 
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import Qt
 
 ####################################################################################################
 
-from .DirectoryToc import DirectoryToc
+from .DirectoryListWidget import DirectoryListWidget
 from .DirectoryTocWidget import DirectoryTocWidget
 from .DocumentDirectory import DocumentDirectory
+from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.GUI.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.PathNavigator import PathNavigator
@@ -59,8 +61,8 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         # Fixme: move to application?
         self._directory_toc.update(DirectoryToc(path))
+        self._path_navigator.set_path(path) # Fixme: path_navigator -> open_directory -> path_navigator
         self._document_directory = DocumentDirectory(path)
-        self._path_navigator.path = path
         if self._document_directory:
             self._show_document()
         else:
@@ -119,7 +121,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           toolTip='Previous Document',
                           triggered=self.previous_document,
                           shortcut='Backspace',
-                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          shortcutContext=Qt.ApplicationShortcut,
                           )
 
         self._next_document_action = \
@@ -129,7 +131,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           toolTip='Next Document',
                           triggered=self.next_document,
                           shortcut='Space',
-                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          shortcutContext=Qt.ApplicationShortcut,
                           )
 
         self._select_action = \
@@ -139,7 +141,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           toolTip='Select Document',
                           triggered=self.select_document,
                           shortcut='Ctrl+S',
-                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          shortcutContext=Qt.ApplicationShortcut,
                           )
 
         self._fit_width_action = \
@@ -149,7 +151,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           toolTip='Fit width',
                           triggered=self._image_viewer.fit_width,
                           shortcut='Ctrl+W',
-                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          shortcutContext=Qt.ApplicationShortcut,
                           )
 
         self._fit_document_action = \
@@ -159,7 +161,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           toolTip='Fit document',
                           triggered=self._image_viewer.fit_document,
                           shortcut='Ctrl+B',
-                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          shortcutContext=Qt.ApplicationShortcut,
                           )
 
         self._pdf_browser_mode_action = \
@@ -169,7 +171,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           toolTip='PDF browser mode',
                           triggered=self._pdf_browser_mode,
                           shortcut='Ctrl+P',
-                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          shortcutContext=Qt.ApplicationShortcut,
                           )
 
         self._directory_toc_mode_action = \
@@ -179,7 +181,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           toolTip='Directory toc mode',
                           triggered=self._directory_toc_mode,
                           shortcut='Ctrl+D',
-                          shortcutContext=QtCore.Qt.ApplicationShortcut,
+                          shortcutContext=Qt.ApplicationShortcut,
                           )
 
     ##############################################
@@ -226,6 +228,12 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._create_actions()
         self._create_toolbar()
 
+        self._directory_list_dock_widget = QtGui.QDockWidget(self)
+        self._directory_list_dock_widget.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self._directory_list = DirectoryListWidget(self)
+        self._directory_list_dock_widget.setWidget(self._directory_list)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
+
         self._translate_ui()
 
     ##############################################
@@ -247,6 +255,24 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         self._directory_toc.hide()
         self._image_viewer.show()
+
+    ##############################################
+
+    def mousePressEvent(self, event):
+
+        if (event.button() == Qt.LeftButton and
+            self._image_viewer.geometry().contains(event.pos())):
+
+            drag = QtGui.QDrag(self)
+            mime_data = QtCore.QMimeData()
+            document_path = str(self.current_document().path)
+            url = QtCore.QUrl.fromLocalFile(document_path)
+            mime_data.setUrls((url,))
+            drag.setMimeData(mime_data)
+            icon_loader = IconLoader()
+            drag.setPixmap(icon_loader['application-pdf'].pixmap(32, 32))
+
+            drop_action = drag.exec_()
         
 ####################################################################################################
 
@@ -300,7 +326,7 @@ class ImageViewer(QtGui.QScrollArea):
             colour.setHsv(210, 150, 250)
         else:
             margin = 0
-            colour = QtGui.QColor(QtCore.Qt.white)
+            colour = QtGui.QColor(Qt.white)
         self._pixmap_label.setStyleSheet("border: {}px solid {};".format(margin, colour.name()))
 
     ##############################################
