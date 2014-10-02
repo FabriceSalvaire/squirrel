@@ -35,7 +35,7 @@ from .DirectoryListWidget import DirectoryListWidget
 from .DirectoryTocWidget import DirectoryTocWidget
 from .DocumentDirectory import DocumentDirectory
 from Babel.FileSystem.DirectoryToc import DirectoryToc
-from Babel.GUI.MainWindowBase import MainWindowBase
+from Babel.GUI.Base.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.PathNavigator import PathNavigator
 from Babel.Tools.EnumFactory import EnumFactory

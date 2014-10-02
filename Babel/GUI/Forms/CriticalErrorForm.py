@@ -38,8 +38,8 @@ from PyQt4 import QtGui, QtCore
 
 ####################################################################################################
 
-from Babel.GUI.EmailBugForm import EmailBugForm
-from Babel.GUI.NewIssueForm import NewIssueForm
+from .EmailBugForm import EmailBugForm
+from .NewIssueForm import NewIssueForm
 from Babel.Logging.ExceptionHook import format_exception
 import Babel.Tools.BackTrace as BackTrace
 

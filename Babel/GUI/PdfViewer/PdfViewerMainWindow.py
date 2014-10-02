@@ -28,7 +28,7 @@ from PyQt4 import QtCore, QtGui
 
 ####################################################################################################
 
-from Babel.GUI.MainWindowBase import MainWindowBase
+from Babel.GUI.Base.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.GrowingTextBrowser import GrowingTextBrowser
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.RowLayoutManager import RowLayoutManager

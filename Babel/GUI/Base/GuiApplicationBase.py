@@ -37,8 +37,8 @@ from PyQt4 import QtGui, QtCore
 ####################################################################################################
 
 from Babel.Application.ApplicationBase import ApplicationBase
-from Babel.GUI.CriticalErrorForm import CriticalErrorForm
-from Babel.GUI.EmailBugForm import EmailBugForm
+from Babel.GUI.Forms.CriticalErrorForm import CriticalErrorForm
+from Babel.GUI.Forms.EmailBugForm import EmailBugForm
 import Babel.Config.Config as Config
 import Babel.Config.Messages as Messages
 import Babel.Version as Version

@@ -26,7 +26,7 @@ from PyQt4 import QtCore, QtGui
 
 ####################################################################################################
 
-from Babel.GUI.GuiApplicationBase import GuiApplicationBase
+from Babel.GUI.Base.GuiApplicationBase import GuiApplicationBase
 from Babel.Application.BabelApplication import BabelApplication
 
 ####################################################################################################
