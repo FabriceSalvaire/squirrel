@@ -57,6 +57,7 @@ class DirectoryWidget(QtGui.QWidget):
 
         self._delete_button = QtGui.QToolButton(self)
         self._delete_button.setIcon(icon_loader['edit-delete'])
+        self._delete_button.setAutoRaise(True)
         self._label = QtGui.QLabel(path.basename(), self)
         self._horizontal_layout = QtGui.QHBoxLayout(self)
         self._horizontal_layout.addWidget(self._delete_button)
@@ -127,6 +128,7 @@ class DirectoryListWidget(QtGui.QWidget):
         self._clear_button = QtGui.QPushButton('clear', self)
         self._add_button = QtGui.QToolButton(self)
         self._add_button.setIcon(icon_loader['list-add'])
+        self._add_button.setAutoRaise(True)
 
         horizontal_layout = QtGui.QHBoxLayout()
         horizontal_layout.addStretch()
