@@ -23,10 +23,8 @@
 ####################################################################################################
 
 import logging
-import os
-import subprocess
 
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui
 from PyQt4.QtCore import Qt
 
 ####################################################################################################
@@ -40,6 +38,12 @@ _module_logger = logging.getLogger(__name__)
 ####################################################################################################
 
 class ImageViewer(QtGui.QScrollArea):
+
+    # Fixme: PDF viewer
+    #   - set document, in fact an image provider
+    #   - set page
+    #   - get page image according the zoom mode
+    #   - the image provider can use a subprocess to perform read-ahead
 
     _logger = _module_logger.getChild('ImageViewer')
 
@@ -55,7 +59,7 @@ class ImageViewer(QtGui.QScrollArea):
 
         super(ImageViewer, self).__init__()
 
-        self._main_window = main_window
+        # self._main_window = main_window
         self._init_ui()
 
         self._document = None
@@ -74,23 +78,39 @@ class ImageViewer(QtGui.QScrollArea):
 
     ##############################################
 
+    def resizeEvent(self, event):
+
+        # self._logger.info('')
+        if self._zoom_mode == self.zoom_mode_enum.fit_document:
+            self.fit_document()
+        else:
+            self.fit_width()
+
+    ##############################################
+
     def update(self, document):
 
+        # Fixme: set document
+        #  document is a PdfDocumentItem
+        #  which provides a load method and implement a cache
+        
         self._document = document
         self.fit_document()
 
     ##############################################
 
-    def update_style(self):
+    def clear(self):
 
-        if self._document.selected:
-            margin = 15
-            colour = QtGui.QColor()
-            colour.setHsv(210, 150, 250)
-        else:
-            margin = 0
-            colour = QtGui.QColor(Qt.white)
-        self._pixmap_label.setStyleSheet("border: {}px solid {};".format(margin, colour.name()))
+        self._pixmap_label.clear()
+
+    ##############################################
+
+    def _set_pixmap(self, image):
+
+        self.update_style()
+        height, width = image.shape[:2]
+        qimage = QtGui.QImage(image.data, width, height, QtGui.QImage.Format_ARGB32)
+        self._pixmap_label.setPixmap(QtGui.QPixmap.fromImage(qimage))
 
     ##############################################
 
@@ -117,28 +137,18 @@ class ImageViewer(QtGui.QScrollArea):
 
     ##############################################
 
-    def _set_pixmap(self, image):
+    def update_style(self):
 
-        self.update_style()
-        height, width = image.shape[:2]
-        qimage = QtGui.QImage(image.data, width, height, QtGui.QImage.Format_ARGB32)
-        self._pixmap_label.setPixmap(QtGui.QPixmap.fromImage(qimage))
-
-    ##############################################
-
-    def clear(self):
-
-        self._pixmap_label.clear()
-
-    ##############################################
-
-    def resizeEvent(self, event):
-
-        # self._logger.info('')
-        if self._zoom_mode == self.zoom_mode_enum.fit_document:
-            self.fit_document()
+        # Fixme: move to sub-class
+        
+        if self._document.selected:
+            margin = 15
+            colour = QtGui.QColor()
+            colour.setHsv(210, 150, 250)
         else:
-            self.fit_width()
+            margin = 0
+            colour = QtGui.QColor(Qt.white)
+        self._pixmap_label.setStyleSheet("border: {}px solid {};".format(margin, colour.name()))
             
 ####################################################################################################
 #
