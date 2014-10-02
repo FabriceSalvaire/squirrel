@@ -187,7 +187,6 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcutContext=Qt.ApplicationShortcut,
                           )
 
-
         self._open_pdf_action = \
             QtGui.QAction(icon_loader['document-export'],
                           'Open PDF',
@@ -195,6 +194,16 @@ class PdfBrowserMainWindow(MainWindowBase):
                           toolTip='Open PDF',
                           triggered=self.open_current_document,
                           shortcut='Ctrl+O',
+                          shortcutContext=Qt.ApplicationShortcut,
+                          )
+
+        self._open_pdf_viewer_action = \
+            QtGui.QAction(icon_loader['text-field'],
+                          'Open PDF Viewer',
+                          self,
+                          toolTip='Open PDF Viewer',
+                          triggered=lambda x: self.open_current_document(extern=False),
+                          shortcut='Ctrl+V',
                           shortcutContext=Qt.ApplicationShortcut,
                           )
 
@@ -211,6 +220,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                      self._directory_toc_mode_action,
                      self._pdf_browser_mode_action,
                      self._open_pdf_action,
+                     self._open_pdf_viewer_action,
                     ):
             if isinstance(item,QtGui.QAction):
                 self._page_tool_bar.addAction(item)
@@ -293,10 +303,15 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     ##############################################
 
-    def open_current_document(self):
+    def open_current_document(self, extern=True):
 
         document_path = unicode(self.current_document().path)
-        subprocess.call(('xdg-open', document_path))
+        if extern:
+            subprocess.call(('xdg-open', document_path))
+        else:
+            from Babel.GUI.PdfViewer.PdfViewerMainWindow import PdfViewerMainWindow
+            pdf_viewer_window = PdfViewerMainWindow(document_path, parent=self)
+            pdf_viewer_window.showMaximized()
 
     ##############################################
 
@@ -311,7 +326,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             if not self._document_directory.delete_path(file_path):
                 raise NameError("File {} not in the current directory".format(file_path))
         self._show_document()
-        
+       
 ####################################################################################################
 
 class ImageViewer(QtGui.QScrollArea):
