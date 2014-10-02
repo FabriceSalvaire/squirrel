@@ -61,7 +61,7 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
         super(BabelGuiApplication, self).__init__(args=args)
         self._logger.debug(unicode(args))
         
-        from Babel.GUI.BabelMainWindow import MainWindow
+        from .BabelMainWindow import MainWindow
         self._main_window = MainWindow()
         self._main_window.showMaximized()
         
@@ -92,7 +92,7 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
         path = path.absolut()
         self._logger.info("Open PDF %s" % (unicode(path)))
 
-        from Babel.GUI.PdfViewerMainWindow import PdfViewerMainWindow
+        from Babel.GUI.PdfViewer.PdfViewerMainWindow import PdfViewerMainWindow
         pdf_viewer_main_window = PdfViewerMainWindow(path, parent=self._main_window)
         pdf_viewer_main_window.showMaximized()
 

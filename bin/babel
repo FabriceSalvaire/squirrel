@@ -35,7 +35,7 @@ import argparse
 
 ####################################################################################################
 
-from Babel.GUI.BabelGuiApplication import BabelGuiApplication
+from Babel.GUI.LibraryBrowser.BabelGuiApplication import BabelGuiApplication
 from Babel.Tools.ProgramOptions import PathAction
 
 ####################################################################################################

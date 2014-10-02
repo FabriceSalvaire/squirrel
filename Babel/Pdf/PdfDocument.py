@@ -181,7 +181,11 @@ class MetaData(ReadOnlyAttributeDictionaryInterface):
             # Fixme: buffer size
             string = cmupdf.get_meta_info(c_document, key, 1024)
             if string is not None:
-                string = unicode(string, 'utf-8')
+                # UnicodeDecodeError: 'utf8' codec can't decode byte 0x80 in position 573: invalid start byte
+                try:
+                    string = unicode(string, 'utf-8')
+                except UnicodeDecodeError:
+                    string = str(string)
             self._dictionary[key] = string
 
         # Fixme:
