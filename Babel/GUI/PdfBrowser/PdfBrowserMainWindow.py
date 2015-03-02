@@ -101,7 +101,9 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def _show_document(self):
 
-        self._image_viewer.update(self.current_document())
+        current_document = self.current_document()
+        self._file_name_label.setText(unicode(current_document.path.filename_part()))
+        self._image_viewer.update(current_document)
 
     ##############################################
 
@@ -192,7 +194,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           'Open PDF',
                           self,
                           toolTip='Open PDF',
-                          triggered=self.open_current_document,
+                          triggered=lambda x: self.open_current_document(extern=True),
                           shortcut='Ctrl+O',
                           shortcutContext=Qt.ApplicationShortcut,
                           )
@@ -238,6 +240,8 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _init_ui(self):
 
         self._path_navigator = PathNavigator(self)
+        self._file_name_label = QtGui.QLabel()
+        self._file_name_label.hide()
         self._directory_toc = DirectoryTocWidget()
         self._path_navigator.path_changed.connect(self.open_directory)
         self._directory_toc.path_changed.connect(self.open_directory)
@@ -246,6 +250,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._central_widget = QtGui.QWidget(self)
         self._vertical_layout = QtGui.QVBoxLayout(self._central_widget)
         self._vertical_layout.addWidget(self._path_navigator)
+        self._vertical_layout.addWidget(self._file_name_label)
         self._vertical_layout.addWidget(self._directory_toc)
         self._vertical_layout.addWidget(self._image_viewer)
         self.setCentralWidget(self._central_widget)
@@ -274,6 +279,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _directory_toc_mode(self):
 
         self._directory_toc.show()
+        self._file_name_label.hide()
         self._image_viewer.hide()
 
     ##############################################
@@ -281,6 +287,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _pdf_browser_mode(self):
 
         self._directory_toc.hide()
+        self._file_name_label.show()
         self._image_viewer.show()
 
     ##############################################
@@ -318,6 +325,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def move_file(self, file_path, dst_path):
 
         to_file_path = dst_path.join_filename(file_path.filename_part())
+        self._logger.info("Move {} to {}".format(unicode(file_path), unicode(to_file_path)))
         os.rename(unicode(file_path), unicode(to_file_path))
         current_document = self.current_document()
         if current_document.path != file_path:
