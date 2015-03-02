@@ -44,6 +44,7 @@ class ImageViewer(QtGui.QScrollArea):
     #   - set page
     #   - get page image according the zoom mode
     #   - the image provider can use a subprocess to perform read-ahead
+    #   - trim margin : how to get bounding box from MuPdf ?
 
     _logger = _module_logger.getChild('ImageViewer')
 

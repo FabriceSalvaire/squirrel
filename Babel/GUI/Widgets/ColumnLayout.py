@@ -108,14 +108,14 @@ class ColumnLayout(QLayout):
     def heightForWidth(self, width):
 
         height = self._compute_layout(QRect(0, 0, width, 0), True)
-        self._logger.debug('Height: {}'.format(height))
+        # self._logger.debug('Height: {}'.format(height))
         return height
 
     ##############################################
 
     def setGeometry(self, rect):
 
-        self._logger.debug('rect: {} {} {} {}'.format(rect.x(), rect.y(), rect.width(), rect.height()))
+        # self._logger.debug('rect: {} {} {} {}'.format(rect.x(), rect.y(), rect.width(), rect.height()))
         super(ColumnLayout, self).setGeometry(rect)
         self._compute_layout(rect, False)
 
@@ -135,7 +135,7 @@ class ColumnLayout(QLayout):
             size = size.expandedTo(item.minimumSize())
         margin, _, _, _ = self.getContentsMargins()
         size += QSize(2 * margin, 2 * margin)
-        self._logger.debug('size {} {}'.format(size.width(), size.height()))
+        # self._logger.debug('size {} {}'.format(size.width(), size.height()))
         return size
 
     ##############################################
@@ -153,14 +153,14 @@ class ColumnLayout(QLayout):
             number_of_columns = 1
         else:
             number_of_lines = max(len(self) / number_of_columns, 1)
-        self._logger.debug('Maximal width {}'.format(maximal_width))
+        # self._logger.debug('Maximal width {}'.format(maximal_width))
         template = '''
   Numbre of columns {}
   Numbre of items {}
   Numbre of lines {} '''
-        self._logger.debug(template.format(number_of_columns,
-                                          len(self),
-                                          number_of_lines))
+        # self._logger.debug(template.format(number_of_columns,
+        #                                   len(self),
+        #                                   number_of_lines))
 
         spacing = self.spacing()
         x = rect.x() + spacing
