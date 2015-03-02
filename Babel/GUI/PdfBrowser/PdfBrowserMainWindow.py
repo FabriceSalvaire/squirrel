@@ -39,6 +39,7 @@ from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.GUI.Base.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.PathNavigator import PathNavigator
+from Babel.Tools.Container import EmptyRingError
 
 ####################################################################################################
 
@@ -62,15 +63,17 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def open_directory(self, path):
 
+        self._logger.info("open directory {}".format(str(path)))
         # Fixme: move to application?
         self._directory_toc.update(DirectoryToc(path))
         self._path_navigator.set_path(path) # Fixme: path_navigator -> open_directory -> path_navigator
         self._document_directory = DocumentDirectory(path)
-        if self._document_directory:
+        if bool(self._document_directory):
             self._show_document()
         else:
             self._image_viewer.clear()
-
+            self._file_name_label.clear()
+            
     ##############################################
 
     def previous_document(self):
@@ -101,18 +104,27 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def _show_document(self):
 
-        current_document = self.current_document()
-        self._file_name_label.setText(unicode(current_document.path.filename_part()))
-        self._image_viewer.update(current_document)
-
+        try:
+            document = self.current_document()
+            self._file_name_label.setText(unicode(document.path.filename_part()))
+            self._image_viewer.update(document)
+        except EmptyRingError:
+            # self._logger.info('EmptyRingError')
+            # Fixme: cf. open_directory
+            self._image_viewer.clear()
+            self._file_name_label.clear()
+            
     ##############################################
 
     def select_document(self):
 
-        document = self.current_document()
-        document.selected = not document.selected
-        self._image_viewer.update_style()
-
+        try:
+            document = self.current_document()
+            document.selected = not document.selected
+            self._image_viewer.update_style()
+        except EmptyRingError:
+            pass
+        
     ##############################################
     
     def _create_actions(self):
@@ -297,43 +309,54 @@ class PdfBrowserMainWindow(MainWindowBase):
         if (event.button() == Qt.LeftButton and
             self._image_viewer.geometry().contains(event.pos())):
 
-            drag = QtGui.QDrag(self)
-            mime_data = QtCore.QMimeData()
-            document_path = unicode(self.current_document().path)
-            url = QtCore.QUrl.fromLocalFile(document_path)
-            mime_data.setUrls((url,))
-            drag.setMimeData(mime_data)
-            icon_loader = IconLoader()
-            drag.setPixmap(icon_loader['application-pdf'].pixmap(32, 32))
-
-            drop_action = drag.exec_()
-
+            try:
+                document = self.current_document()
+                drag = QtGui.QDrag(self)
+                mime_data = QtCore.QMimeData()
+                document_path = unicode(document.path)
+                url = QtCore.QUrl.fromLocalFile(document_path)
+                mime_data.setUrls((url,))
+                drag.setMimeData(mime_data)
+                icon_loader = IconLoader()
+                drag.setPixmap(icon_loader['application-pdf'].pixmap(32, 32))
+                
+                drop_action = drag.exec_()
+            except EmptyRingError:
+                pass
+                
     ##############################################
 
     def open_current_document(self, extern=True):
 
-        document_path = unicode(self.current_document().path)
-        if extern:
-            subprocess.call(('xdg-open', document_path))
-        else:
-            from Babel.GUI.PdfViewer.PdfViewerMainWindow import PdfViewerMainWindow
-            pdf_viewer_window = PdfViewerMainWindow(document_path, parent=self)
-            pdf_viewer_window.showMaximized()
-
+        try:
+            document = self.current_document()
+            document_path = unicode(document.path)
+            if extern:
+                subprocess.call(('xdg-open', document_path))
+            else:
+                from Babel.GUI.PdfViewer.PdfViewerMainWindow import PdfViewerMainWindow
+                pdf_viewer_window = PdfViewerMainWindow(document_path, parent=self)
+                pdf_viewer_window.showMaximized()
+        except EmptyRingError:
+            pass
+                
     ##############################################
 
     def move_file(self, file_path, dst_path):
 
         to_file_path = dst_path.join_filename(file_path.filename_part())
-        self._logger.info("Move {} to {}".format(unicode(file_path), unicode(to_file_path)))
-        os.rename(unicode(file_path), unicode(to_file_path))
-        current_document = self.current_document()
-        if current_document.path != file_path:
-            self._document_directory.delete(current_document)
+        if file_path == to_file_path:
+            self._logger.info("Try to move file {} to same place".format(unicode(file_path)))
         else:
-            if not self._document_directory.delete_path(file_path):
-                raise NameError("File {} not in the current directory".format(file_path))
-        self._show_document()
+            self._logger.info("Move {} to {}".format(unicode(file_path), unicode(to_file_path)))
+            os.rename(unicode(file_path), unicode(to_file_path))
+            current_document = self.current_document() # should not raised EmptyRingError
+            if current_document.path != file_path:
+                self._document_directory.delete(current_document)
+            else:
+                if not self._document_directory.delete_path(file_path):
+                    raise NameError("File {} not in the current directory".format(file_path))
+            self._show_document()
 
 ####################################################################################################
 #

@@ -82,10 +82,11 @@ class ImageViewer(QtGui.QScrollArea):
     def resizeEvent(self, event):
 
         # self._logger.info('')
-        if self._zoom_mode == self.zoom_mode_enum.fit_document:
-            self.fit_document()
-        else:
-            self.fit_width()
+        if self._zoom_mode is not None:
+            if self._zoom_mode == self.zoom_mode_enum.fit_document:
+                self.fit_document()
+            else:
+                self.fit_width()
 
     ##############################################
 
@@ -102,6 +103,8 @@ class ImageViewer(QtGui.QScrollArea):
 
     def clear(self):
 
+        self._document = None
+        self._zoom_mode = None
         self._pixmap_label.clear()
 
     ##############################################

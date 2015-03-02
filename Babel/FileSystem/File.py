@@ -73,6 +73,12 @@ class Path(object):
         self._path = unicode(path)
 
     ##############################################
+
+    def __repr__(self):
+
+        return 'Path ' + self._path
+        
+    ##############################################
         
     def __nonzero__(self):
 
@@ -84,6 +90,12 @@ class Path(object):
 
         return self._path == unicode(other)
 
+    ##############################################
+        
+    def __ne__(self, other):
+
+        return self._path != unicode(other)
+    
     ##############################################
         
     def __unicode__(self):

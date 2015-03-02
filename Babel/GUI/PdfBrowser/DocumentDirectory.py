@@ -39,6 +39,12 @@ class DocumentItem(object):
 
     ##############################################
 
+    def __repr__(self):
+
+        return 'DocumentItem ' + unicode(self._path)
+    
+    ##############################################
+
     @property
     def path(self):
         return self._path
@@ -147,7 +153,7 @@ class DocumentDirectory(Ring):
 
         for i, document in enumerate(self):
             if file_path == document.path:
-                self.delete_index(i)
+                self.delete_index(i) # return
                 return True
         return False
 

@@ -46,6 +46,11 @@ class Ring(object):
 
     ##############################################
 
+    def __iter__(self):
+        return iter(self._items)
+
+    ##############################################
+
     @property
     def closed(self):
         return self._closed
@@ -87,6 +92,7 @@ class Ring(object):
         if self._current_index < self._last_index():
             self._current_index += 1
         elif self._closed:
+            # self._current_index = (self._current_index + 1) % len(self._items)
             self._current_index = 0
         else:
             raise StopIteration()
@@ -103,6 +109,7 @@ class Ring(object):
         if self._current_index > 0:
             self._current_index -= 1
         elif self._closed:
+            # self._current_index = (self._current_index - 1) % len(self._items)
             self._current_index = self._last_index()
         else:
             raise StopIteration()
@@ -113,30 +120,36 @@ class Ring(object):
 
     def add(self, item):
 
-        self._items.append(item)
+        self._items.append(item) # at the trail
 
         if self._current_index is None:
             self._current_index = 0
-
+            
     ##############################################
 
     def delete(self, item):
 
-        self.delete_index(self._items.index(item))
+        return self.delete_index(self._items.index(item))
 
     ##############################################
 
     def delete_index(self, index):
 
         if index != -1:
-            if len(self._items) == 1:
-                self._current_index = None
-            else:
-                try:
-                    self.next()
-                except StopIteration:
-                    self.previous()
             del self._items[index]
+            if len(self._items):
+                if index < self._current_index:
+                    # self.previous()
+                    self._current_index -= 1
+                elif index == self._current_index and index == len(self._items):
+                    if self._closed:
+                        self._current_index = 0
+                    else:
+                        self._current_index = self._last_index()
+                # elif index > self._current_index:
+                #   nothing to do
+            else:
+                self._current_index = None
             return True
         else:
             return False
@@ -148,11 +161,6 @@ class Ring(object):
         current_item = self.current_item
         self._items.sort(cmp=cmp, reverse=reverse)
         self._current_index = self._items.index(current_item)
-
-    ##############################################
-
-    def __iter__(self):
-        return iter(self._items)
 
 ####################################################################################################
 # 

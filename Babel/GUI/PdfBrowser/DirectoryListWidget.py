@@ -72,36 +72,40 @@ class DirectoryWidget(QtGui.QWidget):
     def dragEnterEvent(self, event):
 
         self._logger.info('')
-        self.setBackgroundRole(QtGui.QPalette.Highlight)
-        event.acceptProposedAction() # mandatory
+        mime_data = event.mimeData()
+        if mime_data.hasUrls():
+            urls = [unicode(url.path()) for url in mime_data.urls()]
+            self._logger.info(unicode(self._path) + ' ' + unicode(urls[0]))
+            if File(urls[0]).directory != self._path:
+                self.setBackgroundRole(QtGui.QPalette.Highlight)
+                event.acceptProposedAction() # mandatory
+                
+    ##############################################
 
+    def dragLeaveEvent(self, event):
+
+        self._logger.info('')
+        self.setBackgroundRole(QtGui.QPalette.Window)
+        event.accept()
+        
     ##############################################
 
     # def dragMoveEvent(self, event):
 
-    #     self._logger.info('')
+        # self._logger.info('')
         # event.acceptProposedAction()
 
     ##############################################
 
     def dropEvent(self, event):
 
-        self._logger.info('')
         mime_data = event.mimeData()
         if mime_data.hasUrls():
             urls = [unicode(url.path()) for url in mime_data.urls()]
             self._logger.info(unicode(urls))
             self.dropped_file.emit(File(urls[0]), self._path)
-        self.setBackgroundRole(QtGui.QPalette.Window)
-        event.acceptProposedAction()
-
-    ##############################################
-
-    def dragLeaveEvent(self, event):
-
-        self._logger.info('')
-        event.accept()
-        self.setBackgroundRole(QtGui.QPalette.Window)
+            self.setBackgroundRole(QtGui.QPalette.Window)
+            event.acceptProposedAction()
 
 ####################################################################################################
 
