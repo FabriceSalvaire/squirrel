@@ -125,7 +125,8 @@ class DocumentDirectory(Ring):
 
     def _open_directory(self):
 
-        for file_path in self._path.iter_files():
+        file_paths = sorted(self._path.iter_files(), key=lambda x: unicode(x.path))
+        for file_path in file_paths:
             if self._is_file_importable(file_path):
                 document_class = self.__classes__[file_path.mime_type]
                 document = document_class(file_path)
