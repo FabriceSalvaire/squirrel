@@ -248,7 +248,7 @@ class DirectoryTocWidget(QtGui.QScrollArea):
         self._logger.info('')
 
         self._directory_toc = directory_toc
-
+        
         for letter in self.letter_iterator():
             letter_widget = self._letter_widgets[letter]
             letter_widget.setVisible(letter in directory_toc.letters)

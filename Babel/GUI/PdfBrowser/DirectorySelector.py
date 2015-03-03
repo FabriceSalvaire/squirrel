@@ -23,6 +23,7 @@
 ####################################################################################################
 
 import logging
+import os
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import Qt
@@ -31,6 +32,7 @@ from PyQt4.QtCore import Qt
 
 from .DirectoryTocWidget import DirectoryTocWidget
 from Babel.FileSystem.DirectoryToc import DirectoryToc
+from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.PathNavigator import PathNavigator
 
 ####################################################################################################
@@ -66,21 +68,29 @@ class DirectorySelector(QtGui.QDialog):
 
     def _init_ui(self):
 
+        icon_loader = IconLoader()
+        
         self._path_navigator = PathNavigator(self)
         self._directory_toc = DirectoryTocWidget()
         self._path_navigator.path_changed.connect(self._open_directory)
         self._directory_toc.path_changed.connect(self._open_directory)
 
+        self._create_directory_button = QtGui.QPushButton('New', self)
+        self._create_directory_button.setIcon(icon_loader['list-add'])
+        self._create_directory_button.clicked.connect(self.create_directory)
+        horizontal_layout = QtGui.QHBoxLayout()
+        horizontal_layout.addStretch()
+        horizontal_layout.addWidget(self._create_directory_button)
+
         self._vertical_layout = QtGui.QVBoxLayout(self)
+        self._vertical_layout.addLayout(horizontal_layout)
         self._vertical_layout.addWidget(self._path_navigator)
         self._vertical_layout.addWidget(self._directory_toc)
-
+        
         self._open_button = QtGui.QPushButton('Open')
         self._cancel_button = QtGui.QPushButton('Cancel')
-
         self._open_button.clicked.connect(self.accept)
         self._cancel_button.clicked.connect(self.reject)
-
         horizontal_layout = QtGui.QHBoxLayout()
         horizontal_layout.addStretch()
         horizontal_layout.addWidget(self._cancel_button)
@@ -103,6 +113,24 @@ class DirectorySelector(QtGui.QDialog):
         else:
             super(DirectorySelector, self).keyPressEvent(event)
 
+    ##############################################
+
+    def create_directory(self):
+
+        directory, ok = QtGui.QInputDialog.getText(self, "Create a directory", "Directory:")
+        if ok:
+            directory = unicode(directory)
+            absolut_directory = self.path.join_directory(directory)
+            try:
+                self._logger.info("create directory {}".format(unicode(absolut_directory)))
+                os.mkdir(unicode(absolut_directory))
+                self._open_directory(self.path) # reload ?
+            except Exception as exception:
+                # Fixme: show message in main window
+                self._logger.error(unicode(exception))
+                application = QtGui.QApplication.instance()
+                application.show_message(unicode(exception))
+                
 ####################################################################################################
 #
 # End
