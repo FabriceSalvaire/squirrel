@@ -70,7 +70,7 @@ class Path(object):
 
     def __init__(self, path):
 
-        self._path = unicode(path)
+        self._path = str(path)
 
     ##############################################
 
@@ -80,7 +80,7 @@ class Path(object):
         
     ##############################################
         
-    def __nonzero__(self):
+    def __bool__(self):
 
         return os.path.exists(self._path)
 
@@ -88,17 +88,17 @@ class Path(object):
         
     def __eq__(self, other):
 
-        return self._path == unicode(other)
+        return self._path == str(other)
 
     ##############################################
         
     def __ne__(self, other):
 
-        return self._path != unicode(other)
+        return self._path != str(other)
     
     ##############################################
         
-    def __unicode__(self):
+    def __str__(self):
 
         return self._path
 
@@ -143,13 +143,13 @@ class Path(object):
 
     def relative_to(self, directory):
 
-        return self.clone_for_path(os.path.relpath(self._path, unicode(directory)))
+        return self.clone_for_path(os.path.relpath(self._path, str(directory)))
 
     ##############################################
 
     def join_path(self, path):
 
-        return self.__class__(os.path.join(self._path, unicode(path)))
+        return self.__class__(os.path.join(self._path, str(path)))
 
     ##############################################
 
@@ -234,7 +234,7 @@ class Directory(Path):
 
     ##############################################
         
-    def __nonzero__(self):
+    def __bool__(self):
 
         return super(Directory, self).__nonzero__() and self.is_directory()
 
@@ -242,7 +242,7 @@ class Directory(Path):
 
     def join_directory(self, directory):
 
-        return self.__class__(os.path.join(self._path, unicode(directory)))
+        return self.__class__(os.path.join(self._path, str(directory)))
 
     ##############################################
 
@@ -295,7 +295,7 @@ class File(Path):
 
     def __init__(self, filename, path=''):
 
-        super(File, self).__init__(os.path.join(unicode(path), unicode(filename)))
+        super(File, self).__init__(os.path.join(str(path), str(filename)))
 
         self._filename = self.filename_part()
         if not self._filename:
@@ -306,7 +306,7 @@ class File(Path):
  
     ##############################################
         
-    def __nonzero__(self):
+    def __bool__(self):
 
         return super(File, self).__nonzero__() and os.path.isfile(self._path)
 

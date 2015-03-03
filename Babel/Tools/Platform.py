@@ -36,7 +36,7 @@ import os
 import platform
 import sys
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 ####################################################################################################
 
@@ -77,14 +77,14 @@ class Platform(object):
         
         # Screen
         try:
-            application = QtGui.QApplication.instance()
+            application = QtWidgets.QApplication.instance()
             self.desktop = application.desktop()
             self.number_of_screens = self.desktop.screenCount() 
         except:
             self.desktop = None
             self.number_of_screens = 0
         self.screens = []
-        for i in xrange(self.number_of_screens):
+        for i in range(self.number_of_screens):
             self.screens.append(Screen(self, i))
         
         # OpenGL

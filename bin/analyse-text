@@ -74,9 +74,9 @@ def show_words(text, main_words):
     tokenised_text = TextTokenizer().lex(text)
     document_words = DocumentWords()
     for token in tokenised_text.word_iterator():
-        document_words.add(unicode(token).lower())
+        document_words.add(str(token).lower())
 
-    print 'Words:'
+    print('Words:')
     for word_count in document_words:
         word_rows = word_table.select_by(word=word_count.word).all()
         if word_rows:
@@ -86,9 +86,9 @@ def show_words(text, main_words):
                 (main_words and
                  len(word_count.word) >= 3 and database.is_noun(word_row))):
                 tag = database.part_of_speech_tag_from_id(word_row.part_of_speech_tag_id)
-                print '%6u' % word_count.count, word_count.word, tag
+                print('%6u' % word_count.count, word_count.word, tag)
         else:
-            print '%6u' % word_count.count, word_count.word
+            print('%6u' % word_count.count, word_count.word)
 
 ####################################################################################################
 

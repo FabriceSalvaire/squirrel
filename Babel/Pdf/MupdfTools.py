@@ -80,9 +80,9 @@ def span_to_string(span):
 
     """ Return the unicode string corresponding to a MuPDF span. """
 
-    span_text = u''
+    span_text = ''
     for char in TextCharIterator(span):
-        span_text += unichr(char.c)
+        span_text += chr(char.c)
     span_text = span_text.rstrip()
     
     return span_text

@@ -54,7 +54,7 @@ class RevisionVersion(object):
                 self.suffix = None
 
         elif isinstance(version, dict):
-            self.major, self.minor, self.revision = [version[key] for key in 'major', 'minor', 'revision']
+            self.major, self.minor, self.revision = [version[key] for key in ('major', 'minor', 'revision')]
             if 'suffix' in version:
                 self.suffix = version['suffix']
             else:

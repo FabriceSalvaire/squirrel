@@ -24,8 +24,8 @@ import logging
 
 ####################################################################################################
 
-from PyQt4.QtCore import Qt, QPoint, QRect, QSize
-from PyQt4.QtGui import QLayout
+from PyQt5.QtCore import Qt, QPoint, QRect, QSize
+from PyQt5.QtWidgets import QLayout
 
 ####################################################################################################
 

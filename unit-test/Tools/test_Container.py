@@ -21,20 +21,20 @@ class TestRing(unittest.TestCase):
 
     def test_delete(self):
 
-        ring = Ring(range(3), closed=True)
+        ring = Ring(list(range(3)), closed=True)
 
         self.assertEqual(ring.current_index, 0)
         self.assertEqual(ring.current_item, 0)
 
-        ring.next()
+        next(ring)
         self.assertEqual(ring.current_index, 1)
         self.assertEqual(ring.current_item, 1)
 
-        ring.next()
+        next(ring)
         self.assertEqual(ring.current_index, 2)
         self.assertEqual(ring.current_item, 2)
 
-        ring.next()
+        next(ring)
         self.assertEqual(ring.current_index, 0)
         self.assertEqual(ring.current_item, 0)
 
@@ -61,21 +61,21 @@ class TestRing(unittest.TestCase):
         ring.delete(2)
         self.assertIsNone(ring.current_index)
 
-        ring = Ring(range(3), closed=True)
+        ring = Ring(list(range(3)), closed=True)
 
         ring.delete(2)
         self.assertEqual(ring.current_index, 0)
         self.assertEqual(ring.current_item, 0)
 
-        ring.next()
+        next(ring)
         ring.delete(0)
         self.assertEqual(ring.current_index, 0)
         self.assertEqual(ring.current_item, 1)
 
-        ring = Ring(range(3), closed=True)
+        ring = Ring(list(range(3)), closed=True)
 
-        ring.next()
-        ring.next()
+        next(ring)
+        next(ring)
         ring.delete(2)
         self.assertEqual(ring.current_index, 0)
         self.assertEqual(ring.current_item, 0)

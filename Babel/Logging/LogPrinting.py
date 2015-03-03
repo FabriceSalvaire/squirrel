@@ -45,25 +45,25 @@ class Filet(object):
 
 empty_filet = Filet('', '', '', '', '', '')
 
-solid_thin_filet = Filet(unichr(9472), unichr(9474),
-                         unichr(9484), unichr(9488),
-                         unichr(9492), unichr(9496))
+solid_thin_filet = Filet(chr(9472), chr(9474),
+                         chr(9484), chr(9488),
+                         chr(9492), chr(9496))
 
-solid_wide_filet = Filet(unichr(9473), unichr(9475),
-                         unichr(9487), unichr(9491),
-                         unichr(9495), unichr(9499))
+solid_wide_filet = Filet(chr(9473), chr(9475),
+                         chr(9487), chr(9491),
+                         chr(9495), chr(9499))
 
-dash_thin_filet = Filet(unichr(9476), unichr(9478),
-                        unichr(9484), unichr(9488),
-                        unichr(9492), unichr(9496))
+dash_thin_filet = Filet(chr(9476), chr(9478),
+                        chr(9484), chr(9488),
+                        chr(9492), chr(9496))
 
-dash_wide_filet = Filet(unichr(9477), unichr(9479),
-                        unichr(9487), unichr(9491),
-                        unichr(9495), unichr(9499))
+dash_wide_filet = Filet(chr(9477), chr(9479),
+                        chr(9487), chr(9491),
+                        chr(9495), chr(9499))
 
-solid_thin_doublefilet = Filet(unichr(9552), unichr(9553),
-                               unichr(9556), unichr(9559),
-                               unichr(9562), unichr(9565))
+solid_thin_doublefilet = Filet(chr(9552), chr(9553),
+                               chr(9556), chr(9559),
+                               chr(9562), chr(9565))
 
 ####################################################################################################
 

@@ -22,7 +22,7 @@
 
 ####################################################################################################
 
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 
 ####################################################################################################
 
@@ -37,7 +37,7 @@ from Babel.GUI.ui.email_bug_form_ui import Ui_email_bug_form
 
 ####################################################################################################
 
-class EmailBugForm(QtGui.QDialog):
+class EmailBugForm(QtWidgets.QDialog):
 
     ###############################################
 
@@ -58,12 +58,12 @@ class EmailBugForm(QtGui.QDialog):
 
         form = self._form
 
-        from_address = unicode(form.from_line_edit.text())
+        from_address = str(form.from_line_edit.text())
         if not from_address:
             from_address = Config.Email.from_address
         
         # Fixme: test field ?
-        # QtGui.QMessageBox.critical(None, title, message)
+        # QtWidgets.QMessageBox.critical(None, title, message)
 
         template_message = """
 Bug description:
@@ -82,24 +82,24 @@ Babel Version:
 ---------------------------------------------------------------------------------
 """
 
-        application = QtGui.QApplication.instance()
+        application = QtWidgets.QApplication.instance()
 
         # Fixme: singleton ?
         platform = Platform(application)
         platform.query_opengl()
        
-        message = template_message % {'description': unicode(form.description_plain_text_edit.toPlainText()),
-                                      'babel_version': unicode(Version.babel),
-                                      'platform': unicode(platform),
+        message = template_message % {'description': str(form.description_plain_text_edit.toPlainText()),
+                                      'babel_version': str(Version.babel),
+                                      'platform': str(platform),
                                       'traceback': self._traceback,
                                       }
 
         email = Email(from_address=from_address,
-                      subject='Babel Bug: ' + unicode(form.subject_line_edit.text()),
+                      subject='Babel Bug: ' + str(form.subject_line_edit.text()),
                       recipients=Config.Email.to_address,
                       message=message,
                       )
-        recipients = unicode(form.recipients_line_edit.text())
+        recipients = str(form.recipients_line_edit.text())
         if recipients:
             email.add_recipients_from_string(recipients)
         email.send()

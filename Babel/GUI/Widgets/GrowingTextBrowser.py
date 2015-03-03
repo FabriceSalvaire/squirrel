@@ -20,11 +20,11 @@
 
 ####################################################################################################
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 ####################################################################################################
 
-class GrowingTextBrowser(QtGui.QTextBrowser):
+class GrowingTextBrowser(QtWidgets.QTextBrowser):
 
     _id = 0
 
@@ -36,7 +36,7 @@ class GrowingTextBrowser(QtGui.QTextBrowser):
         self._id = GrowingTextBrowser._id
 
         super(GrowingTextBrowser, self).__init__(*args, **kwargs)  
-        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         size_policy.setHeightForWidth(True)
         self.setSizePolicy(size_policy)
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)

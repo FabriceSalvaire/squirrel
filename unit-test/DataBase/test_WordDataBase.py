@@ -38,32 +38,32 @@ class TestWordDataBase(unittest.TestCase):
         english_language_row = LanguageRow(name='english')
         language_table.add(english_language_row)
         language_table.commit()
-        print english_language_row
+        print(english_language_row)
 
         french_language_row = LanguageRow(name='french')
         language_table.add(french_language_row)
         language_table.commit()
-        print french_language_row
+        print(french_language_row)
         
         word_row = WordRow(word='the', language_id=english_language_row.id, count=1)
         #word_row = WordRow(word='the', language='english', count=1)
-        print word_row
+        print(word_row)
         word_table.add(word_row)
         word_table.commit()
 
         word_row = WordRow(word='the', language_id=english_language_row.id, count=1)
         #word_row = WordRow(word='the', language='english', count=1)
-        print word_row
+        print(word_row)
         word_table.add(word_row)
         word_table.commit()
 
         word_row = WordRow(word='table', language_id=english_language_row.id, count=1)
-        print word_row
+        print(word_row)
         word_table.add(word_row)
         word_table.commit()
 
         word_row = WordRow(word='table', language_id=french_language_row.id, count=1)
-        print word_row
+        print(word_row)
         word_table.add(word_row)
         word_table.commit()
 

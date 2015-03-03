@@ -25,8 +25,8 @@
 
 import logging
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import Qt, pyqtSignal
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt, pyqtSignal
 
 ####################################################################################################
 
@@ -40,7 +40,7 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class DirectoryButton(QtGui.QPushButton):
+class DirectoryButton(QtWidgets.QPushButton):
 
     _logger = _module_logger.getChild('DirectoryButton')
 
@@ -57,7 +57,7 @@ class DirectoryButton(QtGui.QPushButton):
         super(DirectoryButton, self).__init__(parent)
 
         self.setFocusPolicy(Qt.TabFocus)
-        self.setSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Fixed)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         self.setMinimumHeight(parent.minimumHeight())
         self.setMouseTracking(True)
 
@@ -112,13 +112,13 @@ class DirectoryButton(QtGui.QPushButton):
     def _draw_hover_background(self, painter):
 
         if self._entered:
-            # The QStyleOptionViewItemV4 class is used to describe the parameters necessary for
-            # drawing a frame in Qt 4.4 or above.
-            option = QtGui.QStyleOptionViewItemV4()
+            # The QStyleOptionViewItem class is used to describe the parameters necessary for
+            # drawing a frame.
+            option = QtWidgets.QStyleOptionViewItem()
             option.initFrom(self)
-            option.state = QtGui.QStyle.State_Enabled | QtGui.QStyle.State_MouseOver
-            option.viewItemPosition = QtGui.QStyleOptionViewItemV4.OnlyOne
-            self.style().drawPrimitive(QtGui.QStyle.PE_PanelItemViewItem, option, painter, self)
+            option.state = QtWidgets.QStyle.State_Enabled | QtWidgets.QStyle.State_MouseOver
+            option.viewItemPosition = QtWidgets.QStyleOptionViewItem.OnlyOne
+            self.style().drawPrimitive(QtWidgets.QStyle.PE_PanelItemViewItem, option, painter, self)
 
     ##############################################
 
@@ -164,7 +164,7 @@ class DirectoryButton(QtGui.QPushButton):
 
 ####################################################################################################
 
-class DirectoryTocWidget(QtGui.QScrollArea):
+class DirectoryTocWidget(QtWidgets.QScrollArea):
 
     _logger = _module_logger.getChild('DirectoryTocWidget')
 
@@ -186,16 +186,16 @@ class DirectoryTocWidget(QtGui.QScrollArea):
 
         self.setWidgetResizable(True)
 
-        self._widget = QtGui.QWidget()
-        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        self._widget = QtWidgets.QWidget()
+        size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self._widget.setSizePolicy(size_policy)
 
-        self._vertical_layout = QtGui.QVBoxLayout(self._widget)
+        self._vertical_layout = QtWidgets.QVBoxLayout(self._widget)
         self._vertical_layout.setSpacing(0)
-        self._vertical_layout.setMargin(10)
+        self._vertical_layout.setContentsMargins(10, 10, 10, 10)
 
         icon_loader = IconLoader()
-        self._go_up_button = QtGui.QToolButton(self)
+        self._go_up_button = QtWidgets.QToolButton(self)
         self._go_up_button.setIcon(icon_loader['go-up'])
         self._go_up_button.setAutoRaise(True)
         self._go_up_button.clicked.connect(self._go_up)
@@ -210,16 +210,16 @@ class DirectoryTocWidget(QtGui.QScrollArea):
         self._letter_widgets = {}
         self._letter_column_layouts = {}
         for letter in self.letter_iterator():
-            letter_widget = QtGui.QWidget(self)
-            size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+            letter_widget = QtWidgets.QWidget(self)
+            size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
             size_policy.setVerticalStretch(0)
             letter_widget.setSizePolicy(size_policy)
             self._vertical_layout.addWidget(letter_widget)
-            horizontal_layout = QtGui.QHBoxLayout(letter_widget)
-            label = QtGui.QLabel(letter.upper())
+            horizontal_layout = QtWidgets.QHBoxLayout(letter_widget)
+            label = QtWidgets.QLabel(letter.upper())
             label.setFont(font)
             label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-            size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
+            size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
             size_policy.setHorizontalStretch(0)
             size_policy.setVerticalStretch(0)
             size_policy.setHeightForWidth(label.sizePolicy().hasHeightForWidth())
@@ -238,7 +238,7 @@ class DirectoryTocWidget(QtGui.QScrollArea):
 
     def letter_iterator(self):
 
-        for letter in xrange(ord('a'), ord('z') +1):
+        for letter in range(ord('a'), ord('z') +1):
             yield chr(letter)
 
     ##############################################
@@ -261,7 +261,7 @@ class DirectoryTocWidget(QtGui.QScrollArea):
             letter_widget = self._letter_widgets[letter]
             column_layout = self._letter_column_layouts[letter]
             for directory in directory_toc[letter]:
-                # button = QtGui.QPushButton(directory.basename(), parent=letter_widget)
+                # button = QtWidgets.QPushButton(directory.basename(), parent=letter_widget)
                 button = DirectoryButton(directory, parent=letter_widget)
                 column_layout.addWidget(button)
                 button.clicked.connect(self.path_changed)

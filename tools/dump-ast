@@ -104,20 +104,20 @@ class AttributeVisitor(ast.NodeVisitor):
                 else:
                     public_attributes.add(attribute_name)
 
-        print '\nClass %s' % (self._class_name)
-        print '''
+        print('\nClass %s' % (self._class_name))
+        print('''
     """
     
-    Private Attributes:'''
+    Private Attributes:''')
         for attribute_name in sorted(private_attributes):
-            print '\n      :attr:`%s`' % (attribute_name)
-        print '''
-    Public Attributes:'''
+            print('\n      :attr:`%s`' % (attribute_name))
+        print('''
+    Public Attributes:''')
         for attribute_name in sorted(public_attributes):
-            print '\n      :attr:`%s`' % (attribute_name)
-        print '''
+            print('\n      :attr:`%s`' % (attribute_name))
+        print('''
     """
-'''
+''')
 
 ####################################################################################################
 

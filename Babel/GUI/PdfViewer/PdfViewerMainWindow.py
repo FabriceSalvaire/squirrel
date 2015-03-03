@@ -24,7 +24,7 @@
 
 import codecs
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 ####################################################################################################
 
@@ -90,7 +90,7 @@ class PdfViewerMainWindow(MainWindowBase):
         icon_loader = IconLoader()
 
         self._show_info_action = \
-            QtGui.QAction('Info',
+            QtWidgets.QAction('Info',
                           self,
                           toolTip='Info',
                           checkable=True,
@@ -98,7 +98,7 @@ class PdfViewerMainWindow(MainWindowBase):
                           )
 
         self._show_image_action = \
-            QtGui.QAction('Image',
+            QtWidgets.QAction('Image',
                           self,
                           toolTip='Image',
                           checkable=True,
@@ -106,14 +106,14 @@ class PdfViewerMainWindow(MainWindowBase):
                           )
 
         self._show_text_action = \
-            QtGui.QAction('Text',
+            QtWidgets.QAction('Text',
                           self,
                           toolTip='Text',
                           checkable=True,
                           triggered=lambda: self._set_current_widget(self._text_page),
                           )
 
-        self._action_group = QtGui.QActionGroup(self)
+        self._action_group = QtWidgets.QActionGroup(self)
         for action in (self._show_info_action,
                        self._show_image_action,
                        self._show_text_action,
@@ -121,7 +121,7 @@ class PdfViewerMainWindow(MainWindowBase):
             self._action_group.addAction(action)
 
         self._previous_page_action = \
-            QtGui.QAction(icon_loader['arrow-left'],
+            QtWidgets.QAction(icon_loader['arrow-left'],
                           'Previous page',
                           self,
                           toolTip='Previous Page',
@@ -129,7 +129,7 @@ class PdfViewerMainWindow(MainWindowBase):
                           )
 
         self._next_page_action = \
-            QtGui.QAction(icon_loader['arrow-right'],
+            QtWidgets.QAction(icon_loader['arrow-right'],
                           'Next page',
                           self,
                           toolTip='Next Page',
@@ -148,10 +148,10 @@ class PdfViewerMainWindow(MainWindowBase):
                        ):
             self._mode_tool_bar.addAction(action)
 
-        self._page_number_line_edit = QtGui.QLineEdit()
-        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
+        self._page_number_line_edit = QtWidgets.QLineEdit()
+        size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         self._page_number_line_edit.setSizePolicy(size_policy)
-        self._last_page_number_label = QtGui.QLabel()
+        self._last_page_number_label = QtWidgets.QLabel()
 
         self._page_tool_bar = self.addToolBar('Pages')
         for item in (self._previous_page_action,
@@ -159,7 +159,7 @@ class PdfViewerMainWindow(MainWindowBase):
                      self._last_page_number_label,
                      self._next_page_action,
                      ):
-            if isinstance(item,QtGui.QAction):
+            if isinstance(item,QtWidgets.QAction):
                 self._page_tool_bar.addAction(item)
             else:
                 self._page_tool_bar.addWidget(item)
@@ -174,7 +174,7 @@ class PdfViewerMainWindow(MainWindowBase):
 
     def _init_ui(self):
 
-        self._stacked_widget = QtGui.QStackedWidget(self)
+        self._stacked_widget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self._stacked_widget)
         self._info_page = InfoPage(self)
         self._image_page = ImagePage(self)

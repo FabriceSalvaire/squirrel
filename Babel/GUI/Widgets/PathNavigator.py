@@ -29,8 +29,8 @@ don't want to rely on PyKDE4.
 
 import logging
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import Qt, pyqtSignal
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt, pyqtSignal
 
 ####################################################################################################
 
@@ -42,7 +42,7 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class PathNavigatorButton(QtGui.QPushButton):
+class PathNavigatorButton(QtWidgets.QPushButton):
 
     _logger = _module_logger.getChild('PathNavigatorButton')
 
@@ -64,7 +64,7 @@ class PathNavigatorButton(QtGui.QPushButton):
         self._label = path.basename()
 
         self.setFocusPolicy(Qt.TabFocus)
-        self.setSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Fixed)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         self.setMinimumHeight(parent.minimumHeight())
 
         self.setMouseTracking(True)
@@ -165,11 +165,11 @@ class PathNavigatorButton(QtGui.QPushButton):
 
         if is_highlighted:
             # TODO: the backgroundColor should be applied to the style
-            option = QtGui.QStyleOptionViewItemV4()
+            option = QtWidgets.QStyleOptionViewItem()
             option.initFrom(self)
-            option.state = QtGui.QStyle.State_Enabled | QtGui.QStyle.State_MouseOver
-            option.viewItemPosition = QtGui.QStyleOptionViewItemV4.OnlyOne
-            self.style().drawPrimitive(QtGui.QStyle.PE_PanelItemViewItem, option, painter, self)
+            option.state = QtWidgets.QStyle.State_Enabled | QtWidgets.QStyle.State_MouseOver
+            option.viewItemPosition = QtWidgets.QStyleOptionViewItem.OnlyOne
+            self.style().drawPrimitive(QtWidgets.QStyle.PE_PanelItemViewItem, option, painter, self)
 
     ##############################################
 
@@ -206,7 +206,7 @@ class PathNavigatorButton(QtGui.QPushButton):
         arrow_size = self._arrow_width()
         arrow_x = text_width - arrow_size - self.__BORDER_WIDTH__
         arrow_y = (button_height - arrow_size) / 2
-        option = QtGui.QStyleOption()
+        option = QtWidgets.QStyleOption()
         option.initFrom(self)
         option.rect = QtCore.QRect(arrow_x, arrow_y, arrow_size, arrow_size)
         option.palette = self.palette()
@@ -225,7 +225,7 @@ class PathNavigatorButton(QtGui.QPushButton):
             hover_x -= self.__BORDER_WIDTH__
             painter.drawRect(QtCore.QRect(hover_x, 0, arrow_size + self.__BORDER_WIDTH__, button_height))
 
-        self.style().drawPrimitive(QtGui.QStyle.PE_IndicatorArrowRight, option, painter, self)
+        self.style().drawPrimitive(QtWidgets.QStyle.PE_IndicatorArrowRight, option, painter, self)
 
         # draw text
         painter.setPen(foreground_color)
@@ -243,11 +243,11 @@ class PathNavigatorButton(QtGui.QPushButton):
         self.update() # ensure the button is drawn highlighted
 
         directories = sorted([directory.basename() for directory in self._path.iter_directories()],
-                             cmp=lambda a, b: cmp(a.lower(), b.lower()))
+                             key=lambda x: x.lower())
         if not directories:
             return
 
-        menu = QtGui.QMenu(self)
+        menu = QtWidgets.QMenu(self)
         for item in directories:
             menu.addAction(item)
 
@@ -264,7 +264,7 @@ class PathNavigatorButton(QtGui.QPushButton):
 
 ####################################################################################################
 
-class PathNavigator(QtGui.QWidget):
+class PathNavigator(QtWidgets.QWidget):
 
     _logger = _module_logger.getChild('PathNavigator')
 
@@ -276,9 +276,9 @@ class PathNavigator(QtGui.QWidget):
 
         super(PathNavigator, self).__init__(parent)
 
-        self._horizontal_layout = QtGui.QHBoxLayout(self)
+        self._horizontal_layout = QtWidgets.QHBoxLayout(self)
         self._horizontal_layout.setSpacing(0)
-        self._horizontal_layout.setMargin(0)
+        self._horizontal_layout.setContentsMargins(0, 0, 0, 0)
 
         self._path = None
         if path is not None:

@@ -67,9 +67,9 @@ class TextStyle(DictInitialised):
 
     ##############################################
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
 
-        return cmp(self.font_size, other.font_size)
+        return self.font_size < other.font_size
 
     ##############################################
 
@@ -105,7 +105,7 @@ class TextStyles(dict):
 
         """ Sort the styles by font size. """
 
-        sorted_styles = sorted(self.itervalues(), reverse=True)
+        sorted_styles = sorted(self.values(), reverse=True)
 
         # Compute the font size rank
         rank = 0
@@ -139,9 +139,9 @@ class TextStyleFrequency(DictInitialised):
 
     ##############################################
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
 
-        return cmp(self.count, other.count)
+        return self.count < other.count
 
     ##############################################
 
@@ -178,7 +178,7 @@ class TextStyleFrequencies(dict):
 
     def __iadd__(self, other):
 
-        for style_id, count in other.iteritems():
+        for style_id, count in other.items():
             self.fill(style_id, count)
 
         return self
@@ -199,7 +199,7 @@ class TextStyleFrequencies(dict):
     def _to_list(self):
 
         return [TextStyleFrequency(style_id=style_id, count=count)
-                for style_id, count in self.iteritems()]
+                for style_id, count in self.items()]
 
     ##############################################
 

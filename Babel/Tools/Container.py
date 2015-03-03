@@ -41,7 +41,7 @@ class Ring(object):
 
     ##############################################
 
-    def __nonzero__(self):
+    def __bool__(self):
         return bool(self._items)
 
     ##############################################
@@ -84,7 +84,7 @@ class Ring(object):
 
     ##############################################
 
-    def next(self):
+    def __next__(self):
 
         if self._current_index is None:
             raise StopIteration()
@@ -156,10 +156,10 @@ class Ring(object):
 
     ##############################################
 
-    def sort(self, cmp=None, reverse=False):
+    def sort(self, key=None, reverse=False):
 
         current_item = self.current_item
-        self._items.sort(cmp=cmp, reverse=reverse)
+        self._items.sort(key=key, reverse=reverse)
         self._current_index = self._items.index(current_item)
 
 ####################################################################################################

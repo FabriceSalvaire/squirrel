@@ -21,7 +21,7 @@
 ####################################################################################################
 
 from datetime import datetime
-import StringIO
+import io
 import sys
 import traceback
 
@@ -38,7 +38,7 @@ def format_exception(exception_type, exception_value, exception_traceback):
     """ Format an exception to string. """
 
     # traceback.format_exc()
-    traceback_string_io = StringIO.StringIO()
+    traceback_string_io = io.StringIO()
     traceback.print_exception(exception_type, exception_value, exception_traceback, file=traceback_string_io)
 
     return traceback_string_io.getvalue()
@@ -123,11 +123,11 @@ class StderrExceptionHook(ExceptionHook):
 
     def notify(self, exception_type, exception_value, exception_traceback):
 
-        print >>sys.stderr, self._line, '\n'
-        print >>sys.stderr, 'StderrExceptionHook'.center(self._line_width), '\n'
+        print(self._line, '\n', file=sys.stderr)
+        print('StderrExceptionHook'.center(self._line_width), '\n', file=sys.stderr)
         # traceback.print_exc()
         traceback.print_exception(exception_type, exception_value, exception_traceback)
-        print >>sys.stderr, '\n', self._line 
+        print('\n', self._line, file=sys.stderr) 
 
 ####################################################################################################
 

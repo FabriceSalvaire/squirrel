@@ -54,8 +54,7 @@ class PdfDocument(object):
         self._path = path
 
         self._context = cmupdf.fz_new_context(None, None, cmupdf.FZ_STORE_UNLIMITED)
-        encoded_path = unicode(self._path).encode('utf-8')
-        self._c_document = cmupdf.fz_open_document(self._context, encoded_path)
+        self._c_document = cmupdf.fz_open_document(self._context, str(self._path))
         self._metadata = MetaData(self)
         self._number_of_pages = cmupdf.fz_count_pages(self._c_document)
         self._document_words = None
@@ -100,7 +99,7 @@ class PdfDocument(object):
     def __getitem__(self, index):
 
         if isinstance(index, slice):
-            return [self._page(i) for i in xrange(index.start, index.stop, index.step or 1)]
+            return [self._page(i) for i in range(index.start, index.stop, index.step or 1)]
         else:
             return self._page(index)
 
@@ -108,7 +107,7 @@ class PdfDocument(object):
 
     def __iter__(self):
 
-        for i in xrange(self._number_of_pages):
+        for i in range(self._number_of_pages):
             yield self._page(i)
 
     ##############################################
@@ -132,7 +131,7 @@ class PdfDocument(object):
             text_page = page.text
             tokenised_text = text_page.blocks.tokenised_text
             for token in tokenised_text.word_iterator():
-                document_words.add(unicode(token).lower())
+                document_words.add(str(token).lower())
         document_words.sort()
 
         return document_words
@@ -179,24 +178,20 @@ class MetaData(ReadOnlyAttributeDictionaryInterface):
             'ModDate',
             ):
             # Fixme: buffer size
-            string = cmupdf.get_meta_info(c_document, key, 1024)
-            if string is not None:
+            try:
+                string = cmupdf.get_meta_info(c_document, key, 1024)
+            except UnicodeDecodeError:
                 # UnicodeDecodeError: 'utf8' codec can't decode byte 0x80 in position 573: invalid start byte
-                try:
-                    string = unicode(string, 'utf-8')
-                except UnicodeDecodeError:
-                    string = str(string)
+                string = 'UnicodeDecodeError'
             self._dictionary[key] = string
 
-        # Fixme:
-        # UnicodeDecodeError: 'utf8' codec can't decode byte 0xdb in position 2330: invalid continuation byte
-        # UnicodeDecodeError: 'utf8' codec can't decode byte 0xff in position 814: invalid start byte
         fz_buffer = cmupdf.pdf_metadata(c_document)
-        if False: # fz_buffer is not None:
-            string = cmupdf.fz_buffer_data(fz_buffer)
-            string = unicode(string, 'utf-8')
-        else:
-            string = None
+        # Fixme:
+        # try:
+        #     string = cmupdf.fz_buffer_data(fz_buffer)
+        # except UnicodeDecodeError:
+        #     string = 'UnicodeDecodeError'
+        string = ''
         self._dictionary['metadata'] = string
         cmupdf.fz_drop_buffer(document._context, fz_buffer)
 

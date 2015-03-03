@@ -22,7 +22,7 @@
 
 import logging
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 ####################################################################################################
 
@@ -43,7 +43,7 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
 
 
         super(PdfBrowserApplication, self).__init__(args=args)
-        self._logger.debug(unicode(args))
+        self._logger.debug(str(args))
         
         from .PdfBrowserMainWindow import PdfBrowserMainWindow
         self._main_window = PdfBrowserMainWindow()

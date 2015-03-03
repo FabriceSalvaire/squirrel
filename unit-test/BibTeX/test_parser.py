@@ -26,7 +26,7 @@ parser = Parser()
 #parser.test_lexer(data)
 entries = parser.parse(data)
 for entry in entries:
-    print entry
+    print(entry)
 
 ####################################################################################################
 # 

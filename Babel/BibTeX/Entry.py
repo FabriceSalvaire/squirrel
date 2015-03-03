@@ -34,7 +34,7 @@ class Entry(object):
 
     def __iter__(self):
 
-        return self._fields.iterkeys()
+        return iter(self._fields.keys())
 
     ##############################################
 
@@ -51,7 +51,7 @@ class Entry(object):
     def __str__(self):
 
         text = "@%(entry_type)s{%(identifier)s,\n" % self.__dict__
-        for key, value in self._fields.iteritems():
+        for key, value in self._fields.items():
             text += ' '*2 + key + ' = "' + value + '",\n'
         text += '}'
 

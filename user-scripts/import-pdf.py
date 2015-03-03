@@ -20,7 +20,7 @@ argument_parser = argparse.ArgumentParser()
 argument_parser.add_argument('path', metavar='PATH',
                              help='Path')
 
-print 'Args:', application.args.user_script_args
+print('Args:', application.args.user_script_args)
 args = argument_parser.parse_args(application.args.user_script_args.split())
 
 ####################################################################################################

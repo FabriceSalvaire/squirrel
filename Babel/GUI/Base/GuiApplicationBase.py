@@ -32,7 +32,7 @@ import logging
 import sys
 import traceback
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 ####################################################################################################
 
@@ -48,7 +48,7 @@ import Babel.Version as Version
 
 ####################################################################################################
 
-class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
+class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
 
     _logger = logging.getLogger(__name__)
 
@@ -60,9 +60,9 @@ class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
 
         super(GuiApplicationBase, self).__init__(args=args, **kwargs)
         # Fixme: Why ?
-        self._logger.debug("QtGui.QApplication " + unicode(sys.argv))
-        QtGui.QApplication.__init__(self, sys.argv)
-        self._logger.debug('GuiApplicationBase ' + unicode(args) + ' ' + unicode(kwargs))
+        self._logger.debug("QtWidgets.QApplication " + str(sys.argv))
+        QtWidgets.QApplication.__init__(self, sys.argv)
+        self._logger.debug('GuiApplicationBase ' + str(args) + ' ' + str(kwargs))
 
         self._display_splash_screen()
 
@@ -90,7 +90,7 @@ class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
     def _display_splash_screen(self):
 
         pixmap = QtGui.QPixmap(':/splash screen/images/splash_screen.png')
-        self._splash = QtGui.QSplashScreen(pixmap)
+        self._splash = QtWidgets.QSplashScreen(pixmap)
         self._splash.show()
         self._splash.showMessage('<h2>Babel %(version)s</h2>' % {'version':str(Version.babel)})
         self.processEvents()
@@ -100,27 +100,27 @@ class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
     def _init_actions(self):
 
         self.about_action = \
-            QtGui.QAction('About Babel',
+            QtWidgets.QAction('About Babel',
                           self,
                           triggered=self.about)
 
         self.exit_action = \
-            QtGui.QAction('Exit',
+            QtWidgets.QAction('Exit',
                           self,
                           triggered=self.exit)
 
         self.help_action = \
-            QtGui.QAction('Help',
+            QtWidgets.QAction('Help',
                           self,
                           triggered=self.open_help)
 
         self.show_system_information_action = \
-            QtGui.QAction('System Information',
+            QtWidgets.QAction('System Information',
                           self,
                           triggered=self.show_system_information)
         
         self.send_email_action = \
-            QtGui.QAction('Send Email',
+            QtWidgets.QAction('Send Email',
                           self,
                           triggered=self.send_email)
 
@@ -151,7 +151,7 @@ class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
 
     def critical_error(self, title='Babel Critical Error', message=''):
         
-        QtGui.QMessageBox.critical(None, title, message)
+        QtWidgets.QMessageBox.critical(None, title, message)
         
         # Fixme: qt close?
         sys.exit(1)
@@ -164,14 +164,14 @@ class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
         url.setScheme(Config.Help.url_scheme)
         url.setHost(Config.Help.host)
         url.setPath(Config.Help.url_path_pattern) # % str(Version.babel))
-        QtGui.QDesktopServices.openUrl(url)
+        QtWidgets.QDesktopServices.openUrl(url)
 
     ##############################################
 
     def about(self):
         
         message = Messages.about_babel % {'version':str(Version.babel)}
-        QtGui.QMessageBox.about(self.main_window, 'About Babel', message)
+        QtWidgets.QMessageBox.about(self.main_window, 'About Babel', message)
 
     ##############################################
 
@@ -182,7 +182,7 @@ class GuiApplicationBase(ApplicationBase, QtGui.QApplication):
                 'babel_version': str(Version.babel),
                 })  
         message = Messages.system_information_message_pattern % fields
-        QtGui.QMessageBox.about(self.main_window, 'System Information', message)
+        QtWidgets.QMessageBox.about(self.main_window, 'System Information', message)
 
     ###############################################
 

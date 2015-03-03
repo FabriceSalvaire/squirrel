@@ -106,25 +106,25 @@ class ReadOnlyAttributeDictionaryInterface(object):
 
         """ Iterate over the dictionary. """
 
-        return self.iterkeys()
+        return self.keys()
 
     ##############################################
     
     def iteritems(self):
 
-        return self._dictionary.iteritems()
+        return self._dictionary.items()
 
     ##############################################
     
     def iterkeys(self):
 
-        return self._dictionary.iterkeys()
+        return self._dictionary.keys()
 
     ##############################################
     
     def itervalues(self):
 
-        return self._dictionary.itervalues()
+        return self._dictionary.values()
 
     ##############################################
     

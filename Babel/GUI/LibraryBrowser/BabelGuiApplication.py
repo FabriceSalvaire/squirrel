@@ -22,7 +22,7 @@
 
 import logging
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 ####################################################################################################
 
@@ -44,22 +44,22 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
         # <class 'Babel.GUI.GuiApplicationBase.GuiApplicationBase'>
         # <class 'Babel.Application.BabelApplication.BabelApplication'>
         # <class 'Babel.Application.ApplicationBase.ApplicationBase'>
-        # <class 'PyQt4.QtGui.QApplication'>
-        # <class 'PyQt4.QtCore.QCoreApplication'>
-        # <class 'PyQt4.QtCore.QObject'>
+        # <class 'PyQt5.QtWidgets.QApplication'>
+        # <class 'PyQt5.QtCore.QCoreApplication'>
+        # <class 'PyQt5.QtCore.QObject'>
         # <type 'sip.wrapper'>
         # <type 'sip.simplewrapper'>
         # <type 'object'>
         # 
         # ApplicationBase.__init__
         # BabelApplication.__init__
-        # QtGui.QApplication
+        # QtWidgets.QApplication
         # GuiApplicationBase.__init__
         # BabelGuiApplication.__init__
         #
 
         super(BabelGuiApplication, self).__init__(args=args)
-        self._logger.debug(unicode(args))
+        self._logger.debug(str(args))
         
         from .BabelMainWindow import MainWindow
         self._main_window = MainWindow()
@@ -74,7 +74,7 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
         super(BabelGuiApplication, self)._init_actions()
 
         self.open_files_action = \
-            QtGui.QAction('Open Files',
+            QtWidgets.QAction('Open Files',
                           self,
                           triggered=self.open_files)
 
@@ -82,7 +82,7 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
  
     def open_files(self):
  
-        dialog = QtGui.QFileDialog.getOpenFileName
+        dialog = QtWidgets.QFileDialog.getOpenFileName
         files = dialog(self.main_window, 'Open Files')
 
     ##############################################
@@ -90,7 +90,7 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
     def open_pdf(self, path):
        
         path = path.absolut()
-        self._logger.info("Open PDF %s" % (unicode(path)))
+        self._logger.info("Open PDF %s" % (str(path)))
 
         from Babel.GUI.PdfViewer.PdfViewerMainWindow import PdfViewerMainWindow
         pdf_viewer_main_window = PdfViewerMainWindow(path, parent=self._main_window)

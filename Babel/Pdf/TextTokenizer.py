@@ -62,7 +62,7 @@ class Token(object):
     def __init__(self, category, text):
 
         self._category = category
-        self._text = unicode(text)
+        self._text = str(text)
 
     ##############################################
 
@@ -102,7 +102,7 @@ class Token(object):
 
     ##############################################
 
-    def __unicode__(self):
+    def __str__(self):
 
         return self._text
 
@@ -116,7 +116,7 @@ class Token(object):
 
     def __repr__(self):
 
-        return 'Token %s:"%s"' % (unicode(self._category), self._text)
+        return 'Token %s:"%s"' % (str(self._category), self._text)
 
 ####################################################################################################
 
@@ -169,7 +169,7 @@ class TextTokenizer(object):
     def lex(self, text):
 
         state = None
-        word = u''
+        word = ''
         tokenised_text = TokenisedText()
 
         def initial_transition(category, char):
@@ -189,7 +189,7 @@ class TextTokenizer(object):
                     token_category = Token.Category.symbol
                 tokenised_text.append(Token(token_category, char))
                 state = None
-                word = u''
+                word = ''
             return state, word
 
         for char in text:
@@ -226,7 +226,7 @@ def strip_word_list(word_list):
 
     upper_index_max = len(word_list) -1
     if upper_index_max < 0:
-        return u''
+        return ''
     
     lower_index = 0
     while True:
@@ -248,7 +248,7 @@ def strip_word_list(word_list):
 ####################################################################################################
 
 def join_tokens(tokens):
-    return ''.join([unicode(token) for token in tokens])
+    return ''.join([str(token) for token in tokens])
 
 ####################################################################################################
 
@@ -263,7 +263,7 @@ def strip_non_alphabetic(text):
         else:
             break
         if upper_index < 0:
-            return u''
+            return ''
 
     return text[0:upper_index +1]
 

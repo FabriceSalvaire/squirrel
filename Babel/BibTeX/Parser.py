@@ -413,7 +413,7 @@ class Parser(object):
             token = self._lexer.token()
             if not token:
                 break
-            print token
+            print(token)
 
 ####################################################################################################
 # 

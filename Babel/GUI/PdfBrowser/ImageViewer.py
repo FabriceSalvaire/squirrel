@@ -24,8 +24,8 @@
 
 import logging
 
-from PyQt4 import QtGui
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import Qt
 
 ####################################################################################################
 
@@ -37,7 +37,7 @@ _module_logger = logging.getLogger(__name__)
       
 ####################################################################################################
 
-class ImageViewer(QtGui.QScrollArea):
+class ImageViewer(QtWidgets.QScrollArea):
 
     # Fixme: PDF viewer
     #   - set document, in fact an image provider
@@ -73,7 +73,7 @@ class ImageViewer(QtGui.QScrollArea):
         self.setWidgetResizable(True)
 
         self.setWidgetResizable(True)
-        self._pixmap_label = QtGui.QLabel()
+        self._pixmap_label = QtWidgets.QLabel()
         self._pixmap_label.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         self.setWidget(self._pixmap_label)
 

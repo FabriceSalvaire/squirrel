@@ -45,7 +45,7 @@ class DirectoryToc(object):
             else:
                 toc[first_letter].append(directory_path)
         for letter in toc:
-            toc[letter].sort(cmp=lambda a, b: cmp(a.basename().lower(), b.basename().lower()))
+            toc[letter].sort(key=lambda x: x.basename().lower())
         # letters = sorted(toc.keys())
         self._toc = OrderedDict(sorted(toc.items(), key=lambda t: t[0]))
 
@@ -59,7 +59,7 @@ class DirectoryToc(object):
 
     @property 
     def letters(self):
-        return self._toc.keys()
+        return list(self._toc.keys())
 
     ##############################################
 

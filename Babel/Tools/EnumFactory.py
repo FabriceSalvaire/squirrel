@@ -155,7 +155,7 @@ def ExplicitEnumFactory(enum_name, enum_dict):
     """
 
     obj_dict = {}
-    obj_dict['constants'] = enum_dict.values()
+    obj_dict['constants'] = list(enum_dict.values())
     for name, value in enum_dict.items():
         obj_dict[name] = EnumConstant(name, value)
 

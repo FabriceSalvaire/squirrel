@@ -35,7 +35,7 @@ class WordCount(object):
 
     def __init__(self, word, count=1):
 
-        self._word = unicode(word)
+        self._word = str(word)
         self._count = count
 
     ##############################################
@@ -52,13 +52,13 @@ class WordCount(object):
 
     ##############################################
 
-    def __cmp__(a ,b):
+    def __lt__(a ,b):
 
-        return cmp(a._count, b._count)
+        return a._count < b._count
 
     ##############################################
 
-    def __unicode__(self):
+    def __str__(self):
 
         return self._word
 
@@ -115,7 +115,7 @@ class DocumentWords(object):
 
         """ Sort the word by frequency in descending order. """
 
-        self._sorted_words = sorted(self._words.itervalues(), reverse=True)
+        self._sorted_words = sorted(iter(self._words.values()), reverse=True)
 
 ####################################################################################################
 # 

@@ -81,7 +81,7 @@ class PdfMetaDataExtractor(object):
     @property
     def title(self):
         if self._title_block is not None:
-            return unicode(self._title_block)
+            return str(self._title_block)
         else:
             return None
 
@@ -113,10 +113,10 @@ class PdfMetaDataExtractor(object):
 
     def dump(self):
 
-        print 'Number of pages:', self._pdf_document.number_of_pages
+        print('Number of pages:', self._pdf_document.number_of_pages)
         metadata = self._pdf_document.metadata
-        for key in sorted(metadata.iterkeys()):
-            print key + ': ' + unicode(metadata[key])
+        for key in sorted(metadata.keys()):
+            print(key + ': ' + str(metadata[key]))
         
         for text_block in self._first_text_blocks_iterator(): 
         
@@ -132,7 +132,7 @@ class PdfMetaDataExtractor(object):
           Number of words %u
           main style %s
         """
-            print template[:-1] % (text_block.block_id,
+            print(template[:-1] % (text_block.block_id,
                                    text_block.y_rank,
                                    text_block.interval,
                                    str(text_block.horizontal_margin),
@@ -142,11 +142,11 @@ class PdfMetaDataExtractor(object):
                                    len(text_block),
                                    text_block.tokenised_text.count_word_number(),
                                    str(text_block.main_style)
-                                   )
+                                   ))
             line = '='*100
-            print line
-            print unicode(text_block)
-            print line
+            print(line)
+            print(str(text_block))
+            print(line)
 
     ##############################################
 
@@ -221,16 +221,16 @@ class PdfMetaDataExtractor(object):
             return 
 
         author_list_words = []
-        space_token = Token(Token.Category.space, u' ')
+        space_token = Token(Token.Category.space, ' ')
         for i, line in enumerate(author_block.line_iterator()):
             line_words = []
             for word in line.tokenised_text:
-                if word.is_word and unicode(word).lower() in self.address_words:
+                if word.is_word and str(word).lower() in self.address_words:
                     break
                 else:
                     # remove super script like: John Doe^1 Doe\dag
                     if word.is_word:
-                        word = Token(word.category, strip_non_alphabetic(unicode(word)))
+                        word = Token(word.category, strip_non_alphabetic(str(word)))
                     line_words.append(word)
             else:
                 if author_list_words:
@@ -239,7 +239,7 @@ class PdfMetaDataExtractor(object):
 
         author_separators = []
         for i, word in enumerate(author_list_words):
-            word_string = unicode(word).lower()
+            word_string = str(word).lower()
             if (word.is_punctuation and word_string == ',' or
                 (word.is_word and word_string == 'and')): 
                 author_separators.append(i)
@@ -276,9 +276,9 @@ class TextBlockProbability(DictInitialised):
 
     ##############################################
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
 
-        return cmp(self.probability, other.probability)
+        return self.probability < other.probability
 
 ####################################################################################################
 

@@ -43,7 +43,7 @@ class ApplicationBase(object):
     
     def __init__(self, args, **kwargs):
 
-        self._logger.debug(unicode(args) + ' ' + unicode(kwargs))
+        self._logger.debug(str(args) + ' ' + str(kwargs))
 
         sys.excepthook = self._exception_hook
 
@@ -87,7 +87,7 @@ class ApplicationBase(object):
         self.show_message(message='Execute user script: ' + file_name, echo=True)
         source = open(file_name).read()
         bytecode = compile(source, file_name, 'exec')
-        exec bytecode in {'application':self}
+        exec(bytecode, {'application':self})
         self.show_message(message='User script done', echo=True)
         
     ##############################################

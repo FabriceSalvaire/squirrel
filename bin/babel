@@ -60,7 +60,7 @@ args = argument_parser.parse_args()
 
 ####################################################################################################
 
-print BabelGuiApplication.__mro__
+print(BabelGuiApplication.__mro__)
 application = BabelGuiApplication(args=args)
 application.exec_()
 

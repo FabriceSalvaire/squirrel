@@ -55,15 +55,15 @@ args = argument_parser.parse_args()
 ####################################################################################################
 
 pdf_metadata_extractor = PdfMetaDataExtractor(args.path)
-print 'Metadata:'
-for key, value in sorted(pdf_metadata_extractor.metadata.iteritems()):
-    print ' ', key + ': ' + unicode(value)
-print 'Number of pages:' , pdf_metadata_extractor.number_of_pages
-print "Guessed attributes:"
-print ' Title:', pdf_metadata_extractor.title
-print ' Authors:'
+print('Metadata:')
+for key, value in sorted(pdf_metadata_extractor.metadata.items()):
+    print(' ', key + ': ' + str(value))
+print('Number of pages:' , pdf_metadata_extractor.number_of_pages)
+print("Guessed attributes:")
+print(' Title:', pdf_metadata_extractor.title)
+print(' Authors:')
 for author_tokens in pdf_metadata_extractor.authors:
-    print ' '*2, join_tokens(author_tokens)
+    print(' '*2, join_tokens(author_tokens))
 
 ####################################################################################################
 # 

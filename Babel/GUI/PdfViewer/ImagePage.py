@@ -22,11 +22,11 @@
 
 ####################################################################################################
 
-from PyQt4 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 ####################################################################################################
 
-class ImagePage(QtGui.QScrollArea):
+class ImagePage(QtWidgets.QScrollArea):
 
     ##############################################
 
@@ -41,15 +41,15 @@ class ImagePage(QtGui.QScrollArea):
 
     def _init_ui(self):
 
-        # self._scroll_area = QtGui.QScrollArea(self)
+        # self._scroll_area = QtWidgets.QScrollArea(self)
         self.setWidgetResizable(True)
-        self._pixmap_label = QtGui.QLabel()
+        self._pixmap_label = QtWidgets.QLabel()
         # self.setWidget(self._pixmap_label)
 
-        widget = QtGui.QWidget()
-        horizontal_layout = QtGui.QHBoxLayout(widget)
-        spacer_item1 = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        spacer_item2 = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        widget = QtWidgets.QWidget()
+        horizontal_layout = QtWidgets.QHBoxLayout(widget)
+        spacer_item1 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacer_item2 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         horizontal_layout.addItem(spacer_item1)
         horizontal_layout.addWidget(self._pixmap_label)
         horizontal_layout.addItem(spacer_item2)

@@ -22,7 +22,7 @@
 
 ####################################################################################################
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 
 ####################################################################################################
 
@@ -36,7 +36,7 @@ from Babel.GUI.ui.new_issue_form_ui import Ui_new_issue_form
 
 ####################################################################################################
 
-class NewIssueForm(QtGui.QDialog):
+class NewIssueForm(QtWidgets.QDialog):
 
     ###############################################
 
@@ -57,7 +57,7 @@ class NewIssueForm(QtGui.QDialog):
 
         form = self.form
 
-        subject = unicode(form.subject_line_edit.text())
+        subject = str(form.subject_line_edit.text())
 
         template_description = '''
 Bug description:
@@ -73,8 +73,8 @@ Bug description:
 
         platform = Platform() # Fixme: singleton ?
 
-        description = template_description % {'description': unicode(form.description_plain_text_edit.toPlainText()),
-                                              'platform': unicode(platform),
+        description = template_description % {'description': str(form.description_plain_text_edit.toPlainText()),
+                                              'platform': str(platform),
                                               'traceback': self._traceback,
                                               }
         

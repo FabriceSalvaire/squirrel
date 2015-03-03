@@ -34,7 +34,7 @@
 import sys
 import traceback
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 
 ####################################################################################################
 
@@ -49,13 +49,13 @@ from Babel.GUI.ui.critical_error_form_ui import Ui_critical_error_form
 
 ####################################################################################################
 
-class CriticalErrorForm(QtGui.QDialog, Ui_critical_error_form):
+class CriticalErrorForm(QtWidgets.QDialog, Ui_critical_error_form):
 
     ###############################################
 
     def __init__(self, exception_type, exception_value, exception_backtrace):
 
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
 
         self.setupUi(self)
 
@@ -74,7 +74,7 @@ class CriticalErrorForm(QtGui.QDialog, Ui_critical_error_form):
         self.send_email_button.clicked.connect(self.send_email)
         self.new_issue_button.clicked.connect(self.new_issue)
 
-        title = unicode(exception_value)
+        title = str(exception_value)
         self.error_message_label.setText(title[:50])
         backtrace_text = ''.join(traceback.format_exception(exception_type,
                                                             exception_value,

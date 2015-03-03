@@ -25,7 +25,7 @@ class TestHistogram(unittest.TestCase):
         Binning = Binning1D((0, 10), bin_width=1)
         histogram = Histogram(Binning)
         histogram.fill(1.5, weight=10)
-        print histogram
+        print(histogram)
         
 ####################################################################################################
 

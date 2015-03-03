@@ -20,8 +20,8 @@
 
 ####################################################################################################
 
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 
 from xml.dom import minidom, getDOMImplementation
 
@@ -95,7 +95,7 @@ from xml.dom import minidom, getDOMImplementation
 
 ####################################################################################################
 
-class PutRequest(urllib2.Request):
+class PutRequest(urllib.request.Request):
 
     '''Extend the request to handle PUT command.
     '''
@@ -105,7 +105,7 @@ class PutRequest(urllib2.Request):
 
 ####################################################################################################
 
-class DeleteRequest(urllib2.Request):
+class DeleteRequest(urllib.request.Request):
     
     '''Extend the request to handle DELETE command.
     '''
@@ -132,33 +132,33 @@ class RedmineRest:
         self._url = url
 
         # Create a password manager
-        password_manager = urllib2.HTTPPasswordMgrWithDefaultRealm()
+        password_manager = urllib.request.HTTPPasswordMgrWithDefaultRealm()
         password_manager.add_password(None,
                                       self._url,
                                       user_name or key,
                                       password or '',
                                       )
 
-        handler = urllib2.HTTPBasicAuthHandler(password_manager)
+        handler = urllib.request.HTTPBasicAuthHandler(password_manager)
 
-        self._opener = urllib2.build_opener(handler)
+        self._opener = urllib.request.build_opener(handler)
         self._opener.open(url)
-        urllib2.install_opener(self._opener)
+        urllib.request.install_opener(self._opener)
 
     ##############################################
 
-    def open_page(self, page, parameters={}, dom=None, http_request=urllib2.Request):
+    def open_page(self, page, parameters={}, dom=None, http_request=urllib.request.Request):
 
         '''Open a page from the server.
         '''
 
         if parameters is not None:
-            url_data = '?' + urllib.urlencode(parameters)
+            url_data = '?' + urllib.parse.urlencode(parameters)
         else:
             url_data = ''
 
         full_url = self._url + '/' + page
-        print 'Redmine REST - Open page:', full_url
+        print('Redmine REST - Open page:', full_url)
 
         self._opener.open(full_url)
 
@@ -167,11 +167,11 @@ class RedmineRest:
         # Get the data and return XML object
         if dom is not None:
             request.add_header('Content-Type', 'text/xml')
-            response = urllib2.urlopen(request, dom.toxml())
+            response = urllib.request.urlopen(request, dom.toxml())
         else:
-            response = urllib2.urlopen(request)
+            response = urllib.request.urlopen(request)
         xml_string = response.read()
-        print '  XML document:\n', xml_string
+        print('  XML document:\n', xml_string)
 
         try:
             # return minidom.parse(response)
@@ -186,8 +186,8 @@ class RedmineRest:
         '''Post an XML object to the server.
         '''
 
-        print 'Post:', page
-        print dom.toxml()
+        print('Post:', page)
+        print(dom.toxml())
 
         return self.open_page(page, parameters, dom)
  
@@ -259,7 +259,7 @@ class RedmineRest:
         for key in data:
             self.add_key_to_xml_document(xml_document, xml_document.firstChild, key, data[key])
 
-        print 'XML document:', xml_document.toxml()
+        print('XML document:', xml_document.toxml())
  
         return xml_document
  
@@ -417,7 +417,7 @@ if __name__ == '__main__':
 
     babel_project = redmine_rest.get_project('Babel')
 
-    print redmine_rest.get_issue(173)
+    print(redmine_rest.get_issue(173))
 
     if False:
         babel_project.new_issue(subject='This a test!',

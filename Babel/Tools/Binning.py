@@ -215,9 +215,9 @@ class Binning1D(object):
     def bin_iterator(self, xflow=False):
 
         if xflow:
-            return xrange(self._under_flow_bin, self._array_size)
+            return range(self._under_flow_bin, self._array_size)
         else:
-            return xrange(self._first_bin, self._over_flow_bin)
+            return range(self._first_bin, self._over_flow_bin)
 
    ###############################################
         

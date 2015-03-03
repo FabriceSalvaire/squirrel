@@ -54,7 +54,7 @@ args = argument_parser.parse_args()
 ####################################################################################################
 
 database_path = os.path.join(os.path.dirname(__file__), '../Babel/Lexique/BritishNationalCorpus/bnc.sqlite')
-print os.path.realpath(database_path)
+print(os.path.realpath(database_path))
 
 database = WordDataBase(database_path)
 word_table = database.word_table
@@ -71,8 +71,8 @@ Word
   part of speech tag: %s
   %s
 '''
-    print message % (word_row.word, word_row.count,
-                     tag_row.tag, tag_row.comment)
+    print(message % (word_row.word, word_row.count,
+                     tag_row.tag, tag_row.comment))
 
 ####################################################################################################
 # 

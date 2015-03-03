@@ -21,10 +21,9 @@
 ####################################################################################################
 
 import logging
-import os
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import Qt, pyqtSignal
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import Qt, pyqtSignal
 
 ####################################################################################################
 
@@ -38,11 +37,11 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class DirectoryWidget(QtGui.QWidget):
+class DirectoryWidget(QtWidgets.QWidget):
 
     _logger = _module_logger.getChild('DirectoryWidget')
 
-    deleted = pyqtSignal(QtGui.QWidget)
+    deleted = pyqtSignal(QtWidgets.QWidget)
     dropped_file = pyqtSignal(File, Directory)
 
     ##############################################
@@ -55,11 +54,11 @@ class DirectoryWidget(QtGui.QWidget):
 
         icon_loader = IconLoader()
 
-        self._delete_button = QtGui.QToolButton(self)
+        self._delete_button = QtWidgets.QToolButton(self)
         self._delete_button.setIcon(icon_loader['edit-delete'])
         self._delete_button.setAutoRaise(True)
-        self._label = QtGui.QLabel(path.basename(), self)
-        self._horizontal_layout = QtGui.QHBoxLayout(self)
+        self._label = QtWidgets.QLabel(path.basename(), self)
+        self._horizontal_layout = QtWidgets.QHBoxLayout(self)
         self._horizontal_layout.addWidget(self._delete_button)
         self._horizontal_layout.addWidget(self._label)
 
@@ -74,8 +73,8 @@ class DirectoryWidget(QtGui.QWidget):
         self._logger.info('')
         mime_data = event.mimeData()
         if mime_data.hasUrls():
-            urls = [unicode(url.path()) for url in mime_data.urls()]
-            self._logger.info(unicode(self._path) + ' ' + unicode(urls[0]))
+            urls = [str(url.path()) for url in mime_data.urls()]
+            self._logger.info(str(self._path) + ' ' + str(urls[0]))
             if File(urls[0]).directory != self._path:
                 self.setBackgroundRole(QtGui.QPalette.Highlight)
                 event.acceptProposedAction() # mandatory
@@ -101,15 +100,15 @@ class DirectoryWidget(QtGui.QWidget):
 
         mime_data = event.mimeData()
         if mime_data.hasUrls():
-            urls = [unicode(url.path()) for url in mime_data.urls()]
-            self._logger.info(unicode(urls))
+            urls = [str(url.path()) for url in mime_data.urls()]
+            self._logger.info(str(urls))
             self.dropped_file.emit(File(urls[0]), self._path)
             self.setBackgroundRole(QtGui.QPalette.Window)
             event.acceptProposedAction()
 
 ####################################################################################################
 
-class DirectoryListWidget(QtGui.QWidget):
+class DirectoryListWidget(QtWidgets.QWidget):
 
     _logger = _module_logger.getChild('DirectoryListWidget')
 
@@ -121,32 +120,32 @@ class DirectoryListWidget(QtGui.QWidget):
 
         super(DirectoryListWidget, self).__init__(parent)
 
-        self._application = QtGui.QApplication.instance()
+        self._application = QtWidgets.QApplication.instance()
 
         self._widgets = []
       
         icon_loader = IconLoader()
 
-        vertical_layout = QtGui.QVBoxLayout(self)
+        vertical_layout = QtWidgets.QVBoxLayout(self)
 
-        self._clear_button = QtGui.QPushButton('clear', self)
-        self._add_button = QtGui.QToolButton(self)
+        self._clear_button = QtWidgets.QPushButton('clear', self)
+        self._add_button = QtWidgets.QToolButton(self)
         self._add_button.setIcon(icon_loader['list-add'])
         self._add_button.setAutoRaise(True)
 
-        horizontal_layout = QtGui.QHBoxLayout()
+        horizontal_layout = QtWidgets.QHBoxLayout()
         horizontal_layout.addStretch()
         horizontal_layout.addWidget(self._add_button)
         horizontal_layout.addWidget(self._clear_button)
         vertical_layout.addLayout(horizontal_layout)
 
-        self._scroll_area = QtGui.QScrollArea(self)
+        self._scroll_area = QtWidgets.QScrollArea(self)
         self._scroll_area.setWidgetResizable(True)
         vertical_layout.addWidget(self._scroll_area)
-        self._widget = QtGui.QWidget(self)
-        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        self._widget = QtWidgets.QWidget(self)
+        size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self._scroll_area.setSizePolicy(size_policy)
-        self._vertical_layout = QtGui.QVBoxLayout(self._widget)
+        self._vertical_layout = QtWidgets.QVBoxLayout(self._widget)
         self._vertical_layout.addStretch()
         self._scroll_area.setWidget(self._widget)
 
@@ -161,10 +160,10 @@ class DirectoryListWidget(QtGui.QWidget):
 
         # Fixme:
         path = self._application._main_window._path_navigator.path
-        # options = (QtGui.QFileDialog.ShowDirsOnly |
-        #            QtGui.QFileDialog.DontUseNativeDialog |
-        #            QtGui.QFileDialog.DontResolveSymlinks)
-        # path = QtGui.QFileDialog.getExistingDirectory(self,
+        # options = (QtWidgets.QFileDialog.ShowDirsOnly |
+        #            QtWidgets.QFileDialog.DontUseNativeDialog |
+        #            QtWidgets.QFileDialog.DontResolveSymlinks)
+        # path = QtWidgets.QFileDialog.getExistingDirectory(self,
         #                                               "Select directory",
         #                                               unicode(path),
         #                                               options)

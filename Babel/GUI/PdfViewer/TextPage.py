@@ -24,7 +24,7 @@
 
 import codecs
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 ####################################################################################################
 
@@ -32,7 +32,7 @@ from Babel.GUI.Widgets.GrowingTextBrowser import GrowingTextBrowser
 
 ####################################################################################################
 
-class TextPage(QtGui.QScrollArea):
+class TextPage(QtWidgets.QScrollArea):
 
     ##############################################
 
@@ -47,13 +47,13 @@ class TextPage(QtGui.QScrollArea):
 
     def _init_ui(self):
 
-        # self._scroll_area = QtGui.QScrollArea(self)
+        # self._scroll_area = QtWidgets.QScrollArea(self)
         # self._scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.setWidgetResizable(True)
 
-        self._container_widget = QtGui.QWidget()
-        self._vertical_layout = QtGui.QVBoxLayout(self._container_widget) # Set container_widget layout
-        self._spacer_item = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self._container_widget = QtWidgets.QWidget()
+        self._vertical_layout = QtWidgets.QVBoxLayout(self._container_widget) # Set container_widget layout
+        self._spacer_item = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.setWidget(self._container_widget)
  
     ##############################################
@@ -86,12 +86,12 @@ class TextPage(QtGui.QScrollArea):
             
     def _append_block(self, block_text):
 
-        horizontal_layout = QtGui.QHBoxLayout()
-        combo_box = QtGui.QComboBox() # self._container_widget
+        horizontal_layout = QtWidgets.QHBoxLayout()
+        combo_box = QtWidgets.QComboBox() # self._container_widget
         for item in ('Text', 'Title', 'Authors', 'Abstract', 'Refrences'):
             combo_box.addItem(item)
         text_browser = GrowingTextBrowser() # self._container_widget
-        text_browser.setPlainText(unicode(block_text))
+        text_browser.setPlainText(str(block_text))
         horizontal_layout.addWidget(combo_box, 0, QtCore.Qt.AlignTop)
         horizontal_layout.addWidget(text_browser, 0, QtCore.Qt.AlignTop)
         self._vertical_layout.addLayout(horizontal_layout)

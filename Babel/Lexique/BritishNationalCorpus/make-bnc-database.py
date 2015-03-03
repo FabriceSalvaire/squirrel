@@ -57,7 +57,7 @@ database = WordDataBase(args.sqlite_file)
 
 part_of_speech_tag_dict = {}
 part_of_speech_tag_table = database.part_of_speech_tag_table
-for tag, comment in part_of_speech_tags.iteritems():
+for tag, comment in part_of_speech_tags.items():
     part_of_speech_tag_row = PartOfSpeechTagRow(tag=tag, comment=comment)
     part_of_speech_tag_dict[tag] = part_of_speech_tag_row
     part_of_speech_tag_table.add(part_of_speech_tag_row)
@@ -82,10 +82,10 @@ with sys.stdin as file_input:
                                        )
                 rank += 1
                 if rank % 10000 == 0:
-                    print "Rank %u" % rank
+                    print("Rank %u" % rank)
                     word_table.commit()
             except:
-                print "Error:", line
+                print("Error:", line)
 word_table.commit()
 
 ####################################################################################################

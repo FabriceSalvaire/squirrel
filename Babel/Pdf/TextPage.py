@@ -125,11 +125,11 @@ class TextPage():
                 text_line = TextLine(line_interval)
                 for c_span in TextSpanIterator(c_line):
                     style_id = None
-                    span_text = u''
+                    span_text = ''
                     for c_char in TextCharIterator(c_span):
                         # Fixme: Style addresses are alternated. Why?
                         char_style_id = c_char.style.id
-                        char = unichr(c_char.c)
+                        char = chr(c_char.c)
                         if char_style_id is not style_id:
                             if span_text:
                                 self._append_span_text(text_line, span_text, style_id)
@@ -178,7 +178,7 @@ class TextPage():
             if cmupdf.font_is_bold(font):
                 text += ';font-weight:bold;'
             text += '}\n'
-            style = style.next
+            style = style.__next__
 
         return text
 
@@ -188,11 +188,11 @@ class TextPage():
 
         # Fixme: old and historical code, move elsewhere ?
 
-        text = u'<page page_number="%u">\n' % (self._page_number)
+        text = '<page page_number="%u">\n' % (self._page_number)
         for block in TextBlockIterator(self._text_page):
-            text += u'<block bbox="' + format_bounding_box(block) + u'">\n'
+            text += '<block bbox="' + format_bounding_box(block) + '">\n'
             for line in TextLineIterator(block):
-                text += u' '*2 + u'<line bbox="' + format_bounding_box(line) + u'">\n'
+                text += ' '*2 + '<line bbox="' + format_bounding_box(line) + '">\n'
                 for span in TextSpanIterator(line):
                     style_id = None
                     if dump_char:
@@ -200,21 +200,21 @@ class TextPage():
                             # Fixme: Style addresses are alternated. Why?
                             if char.style.id is not style_id:
                                 if style_id is not None:
-                                    text += u' '*4 + u'</span>\n'
+                                    text += ' '*4 + '</span>\n'
                                 style = char.style
                                 style_id = style.id
                                 font_name = get_font_name(style.font)
                                 # Fixme: bounding box is wrong
-                                text += u' '*4 + u'<span bbox="' + format_bounding_box(span) + \
-                                    u'" font="%s" size="%g">\n' % (font_name, style.size)
-                            text += u' '*6 + '<char c="%s"/>\n' % (unichr(char.c))
+                                text += ' '*4 + '<span bbox="' + format_bounding_box(span) + \
+                                    '" font="%s" size="%g">\n' % (font_name, style.size)
+                            text += ' '*6 + '<char c="%s"/>\n' % (chr(char.c))
                         if style_id is not None:
-                            text += u' '*4 + u'</span>\n'
+                            text += ' '*4 + '</span>\n'
                     else:
-                        text += u' '*4 + u'<p>' + span_to_string(span) + u'</p>\n'
-                text += u' '*2 + u'</line>\n'
-            text += u'</block>\n'
-        text += u'</page>\n'
+                        text += ' '*4 + '<p>' + span_to_string(span) + '</p>\n'
+                text += ' '*2 + '</line>\n'
+            text += '</block>\n'
+        text += '</page>\n'
 
         return text
 
@@ -234,7 +234,7 @@ class TextBlocks(object):
 
     ##############################################
 
-    def __nonzero__(self):
+    def __bool__(self):
         
         return bool(self._blocks)
 
@@ -325,13 +325,13 @@ class TextBase(object):
 
     ##############################################
 
-    def __unicode__(self):
+    def __str__(self):
 
         return self._text
 
     ##############################################
 
-    def __nonzero__(self):
+    def __bool__(self):
 
         return bool(self._text)
 
@@ -341,7 +341,7 @@ class TextBase(object):
     def tokenised_text(self):
         
         if self._tokenised_text is None:
-            self._tokenised_text = TextTokenizer().lex(unicode(self._text))
+            self._tokenised_text = TextTokenizer().lex(str(self._text))
 
         return self._tokenised_text
 
@@ -467,9 +467,9 @@ class TextBlock(TextBase):
 
     ##############################################
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
 
-        return cmp(self.y_inf, other.y_inf)
+        return self.y_inf < other.y_inf
 
     ##############################################
 
@@ -483,8 +483,8 @@ class TextBlock(TextBase):
 
         self._lines.append(line)
         if self._text:
-            self._text += u' '
-        self._text += unicode(line)
+            self._text += ' '
+        self._text += str(line)
         if self._interval is not None:
             self._interval |= line.interval
         else:
@@ -556,7 +556,7 @@ class TextLine(TextBase):
     def append(self, span):
 
         self._spans.append(span)
-        self._text += unicode(span)
+        self._text += str(span)
 
     ##############################################
         

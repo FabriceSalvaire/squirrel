@@ -22,7 +22,7 @@
 
 ####################################################################################################
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 ####################################################################################################
 
@@ -30,7 +30,7 @@ from Babel.GUI.Widgets.RowLayoutManager import RowLayoutManager
 
 ####################################################################################################
 
-class InfoPage(QtGui.QWidget):
+class InfoPage(QtWidgets.QWidget):
 
     ##############################################
 
@@ -47,31 +47,31 @@ class InfoPage(QtGui.QWidget):
 
         self._widgets = {}
 
-        vertical_layout = QtGui.QVBoxLayout(self)
+        vertical_layout = QtWidgets.QVBoxLayout(self)
 
-        grid_layout = QtGui.QGridLayout()
+        grid_layout = QtWidgets.QGridLayout()
         row_layout_manager = RowLayoutManager(grid_layout)
         vertical_layout.addLayout(grid_layout)
-        application = QtGui.QApplication.instance()
+        application = QtWidgets.QApplication.instance()
         palette = QtGui.QPalette(application.palette())
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
         for key, title in (
-            ('path', u'Path'),
-            ('number_of_pages', u'Number of pages'),
-            ('Title', u'Title'),
-            ('Subject', u'Subject'),
-            ('Author', u'Author'),
-            ('Creator', u'Creator'),
-            ('Producer', u'Producer'),
-            ('CreationDate', u'Creation Date'),
-            ('ModDate', u'Modification Date'),
+            ('path', 'Path'),
+            ('number_of_pages', 'Number of pages'),
+            ('Title', 'Title'),
+            ('Subject', 'Subject'),
+            ('Author', 'Author'),
+            ('Creator', 'Creator'),
+            ('Producer', 'Producer'),
+            ('CreationDate', 'Creation Date'),
+            ('ModDate', 'Modification Date'),
             ):
-            label = QtGui.QLabel(self)
+            label = QtWidgets.QLabel(self)
             label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-            label.setText(title + u':')
-            line_edit = QtGui.QLineEdit(self)
+            label.setText(title + ':')
+            line_edit = QtWidgets.QLineEdit(self)
             self._widgets[key] = line_edit
             # line_edit.setPalette(palette)
             # line_edit.setFrame(False)
@@ -79,16 +79,16 @@ class InfoPage(QtGui.QWidget):
             label.setBuddy(line_edit)
             row_layout_manager.add_row((label, line_edit))
 
-        label = QtGui.QLabel(self)
-        label.setText(u'XML Metadata:')
-        self._text_browser = QtGui.QTextBrowser(self)
-        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        label = QtWidgets.QLabel(self)
+        label.setText('XML Metadata:')
+        self._text_browser = QtWidgets.QTextBrowser(self)
+        size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self._text_browser.setSizePolicy(size_policy)
         label.setBuddy(self._text_browser)
         vertical_layout.addWidget(label)
         vertical_layout.addWidget(self._text_browser)
 
-        # spacer_item = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        # spacer_item = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         # vertical_layout.addItem(spacer_item)
 
     ##############################################
@@ -97,7 +97,7 @@ class InfoPage(QtGui.QWidget):
 
         pdf_document = self._main_window._pdf_document
         pdf_metadata = pdf_document.metadata
-        key_value_pairs = [('path', unicode(pdf_document.path)),
+        key_value_pairs = [('path', str(pdf_document.path)),
                            ('number_of_pages', str(pdf_document.number_of_pages)),
                            ]
         for key in ('Title', 'Subject', 'Author', 'Creator', 'Producer', 'CreationDate', 'ModDate'):

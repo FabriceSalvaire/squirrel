@@ -42,7 +42,7 @@ class PdfImporter(ImporterBase):
         self._path = file_path
         self._pdf_document = PdfDocument(self._path) # Fixme: has path
         self._pdf_metadata = self._pdf_document.metadata
-        print 'Title:', self._pdf_metadata['Title']
+        print('Title:', self._pdf_metadata['Title'])
 
 #    ##############################################
 #

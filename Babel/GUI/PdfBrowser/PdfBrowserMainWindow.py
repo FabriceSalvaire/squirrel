@@ -26,8 +26,8 @@ import logging
 import os
 import subprocess
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt
 
 ####################################################################################################
 
@@ -89,7 +89,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def next_document(self):
 
         try:
-            self._document_directory.next()
+            next(self._document_directory)
             self._show_document()
         except StopIteration:
             pass
@@ -106,7 +106,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         try:
             document = self.current_document()
-            self._file_name_label.setText(unicode(document.path.filename_part()))
+            self._file_name_label.setText(str(document.path.filename_part()))
             self._image_viewer.update(document)
         except EmptyRingError:
             # self._logger.info('EmptyRingError')
@@ -132,7 +132,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         icon_loader = IconLoader()
         
         self._directory_toc_mode_action = \
-            QtGui.QAction(icon_loader['folder-blue'],
+            QtWidgets.QAction(icon_loader['folder-blue'],
                           'Directory toc mode',
                           self,
                           toolTip='Directory toc mode',
@@ -142,7 +142,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
         
         self._pdf_browser_mode_action = \
-            QtGui.QAction(icon_loader['application-pdf'],
+            QtWidgets.QAction(icon_loader['application-pdf'],
                           'PDF browser mode',
                           self,
                           toolTip='PDF browser mode',
@@ -152,7 +152,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
         
         self._previous_document_action = \
-            QtGui.QAction(icon_loader['arrow-left'],
+            QtWidgets.QAction(icon_loader['arrow-left'],
                           'Previous document',
                           self,
                           toolTip='Previous Document',
@@ -162,7 +162,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._next_document_action = \
-            QtGui.QAction(icon_loader['arrow-right'],
+            QtWidgets.QAction(icon_loader['arrow-right'],
                           'Next document',
                           self,
                           toolTip='Next Document',
@@ -172,7 +172,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._select_action = \
-            QtGui.QAction(icon_loader['get-hot-new-stuff'],
+            QtWidgets.QAction(icon_loader['get-hot-new-stuff'],
                           'Select document',
                           self,
                           toolTip='Select Document',
@@ -182,7 +182,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._fit_width_action = \
-            QtGui.QAction(icon_loader['zoom-fit-width'],
+            QtWidgets.QAction(icon_loader['zoom-fit-width'],
                           'Fit width',
                           self,
                           toolTip='Fit width',
@@ -192,7 +192,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._fit_document_action = \
-            QtGui.QAction(icon_loader['zoom-fit-best'],
+            QtWidgets.QAction(icon_loader['zoom-fit-best'],
                           'Fit document',
                           self,
                           toolTip='Fit document',
@@ -202,7 +202,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._open_pdf_action = \
-            QtGui.QAction(icon_loader['document-export'],
+            QtWidgets.QAction(icon_loader['document-export'],
                           'Open PDF',
                           self,
                           toolTip='Open PDF',
@@ -212,7 +212,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._open_pdf_viewer_action = \
-            QtGui.QAction(icon_loader['text-field'],
+            QtWidgets.QAction(icon_loader['text-field'],
                           'Open PDF Viewer',
                           self,
                           toolTip='Open PDF Viewer',
@@ -242,7 +242,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                     ):
             self._pdf_tool_bar.addAction(item)
             
-        # if isinstance(item,QtGui.QAction):
+        # if isinstance(item,QtWidgets.QAction):
         #     self._page_tool_bar.addAction(item)
         # else:
         #     self._page_tool_bar.addWidget(item)
@@ -258,15 +258,15 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _init_ui(self):
 
         self._path_navigator = PathNavigator(self)
-        self._file_name_label = QtGui.QLabel()
+        self._file_name_label = QtWidgets.QLabel()
         self._file_name_label.hide()
         self._directory_toc = DirectoryTocWidget()
         self._path_navigator.path_changed.connect(self.open_directory)
         self._directory_toc.path_changed.connect(self.open_directory)
         self._image_viewer = ImageViewer(self)
         self._image_viewer.hide()
-        self._central_widget = QtGui.QWidget(self)
-        self._vertical_layout = QtGui.QVBoxLayout(self._central_widget)
+        self._central_widget = QtWidgets.QWidget(self)
+        self._vertical_layout = QtWidgets.QVBoxLayout(self._central_widget)
         self._vertical_layout.addWidget(self._path_navigator)
         self._vertical_layout.addWidget(self._file_name_label)
         self._vertical_layout.addWidget(self._directory_toc)
@@ -276,7 +276,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._create_actions()
         self._create_toolbar()
 
-        self._directory_list_dock_widget = QtGui.QDockWidget(self)
+        self._directory_list_dock_widget = QtWidgets.QDockWidget(self)
         self._directory_list_dock_widget.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         self._directory_list = DirectoryListWidget(self)
         self._directory_list_dock_widget.setWidget(self._directory_list)
@@ -319,7 +319,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                 document = self.current_document()
                 drag = QtGui.QDrag(self)
                 mime_data = QtCore.QMimeData()
-                document_path = unicode(document.path)
+                document_path = str(document.path)
                 url = QtCore.QUrl.fromLocalFile(document_path)
                 mime_data.setUrls((url,))
                 drag.setMimeData(mime_data)
@@ -336,7 +336,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         try:
             document = self.current_document()
-            document_path = unicode(document.path)
+            document_path = str(document.path)
             if extern:
                 subprocess.call(('xdg-open', document_path))
             else:
@@ -351,14 +351,14 @@ class PdfBrowserMainWindow(MainWindowBase):
     def move_file(self, file_path, dst_path):
 
         to_file_path = dst_path.join_filename(file_path.filename_part())
-        if os.path.exists(to_file_path):
+        if os.path.exists(str(to_file_path)):
             # Handle duplicate ...
             raise NameError("File exists")
         if file_path == to_file_path:
-            self._logger.info("Try to move file {} to same place".format(unicode(file_path)))
+            self._logger.info("Try to move file {} to same place".format(str(file_path)))
         else:
-            self._logger.info("Move {} to {}".format(unicode(file_path), unicode(to_file_path)))
-            os.rename(unicode(file_path), unicode(to_file_path))
+            self._logger.info("Move {} to {}".format(str(file_path), str(to_file_path)))
+            os.rename(str(file_path), str(to_file_path))
             current_document = self.current_document() # should not raised EmptyRingError
             if current_document.path != file_path:
                 self._document_directory.delete(current_document)

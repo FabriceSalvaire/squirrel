@@ -188,9 +188,9 @@ Histogram 1D
     def non_zero_bin_range_histogram(self):
 
         bin_range = self.find_non_zero_bin_range()
-        print bin_range
+        print(bin_range)
         binning = self._binning.sub_binning(self._binning.sub_interval(bin_range))
-        print binning
+        print(binning)
         histogram = self.__class__(binning)
         src_slice = slice(bin_range.inf, bin_range.sup +1)
         dst_slice = slice(binning.first_bin, binning.over_flow_bin)
