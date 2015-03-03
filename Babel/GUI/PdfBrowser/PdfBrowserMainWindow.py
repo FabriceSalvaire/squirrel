@@ -130,7 +130,27 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _create_actions(self):
 
         icon_loader = IconLoader()
-
+        
+        self._directory_toc_mode_action = \
+            QtGui.QAction(icon_loader['folder-blue'],
+                          'Directory toc mode',
+                          self,
+                          toolTip='Directory toc mode',
+                          triggered=self._directory_toc_mode,
+                          shortcut='Ctrl+D',
+                          shortcutContext=Qt.ApplicationShortcut,
+                          )
+        
+        self._pdf_browser_mode_action = \
+            QtGui.QAction(icon_loader['application-pdf'],
+                          'PDF browser mode',
+                          self,
+                          toolTip='PDF browser mode',
+                          triggered=self._pdf_browser_mode,
+                          shortcut='Ctrl+P',
+                          shortcutContext=Qt.ApplicationShortcut,
+                          )
+        
         self._previous_document_action = \
             QtGui.QAction(icon_loader['arrow-left'],
                           'Previous document',
@@ -181,26 +201,6 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcutContext=Qt.ApplicationShortcut,
                           )
 
-        self._pdf_browser_mode_action = \
-            QtGui.QAction(icon_loader['application-pdf'],
-                          'PDF browser mode',
-                          self,
-                          toolTip='PDF browser mode',
-                          triggered=self._pdf_browser_mode,
-                          shortcut='Ctrl+P',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
-
-        self._directory_toc_mode_action = \
-            QtGui.QAction(icon_loader['folder-blue'],
-                          'Directory toc mode',
-                          self,
-                          toolTip='Directory toc mode',
-                          triggered=self._directory_toc_mode,
-                          shortcut='Ctrl+D',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
-
         self._open_pdf_action = \
             QtGui.QAction(icon_loader['document-export'],
                           'Open PDF',
@@ -225,21 +225,27 @@ class PdfBrowserMainWindow(MainWindowBase):
     
     def _create_toolbar(self):
 
-        self._page_tool_bar = self.addToolBar('Documents')
+        self._main_tool_bar = self.addToolBar('Main')
+        for item in (self._directory_toc_mode_action,
+                     self._pdf_browser_mode_action,
+                    ):
+            self._main_tool_bar.addAction(item)
+
+        self._pdf_tool_bar = self.addToolBar('PDF')
         for item in (self._previous_document_action,
                      self._next_document_action,
                      self._select_action,
                      self._fit_width_action,
                      self._fit_document_action,
-                     self._directory_toc_mode_action,
-                     self._pdf_browser_mode_action,
                      self._open_pdf_action,
                      self._open_pdf_viewer_action,
                     ):
-            if isinstance(item,QtGui.QAction):
-                self._page_tool_bar.addAction(item)
-            else:
-                self._page_tool_bar.addWidget(item)
+            self._pdf_tool_bar.addAction(item)
+            
+        # if isinstance(item,QtGui.QAction):
+        #     self._page_tool_bar.addAction(item)
+        # else:
+        #     self._page_tool_bar.addWidget(item)
 
     ##############################################
 
