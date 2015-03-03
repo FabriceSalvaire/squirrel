@@ -351,6 +351,9 @@ class PdfBrowserMainWindow(MainWindowBase):
     def move_file(self, file_path, dst_path):
 
         to_file_path = dst_path.join_filename(file_path.filename_part())
+        if os.path.exists(to_file_path):
+            # Handle duplicate ...
+            raise NameError("File exists")
         if file_path == to_file_path:
             self._logger.info("Try to move file {} to same place".format(unicode(file_path)))
         else:
