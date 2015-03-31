@@ -63,10 +63,7 @@ class CreateDirectoryDialog(QtWidgets.QDialog):
         vertical_layout = QtWidgets.QVBoxLayout(self)
         vertical_layout.addWidget(self._line_edit)
         horizontal_layout = QtWidgets.QHBoxLayout()
-        spacer = QtWidgets.QSpacerItem(40, 20,
-                                           QtWidgets.QSizePolicy.Expanding,
-                                           QtWidgets.QSizePolicy.Minimum)
-        horizontal_layout.addItem(spacer)
+        horizontal_layout.addStretch()
         horizontal_layout.addWidget(self._select_button)
         horizontal_layout.addWidget(self._ok_button)
         horizontal_layout.addWidget(self._cancel_button)
