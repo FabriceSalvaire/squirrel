@@ -269,6 +269,16 @@ class Directory(Path):
 
     ##############################################
 
+    def has_subdirectory(self, hidden=False):
+
+        # Fixme: hidden directories
+        for item in os.listdir(self._path):
+            path = self.join_path(item)
+            if path.is_directory() and (hidden or not path.is_hidden()):
+                return True
+                
+    ##############################################
+
     def iter_files(self, hidden=False):
 
         for item in os.listdir(self._path):

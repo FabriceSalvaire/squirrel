@@ -25,8 +25,6 @@ don't want to rely on PyKDE4.
 
 ####################################################################################################
 
-####################################################################################################
-
 import logging
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -62,7 +60,8 @@ class PathNavigatorButton(QtWidgets.QPushButton):
 
         self._path = path
         self._label = path.basename()
-
+        self._has_subdirectory = path.has_subdirectory()
+        
         self.setFocusPolicy(Qt.TabFocus)
         self.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         self.setMinimumHeight(parent.minimumHeight())
@@ -153,7 +152,10 @@ class PathNavigatorButton(QtWidgets.QPushButton):
 
     def _is_above_arrow(self, x):
 
-        return x >= (self.width() - self._arrow_width())
+        if self._has_subdirectory:
+            return x >= (self.width() - self._arrow_width())
+        else:
+            False
 
     ##############################################
 
@@ -176,7 +178,8 @@ class PathNavigatorButton(QtWidgets.QPushButton):
     def _foreground_color(self):
 
         # Fixme: remove ? = foreground_color
-
+        # Fixme: has_subdirectory = False 
+        
         is_highlighted = (self._is_display_hint_enabled(self.__ENTERED_HINT__) or
                           self._is_display_hint_enabled(self.__DRAGGED_HINT__) or
                           self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__))
@@ -204,28 +207,29 @@ class PathNavigatorButton(QtWidgets.QPushButton):
 
         # draw arrow
         arrow_size = self._arrow_width()
-        arrow_x = text_width - arrow_size - self.__BORDER_WIDTH__
-        arrow_y = (button_height - arrow_size) / 2
-        option = QtWidgets.QStyleOption()
-        option.initFrom(self)
-        option.rect = QtCore.QRect(arrow_x, arrow_y, arrow_size, arrow_size)
-        option.palette = self.palette()
-        option.palette.setColor(QtGui.QPalette.Text, foreground_color)
-        option.palette.setColor(QtGui.QPalette.WindowText, foreground_color)
-        option.palette.setColor(QtGui.QPalette.ButtonText, foreground_color)
+        if self._has_subdirectory:
+            arrow_x = text_width - arrow_size - self.__BORDER_WIDTH__
+            arrow_y = (button_height - arrow_size) / 2
+            option = QtWidgets.QStyleOption()
+            option.initFrom(self)
+            option.rect = QtCore.QRect(arrow_x, arrow_y, arrow_size, arrow_size)
+            option.palette = self.palette()
+            option.palette.setColor(QtGui.QPalette.Text, foreground_color)
+            option.palette.setColor(QtGui.QPalette.WindowText, foreground_color)
+            option.palette.setColor(QtGui.QPalette.ButtonText, foreground_color)
 
-        if self._hover_arrow:
-            # highlight the background of the arrow to indicate that the directories popup can be
-            # opened by a mouse click
-            hover_color = self.palette().color(QtGui.QPalette.HighlightedText)
-            hover_color.setAlpha(96)
-            painter.setPen(Qt.NoPen)
-            painter.setBrush(hover_color)
-            hover_x = arrow_x
-            hover_x -= self.__BORDER_WIDTH__
-            painter.drawRect(QtCore.QRect(hover_x, 0, arrow_size + self.__BORDER_WIDTH__, button_height))
+            if self._hover_arrow:
+                # highlight the background of the arrow to indicate that the directories popup can be
+                # opened by a mouse click
+                hover_color = self.palette().color(QtGui.QPalette.HighlightedText)
+                hover_color.setAlpha(96)
+                painter.setPen(Qt.NoPen)
+                painter.setBrush(hover_color)
+                hover_x = arrow_x
+                hover_x -= self.__BORDER_WIDTH__
+                painter.drawRect(QtCore.QRect(hover_x, 0, arrow_size + self.__BORDER_WIDTH__, button_height))
 
-        self.style().drawPrimitive(QtWidgets.QStyle.PE_IndicatorArrowRight, option, painter, self)
+            self.style().drawPrimitive(QtWidgets.QStyle.PE_IndicatorArrowRight, option, painter, self)
 
         # draw text
         painter.setPen(foreground_color)
