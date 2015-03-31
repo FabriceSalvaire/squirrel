@@ -58,6 +58,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         super(PdfBrowserMainWindow, self).__init__(title='Babel PDF Browser', parent=parent)
 
+        self._current_path = None
         self._init_ui()
 
     ##############################################
@@ -70,15 +71,10 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._message_box = MessageBox(self)
         self._path_navigator = PathNavigator(self)
         self._file_name_label = QtWidgets.QLabel()
-        self._file_name_label.hide()
         self._file_counter_label = QtWidgets.QLabel()
-        self._file_counter_label.hide()
         self._directory_toc = DirectoryTocWidget()
-        self._path_navigator.path_changed.connect(self.open_directory)
-        self._directory_toc.path_changed.connect(self.open_directory)
         self._image_viewer = ImageViewer(self)
-        self._image_viewer.hide()
-
+        
         # Fixme: add funcs ?
         self._document_widgets = (self._file_name_label, self._file_counter_label,
                                   self._image_viewer)
@@ -104,9 +100,13 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._directory_list_dock_widget.setWidget(self._directory_list)
         self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
 
-        self._directory_list.move_file.connect(self.move_file)
-        
         self._translate_ui()
+
+        self._path_navigator.path_changed.connect(self.open_directory)
+        self._directory_toc.path_changed.connect(self.open_directory)
+        self._directory_list.move_file.connect(self.move_file)
+
+        self._directory_toc_mode()
         
     ##############################################
 
@@ -286,6 +286,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         self._logger.info("open directory {}".format(str(path)))
         # Fixme: move to application?
+        self._current_path = path
         self._directory_toc.update(DirectoryToc(path))
         self._path_navigator.set_path(path) # Fixme: path_navigator -> open_directory -> path_navigator
         self._document_directory = DocumentDirectory(path)
@@ -297,6 +298,14 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     ##############################################
 
+    @property
+    def current_path(self):
+
+        return self._current_path
+                
+    ##############################################
+
+    @property
     def current_document(self):
 
         return self._document_directory.current_item
@@ -326,7 +335,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _show_document(self):
 
         try:
-            document = self.current_document()
+            document = self.current_document
             self._file_name_label.setText(str(document.path.filename_part()))
             self._file_counter_label.setText('{} / {}'.format(self._document_directory.current_index +1,
                                                               len(self._document_directory)))
@@ -342,7 +351,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def select_document(self):
 
         try:
-            document = self.current_document()
+            document = self.current_document
             document.selected = not document.selected
             self._image_viewer.update_style()
         except EmptyRingError:
@@ -353,7 +362,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def open_current_document(self, extern=True):
 
         try:
-            document = self.current_document()
+            document = self.current_document
             document_path = str(document.path)
             if extern:
                 subprocess.call(('xdg-open', document_path))
@@ -383,7 +392,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             self._logger.info("Move {} to {}".format(str(file_path), str(to_file_path)))
             os.rename(str(file_path), str(to_file_path))
             # Update browser
-            current_document = self.current_document() # should not raised EmptyRingError
+            current_document = self.current_document # should not raised EmptyRingError
             if current_document.path != file_path:
                 self._document_directory.delete(current_document)
             else:

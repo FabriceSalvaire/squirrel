@@ -51,7 +51,7 @@ class DirectoryWidget(QtWidgets.QWidget):
         super(DirectoryWidget, self).__init__(parent)
 
         self._path = path
-
+        
         icon_loader = IconLoader()
 
         self._delete_button = QtWidgets.QToolButton(self)
@@ -121,6 +121,7 @@ class DirectoryListWidget(QtWidgets.QWidget):
         super(DirectoryListWidget, self).__init__(parent)
 
         self._application = QtWidgets.QApplication.instance()
+        self._last_path = None
 
         self._widgets = []
       
@@ -158,8 +159,6 @@ class DirectoryListWidget(QtWidgets.QWidget):
 
         self._logger.info('')
 
-        # Fixme:
-        path = self._application._main_window._path_navigator.path
         # options = (QtWidgets.QFileDialog.ShowDirsOnly |
         #            QtWidgets.QFileDialog.DontUseNativeDialog |
         #            QtWidgets.QFileDialog.DontResolveSymlinks)
@@ -167,7 +166,11 @@ class DirectoryListWidget(QtWidgets.QWidget):
         #                                               "Select directory",
         #                                               unicode(path),
         #                                               options)
-        path = Directory(path)
+
+        if self._last_path is None:
+            path = self._application.main_window.current_path
+        else:
+            path = self._last_path
         directory_selector = DirectorySelector(path)
         if directory_selector.exec_():
             path = directory_selector.path
@@ -177,7 +180,8 @@ class DirectoryListWidget(QtWidgets.QWidget):
             index = self._vertical_layout.count() -1
             self._vertical_layout.insertWidget(index, widget)
             self._widgets.append(widget)
-
+            self._last_path = path.directory_part()
+            
     ##############################################
 
     def clear(self):
