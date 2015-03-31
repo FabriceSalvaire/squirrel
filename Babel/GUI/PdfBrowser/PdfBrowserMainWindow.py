@@ -26,7 +26,7 @@ import logging
 import os
 import subprocess
 
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
 ####################################################################################################
@@ -71,16 +71,26 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._path_navigator = PathNavigator(self)
         self._file_name_label = QtWidgets.QLabel()
         self._file_name_label.hide()
+        self._file_counter_label = QtWidgets.QLabel()
+        self._file_counter_label.hide()
         self._directory_toc = DirectoryTocWidget()
         self._path_navigator.path_changed.connect(self.open_directory)
         self._directory_toc.path_changed.connect(self.open_directory)
         self._image_viewer = ImageViewer(self)
         self._image_viewer.hide()
 
+        # Fixme: add funcs ?
+        self._document_widgets = (self._file_name_label, self._file_counter_label,
+                                  self._image_viewer)
+        
         self._vertical_layout = QtWidgets.QVBoxLayout(self._central_widget)
         self._vertical_layout.addWidget(self._message_box)
         self._vertical_layout.addWidget(self._path_navigator)
-        self._vertical_layout.addWidget(self._file_name_label)
+        horizontal_layout = QtWidgets.QHBoxLayout(self)
+        # Fixme: layout
+        horizontal_layout.addWidget(self._file_name_label)
+        horizontal_layout.addWidget(self._file_counter_label)
+        self._vertical_layout.addLayout(horizontal_layout)
         self._vertical_layout.addWidget(self._directory_toc)
         self._vertical_layout.addWidget(self._image_viewer)
 
@@ -259,16 +269,16 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _directory_toc_mode(self):
 
         self._directory_toc.show()
-        self._file_name_label.hide()
-        self._image_viewer.hide()
+        for widget in self._document_widgets:
+            widget.hide()
 
     ##############################################
 
     def _pdf_browser_mode(self):
 
         self._directory_toc.hide()
-        self._file_name_label.show()
-        self._image_viewer.show()
+        for widget in self._document_widgets:
+            widget.show()
         
     ##############################################
 
@@ -282,8 +292,8 @@ class PdfBrowserMainWindow(MainWindowBase):
         if bool(self._document_directory):
             self._show_document()
         else:
-            self._image_viewer.clear()
-            self._file_name_label.clear()
+            for widget in self._document_widgets:
+                widget.clear()
 
     ##############################################
 
@@ -318,12 +328,14 @@ class PdfBrowserMainWindow(MainWindowBase):
         try:
             document = self.current_document()
             self._file_name_label.setText(str(document.path.filename_part()))
+            self._file_counter_label.setText('{} / {}'.format(self._document_directory.current_index +1,
+                                                              len(self._document_directory)))
             self._image_viewer.update(document)
         except EmptyRingError:
             # self._logger.info('EmptyRingError')
             # Fixme: cf. open_directory
-            self._image_viewer.clear()
-            self._file_name_label.clear()
+            for widget in self._document_widgets:
+                widget.clear()
             
     ##############################################
 
