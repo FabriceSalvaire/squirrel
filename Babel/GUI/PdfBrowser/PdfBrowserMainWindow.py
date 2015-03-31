@@ -61,69 +61,42 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     ##############################################
 
-    def open_directory(self, path):
+    def _init_ui(self):
 
-        self._logger.info("open directory {}".format(str(path)))
-        # Fixme: move to application?
-        self._directory_toc.update(DirectoryToc(path))
-        self._path_navigator.set_path(path) # Fixme: path_navigator -> open_directory -> path_navigator
-        self._document_directory = DocumentDirectory(path)
-        if bool(self._document_directory):
-            self._show_document()
-        else:
-            self._image_viewer.clear()
-            self._file_name_label.clear()
+        self._path_navigator = PathNavigator(self)
+        self._file_name_label = QtWidgets.QLabel()
+        self._file_name_label.hide()
+        self._directory_toc = DirectoryTocWidget()
+        self._path_navigator.path_changed.connect(self.open_directory)
+        self._directory_toc.path_changed.connect(self.open_directory)
+        self._image_viewer = ImageViewer(self)
+        self._image_viewer.hide()
+        self._central_widget = QtWidgets.QWidget(self)
+        self._vertical_layout = QtWidgets.QVBoxLayout(self._central_widget)
+        self._vertical_layout.addWidget(self._path_navigator)
+        self._vertical_layout.addWidget(self._file_name_label)
+        self._vertical_layout.addWidget(self._directory_toc)
+        self._vertical_layout.addWidget(self._image_viewer)
+        self.setCentralWidget(self._central_widget)
+        self.statusBar()
+        self._create_actions()
+        self._create_toolbar()
 
+        self._directory_list_dock_widget = QtWidgets.QDockWidget(self)
+        self._directory_list_dock_widget.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self._directory_list = DirectoryListWidget(self)
+        self._directory_list_dock_widget.setWidget(self._directory_list)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
+
+        self._directory_list.move_file.connect(self.move_file)
+
+        self._translate_ui()
+        
     ##############################################
 
-    def previous_document(self):
+    def _translate_ui(self):
 
-        try:
-            self._document_directory.previous()
-            self._show_document()
-        except StopIteration:
-            pass
-
-    ##############################################
-
-    def next_document(self):
-
-        try:
-            next(self._document_directory)
-            self._show_document()
-        except StopIteration:
-            pass
-
-    ##############################################
-
-    def current_document(self):
-
-        return self._document_directory.current_item
-
-    ##############################################
-
-    def _show_document(self):
-
-        try:
-            document = self.current_document()
-            self._file_name_label.setText(str(document.path.filename_part()))
-            self._image_viewer.update(document)
-        except EmptyRingError:
-            # self._logger.info('EmptyRingError')
-            # Fixme: cf. open_directory
-            self._image_viewer.clear()
-            self._file_name_label.clear()
-            
-    ##############################################
-
-    def select_document(self):
-
-        try:
-            document = self.current_document()
-            document.selected = not document.selected
-            self._image_viewer.update_style()
-        except EmptyRingError:
-            pass
+        pass
         
     ##############################################
     
@@ -255,45 +228,6 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     ##############################################
 
-    def _init_ui(self):
-
-        self._path_navigator = PathNavigator(self)
-        self._file_name_label = QtWidgets.QLabel()
-        self._file_name_label.hide()
-        self._directory_toc = DirectoryTocWidget()
-        self._path_navigator.path_changed.connect(self.open_directory)
-        self._directory_toc.path_changed.connect(self.open_directory)
-        self._image_viewer = ImageViewer(self)
-        self._image_viewer.hide()
-        self._central_widget = QtWidgets.QWidget(self)
-        self._vertical_layout = QtWidgets.QVBoxLayout(self._central_widget)
-        self._vertical_layout.addWidget(self._path_navigator)
-        self._vertical_layout.addWidget(self._file_name_label)
-        self._vertical_layout.addWidget(self._directory_toc)
-        self._vertical_layout.addWidget(self._image_viewer)
-        self.setCentralWidget(self._central_widget)
-        self.statusBar()
-        self._create_actions()
-        self._create_toolbar()
-
-        self._directory_list_dock_widget = QtWidgets.QDockWidget(self)
-        self._directory_list_dock_widget.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        self._directory_list = DirectoryListWidget(self)
-        self._directory_list_dock_widget.setWidget(self._directory_list)
-        self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
-
-        self._directory_list.move_file.connect(self.move_file)
-
-        self._translate_ui()
-
-    ##############################################
-
-    def _translate_ui(self):
-
-        pass
-
-    ##############################################
-
     def _directory_toc_mode(self):
 
         self._directory_toc.show()
@@ -307,7 +241,73 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._directory_toc.hide()
         self._file_name_label.show()
         self._image_viewer.show()
+        
+    ##############################################
 
+    def open_directory(self, path):
+
+        self._logger.info("open directory {}".format(str(path)))
+        # Fixme: move to application?
+        self._directory_toc.update(DirectoryToc(path))
+        self._path_navigator.set_path(path) # Fixme: path_navigator -> open_directory -> path_navigator
+        self._document_directory = DocumentDirectory(path)
+        if bool(self._document_directory):
+            self._show_document()
+        else:
+            self._image_viewer.clear()
+            self._file_name_label.clear()
+
+    ##############################################
+
+    def current_document(self):
+
+        return self._document_directory.current_item
+            
+    ##############################################
+
+    def previous_document(self):
+
+        try:
+            self._document_directory.previous()
+            self._show_document()
+        except StopIteration:
+            pass
+
+    ##############################################
+
+    def next_document(self):
+
+        try:
+            next(self._document_directory)
+            self._show_document()
+        except StopIteration:
+            pass
+
+    ##############################################
+
+    def _show_document(self):
+
+        try:
+            document = self.current_document()
+            self._file_name_label.setText(str(document.path.filename_part()))
+            self._image_viewer.update(document)
+        except EmptyRingError:
+            # self._logger.info('EmptyRingError')
+            # Fixme: cf. open_directory
+            self._image_viewer.clear()
+            self._file_name_label.clear()
+            
+    ##############################################
+
+    def select_document(self):
+
+        try:
+            document = self.current_document()
+            document.selected = not document.selected
+            self._image_viewer.update_style()
+        except EmptyRingError:
+            pass
+    
     ##############################################
 
     def open_current_document(self, extern=True):
@@ -328,6 +328,8 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def move_file(self, file_path, dst_path):
 
+        # Fixme: here ?
+        
         to_file_path = dst_path.join_filename(file_path.filename_part())
         if os.path.exists(str(to_file_path)):
             # Handle duplicate ...
@@ -337,6 +339,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         else:
             self._logger.info("Move {} to {}".format(str(file_path), str(to_file_path)))
             os.rename(str(file_path), str(to_file_path))
+            # Update browser
             current_document = self.current_document() # should not raised EmptyRingError
             if current_document.path != file_path:
                 self._document_directory.delete(current_document)
