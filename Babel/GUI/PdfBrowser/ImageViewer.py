@@ -24,11 +24,12 @@
 
 import logging
 
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 
 ####################################################################################################
 
+from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.Tools.EnumFactory import EnumFactory
 
 ####################################################################################################
@@ -153,6 +154,22 @@ class ImageViewer(QtWidgets.QScrollArea):
             margin = 0
             colour = QtGui.QColor(Qt.white)
         self._pixmap_label.setStyleSheet("border: {}px solid {};".format(margin, colour.name()))
+
+    ##############################################
+
+    def mousePressEvent(self, event):
+
+        if (event.button() == Qt.LeftButton and self._document is not None):
+            document = self._document
+            drag = QtGui.QDrag(self)
+            mime_data = QtCore.QMimeData()
+            document_path = str(document.path)
+            url = QtCore.QUrl.fromLocalFile(document_path)
+            mime_data.setUrls((url,))
+            drag.setMimeData(mime_data)
+            icon_loader = IconLoader()
+            drag.setPixmap(icon_loader['application-pdf'].pixmap(32, 32))
+            drop_action = drag.exec_()
             
 ####################################################################################################
 #

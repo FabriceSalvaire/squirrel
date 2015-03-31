@@ -26,7 +26,7 @@ import logging
 import os
 import subprocess
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 
 ####################################################################################################
@@ -73,7 +73,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         else:
             self._image_viewer.clear()
             self._file_name_label.clear()
-            
+
     ##############################################
 
     def previous_document(self):
@@ -308,28 +308,6 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._file_name_label.show()
         self._image_viewer.show()
 
-    ##############################################
-
-    def mousePressEvent(self, event):
-
-        if (event.button() == Qt.LeftButton and
-            self._image_viewer.geometry().contains(event.pos())):
-
-            try:
-                document = self.current_document()
-                drag = QtGui.QDrag(self)
-                mime_data = QtCore.QMimeData()
-                document_path = str(document.path)
-                url = QtCore.QUrl.fromLocalFile(document_path)
-                mime_data.setUrls((url,))
-                drag.setMimeData(mime_data)
-                icon_loader = IconLoader()
-                drag.setPixmap(icon_loader['application-pdf'].pixmap(32, 32))
-                
-                drop_action = drag.exec_()
-            except EmptyRingError:
-                pass
-                
     ##############################################
 
     def open_current_document(self, extern=True):
