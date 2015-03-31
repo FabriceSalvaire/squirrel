@@ -142,6 +142,7 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
 
     def show_message(self, message=None, echo=False, timeout=0):
 
+        # Fixme: cf. PdfBrowserApplication
         if self._main_window is not None:
             self._main_window.show_message(message, echo, timeout)
 

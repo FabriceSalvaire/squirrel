@@ -64,6 +64,21 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
         super(PdfBrowserApplication, self).post_init()
         self._main_window.open_directory(self._args.path)
 
+    ##############################################
+
+    def show_message(self, message=None, timeout=0, warn=False):
+
+        """ Hides the normal status indications and displays the given message for the specified
+        number of milli-seconds (timeout). If timeout is 0 (default), the message remains displayed
+        until the clearMessage() slot is called or until the showMessage() slot is called again to
+        change the message.
+
+        Note that showMessage() is called to show temporary explanations of tool tip texts, so
+        passing a timeout of 0 is not sufficient to display a permanent message.
+        """
+
+        self._main_window.show_message(message, timeout, warn)
+        
 ####################################################################################################
 #
 # End

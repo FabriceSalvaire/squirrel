@@ -25,19 +25,19 @@ import os
 
 ####################################################################################################
 
+# from Babel.Tools.Singleton import SingletonMetaClass
 from Babel.Application.ApplicationBase import ApplicationBase
 from Babel.DataBase.FileDataBase import FileDataBase
 from Babel.DataBase.WordDataBase import WordDataBase
 from Babel.DataBase.WordDocumentDataBase import WordDocumentDataBase
-from Babel.FileSystem.File import Directory, File
-from Babel.Tools.Singleton import MetaSingleton
+from Babel.FileSystem.File import Directory
 import Babel.Config.Config as Config
 
 ####################################################################################################
 
 class BabelApplication(ApplicationBase):
 
-    # __metaclass__ = MetaSingleton
+    # __metaclass__ = SingletonMetaClass
 
     _logger = logging.getLogger(__name__)
     

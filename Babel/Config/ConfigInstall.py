@@ -40,15 +40,15 @@ class Logging(object):
 
 class Icon(object):
 
-    size = '32x32'
-    icon_directory = os.path.join(Path.share_directory, 'icons', size)
-    
-    ##############################################
+    icon_directory = os.path.join(Path.share_directory, 'icons')
+
+    ##############################################    
 
     @staticmethod
-    def find(file_name):
+    def find(file_name, size):
 
-        return PathTools.find(file_name, (Icon.icon_directory,))
+        icon_directory = os.path.join(Icon.icon_directory, '%ux%u' % (size, size))
+        return PathTools.find(file_name, (icon_directory,))
 
 ####################################################################################################
 

@@ -38,6 +38,7 @@ from .ImageViewer import ImageViewer
 from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.GUI.Base.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
+from Babel.GUI.Widgets.MessageBox import MessageBox
 from Babel.GUI.Widgets.PathNavigator import PathNavigator
 from Babel.Tools.Container import EmptyRingError
 
@@ -63,6 +64,10 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def _init_ui(self):
 
+        self._central_widget = QtWidgets.QWidget(self)
+        self.setCentralWidget(self._central_widget)
+        
+        self._message_box = MessageBox(self)
         self._path_navigator = PathNavigator(self)
         self._file_name_label = QtWidgets.QLabel()
         self._file_name_label.hide()
@@ -71,13 +76,14 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._directory_toc.path_changed.connect(self.open_directory)
         self._image_viewer = ImageViewer(self)
         self._image_viewer.hide()
-        self._central_widget = QtWidgets.QWidget(self)
+
         self._vertical_layout = QtWidgets.QVBoxLayout(self._central_widget)
+        self._vertical_layout.addWidget(self._message_box)
         self._vertical_layout.addWidget(self._path_navigator)
         self._vertical_layout.addWidget(self._file_name_label)
         self._vertical_layout.addWidget(self._directory_toc)
         self._vertical_layout.addWidget(self._image_viewer)
-        self.setCentralWidget(self._central_widget)
+
         self.statusBar()
         self._create_actions()
         self._create_toolbar()
@@ -89,7 +95,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
 
         self._directory_list.move_file.connect(self.move_file)
-
+        
         self._translate_ui()
         
     ##############################################
@@ -225,6 +231,28 @@ class PdfBrowserMainWindow(MainWindowBase):
     def init_menu(self):
 
         super(PdfBrowserMainWindow, self).init_menu()
+
+    ##############################################
+
+    def show_message(self, message=None, timeout=0, warn=False):
+
+        """ Hides the normal status indications and displays the given message for the specified
+        number of milli-seconds (timeout). If timeout is 0 (default), the message remains displayed
+        until the clearMessage() slot is called or until the showMessage() slot is called again to
+        change the message.
+
+        Note that showMessage() is called to show temporary explanations of tool tip texts, so
+        passing a timeout of 0 is not sufficient to display a permanent message.
+        """
+
+        if warn:
+            self._message_box.push_message(message)
+        else:
+            status_bar = self.statusBar()
+            if message is None:
+                status_bar.clearMessage()
+            else:
+                status_bar.showMessage(message, timeout)
 
     ##############################################
 
