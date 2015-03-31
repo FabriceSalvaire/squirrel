@@ -360,8 +360,11 @@ class PdfBrowserMainWindow(MainWindowBase):
         
         to_file_path = dst_path.join_filename(file_path.filename_part())
         if os.path.exists(str(to_file_path)):
-            # Handle duplicate ...
-            raise NameError("File exists")
+            # Fixme: Handle duplicate, dialog to rename/delete ?
+            if file_path.shasum == to_file_path.shasum:
+                self.show_message("Destination has a duplicate of this file", warn=True)
+            else:
+                self.show_message("Destination has a file with the same name", warn=True)
         if file_path == to_file_path:
             self._logger.info("Try to move file {} to same place".format(str(file_path)))
         else:
