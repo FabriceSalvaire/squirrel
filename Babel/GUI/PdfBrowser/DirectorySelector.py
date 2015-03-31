@@ -32,6 +32,7 @@ from PyQt5.QtCore import Qt
 
 from .DirectoryTocWidget import DirectoryTocWidget
 from Babel.FileSystem.DirectoryToc import DirectoryToc
+from Babel.FileSystem.File import Directory
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.PathNavigator import PathNavigator
 
@@ -39,6 +40,52 @@ from Babel.GUI.Widgets.PathNavigator import PathNavigator
 
 _module_logger = logging.getLogger(__name__)
 
+####################################################################################################
+
+class CreateDirectoryDialog(QtWidgets.QDialog):
+
+    SELECT_RETURN_CODE = 2
+    
+    ##############################################
+
+    def __init__(self, parent=None):
+
+        super(CreateDirectoryDialog, self).__init__(parent)
+        
+        self.setWindowTitle("Create a directory")
+
+        self._line_edit = QtWidgets.QLineEdit(self)
+        self._line_edit.setMinimumSize(QtCore.QSize(300, 0))
+        self._select_button = QtWidgets.QPushButton('Select', self)
+        self._ok_button = QtWidgets.QPushButton('Ok', self)
+        self._cancel_button = QtWidgets.QPushButton('Cancel', self)
+
+        vertical_layout = QtWidgets.QVBoxLayout(self)
+        vertical_layout.addWidget(self._line_edit)
+        horizontal_layout = QtWidgets.QHBoxLayout()
+        spacer = QtWidgets.QSpacerItem(40, 20,
+                                           QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
+        horizontal_layout.addItem(spacer)
+        horizontal_layout.addWidget(self._select_button)
+        horizontal_layout.addWidget(self._ok_button)
+        horizontal_layout.addWidget(self._cancel_button)
+        vertical_layout.addLayout(horizontal_layout)
+
+        self._select_button.clicked.connect(self.select)
+        self._ok_button.clicked.connect(self.accept)
+        self._cancel_button.clicked.connect(self.reject)
+
+    ##############################################
+
+    def value(self):
+        return self._line_edit.text()
+
+    ##############################################
+
+    def select(self):
+        self.done(self.SELECT_RETURN_CODE)
+        
 ####################################################################################################
 
 class DirectorySelector(QtWidgets.QDialog):
@@ -55,14 +102,17 @@ class DirectorySelector(QtWidgets.QDialog):
 
         self._init_ui()
 
+        self._path = None
         self._open_directory(path)
 
     ##############################################
 
     def _open_directory(self, path):
 
-        self._directory_toc.update(DirectoryToc(path))
-        self._path_navigator.set_path(path) # Fixme: path_navigator -> open_directory -> path_navigator
+        self._path = Directory(path)
+        self._directory_toc.update(DirectoryToc(self._path))
+        # Fixme: path_navigator -> open_directory -> path_navigator
+        self._path_navigator.set_path(self._path)
 
     ##############################################
 
@@ -101,7 +151,7 @@ class DirectorySelector(QtWidgets.QDialog):
 
     @property
     def path(self):
-        return self._path_navigator.path
+        return self._path
 
     ##############################################
 
@@ -117,19 +167,24 @@ class DirectorySelector(QtWidgets.QDialog):
 
     def create_directory(self):
 
-        directory, ok = QtWidgets.QInputDialog.getText(self, "Create a directory", "Directory:")
-        if ok:
-            directory = str(directory)
+        dialog = CreateDirectoryDialog(self)
+        rc = dialog.exec_()
+        if rc:
+            directory = str(dialog.value())
             absolut_directory = self.path.join_directory(directory)
             try:
                 self._logger.info("create directory {}".format(str(absolut_directory)))
                 os.mkdir(str(absolut_directory))
-                self._open_directory(self.path) # reload ?
+                if rc == CreateDirectoryDialog.SELECT_RETURN_CODE:
+                    self._path = absolut_directory
+                    self.accept()
+                else:
+                     # Fixme: reload ?
+                    self._open_directory(self.path)
             except Exception as exception:
-                # Fixme: show message in main window
                 self._logger.error(str(exception))
                 application = QtWidgets.QApplication.instance()
-                application.show_message(str(exception))
+                application.show_message(str(exception), warn=True)
                 
 ####################################################################################################
 #
