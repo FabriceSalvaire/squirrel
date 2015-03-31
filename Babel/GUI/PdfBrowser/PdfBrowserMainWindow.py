@@ -35,6 +35,7 @@ from .DirectoryListWidget import DirectoryListWidget
 from .DirectoryTocWidget import DirectoryTocWidget
 from .DocumentDirectory import DocumentDirectory
 from .ImageViewer import ImageViewer
+from Babel.FileSystem.AutomaticFileRename import AutomaticFileRename
 from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.GUI.Base.MainWindowBase import MainWindowBase
 from Babel.GUI.Widgets.IconLoader import IconLoader
@@ -372,7 +373,19 @@ class PdfBrowserMainWindow(MainWindowBase):
                 pdf_viewer_window.showMaximized()
         except EmptyRingError:
             pass
-                
+
+    ##############################################
+
+    def _delete_file_from_browser(self, file_path):
+    
+        current_document = self.current_document # should not raise EmptyRingError
+        if current_document.path != file_path:
+            self._document_directory.delete(current_document)
+        else:
+            if not self._document_directory.delete_path(file_path):
+                raise NameError("File {} not in the current directory".format(file_path))
+        self._show_document()
+
     ##############################################
 
     def move_file(self, file_path, dst_path):
@@ -380,26 +393,45 @@ class PdfBrowserMainWindow(MainWindowBase):
         # Fixme: here ?
         
         to_file_path = dst_path.join_filename(file_path.filename_part())
-        if os.path.exists(str(to_file_path)):
-            # Fixme: Handle duplicate, dialog to rename/delete ?
+
+        # Test if the destination directory has already a file with the same name
+        overwrite = False
+        if bool(to_file_path):
             if file_path.shasum == to_file_path.shasum:
-                self.show_message("Destination has a duplicate of this file", warn=True)
+                # self.show_message("Destination has a duplicate of this file", warn=True)
+                rc = QtWidgets.QMessageBox.question(self,
+                                                    "",
+                                                    "Destination has a duplicate of this file.\n"
+                                                    "Remove this file instead?")
+                if rc == QtWidgets.QMessageBox.Yes:
+                    self._logger.info("Delete {}".format(str(file_path)))
+                    file_path.delete()
+                    self._delete_file_from_browser(file_path)
+                return # delete or do nothing
             else:
-                self.show_message("Destination has a file with the same name", warn=True)
+                # self.show_message("Destination has a file with the same name", warn=True)
+                to_file_path2 = AutomaticFileRename(to_file_path).generate()
+                filename, ok = QtWidgets.QInputDialog.getText(self,
+                                                              "Destination has a file with the same name",
+                                                              "Rename to:",
+                                                              text=to_file_path2.filename)
+                # Fixme: implement overwrite
+                if ok:
+                     to_file_path = dst_path.join_filename(filename)
+                else:
+                    return # do nothing
+
         if file_path == to_file_path:
-            self._logger.info("Try to move file {} to same place".format(str(file_path)))
+            self.show_message("Tried to move file {} to same place".format(str(file_path)), warn=True)
         else:
+            # Last check
+            if bool(to_file_path) and not overwrite:
+                self.show_message("Tried to overwrite file {}".format(str(file_path)), warn=True)
+            
             self._logger.info("Move {} to {}".format(str(file_path), str(to_file_path)))
             os.rename(str(file_path), str(to_file_path))
-            # Update browser
-            current_document = self.current_document # should not raised EmptyRingError
-            if current_document.path != file_path:
-                self._document_directory.delete(current_document)
-            else:
-                if not self._document_directory.delete_path(file_path):
-                    raise NameError("File {} not in the current directory".format(file_path))
-            self._show_document()
-
+            self._delete_file_from_browser(file_path)
+            
 ####################################################################################################
 #
 # End

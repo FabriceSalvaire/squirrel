@@ -57,7 +57,7 @@ def run_shasum(filename, algorithm=1, text=False, binary=False, portable=False):
     elif portable:
         args.append('--portable')
     args.append(filename)
-    output = subprocess.check_output(args)
+    output = subprocess.check_output(args).decode('utf-8')
     shasum = output[:output.find(' ')]
 
     return shasum
@@ -82,8 +82,14 @@ class Path(object):
         
     def __bool__(self):
 
-        return os.path.exists(self._path)
+        return self.exists()
 
+    ##############################################
+        
+    def exists(self):
+
+        return os.path.exists(self._path)
+    
     ##############################################
         
     def __eq__(self, other):
@@ -222,7 +228,7 @@ class Path(object):
     def creation_time(self):
 
         return os.stat(self._path).st_ctime
-
+    
 ####################################################################################################
 
 class Directory(Path):
@@ -236,7 +242,8 @@ class Directory(Path):
         
     def __bool__(self):
 
-        return super(Directory, self).__nonzero__() and self.is_directory()
+         # Fixme: right ?
+        return self.exists() and self.is_directory()
 
     ##############################################
 
@@ -269,6 +276,15 @@ class Directory(Path):
             if path.is_file() and (hidden or not path.is_hidden()):
                 yield File(path.filename_part(), path.directory_part())
 
+    ##############################################
+
+    def filter_entries(self, compiled_pattern):
+
+        for item in os.listdir(str(self._path)):
+            match = compiled_pattern.match(item)
+            if match is not None:
+                yield item, match
+                
     ##############################################
 
     def walk_files(self, followlinks=False):
@@ -308,7 +324,8 @@ class File(Path):
         
     def __bool__(self):
 
-        return super(File, self).__nonzero__() and os.path.isfile(self._path)
+        # Fixme: right ?
+        return self.exists() and os.path.isfile(self._path)
 
     ##############################################
         
@@ -331,6 +348,12 @@ class File(Path):
 
         return file_extension(self._filename)
 
+    ##############################################
+
+    def split_extension(self):
+
+        return os.path.splitext(self._filename)
+        
     ##############################################
         
     @property
@@ -358,6 +381,12 @@ class File(Path):
 
         return self._shasum
 
+    ##############################################
+
+    def delete(self):
+
+        os.unlink(self._path)
+        
 ####################################################################################################
 # 
 # End
