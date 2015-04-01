@@ -28,8 +28,8 @@ import numpy as np
 
 ####################################################################################################
 
-from Babel.Tools.Interval import Interval, MinusInfinity, PlusInfinity
-from Babel.Tools.Math import rint
+from Babel.Math.Interval import Interval, MinusInfinity, PlusInfinity
+from Babel.Math.Functions import rint
 
 ####################################################################################################
 

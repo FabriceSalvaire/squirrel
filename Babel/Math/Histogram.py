@@ -24,8 +24,8 @@ import numpy as np
 
 ####################################################################################################
 
-from Babel.Tools.Binning import Binning1D
-from Babel.Tools.Interval import Interval
+from Babel.Math.Binning import Binning1D
+from Babel.Math.Interval import Interval
 
 ####################################################################################################
 

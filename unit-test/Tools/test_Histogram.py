@@ -11,8 +11,8 @@ import unittest
 
 ####################################################################################################
 
-from Babel.Tools.Binning import Binning1D
-from Babel.Tools.Histogram import *
+from Babel.Math.Binning import Binning1D
+from Babel.Math.Histogram import *
 
 ####################################################################################################
 

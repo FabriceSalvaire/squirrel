@@ -37,7 +37,7 @@ from MuPDF import *
 from .MupdfTools import *
 from .TextStyle import TextStyles, TextStyleFrequencies
 from Babel.Pdf.TextTokenizer import TextTokenizer, TokenisedText
-from Babel.Tools.Interval import IntervalInt2D
+from Babel.Math.Interval import IntervalInt2D
 
 ####################################################################################################
 

@@ -41,7 +41,7 @@ from PyQt5 import QtCore, QtWidgets
 ####################################################################################################
 
 from Babel.Tools.EnumFactory import EnumFactory
-from Babel.Tools.Math import rint
+from Babel.Math.Functions import rint
 
 ####################################################################################################
 

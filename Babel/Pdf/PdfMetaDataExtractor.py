@@ -31,7 +31,7 @@
 from .PdfDocument import PdfDocument
 from .TextTokenizer import Token, strip_word_list, strip_non_alphabetic
 from Babel.Tools.DictionaryTools import DictInitialised
-from Babel.Tools.Statistics import Gaussian
+from Babel.Math.Statistics import Gaussian
 
 ####################################################################################################
 

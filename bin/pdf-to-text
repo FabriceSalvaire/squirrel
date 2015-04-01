@@ -37,8 +37,8 @@ import argparse
 
 from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpusDataBase
 from Babel.Pdf.PdfDocument import PdfDocument
-from Babel.Tools.Binning import Binning1D
-from Babel.Tools.Histogram import Histogram
+from Babel.Math.Binning import Binning1D
+from Babel.Math.Histogram import Histogram
 from Babel.Tools.ProgramOptions import PathAction
 
 ####################################################################################################

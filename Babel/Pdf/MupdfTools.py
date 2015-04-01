@@ -35,7 +35,7 @@ from MuPDF import *
 ####################################################################################################
 
 from .TextStyle import TextStyle
-from Babel.Tools.Interval import IntervalInt2D
+from Babel.Math.Interval import IntervalInt2D
 
 ####################################################################################################
 
@@ -69,7 +69,7 @@ def format_bounding_box(obj):
 
 def to_interval(bounding_box):
 
-    """ Convert a MuPDF bounding box to an :obj:`Babel.Tools.Interval.IntervalInt2D` object. """
+    """ Convert a MuPDF bounding box to an :obj:`Babel.Math.Interval.IntervalInt2D` object. """
 
     return IntervalInt2D((bounding_box.x0, bounding_box.x1),
                          (bounding_box.y0, bounding_box.y1))
