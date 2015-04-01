@@ -167,17 +167,48 @@ class Path(object):
         
     def split(self):
 
+        """ Return ['', 'a', 'b', 'c'] for '/a/b/c' """
+
+        # Fixme: remove ''?
+        
         return self._path.split(os.path.sep)
 
     ##############################################
         
     def split_iterator(self):
 
+        """ Return [Path /, Path /a, Path /a/b, Path /a/b/c] for '/a/b/c' """
+
+        # Fixme: name ?
+        
         path = Directory(os.path.sep)
-        for part in self.split():
-            path = path.join_directory(part)
+        for directory in self.split():
+            path = path.join_directory(directory)
             yield path
 
+    ##############################################
+        
+    def split_reverse_iterator(self):
+
+        for directory in reversed(self.split()):
+            if directory:
+                yield directory
+
+    ##############################################
+
+    def reverse_level_of_equality(self, other):
+
+        """ Return the level of subdirectory from the top matching both paths. """
+        
+        level = 0
+        for directory1, directory2 in zip(self.split_reverse_iterator(),
+                                          other.split_reverse_iterator()):
+            if directory1 != directory2:
+                break
+            else:
+                level += 1
+        return level
+    
     ##############################################
         
     def directory_part(self):

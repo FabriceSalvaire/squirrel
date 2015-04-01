@@ -21,6 +21,7 @@
 ####################################################################################################
 
 import logging
+import os
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -30,10 +31,15 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from .DirectorySelector import DirectorySelector
 from Babel.FileSystem.File import Directory, File
 from Babel.GUI.Widgets.IconLoader import IconLoader
+from Babel.Tools.IterTools import pairwise
 
 ####################################################################################################
 
 _module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
+icon_loader = IconLoader()
 
 ####################################################################################################
 
@@ -51,13 +57,14 @@ class DirectoryWidget(QtWidgets.QWidget):
         super(DirectoryWidget, self).__init__(parent)
 
         self._path = path
-        
-        icon_loader = IconLoader()
+
+        self.setToolTip(str(path))
 
         self._delete_button = QtWidgets.QToolButton(self)
         self._delete_button.setIcon(icon_loader['edit-delete'])
         self._delete_button.setAutoRaise(True)
-        self._label = QtWidgets.QLabel(path.basename(), self)
+        self._label = QtWidgets.QLabel(self)
+        self.set_label_level()
         self._horizontal_layout = QtWidgets.QHBoxLayout(self)
         self._horizontal_layout.addWidget(self._delete_button)
         self._horizontal_layout.addWidget(self._label)
@@ -66,6 +73,40 @@ class DirectoryWidget(QtWidgets.QWidget):
 
         self.setAcceptDrops(True)
 
+    ##############################################
+
+    def same_path(self, path):
+        return self._path == path
+        
+    ##############################################
+
+    def label(self):
+        return self._label.text()
+
+    ##############################################
+
+    def has_same_label(self, other):
+        return self.label() == other.label()
+
+    ##############################################
+
+    def set_label_level(self, level=1):
+
+        if level == 1:
+            label = self._path.basename()
+        else:
+            sep = os.path.sep
+            label = sep.join(self._path.split()[-level:])
+        self._label.setText(label)
+        
+    ##############################################
+
+    def update_label_for_collision(self, other):
+
+        level = self._path.reverse_level_of_equality(other._path) +1
+        self.set_label_level(level)
+        other.set_label_level(level)
+            
     ##############################################
 
     def dragEnterEvent(self, event):
@@ -174,13 +215,34 @@ class DirectoryListWidget(QtWidgets.QWidget):
         directory_selector = DirectorySelector(path)
         if directory_selector.exec_():
             path = directory_selector.path
-            widget = DirectoryWidget(path, self)
-            widget.deleted.connect(self._delete_item)
-            widget.dropped_file.connect(self.move_file)
-            index = self._vertical_layout.count() -1
-            self._vertical_layout.insertWidget(index, widget)
-            self._widgets.append(widget)
-            self._last_path = path.directory_part()
+            if self._test_for_identity(path):
+                widget = DirectoryWidget(path, self)
+                widget.deleted.connect(self._delete_item)
+                widget.dropped_file.connect(self.move_file)
+                index = self._vertical_layout.count() -1
+                self._vertical_layout.insertWidget(index, widget)
+                self._widgets.append(widget)
+                self._last_path = path.directory_part()
+                self._update_label_for_collision()
+
+    ##############################################
+
+    def _test_for_identity(self, path):
+
+        for widget in self._widgets:
+            if widget.same_path(path):
+                return False
+        else:
+            return True
+        
+    ##############################################
+
+    def _update_label_for_collision(self):
+
+        self._widgets.sort(key=lambda x: x.label())
+        for widget1, widget2 in pairwise(self._widgets):
+            if widget1.has_same_label(widget2):
+                widget1.update_label_for_collision(widget2)
             
     ##############################################
 
