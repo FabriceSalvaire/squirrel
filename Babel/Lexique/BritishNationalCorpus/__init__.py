@@ -22,11 +22,11 @@
 
 from .PartOfSpeechTags import *
 from Babel.Config import ConfigInstall
-from Babel.DataBase.WordDataBase import WordDataBase
+from Babel.DataBase.WordDataBase import WordSqliteDataBase
 
 ####################################################################################################
 
-class BritishNationalCorpusDataBase(WordDataBase):
+class BritishNationalCorpusDataBase(WordSqliteDataBase):
 
     ##############################################
 

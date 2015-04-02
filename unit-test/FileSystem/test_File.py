@@ -57,7 +57,7 @@ class TestFile(unittest.TestCase):
             file_table.add(file_path)
         file_table.commit()
 
-        print(file_table.select_by(path=os.path.join(self.tmp_directory, 'file1.pdf')).one())
+        print(file_table.filter_by(path=os.path.join(self.tmp_directory, 'file1.pdf')).one())
 
 ####################################################################################################
 

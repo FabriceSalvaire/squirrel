@@ -20,49 +20,40 @@
 
 ####################################################################################################
 
-import os
+import logging
 
 ####################################################################################################
 
-def to_absolute_path(path):
-
-    # Expand ~ . and Remove trailing '/'
-
-    return os.path.abspath(os.path.expanduser(path))
+from .DataBase import DataBase
+from Babel.Tools.Singleton import SingletonMetaClass
 
 ####################################################################################################
 
-def parent_directory_of(file_name, step=1):
+class MysqlDataBase(DataBase, metaclass=SingletonMetaClass):
+
+    _logger = logging.getLogger(__name__)
+
+    CONNECTION_STR = "mysql+oursql://{user_name}:{password}@{hostname}/{database}"
+
+    ###############################################
     
-    directory = file_name
-    for i in range(step):
-        directory = os.path.dirname(directory)
-    return directory
+    def __init__(self, database_config, echo=None):
 
-####################################################################################################
+        self._logger.debug("Open MySql Database %s", self.CONNECTION_STR)
 
-def find(file_name, directories):
-    
-    if isinstance(directories, bytes):
-        directories = (directories,)
-    for directory in directories:
-        for directory_path, sub_directories, file_names in os.walk(directory):
-            if file_name in file_names:
-                return os.path.join(directory_path, file_name)
+        # Fixme: _ only used for one
+        connection_keys =  {'hostname':database_config.hostname,
+                            'database':database_config.database,
+                            'user_name':database_config.user_name,
+                            'password':database_config.password,
+                            }
+        connection_str = self.CONNECTION_STR.format(connection_keys)
 
-    raise NameError("File %s not found in directories %s" % (file_name, str(directories)))
+        if echo is None:
+            echo = database_config.echo
+        
+        super(MysqlDataBase, self).__init__(connection_str, echo=echo)
 
-####################################################################################################
-
-def find_alias(directory, file_names):
-
-    for file_name in file_names:
-        absolut_file_name = os.path.join(directory, file_name)
-        if os.path.exists(absolut_file_name):
-            return absolut_file_name
-
-    raise NameError("Any file in %s found in directory %s" % (str(file_names), directory))
-            
 ####################################################################################################
 #
 # End

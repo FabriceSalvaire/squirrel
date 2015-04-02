@@ -22,15 +22,15 @@
 
 import logging
 import os
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import stat
 
 ####################################################################################################
 
-class SqliteDataBase(object):
+from .DataBase import DataBase
 
-    __base__ = None
+####################################################################################################
+
+class SqliteDataBase(DataBase):
 
     _logger = logging.getLogger(__name__)
 
@@ -39,18 +39,63 @@ class SqliteDataBase(object):
     def __init__(self, filename, echo=False):
 
         self._logger.debug("Open SQLite Database %s" % (filename))
-    
+        
         self._filename = filename
 
-        create = not os.path.exists(self._filename)
+        self._created = not os.path.exists(self._filename)
+        self._before_alter_backuped = False
 
-        connection_str = "sqlite:///" + self._filename
-        self._engine = create_engine(connection_str, echo=echo)
-        self._session_maker = sessionmaker(bind=self._engine)
-        self.session = self._session_maker()
+        super(SqliteDataBase, self).__init__(connection_string="sqlite:///" + self._filename,
+                                             echo=echo)
 
-        if create:
-            self.__base__.metadata.create_all(self._engine)
+    ###############################################
+
+    @property
+    def filename(self):
+        return self._filename
+
+    ###############################################
+
+    @property
+    def dirname(self):
+        return  os.path.dirname(self._filename)
+
+    ##############################################
+    
+    def create(self):
+
+        # Fixme: it don't check if there is any table
+
+        if self._created:
+            self._logger.info("Create DataBase %s" % (self._filename))
+            self._declarative_base_class.metadata.create_all(bind=self._engine)
+            # Set POSIX permission, user needs the right privilege to achieve it
+            os.chmod(self._filename, stat.S_IRUSR|stat.S_IWUSR|stat.S_IRGRP|stat.S_IWGRP)
+        return self._created
+
+    ###############################################
+    
+    def journal_exists(self):
+
+        # Fixme: New extension?
+        journal_filename = self._filename + '-journal'
+        return os.path.exists(journal_filename)
+
+    ###############################################
+    
+    def alter_table(self, table_name, columns_statements):
+        
+        # Fixme: look at
+        # http://docs.sqlalchemy.org/en/rel_0_8/core/metadata.html#sqlalchemy.schema.Table
+        # extend_existing=True
+
+        table_columns = self.table_columns(table_name)
+        for column, alter_table_statement in columns_statements:
+            if column not in table_columns:
+                # self.backup_file(suffix='.before-alter')
+                sql_statement = 'ALTER TABLE %s ADD COLUMN ' % table_name + column + ' ' + alter_table_statement
+                self._logger.info(sql_statement)
+                self.session.execute(sql_statement)
 
 ####################################################################################################
 #

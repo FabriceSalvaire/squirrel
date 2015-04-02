@@ -89,8 +89,8 @@ class ImportSession(object):
         for file_path in path.walk_files():
             if self.is_file_importable(file_path):
                 self.import_file(file_path)
-            else:
-                self._logger.info("File %s is not importable" % (file_path))
+            # else:
+            #     self._logger.info("File %s is not importable" % (file_path))
 
     ##############################################
 
@@ -101,20 +101,26 @@ class ImportSession(object):
     ##############################################
 
     def import_file(self, file_path):
+
+        # Cases:
+        #   - document is already registered (same path and checksum)
+        #   - document is a duplicate (same checksum)
+        #   - document is an overwrite (same path)
+        #   - new document
         
-        file_table = self._importer._application.file_database.file_table
-        query = file_table.select_by(path=str(file_path), shasum=file_path.shasum)
+        file_table = self._importer._application.document_database.file_table
+        query = file_table.filter_by(path=str(file_path), shasum=file_path.shasum)
         if query.count():
             self._logger.info("File %s is already imported" % (file_path))
             # then do nothing
         else:
-            query = file_table.select_by(shasum=file_path.shasum)
+            query = file_table.filter_by(shasum=file_path.shasum)
             if query.count():
                 file_paths = ' '.join([row.path for row in query.all()])
                 self._logger.info("File %s is a duplicate of %s" % (file_path, file_paths))
                 # then log this file in the import session
             else:
-                query = file_table.select_by(path=str(file_path))
+                query = file_table.filter_by(path=str(file_path))
                 if query.count():
                     self._logger.info("File %s was overwritten" % (file_path))
                     # then update data

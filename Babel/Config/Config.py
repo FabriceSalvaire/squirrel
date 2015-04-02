@@ -39,9 +39,7 @@ class Path(object):
 
 class DataBase(object):
 
-    file_database = os.path.join(Path.data_directory, 'file-database.sqlite')
-    word_database = os.path.join(Path.data_directory, 'word-database.sqlite')
-    word_document_database = os.path.join(Path.data_directory, 'word-document-database.sqlite')
+    document_database = os.path.join(Path.data_directory, 'document-database.sqlite')
 
 ####################################################################################################
 

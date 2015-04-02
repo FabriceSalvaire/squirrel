@@ -71,7 +71,7 @@ class SqlTableModel(QtCore.QAbstractTableModel):
                 query = self._query.order_by(sqlalchemy.desc(self._sorted_column))
         else:
             query = self._query
-        self._rows = query.all()
+        self._rows = query.all() # Could return a huge list /!\
         self.reset()
 
     ##############################################
@@ -121,7 +121,7 @@ class SqlTableModel(QtCore.QAbstractTableModel):
         if role == QtCore.Qt.DisplayRole:
             if orientation == QtCore.Qt.Horizontal:
                 column_name = self._columns[section]
-                title = self.row_class.get_field_title(column_name) # Fixme: ?
+                title = self.row_class.field_title(column_name) # Fixme: ?
                 return QtCore.QVariant(title)
             else:
                 return QtCore.QVariant(section)
@@ -130,17 +130,17 @@ class SqlTableModel(QtCore.QAbstractTableModel):
 
     ##############################################
 
-    def set_column_widths(self, table_wiew):
+    def set_column_widths(self, table_view):
 
-        font_metrics = table_wiew.fontMetrics()
+        font_metrics = table_view.fontMetrics()
         for column_index, column_name in enumerate(self._columns):
-            width_title = font_metrics.width('M'*2 + self.row_class.get_field_title(column_name))
-            width_factory = self.row_class.get_field_witdh(column_name)
+            width_title = font_metrics.width('M'*2 + self.row_class.field_title(column_name))
+            width_factory = self.row_class.field_width(column_name)
             if width_factory is not None:
                 width = max(width_factory(font_metrics), width_title)
             else:
                 width = width_title
-            table_wiew.setColumnWidth(column_index, width)
+            table_view.setColumnWidth(column_index, width)
                     
     ##############################################
 
@@ -169,17 +169,27 @@ class SqlTableModel(QtCore.QAbstractTableModel):
 
     ##############################################
 
-    def select_by(self, **kwargs):
+    def filter_by(self, **kwargs):
 
-        self._query = self._sql_table.select_by(**kwargs)
+        self._query = self._sql_table.filter_by(**kwargs)
         self._sort()
 
     ##############################################
 
-    def select_by_where_clause(self, where_clause):
+    def filter(self, where_clause):
 
-        self._query = self._sql_table.select_by_where_clause(where_clause)
+        self._query = self._sql_table.filter(where_clause)
         self._sort()
+
+    ##############################################
+
+    def index_of(self, row):
+
+        try:
+            index = self._rows.index(row)
+            return self.index(index, 0)
+        except:
+            return None
 
 ####################################################################################################
 # 

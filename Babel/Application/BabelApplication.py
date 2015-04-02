@@ -25,11 +25,10 @@ import os
 
 ####################################################################################################
 
+# from Babel.DataBase.WordDataBase import WordDataBase
 # from Babel.Tools.Singleton import SingletonMetaClass
 from Babel.Application.ApplicationBase import ApplicationBase
-from Babel.DataBase.FileDataBase import FileDataBase
-from Babel.DataBase.WordDataBase import WordDataBase
-from Babel.DataBase.WordDocumentDataBase import WordDocumentDataBase
+from Babel.DataBase.DocumentDataBase import DocumentSqliteDataBase
 from Babel.FileSystem.File import Directory
 import Babel.Config.Config as Config
 
@@ -67,9 +66,8 @@ class BabelApplication(ApplicationBase):
     
     def _open_database(self):
 
-        self.file_database = FileDataBase(Config.DataBase.file_database)
-        self.word_database = WordDataBase(Config.DataBase.word_database)
-        self.word_document_database = WordDocumentDataBase(Config.DataBase.word_document_database)
+        self.document_database = DocumentSqliteDataBase(Config.DataBase.document_database)
+        # self.word_database = WordDataBase(Config.DataBase.word_database)
 
     ###############################################
     

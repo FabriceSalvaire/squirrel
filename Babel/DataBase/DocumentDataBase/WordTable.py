@@ -21,20 +21,14 @@
 ####################################################################################################
 
 from sqlalchemy import Column, Boolean, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
 
 ####################################################################################################
 
-SqlAlchemyBase = declarative_base()
+from Babel.DataBase.SqlAlchemyBase import SqlRow
 
 ####################################################################################################
 
-from Babel.DataBase.SqlAlchemyBase import SqlRow, SqlTable
-from Babel.DataBase.SqliteDataBase import SqliteDataBase
-
-####################################################################################################
-
-class WordRow(SqlAlchemyBase, SqlRow):
+class WordRowMixin(SqlRow):
 
     __tablename__ = 'words'
 
@@ -54,26 +48,6 @@ Word Row
   count: %(count)u
 '''
         return message % self.get_column_dict()
-
-####################################################################################################
-
-class WordSqlTable(SqlTable):
-
-    ROW_CLASS = WordRow
-
-####################################################################################################
-
-class WordDocumentDataBase(SqliteDataBase):
-    
-    __base__ = SqlAlchemyBase
-
-    ##############################################
-    
-    def __init__(self, filename, echo=False):
-
-        super(WordDocumentDataBase, self).__init__(filename, echo)
-
-        self.word_table = WordSqlTable(self)
 
 ####################################################################################################
 # 

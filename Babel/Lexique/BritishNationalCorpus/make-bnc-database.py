@@ -72,7 +72,7 @@ with sys.stdin as file_input:
         if tag != '!!ANY' and int(word_count) > word_count_min:
             try:
                 tag = tag.upper()
-                # part_of_speech_tag_row = part_of_speech_tag_table.select_by(tag=tag).one()
+                # part_of_speech_tag_row = part_of_speech_tag_table.filter_by(tag=tag).one()
                 part_of_speech_tag_row = part_of_speech_tag_dict[tag]
                 word_table.add_new_row(word=word,
                                        part_of_speech_tag_id=part_of_speech_tag_row.id,

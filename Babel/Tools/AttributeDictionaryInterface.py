@@ -110,19 +110,19 @@ class ReadOnlyAttributeDictionaryInterface(object):
 
     ##############################################
     
-    def iteritems(self):
+    def items(self):
 
         return self._dictionary.items()
 
     ##############################################
     
-    def iterkeys(self):
+    def keys(self):
 
         return self._dictionary.keys()
 
     ##############################################
     
-    def itervalues(self):
+    def values(self):
 
         return self._dictionary.values()
 

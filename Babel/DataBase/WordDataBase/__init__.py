@@ -56,7 +56,7 @@ Language Row
 
 ####################################################################################################
 
-class LanguageSqlTable(SqlTable):
+class LanguageTable(SqlTable):
 
     ROW_CLASS = LanguageRow
 
@@ -121,13 +121,13 @@ Word Row
 
 ####################################################################################################
 
-class WordSqlTable(SqlTable):
+class WordTable(SqlTable):
 
     ROW_CLASS = WordRow
 
 ####################################################################################################
 
-class WordDataBase(SqliteDataBase):
+class WordSqliteDataBase(SqliteDataBase):
     
     __base__ = SqlAlchemyBase
 
@@ -135,11 +135,11 @@ class WordDataBase(SqliteDataBase):
     
     def __init__(self, filename, echo=False):
 
-        super(WordDataBase, self).__init__(filename, echo)
+        super(WordSqliteDataBase, self).__init__(filename, echo)
 
-        self.language_table = LanguageSqlTable(self)
+        self.language_table = LanguageTable(self)
         self.part_of_speech_tag_table = PartOfSpeechTagTable(self)
-        self.word_table = WordSqlTable(self)
+        self.word_table = WordTable(self)
 
 ####################################################################################################
 # 

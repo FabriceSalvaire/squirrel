@@ -20,6 +20,8 @@
 # 
 ####################################################################################################
 
+""" Query the BNC """
+
 ####################################################################################################
 #
 # Logging
@@ -32,12 +34,10 @@ logger = Logging.setup_logging('babel')
 ####################################################################################################
 
 import argparse
-import os
 
 ####################################################################################################
 
-from Babel.DataBase.WordDataBase import WordDataBase
-from Babel.Tools.ProgramOptions import PathAction
+from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpusDataBase
 
 ####################################################################################################
 #
@@ -53,26 +53,22 @@ args = argument_parser.parse_args()
 
 ####################################################################################################
 
-database_path = os.path.join(os.path.dirname(__file__), '../Babel/Lexique/BritishNationalCorpus/bnc.sqlite')
-print(os.path.realpath(database_path))
-
-database = WordDataBase(database_path)
+database = BritishNationalCorpusDataBase()
 word_table = database.word_table
 part_of_speech_tag_table = database.part_of_speech_tag_table
 
-word_rows = word_table.select_by(word=args.word).all()
+word_rows = word_table.filter_by(word=args.word).all()
 for word_row in word_rows:
-    tag_row = part_of_speech_tag_table.select_by(id=word_row.part_of_speech_tag_id).one()
+    tag_row = part_of_speech_tag_table.filter_by(id=word_row.part_of_speech_tag_id).one()
     # Fixme: comment layout
     message = '''
 Word
-  word: %s
-  count: %u
-  part of speech tag: %s
-  %s
+  word: {}
+  count: {}
+  part of speech tag: {}
+  {}
 '''
-    print(message % (word_row.word, word_row.count,
-                     tag_row.tag, tag_row.comment))
+    print(message.format(word_row.word, word_row.count, tag_row.tag, tag_row.comment))
 
 ####################################################################################################
 # 
