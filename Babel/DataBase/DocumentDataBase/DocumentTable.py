@@ -23,6 +23,8 @@
 import datetime
 
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.orm import relationship
 
 ####################################################################################################
 
@@ -30,9 +32,9 @@ from Babel.DataBase.SqlAlchemyBase import SqlRow
 
 ####################################################################################################
 
-class FileRowMixin(SqlRow):
+class DocumentRowMixin(SqlRow):
 
-    __tablename__ = 'files'
+    __tablename__ = 'documents'
 
     id = Column(Integer, primary_key=True)
     added_time = Column(DateTime)
@@ -47,13 +49,21 @@ class FileRowMixin(SqlRow):
     title = Column(String, default='')
     author = Column(String, default='')
     comment = Column(String, default='')
+
+    ###############################################
+
+    @declared_attr
+    def words(self):
+        return relationship('WordRow', order_by='WordRow.count', backref='document',
+                            cascade="all, delete, delete-orphan",
+                            )
     
     ##############################################
         
     def __repr__(self):
         
         message = '''
-File Row
+Document Row
   path: {path}
   shasum: {shasum}
   inode: {inode}
@@ -79,19 +89,19 @@ File Row
         
 ####################################################################################################
 
-class FileTableMixin(object):
+class DocumentTableMixin(object):
 
     ##############################################
 
     def add(self, file_path):
 
-        file_row = self.ROW_CLASS(added_time=datetime.datetime.today(),
-                                  path=str(file_path),
-                                  inode=file_path.inode,
-                                  shasum=file_path.shasum,
-                                  # creation_time=file_path.creation_time,
-                                 )
-        self._session.add(file_row)
+        document_row = self.ROW_CLASS(added_time=datetime.datetime.today(),
+                                      path=str(file_path),
+                                      inode=file_path.inode,
+                                      shasum=file_path.shasum,
+                                      # creation_time=file_path.creation_time,
+                                     )
+        self._session.add(document_row)
 
 ####################################################################################################
 # 

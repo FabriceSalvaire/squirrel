@@ -20,7 +20,9 @@
 
 ####################################################################################################
 
-from sqlalchemy import Column, Boolean, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.orm import relationship, backref
 
 ####################################################################################################
 
@@ -33,19 +35,34 @@ class WordRowMixin(SqlRow):
     __tablename__ = 'words'
 
     id = Column(Integer, primary_key=True)
-    word = Column(String) # , primary_key=True
-    document_id = Column(Integer) # , primary_key=True
-    count = Column(Integer, default=0)
+    word = Column(String)
+    count = Column(Integer)
 
+    # document_id = Column(Integer, ForeignKey('documents.id'), index=True)
+    ## sqlalchemy.exc.InvalidRequestError: Mapper properties (i.e. deferred,column_property(),
+    ## relationship(), etc.) must be declared as @declared_attr callables on declarative mixin
+    ## classes.
+    # document = relationship('DocumentRowMixin', backref=backref('words', order_by=id))
+
+    ###############################################
+
+    @declared_attr
+    def document_id(cls):
+        return Column(Integer, ForeignKey('documents.id'), index=True)
+
+    # @declared_attr
+    # def document(cls):
+    #     return relationship('DocumentRow', backref=backref('words', order_by=cls.id))
+    
     ##############################################
         
     def __repr__(self):
         
         message = '''
 Word Row
-  word: %(word)s
-  document id: %(document_id)u
-  count: %(count)u
+  word: {word}
+  document id: {document_id}
+  count: {count}
 '''
         return message % self.get_column_dict()
 

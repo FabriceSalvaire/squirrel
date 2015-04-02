@@ -108,28 +108,28 @@ class ImportSession(object):
         #   - document is an overwrite (same path)
         #   - new document
         
-        file_table = self._importer._application.document_database.file_table
-        query = file_table.filter_by(path=str(file_path), shasum=file_path.shasum)
+        document_table = self._importer._application.document_database.document_table
+        query = document_table.filter_by(path=str(file_path), shasum=file_path.shasum)
         if query.count():
             self._logger.info("File %s is already imported" % (file_path))
             # then do nothing
         else:
-            query = file_table.filter_by(shasum=file_path.shasum)
+            query = document_table.filter_by(shasum=file_path.shasum)
             if query.count():
                 file_paths = ' '.join([row.path for row in query.all()])
                 self._logger.info("File %s is a duplicate of %s" % (file_path, file_paths))
                 # then log this file in the import session
             else:
-                query = file_table.filter_by(path=str(file_path))
+                query = document_table.filter_by(path=str(file_path))
                 if query.count():
                     self._logger.info("File %s was overwritten" % (file_path))
                     # then update data
-                    file_row = query.one()
-                    file_row.update(file_path)
-                    file_table.commit()
+                    document_row = query.one()
+                    document_row.update(file_path)
+                    document_table.commit()
                 else:
-                    file_table.add(file_path)
-                    file_table.commit()
+                    document_table.add(file_path)
+                    document_table.commit()
                     #try:
                     importer_registry.import_file(file_path)
                     #except:
