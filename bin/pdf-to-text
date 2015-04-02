@@ -20,6 +20,8 @@
 # 
 ####################################################################################################
 
+""" Analyse the text of a PDF document """
+
 ####################################################################################################
 #
 # Logging
@@ -176,7 +178,7 @@ def show_words(pdf_document, main_words):
 
     print('Words:')
     for word_count in document_words:
-        word_rows = word_table.select_by(word=word_count.word).all()
+        word_rows = word_table.filter_by(word=word_count.word).all()
         if word_rows:
             word_row = word_rows[0]
             # print '%6u' % count, word, str([word_row.part_of_speech_tag_id for word_row in word_rows])
