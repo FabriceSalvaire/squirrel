@@ -37,92 +37,61 @@ part_of_speech_tags = {
 
     'AJS': """superlative adjective, e.g. best, oldest""",
 
-    'AT0': """article, e.g. the, a, an, no . Note the inclusion of no: articles are defined as
-              determiners which typically begin a noun phrase but cannot appear as its head.""",
+    'AT0': """article, e.g. the, a, an, no . Note the inclusion of no: articles are defined as determiners which typically begin a noun phrase but cannot appear as its head.""",
 
-    'AV0': """adverb (general, not sub-classified as AVP or AVQ), e.g. often, well, longer,
-              furthest. Note that adverbs, unlike adjectives, are not tagged as positive,
-              comparative, or superlative. This is because of the relative rarity of comparative or
-              superlative forms.""",
+    'AV0': """adverb (general, not sub-classified as AVP or AVQ), e.g. often, well, longer, furthest. Note that adverbs, unlike adjectives, are not tagged as positive, comparative, or superlative. This is because of the relative rarity of comparative or superlative forms.""",
 
-    'AVP': """adverb particle, e.g. up, off, out. This tag is used for all prepositional adverbs,
-              whether or not they are used idiomatically in phrasal verbs such as "Come out here",
-              or "I can't hold out any longer".""",
+    'AVP': """adverb particle, e.g. up, off, out. This tag is used for all prepositional adverbs, whether or not they are used idiomatically in phrasal verbs such as "Come out here", or "I can't hold out any longer".""",
 
-    'AVQ': """wh-adverb, e.g. when, how, why. The same tag is used whether the word is
-              used interrogatively or to introduce a relative clause.""",
+    'AVQ': """wh-adverb, e.g. when, how, why. The same tag is used whether the word is used interrogatively or to introduce a relative clause.""",
 
     'CJC': """coordinating conjunction, e.g. and, or, but.""",
 
     'CJS': """subordinating conjunction, e.g. although, when.""",
 
-    'CJT': """the subordinating conjunction that, when introducing a relative clause, as in "the day
-              that follows Christmas". Some theories treat that here as a relative pronoun; others
-              as a conjunction. We have adopted the latter analysis.""",
+    'CJT': """the subordinating conjunction that, when introducing a relative clause, as in "the day that follows Christmas". Some theories treat that here as a relative pronoun; others as a conjunction. We have adopted the latter analysis.""",
     
     'CRD': """cardinal numeral, e.g. one, 3, fifty-five, 6609.""",
     
     'DPS': """possessive determiner form, e.g. your, their, his.""",
     
-    'DT0': """general determiner: a determiner which is not a DTQ e.g. this both in "This is my
-              house" and "This house is mine". A determiner is defined as a word which typically
-              occurs either as the first word in a noun phrase, or as the head of a noun phrase.""",
+    'DT0': """general determiner: a determiner which is not a DTQ e.g. this both in "This is my house" and "This house is mine". A determiner is defined as a word which typically occurs either as the first word in a noun phrase, or as the head of a noun phrase.""",
     
-    'DTQ': """wh-determiner, e.g. which, what, whose, which. The same tag is used whether
-              the word is used interrogatively or to introduce a relative clause.""",
+    'DTQ': """wh-determiner, e.g. which, what, whose, which. The same tag is used whether the word is used interrogatively or to introduce a relative clause.""",
 
-    'EX0': """existential there, the word thereappearing in the constructions "there
-              is...", "there are ...".""",
+    'EX0': """existential there, the word thereappearing in the constructions "there is...", "there are ...".""",
 
     'ITJ': """interjection or other isolate, e.g. oh, yes, mhm, wow.""",
 
-    'NN0': """common noun, neutral for number, e.g. aircraft, data, committee. Singular collective
-              nouns such as committee take this tag on the grounds that they can be followed by
-              either a singular or a plural verb.""",
+    'NN0': """common noun, neutral for number, e.g. aircraft, data, committee. Singular collective nouns such as committee take this tag on the grounds that they can be followed by either a singular or a plural verb.""",
 
     'NN1': """singular common noun, e.g. pencil, goose, time, revelation.""",
 
     'NN2': """plural common noun, e.g. pencils, geese, times, revelations.""",
     
-    'NP0': """proper noun, e.g. London, Michael, Mars, IBM. Note that no distinction is made for
-              number in the case of proper nouns, since plural proper names are a comparative
-              rarity.""",
+    'NP0': """proper noun, e.g. London, Michael, Mars, IBM. Note that no distinction is made for number in the case of proper nouns, since plural proper names are a comparative rarity.""",
 
-    'ORD': """ordinal numeral, e.g. first, sixth, 77th, next, last. No distinction is made between
-              ordinals used in nominal and adverbial roles. next and last are included in this
-              category, as general ordinals.""",
+    'ORD': """ordinal numeral, e.g. first, sixth, 77th, next, last. No distinction is made between ordinals used in nominal and adverbial roles. next and last are included in this category, as general ordinals.""",
 
-    'PNI': """indefinite pronoun, e.g. none, everything, one (pronoun), nobody. This tag is applied
-              to words which always function as heads of noun phrases. Words like some and these,
-              which can also occur before a noun head in an article-like function, are tagged as
-              determiners, DT0 or AT0.""",
+    'PNI': """indefinite pronoun, e.g. none, everything, one (pronoun), nobody. This tag is applied to words which always function as heads of noun phrases. Words like some and these, which can also occur before a noun head in an article-like function, are tagged as determiners, DT0 or AT0.""",
 
-    'PNP': """personal pronoun, e.g. I, you, them, ours. Note that possessive pronouns
-              such as ours and theirs are included in this category.""",
+    'PNP': """personal pronoun, e.g. I, you, them, ours. Note that possessive pronouns such as ours and theirs are included in this category.""",
 
-    'PNQ': """wh-pronoun, e.g. who, whoever, whom. The same tag is used whether the word
-              is used interrogatively or to introduce a relative clause.""",
+    'PNQ': """wh-pronoun, e.g. who, whoever, whom. The same tag is used whether the word is used interrogatively or to introduce a relative clause.""",
 
     'PNX': """reflexive pronoun, e.g. myself, yourself, itself, ourselves.""",
     
-    'POS': """the possessive or genitive marker 's or '. Note that this marker is tagged as a
-              distinct word. For example, "Peter's or someone else's" is tagged Peter's or someone
-              else's ]]>""",
+    'POS': """the possessive or genitive marker 's or '. Note that this marker is tagged as a distinct word. For example, "Peter's or someone else's" is tagged Peter's or someone else's ]]>""",
 
-    'PRF': """the preposition of. This word has a special tag of its own, because of its
-              high frequency and its almost exclusively postnominal function.""",
+    'PRF': """the preposition of. This word has a special tag of its own, because of its high frequency and its almost exclusively postnominal function.""",
 
-    'PRP': """preposition, other than of, e.g. about, at, in, on behalf of, with. Note that
-              prepositional phrases like on behalf of or in spite of are treated as single words.""",
+    'PRP': """preposition, other than of, e.g. about, at, in, on behalf of, with. Note that prepositional phrases like on behalf of or in spite of are treated as single words.""",
 
     'TO0': """the infinitive marker to.""",
 
-    'UNC': """"unclassified" items which are not appropriately classified as items of the English
-               lexicon. Examples include foreign (non-English) words; special typographical symbols;
-               formulae; hesitation fillers such as errm in spoken language.""",
+    'UNC': """"unclassified" items which are not appropriately classified as items of the English lexicon. Examples include foreign (non-English) words; special typographical symbols; formulae; hesitation fillers such as errm in spoken language.""",
 
-    'VBB': """the present tense forms of the verb be, except for is or 's am, are 'm, 're,
-              be (subjunctive or imperative), ai (as in ain't).""",
+    'VBB': """the present tense forms of the verb be, except for is or 's am, are 'm, 're, be (subjunctive or imperative), ai (as in ain't).""",
 
     'VBD': """the past tense forms of the verb be, was, were.""",
 
@@ -160,9 +129,7 @@ part_of_speech_tags = {
     
     'VM0': """modal auxiliary verb, e.g. can, could, will, 'll, 'd, wo (as in won't)""",
     
-    'VVB': """the finite base form of lexical verbs, e.g. forget, send, live, return. This tag is
-              used for imperatives and the present subjunctive forms, but not for the infinitive
-              (VVI).""",
+    'VVB': """the finite base form of lexical verbs, e.g. forget, send, live, return. This tag is used for imperatives and the present subjunctive forms, but not for the infinitive (VVI).""",
     
     'VVD': """the past tense form of lexical verbs, e.g. forgot, sent, lived, returned.""",
 
