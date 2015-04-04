@@ -3,7 +3,6 @@
 ####################################################################################################
 
 MUPDF_INCLUDE_PATH=$1
-
 if [ -z $MUPDF_INCLUDE_PATH ]; then
   echo Usage: generate-api MUPDF_INCLUDE_PATH
   exit 1
