@@ -31,8 +31,7 @@
 
 import numpy as np
 
-import mupdf as cmupdf
-from MuPDF import *
+import Babel.MuPdf as mupdf
 
 ####################################################################################################
 
@@ -53,18 +52,19 @@ class PdfDocument(object):
 
         self._path = path
 
-        self._context = cmupdf.fz_new_context(None, None, cmupdf.FZ_STORE_UNLIMITED)
-        self._c_document = cmupdf.fz_open_document(self._context, str(self._path))
+        self._context = mupdf.new_context()
+        path = str(self._path).encode('utf-8')
+        self._c_document = mupdf.open_document(self._context, path)
         self._metadata = MetaData(self)
-        self._number_of_pages = cmupdf.fz_count_pages(self._c_document)
+        self._number_of_pages = mupdf.count_pages(self._c_document)
         self._document_words = None
 
     ##############################################
 
     def __del__(self):
 
-        cmupdf.fz_close_document(self._c_document)
-        cmupdf.fz_free_context(self._context)
+        mupdf.close_document(self._c_document)
+        mupdf.free_context(self._context)
 
     ##############################################
 
@@ -132,7 +132,7 @@ class PdfDocument(object):
             tokenised_text = text_page.blocks.tokenised_text
             for token in tokenised_text.word_iterator():
                 document_words.add(str(token).lower())
-        document_words.sort()
+                document_words.sort()
 
         return document_words
 
@@ -169,31 +169,23 @@ class MetaData(ReadOnlyAttributeDictionaryInterface):
         c_document = document._c_document
 
         for key in (
-            'Title',
-            'Subject',
-            'Author',
-            'Creator',
-            'Producer',
-            'CreationDate',
-            'ModDate',
-            ):
+                'Title',
+                'Subject',
+                'Author',
+                'Creator',
+                'Producer',
+                'CreationDate',
+                'ModDate',
+        ):
             # Fixme: buffer size
-            try:
-                string = cmupdf.get_meta_info(c_document, key, 1024)
-            except UnicodeDecodeError:
-                # UnicodeDecodeError: 'utf8' codec can't decode byte 0x80 in position 573: invalid start byte
-                string = 'UnicodeDecodeError'
+            string = mupdf.get_meta_info(c_document, key, size=1024)
             self._dictionary[key] = string
 
-        fz_buffer = cmupdf.pdf_metadata(c_document)
-        # Fixme:
-        # try:
-        #     string = cmupdf.fz_buffer_data(fz_buffer)
-        # except UnicodeDecodeError:
-        #     string = 'UnicodeDecodeError'
+        # fz_buffer = mupdf.pdf_metadata(c_document)
+        # string = mupdf.decode_utf8(mupdf.buffer_data(fz_buffer))
         string = ''
         self._dictionary['metadata'] = string
-        cmupdf.fz_drop_buffer(document._context, fz_buffer)
+        # mupdf.drop_buffer(document._context, fz_buffer)
 
 ####################################################################################################
 
@@ -211,7 +203,7 @@ class Page(object):
         self._context = self._document._context
         self._c_document = self._document._c_document
         self._page_number = page_number
-        self._c_page = cmupdf.fz_load_page(self._c_document, page_number)
+        self._c_page = mupdf.load_page(self._c_document, page_number)
         self._text = None
 
     ##############################################
@@ -224,15 +216,16 @@ class Page(object):
 
     def __del__(self):
 
-        cmupdf.fz_free_page(self._c_document, self._c_page)
+        pass
+        # mupdf.free_page(self._c_document, self._c_page)
 
     ##############################################
 
     def _bounding_box(self):
 
         # Determine the size of a page at 72 dpi.
-        bounds = cmupdf.fz_rect_s()
-        cmupdf.fz_bound_page(self._c_document, self._c_page, bounds)
+        bounds = mupdf.Rect()
+        mupdf.bound_page(self._c_document, self._c_page, bounds)
 
         return bounds
 
@@ -240,9 +233,9 @@ class Page(object):
 
     def _make_transform(self, scale=1, rotation=0):
 
-        transform = cmupdf.fz_matrix_s()
-        cmupdf.fz_rotate(transform, rotation)
-        cmupdf.fz_pre_scale(transform, scale, scale)
+        transform = mupdf.Matrix()
+        mupdf.rotate(transform, rotation)
+        mupdf.pre_scale(transform, scale, scale)
 
         return transform
 
@@ -255,12 +248,12 @@ class Page(object):
 
         bounds = self._bounding_box()
         scale = resolution / 72.
-        transform = cmupdf.fz_matrix_s()
-        cmupdf.fz_pre_scale(cmupdf.fz_rotate(transform, rotation), scale, scale)
-        tmp_bounds = cmupdf.fz_rect_s()
-        cmupdf.fz_copy_rect(tmp_bounds, bounds)
-        ibounds = cmupdf.fz_irect_s()
-        cmupdf.fz_round_rect(ibounds, cmupdf.fz_transform_rect(tmp_bounds, transform))
+        transform = mupdf.Matrix()
+        mupdf.pre_scale(mupdf.rotate(transform, rotation), scale, scale)
+        tmp_bounds = mupdf.Rect()
+        mupdf.copy_rect(tmp_bounds, bounds)
+        ibounds = mupdf.IRect()
+        mupdf.round_rect(ibounds, mupdf.transform_rect(tmp_bounds, transform))
 
         # If a resolution is specified, check to see whether width/height are exceeded if not, unset them.
         if resolution != 72:
@@ -291,13 +284,13 @@ class Page(object):
                         scale_x = scale_y
                     else:
                         scale_y = scale_x
-            scale_mat = cmupdf.fz_matrix_s()
-            cmupdf.fz_scale(scale_mat, scale_x, scale_y)
-            cmupdf.fz_concat(transform, transform, scale_mat)
-            cmupdf.fz_copy_rect(tmp_bounds, bounds)
-            cmupdf.fz_transform_rect(tmp_bounds, transform)
+            scale_mat = mupdf.Matrix()
+            mupdf.scale(scale_mat, scale_x, scale_y)
+            mupdf.concat(transform, transform, scale_mat)
+            mupdf.copy_rect(tmp_bounds, bounds)
+            mupdf.transform_rect(tmp_bounds, transform)
 
-        cmupdf.fz_round_rect(ibounds, tmp_bounds)
+        mupdf.round_rect(ibounds, tmp_bounds)
 
         return transform, ibounds
 
@@ -314,18 +307,19 @@ class Page(object):
                                                                resolution,
                                                                width, height, fit)
         
-        pixmap = cmupdf.fz_new_pixmap_with_bbox(self._context,
-                                                cmupdf.fz_device_rgb(self._context),
+        pixmap = mupdf.new_pixmap_with_bbox(self._context,
+                                                mupdf.device_rgb(self._context),
                                                 bounding_box)
-        cmupdf.fz_pixmap_set_resolution(pixmap, resolution) # purpose ?
-        cmupdf.fz_clear_pixmap_with_value(self._context, pixmap, 255)
+        mupdf.pixmap_set_resolution(pixmap, resolution) # purpose ?
+        mupdf.clear_pixmap_with_value(self._context, pixmap, 255)
 
-        device = cmupdf.fz_new_draw_device(self._context, pixmap)
-        cmupdf.fz_set_aa_level(self._context, antialiasing_level)
-        cmupdf.fz_run_page(self._c_document, self._c_page, device, transform, None)
-        cmupdf.fz_write_png(self._context, pixmap, path, False)
-        cmupdf.fz_free_device(device)
-        cmupdf.fz_drop_pixmap(self._context, pixmap)
+        device = mupdf.new_draw_device(self._context, pixmap)
+        mupdf.set_aa_level(self._context, antialiasing_level)
+        mupdf.run_page(self._c_document, self._c_page, device, transform, mupdf.NULL)
+        path = str(path).encode('utf-8')
+        mupdf.write_png(self._context, pixmap, path, False)
+        mupdf.free_device(device)
+        mupdf.drop_pixmap(self._context, pixmap)
 
     ##############################################
 
@@ -340,19 +334,19 @@ class Page(object):
                                                                resolution,
                                                                width, height, fit)
         
-        width, height = rect_width_height(bounding_box)
+        width, height = mupdf.rect_width_height(bounding_box)
         np_array = np.zeros((height, width, 4), dtype=np.uint8)
-        pixmap = cmupdf.fz_new_pixmap_with_bbox_and_data(self._context,
-                                                         cmupdf.fz_device_rgb(self._context),
+        pixmap = mupdf.new_pixmap_with_bbox_and_data(self._context,
+                                                         mupdf.device_rgb(self._context),
                                                          bounding_box,
-                                                         cmupdf.numpy_to_pixmap(np_array))
-        cmupdf.fz_clear_pixmap_with_value(self._context, pixmap, 255)
+                                                         mupdf.np_array_uint8_ptr(np_array))
+        mupdf.clear_pixmap_with_value(self._context, pixmap, 255)
         
-        device = cmupdf.fz_new_draw_device(self._context, pixmap)
-        cmupdf.fz_set_aa_level(self._context, antialiasing_level)
-        cmupdf.fz_run_page(self._c_document, self._c_page, device, transform, None)
-        cmupdf.fz_free_device(device)
-        cmupdf.fz_drop_pixmap(self._context, pixmap)
+        device = mupdf.new_draw_device(self._context, pixmap)
+        mupdf.set_aa_level(self._context, antialiasing_level)
+        mupdf.run_page(self._c_document, self._c_page, device, transform, mupdf.NULL)
+        mupdf.free_device(device)
+        mupdf.drop_pixmap(self._context, pixmap)
 
         return np_array
 
@@ -364,12 +358,12 @@ class Page(object):
 
         transform = self._make_transform(scale, rotation)
 
-        text_sheet = cmupdf.fz_new_text_sheet(self._context)
-        text_page = cmupdf.fz_new_text_page(self._context)
+        text_sheet = mupdf.new_text_sheet(self._context)
+        text_page = mupdf.new_text_page(self._context)
 
-        device = cmupdf.fz_new_text_device(self._context, text_sheet, text_page)
-        cmupdf.fz_run_page(self._c_document, self._c_page, device, transform, None)
-        cmupdf.fz_free_device(device)
+        device = mupdf.new_text_device(self._context, text_sheet, text_page)
+        mupdf.run_page(self._c_document, self._c_page, device, transform, mupdf.NULL)
+        mupdf.free_device(device)
 
         return TextPage(self, text_sheet, text_page)
 

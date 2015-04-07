@@ -19,18 +19,9 @@
 ####################################################################################################
 
 ####################################################################################################
-# 
-#                                              audit 
-# 
-# - 12/08/2013 Fabrice
-#   xx
-# 
-####################################################################################################
 
-####################################################################################################
-
-import mupdf as cmupdf
-from MuPDF import *
+import Babel.MuPdf as mupdf
+import Babel.MuPdf.TextIterator as mupdf_iter
 
 ####################################################################################################
 
@@ -64,8 +55,9 @@ class TextPage():
 
     def __del__(self):
 
-        cmupdf.fz_free_text_sheet(self._context, self._text_sheet)
-        cmupdf.fz_free_text_page(self._context, self._text_page)
+        pass
+        # mupdf.free_text_sheet(self._context, self._text_sheet)
+        # mupdf.free_text_page(self._context, self._text_page)
 
     ##############################################
 
@@ -118,15 +110,15 @@ class TextPage():
         """ Return an :obj:`TextBlocks` instance for the page. """
 
         blocks = TextBlocks()
-        for c_block in TextBlockIterator(self._text_page):
+        for c_block in mupdf_iter.TextBlockIterator(self._text_page):
             text_block = TextBlock(self)
-            for c_line in TextLineIterator(c_block):
+            for c_line in mupdf_iter.TextLineIterator(c_block):
                 line_interval = to_interval(c_line.bbox)
                 text_line = TextLine(line_interval)
-                for c_span in TextSpanIterator(c_line):
+                for c_span in mupdf_iter.TextSpanIterator(c_line):
                     style_id = None
                     span_text = ''
-                    for c_char in TextCharIterator(c_span):
+                    for c_char in mupdf_iter.TextCharIterator(c_span):
                         # Fixme: Style addresses are alternated. Why?
                         char_style_id = c_char.style.id
                         char = chr(c_char.c)
@@ -173,9 +165,9 @@ class TextPage():
         while style:
             font = style.font
             text += template % (style.id, get_font_name(font), style.size)
-            if cmupdf.font_is_italic(font):
+            if mupdf.font_is_italic(font):
                 text += ';font-style:italic'
-            if cmupdf.font_is_bold(font):
+            if mupdf.font_is_bold(font):
                 text += ';font-weight:bold;'
             text += '}\n'
             style = style.__next__
@@ -189,14 +181,14 @@ class TextPage():
         # Fixme: old and historical code, move elsewhere ?
 
         text = '<page page_number="%u">\n' % (self._page_number)
-        for block in TextBlockIterator(self._text_page):
+        for block in mupdf_iter.TextBlockIterator(self._text_page):
             text += '<block bbox="' + format_bounding_box(block) + '">\n'
-            for line in TextLineIterator(block):
+            for line in mupdf_iter.TextLineIterator(block):
                 text += ' '*2 + '<line bbox="' + format_bounding_box(line) + '">\n'
-                for span in TextSpanIterator(line):
+                for span in mupdf_iter.TextSpanIterator(line):
                     style_id = None
                     if dump_char:
-                        for char in TextCharIterator(span):
+                        for char in mupdf_iter.TextCharIterator(span):
                             # Fixme: Style addresses are alternated. Why?
                             if char.style.id is not style_id:
                                 if style_id is not None:
@@ -316,12 +308,6 @@ class TextBase(object):
     def __len__(self):
 
         return len(self._text)
-
-    ##############################################
-
-    def __str__(self):
-
-        return self._text
 
     ##############################################
 

@@ -19,18 +19,9 @@
 ####################################################################################################
 
 ####################################################################################################
-# 
-#                                              audit 
-# 
-# - 07/08/2013 Fabrice
-#   xx
-# 
-####################################################################################################
 
-####################################################################################################
-
-import mupdf as cmupdf
-from MuPDF import *
+import Babel.MuPdf as mupdf
+import Babel.MuPdf.TextIterator as mupdf_iter
 
 ####################################################################################################
 
@@ -41,7 +32,7 @@ from Babel.Math.Interval import IntervalInt2D
 
 def indent_line(text, indent_level, indent_pattern='  '):
 
-    # Fixme: not here, purpose
+    # Fixme: not here, purpose ?
 
     return indent_pattern*indent_level + text + '\n'
 
@@ -51,7 +42,7 @@ def get_font_name(font):
 
     """ Return the name of a MuPDF font. """
 
-    font_name = cmupdf.get_font_name(font)
+    font_name = mupdf.decode_utf8(mupdf.get_font_name(font))
     i = font_name.find('+')
     if i:
         font_name = font_name[i+1:] 
@@ -81,7 +72,7 @@ def span_to_string(span):
     """ Return the unicode string corresponding to a MuPDF span. """
 
     span_text = ''
-    for char in TextCharIterator(span):
+    for char in mupdf_iter.TextCharIterator(span):
         span_text += chr(char.c)
     span_text = span_text.rstrip()
     
@@ -97,8 +88,8 @@ def to_text_style(style):
     text_style = TextStyle(id=style.id,
                            font_family=get_font_name(font),
                            font_size=style.size,
-                           is_bold=bool(cmupdf.font_is_bold(font)),
-                           is_italic=bool(cmupdf.font_is_italic(font)),
+                           is_bold=bool(mupdf.font_is_bold(font)),
+                           is_italic=bool(mupdf.font_is_italic(font)),
                            )
     
     return text_style
