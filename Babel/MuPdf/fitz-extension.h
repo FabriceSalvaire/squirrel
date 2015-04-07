@@ -107,11 +107,6 @@ fz_text_span * get_text_span(fz_text_line *line, unsigned int span_index);
 
 /* ********************************************************************************************** */
 
-// Helper
-char * get_meta_info(fz_document *doc, char *key, int buffer_size);
-
-/* ********************************************************************************************** */
-
 // Expose private API / Helper
 static inline
 char *
@@ -126,22 +121,13 @@ fz_buffer_data(fz_buffer *buffer)
 
 /* ********************************************************************************************** */
 
-// Missing feature
-// Return the Metadata XML stream
-fz_buffer * pdf_metadata(fz_document *doc);
+int meta(fz_document *doc, int key, char *string, char *buffer, int buffer_size);
 
 /* ********************************************************************************************** */
 
-// Numpy interface
-// Fixme: bad way to do
-static inline
-unsigned char * numpy_to_pixmap(uint8_t *buffer,
-				size_t number_of_rows,
-				size_t number_of_columns,
-				size_t number_of_channels)
-{
-  return (unsigned char *)buffer;
-}
+// Missing feature
+// Return the Metadata XML stream
+fz_buffer * pdf_metadata(fz_document *doc);
 
 /* ********************************************************************************************** */
 

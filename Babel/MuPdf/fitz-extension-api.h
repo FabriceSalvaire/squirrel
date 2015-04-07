@@ -2,7 +2,6 @@
 
 FILE * fz_fopen(const char *filename, const char *mode);
 char * fz_buffer_data(fz_buffer *buffer);
-char * get_meta_info(fz_document *doc, char *key, int buffer_size);
 const char * get_font_name(const fz_font *font);
 fz_buffer * pdf_metadata(fz_document *doc);
 fz_irect * fz_copy_irect(fz_irect * dst, const fz_irect * src);
@@ -14,6 +13,7 @@ fz_text_span * get_text_span(fz_text_line *line, unsigned int span_index);
 int font_is_bold(const fz_font *font);
 int font_is_italic(const fz_font *font);
 int fz_fclose(FILE *file);
+int meta(fz_document *doc, int key, char * string, char *buffer, int buffer_size);
 
 /***************************************************************************************************
  * 

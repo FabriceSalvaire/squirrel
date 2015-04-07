@@ -55,31 +55,13 @@ get_text_span(fz_text_line *line, unsigned int span_index)
 
 /* ********************************************************************************************** */
 
-char *
-get_meta(fz_document *doc, int key, char *buffer, int buffer_size)
+// Helper for
+//  int fz_meta(fz_document *doc, int key, void *ptr, int size);
+int
+meta(fz_document *doc, int key, char *string, char *buffer, int buffer_size)
 {
-  int rc = fz_meta(doc, key, buffer, buffer_size);
-  if (rc)
-    {
-      // Swig do it
-      // char *string = malloc(strlen(buffer));
-      // strcpy(string, buffer);
-      // return string;
-      return buffer;
-    }
-  else
-    return NULL;
-}
-
-// Fixme: this API is bad
-//   the way to provide key is strange
-//   should return an allocated string instead to use a fixed size buffer
-char *
-get_meta_info(fz_document *doc, char *key, int buffer_size)
-{
-  char buffer[buffer_size];
-  *(char **)buffer = key;
-  return get_meta(doc, FZ_META_INFO, buffer, buffer_size);
+  *(char **)buffer = string;
+  return fz_meta(doc, key, buffer, buffer_size);
 }
 
 /* ********************************************************************************************** */

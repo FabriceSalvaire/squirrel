@@ -111,12 +111,18 @@ def np_array_uint8_ptr(array):
 # String Tools
 #
 
-def decode_utf8(ptr):
-    string = _ffi.string(ptr)
-    try:
-        return string.decode('utf-8')
-    except UnicodeDecodeError:
-        return string
+def decode_utf8(ptr, max_length=None):
+    if ptr == _ffi.NULL:
+        return ''
+    else:
+        if max_length is not None:
+            string = _ffi.string(ptr, max_length)
+        else:
+            string = _ffi.string(ptr)
+        try:
+            return string.decode('utf-8')
+        except UnicodeDecodeError:
+            return str(string)
         
 ####################################################################################################
 #
@@ -202,6 +208,19 @@ load_page = _mupdf.fz_load_page
 def new_context(alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_mupdf.FZ_STORE_UNLIMITED):
     return _mupdf.fz_new_context(alloc, locks, max_store)
 
+_FZ_META_INFO = 4
+def get_meta_info(document, key, size=1024):
+    buffer_ = _ffi.new('char[]', size) # size in bytes
+    key = key.encode('utf-8')
+    # key_buffer = _ffi.new('char[]', key)
+    # buffer_[0] = _ffi.addressof(key_buffer, 0)
+    rc = _mupdf.meta(document, _FZ_META_INFO, key, buffer_, size)
+    if rc == 1:
+        return decode_utf8(buffer_)
+    else:
+        return ''
+    # raise NameError('Meta info %s not found', key)
+    
 ####################################################################################################
 #
 # API extensions
@@ -215,7 +234,6 @@ font_is_bold = _mupdf.font_is_bold
 font_is_italic = _mupdf.font_is_italic
 fopen = _mupdf.fz_fopen
 get_font_name = _mupdf.get_font_name
-get_meta_info = _mupdf.get_meta_info
 get_text_block = _mupdf.get_text_block
 get_text_char = _mupdf.get_text_char
 get_text_line = _mupdf.get_text_line

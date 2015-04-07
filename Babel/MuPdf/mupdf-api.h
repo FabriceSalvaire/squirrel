@@ -234,6 +234,7 @@ fz_scale_cache * fz_new_scale_cache (fz_context * ctx);
 fz_text_page * fz_new_text_page (fz_context * ctx);
 fz_text_sheet * fz_new_text_sheet (fz_context * ctx);
 int fz_count_pages (fz_document * doc);
+int fz_meta(fz_document *doc, int key, void *ptr, int size);
 void fz_clear_pixmap_with_value (fz_context * ctx, fz_pixmap * pix, int value);
 void fz_close_document (fz_document * doc);
 void fz_close_output (fz_output *);
