@@ -19,15 +19,6 @@
 ####################################################################################################
 
 ####################################################################################################
-# 
-#                                              audit 
-# 
-# - 08/08/2013 Fabrice
-#   implement a page cache
-# 
-####################################################################################################
-
-####################################################################################################
 
 import numpy as np
 
@@ -59,10 +50,15 @@ class PdfDocument(object):
         self._number_of_pages = mupdf.count_pages(self._c_document)
         self._document_words = None
 
+        self._pages = {}
+        
     ##############################################
 
     def __del__(self):
 
+        # Fixme: manage properly
+        for page in self._pages.values():
+            page._free() # require context
         mupdf.close_document(self._c_document)
         mupdf.free_context(self._context)
 
@@ -84,9 +80,12 @@ class PdfDocument(object):
 
     def _page(self, index):
 
-        # Fixme: implement a cache
-
-        return Page(self, index)
+        if not index in self._pages:
+            page = Page(self, index)
+            self._pages[index] = page
+            return page
+        else:
+            return self._pages[index]
 
     ##############################################
 
@@ -204,7 +203,7 @@ class Page(object):
         self._c_document = self._document._c_document
         self._page_number = page_number
         self._c_page = mupdf.load_page(self._c_document, page_number)
-        self._text = None
+        self._text_page = None
 
     ##############################################
 
@@ -214,10 +213,17 @@ class Page(object):
 
     ##############################################
 
+    def _free(self):
+
+        if self._text_page is not None:
+            self._text_page._free()
+        mupdf.free_page(self._c_document, self._c_page)
+    
+    ##############################################
+
     def __del__(self):
 
         pass
-        # mupdf.free_page(self._c_document, self._c_page)
 
     ##############################################
 
@@ -352,10 +358,11 @@ class Page(object):
 
     ##############################################
 
-    def to_text(self, scale=1, rotation=0):
+    def _to_text(self, scale=1, rotation=0):
 
         """ Return a :obj:`.TextPage` instance. """
 
+        # Fixme: usage ?
         transform = self._make_transform(scale, rotation)
 
         text_sheet = mupdf.new_text_sheet(self._context)
@@ -372,10 +379,9 @@ class Page(object):
     @property
     def text(self):
 
-        if self._text is None:
-            self._text = self.to_text()
-
-        return self._text
+        if self._text_page is None:
+            self._text_page = self._to_text()
+        return self._text_page
 
 ####################################################################################################
 # 

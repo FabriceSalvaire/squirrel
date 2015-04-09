@@ -53,11 +53,17 @@ class TextPage():
 
     ##############################################
 
+    def _free(self):
+
+        # text_sheet and text_page was not created in TextPage
+        mupdf.free_text_sheet(self._context, self._text_sheet)
+        mupdf.free_text_page(self._context, self._text_page)
+        
+    ##############################################
+
     def __del__(self):
 
         pass
-        # mupdf.free_text_sheet(self._context, self._text_sheet)
-        # mupdf.free_text_page(self._context, self._text_page)
 
     ##############################################
 

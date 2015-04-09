@@ -208,6 +208,22 @@ load_page = _mupdf.fz_load_page
 def new_context(alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_mupdf.FZ_STORE_UNLIMITED):
     return _mupdf.fz_new_context(alloc, locks, max_store)
 
+class Context(object):
+    
+    ##############################################    
+
+    def __init__(self, alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_mupdf.FZ_STORE_UNLIMITED):
+
+        self._context = _mupdf.fz_new_context(alloc, locks, max_store)
+
+    ##############################################
+
+    def __del__(self):
+
+        _mupdf.fz_free_context(self._context)
+
+###################################################
+
 _FZ_META_INFO = 4
 def get_meta_info(document, key, size=1024):
     buffer_ = _ffi.new('char[]', size) # size in bytes
