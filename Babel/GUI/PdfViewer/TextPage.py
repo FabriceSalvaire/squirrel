@@ -75,9 +75,9 @@ class TextPage(QtWidgets.QScrollArea):
         self._clear_layout()
         pdf_page = self._main_window._pdf_page
         text_page = pdf_page.to_text()
-        with codecs.open('log%u.txt' % pdf_page.page_number,
-                         encoding='utf-8', mode='w+') as log_file:
-            log_file.write(text_page.dump_text_page_xml(dump_char=True))
+        # with codecs.open('log%u.txt' % pdf_page.page_number,
+        #                  encoding='utf-8', mode='w+') as log_file:
+        #     log_file.write(text_page.dump_text_page_xml(dump_char=True))
         for text_block in sorted(text_page.blocks):
             self._append_block(text_block)
         self._vertical_layout.addItem(self._spacer_item)
