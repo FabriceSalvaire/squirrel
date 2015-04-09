@@ -25,7 +25,7 @@ import logging
 ####################################################################################################
 
 from .ImporterRegistry import ImporterBase
-from Babel.Pdf.PdfDocument import PdfDocument
+from Babel.Pdf.PdfDocument import PdfDocument, MupdfError
 
 ####################################################################################################
 
@@ -44,10 +44,14 @@ class PdfImporter(ImporterBase):
     ##############################################
 
     def import_file(self, document_table, file_path):
-        
-        pdf_document = PdfDocument(file_path)
+
         # PdfMetaDataExtractor
         
+        try:
+            pdf_document = PdfDocument(file_path)
+        except MupdfError:
+            return
+            
         document_row = document_table.new_row(file_path)
 
         document_row.number_of_pages = pdf_document.number_of_pages

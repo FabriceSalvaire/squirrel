@@ -23,6 +23,7 @@
 import numpy as np
 
 import Babel.MuPdf as mupdf
+from Babel.MuPdf import MupdfError
 
 ####################################################################################################
 
@@ -30,6 +31,7 @@ from .DocumentWords import DocumentWords
 from .TextPage import TextPage
 from Babel.Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
 from Babel.Tools.Object import clone
+
 
 ####################################################################################################
 
@@ -43,14 +45,22 @@ class PdfDocument(object):
 
         self._path = path
 
-        self._context = mupdf.new_context()
+        self._context = None
+        self._c_document = None
+        self._pages = {}
+
         path = str(self._path).encode('utf-8')
+
+        # try:
+        self._context = mupdf.new_context()
         self._c_document = mupdf.open_document(self._context, path)
+        # except MupdfError as exception:
+        #     raise exception
+        if self._c_document == mupdf.NULL:
+            raise MupdfError()
         self._metadata = MetaData(self)
         self._number_of_pages = mupdf.count_pages(self._c_document)
         self._document_words = None
-
-        self._pages = {}
         
     ##############################################
 
@@ -59,8 +69,10 @@ class PdfDocument(object):
         # Fixme: manage properly
         for page in self._pages.values():
             page._free() # require context
-        mupdf.close_document(self._c_document)
-        mupdf.free_context(self._context)
+        if self._c_document is not None:
+            mupdf.close_document(self._c_document)
+        if self._context is not None:
+            mupdf.free_context(self._context)
 
     ##############################################
 

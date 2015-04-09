@@ -86,6 +86,37 @@ pdf_metadata(fz_document *_doc)
   return NULL;
 }
 
+/* ********************************************************************************************** */
+
+#include <setjmp.h>
+jmp_buf exception_buffer;
+char *exception_message = NULL;
+
+void
+python_throw_exit_callback(char *message)
+{
+  exception_message = message;
+  fz_longjmp(exception_buffer, 1);
+}
+
+void
+init () {
+  fz_set_throw_exit_callback(python_throw_exit_callback);
+}
+
+fz_document *
+open_document (fz_context * ctx, const char *filename) {
+  if (! fz_setjmp(exception_buffer))
+  {
+    return fz_open_document(ctx, filename);
+  }
+  else // an exception raised
+  {
+    // PyErr_SetString(PyExc_NameError, exception_message);
+    return NULL;
+  }
+}
+
 /***************************************************************************************************
  * 
  * End

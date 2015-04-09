@@ -257,6 +257,8 @@ void fz_run_page_contents (fz_document * doc, fz_page * page, fz_device * dev, c
 void fz_set_aa_level (fz_context * ctx, int bits);
 void fz_write_png (fz_context * ctx, fz_pixmap * pixmap, char *filename, int savealpha);
 
+void fz_set_throw_exit_callback(void (*throw_exit_callback) (char * message));
+
 /**************************************************************************************************/
 
 /* pdf.h */

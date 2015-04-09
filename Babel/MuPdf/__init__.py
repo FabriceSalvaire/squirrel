@@ -182,7 +182,8 @@ new_pixmap_with_bbox_and_data = _mupdf.fz_new_pixmap_with_bbox_and_data
 new_text_device = _mupdf.fz_new_text_device
 new_text_page = _mupdf.fz_new_text_page
 new_text_sheet = _mupdf.fz_new_text_sheet
-open_document = _mupdf.fz_open_document
+# open_document = _mupdf.fz_open_document
+open_document = _mupdf.open_document
 pixmap_set_resolution = _mupdf.fz_pixmap_set_resolution
 pre_scale = _mupdf.fz_pre_scale
 print_text_page = _mupdf.fz_print_text_page
@@ -261,6 +262,22 @@ pdf_metadata = _mupdf.pdf_metadata
 def rect_width_height(rect):
     return (rect.x1 - rect.x0,
             rect.y1 - rect.y0)
+
+####################################################################################################
+#
+# Error Management
+#
+
+class MupdfError(NameError):
+    pass
+
+# @_ffi.callback("void(char *)")
+# def throw_exit_callback(message):
+#     raise MupdfError(decode_utf8(message))
+
+# _mupdf.fz_set_throw_exit_callback(throw_exit_callback)
+
+_mupdf.init()
 
 ####################################################################################################
 # 

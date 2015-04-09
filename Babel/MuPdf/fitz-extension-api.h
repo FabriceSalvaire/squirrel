@@ -15,6 +15,10 @@ int font_is_italic(const fz_font *font);
 int fz_fclose(FILE *file);
 int meta(fz_document *doc, int key, char * string, char *buffer, int buffer_size);
 
+void init();
+void python_throw_exit_callback(char *message);
+fz_document * open_document (fz_context * ctx, const char *filename);
+
 /***************************************************************************************************
  * 
  * End
