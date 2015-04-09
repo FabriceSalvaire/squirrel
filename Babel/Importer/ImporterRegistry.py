@@ -31,7 +31,7 @@ class ImporterRegistry(dict):
     def import_file(self, document_table, file_path):
 
         importer = self[file_path.mime_type]()
-        importer.import_file(document_table, file_path)
+        return importer.import_file(document_table, file_path)
 
     ##############################################
 

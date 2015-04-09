@@ -112,12 +112,13 @@ class ImportSession(object):
         else:
             query = self._document_table.filter_by(shasum=file_path.shasum)
             if query.count():
-                file_paths = ' '.join([row.path for row in query.all()])
+                duplicates = query.all()
+                file_paths = ' '.join([str(document_row.path) for document_row in duplicates])
                 self._logger.info("File %s is a duplicate of %s", file_path, file_paths)
                 # then log this file in the import session # Fixme: ???
                 document_row = importer_registry.import_file(self._document_table, file_path)
                 document_row.has_duplicate = True
-                for document_row in query:
+                for document_row in duplicates:
                     document_row.has_duplicate = True
             else:
                 query = self._document_table.filter_by(path=str(file_path))
