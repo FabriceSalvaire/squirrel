@@ -28,11 +28,17 @@ class ImporterRegistry(dict):
 
     ##############################################
 
-    def import_file(self, file_path):
+    def import_file(self, document_table, file_path):
 
         importer = self[file_path.mime_type]()
-        importer.import_file(file_path)
+        importer.import_file(document_table, file_path)
 
+    ##############################################
+
+    def is_importable(self, file_path):
+
+        return file_path.mime_type in self
+    
 ####################################################################################################
 
 importer_registry = ImporterRegistry()

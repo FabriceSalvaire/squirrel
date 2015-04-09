@@ -40,10 +40,9 @@ class DocumentSqliteDataBase(SqliteDataBase):
 
         self._declarative_base_class = declarative_base()
 
-        from .DocumentTable import DocumentRowMixin, DocumentTableMixin
+        from .DocumentTable import DocumentRowMixin
         self._document_row_class = type('DocumentRow', (DocumentRowMixin, self._declarative_base_class), {})
-        self._document_table_class = type('DocumentTable', (DocumentTableMixin, SqlTable),
-                                          {'ROW_CLASS':self._document_row_class})
+        self._document_table_class = type('DocumentTable', (SqlTable,), {'ROW_CLASS':self._document_row_class})
         self.document_table = self._document_table_class(self)
 
         from .WordTable import WordRowMixin

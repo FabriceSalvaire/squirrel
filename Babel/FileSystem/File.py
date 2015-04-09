@@ -407,6 +407,7 @@ class File(Path):
     @property
     def shasum(self):
 
+        # Fixme: check file don't change, modification date ?
         if self._shasum is None:
             return self.compute_shasum()
         else:

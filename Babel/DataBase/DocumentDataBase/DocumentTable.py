@@ -25,10 +25,24 @@ import datetime
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import relationship
+import sqlalchemy.types as types
 
 ####################################################################################################
 
 from Babel.DataBase.SqlAlchemyBase import SqlRow
+from Babel.FileSystem.File import File
+
+####################################################################################################
+
+class FileType(types.TypeDecorator):
+
+    impl = types.String
+
+    def process_bind_param(self, value, dialect):
+        return str(value)
+
+    def process_result_value(self, value, dialect):
+        return File(value)
 
 ####################################################################################################
 
@@ -39,17 +53,27 @@ class DocumentRowMixin(SqlRow):
     id = Column(Integer, primary_key=True)
     added_time = Column(DateTime)
     
-    path = Column(String, unique=True)
+    path = Column(FileType, unique=True)
     inode = Column(Integer) # uniq on the same file-system
     # creation_time = Column(Integer)
 
     shasum = Column(String(64)) # allow for duplicates
     has_duplicate = Column(Boolean, default=False)
 
+    number_of_pages = Column(Integer)
     title = Column(String, default='')
     author = Column(String, default='')
     comment = Column(String, default='')
 
+    ##############################################
+
+    def __init__(self, file_path):
+
+        self.added_time = datetime.datetime.today()
+        self.path = file_path
+        self.inode = file_path.inode
+        self.shasum = file_path.compute_shasum() # Fixme: .shasum
+        
     ###############################################
 
     @declared_attr
@@ -68,6 +92,7 @@ Document Row
   shasum: {shasum}
   inode: {inode}
   added time: {added_time}
+  number of pages: {number_of_pages}
   title: {title}
   author: {author}
   comment: {comment}
@@ -77,32 +102,21 @@ Document Row
 
     ##############################################
 
-    def update(self, file_path):
+    def update_path(self, file_path):
 
-        # Fixme: purpose
-        
-        if self.path != str(file_path):
-            raise NameError("Attempt to update with a different path")
-        self.shasum = file_path.shasum
-        self.inode = file_path.inode
-        # self.creation_time = file_path.creation_time
-        
-####################################################################################################
-
-class DocumentTableMixin(object):
+        # Fixme: .shasum
+        if file_path.compute_shasum() == self.shasum:
+            self.path = file_path
+            self.inode = file_path.inode
+        else:
+            raise NameError("Attempt to update a document path with a document having different shasum")
 
     ##############################################
 
-    def add(self, file_path):
+    def update_shasum(self):
 
-        document_row = self.ROW_CLASS(added_time=datetime.datetime.today(),
-                                      path=str(file_path),
-                                      inode=file_path.inode,
-                                      shasum=file_path.shasum,
-                                      # creation_time=file_path.creation_time,
-                                     )
-        self._session.add(document_row)
-
+        self.shasum = self.path.compute_shasum() # Fixme: .shasum
+        
 ####################################################################################################
 # 
 # End

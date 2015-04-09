@@ -132,9 +132,9 @@ class SqlTable(object):
 
     ###############################################
 
-    def new_row(self, **kwargs):
+    def new_row(self, *args, **kwargs):
 
-        return self.ROW_CLASS(**kwargs)
+        return self.ROW_CLASS(*args, **kwargs)
 
     ###############################################
 
@@ -146,11 +146,11 @@ class SqlTable(object):
 
     ###############################################
 
-    def add_new_row(self, **kwargs):
+    def add_new_row(self, *args, **kwargs):
 
         # Fixme: commit
 
-        row = self.new_row(**kwargs)
+        row = self.new_row(*args, **kwargs)
         self.add(row)
         return row
 

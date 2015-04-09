@@ -24,8 +24,14 @@ import logging
 
 ####################################################################################################
 
-from Babel.Importer.ImporterRegistry import ImporterBase
+from .ImporterRegistry import ImporterBase
 from Babel.Pdf.PdfDocument import PdfDocument
+
+####################################################################################################
+
+from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpusDataBase
+_bnc_database = BritishNationalCorpusDataBase()
+_bnc_word_table = _bnc_database.word_table
 
 ####################################################################################################
 
@@ -37,24 +43,48 @@ class PdfImporter(ImporterBase):
 
     ##############################################
 
-    def import_file(self, file_path):
+    def import_file(self, document_table, file_path):
+        
+        pdf_document = PdfDocument(file_path)
+        # PdfMetaDataExtractor
+        
+        document_row = document_table.new_row(file_path)
 
-        self._path = file_path
-        self._pdf_document = PdfDocument(self._path) # Fixme: has path
-        self._pdf_metadata = self._pdf_document.metadata
-        print('Title:', self._pdf_metadata['Title'])
+        document_row.number_of_pages = pdf_document.number_of_pages
+        
+        pdf_metadata = pdf_document.metadata
+        # ('Title', 'Subject', 'Author', 'Creator', 'Producer', 'CreationDate', 'ModDate')}
+        document_row.title = pdf_metadata['Title']
+        document_row.author = pdf_metadata['Author']
 
-#    ##############################################
-#
-#    def _get_metadata(self):
-#
-#        self._pdf_metadata = self. _pdf_document.metadata
-#        # self._pdf_document.number_of_pages
-#        # {key:self._pdf_metadata[key]
-#        #  for key in
-#        #  ('Title', 'Subject', 'Author', 'Creator', 'Producer', 'CreationDate', 'ModDate')}
-#        # pdf_metadata.metadata
+        print(file_path)
+        # self.main_words(pdf_document)
+        
+        document_table.add(document_row, commit=False)
+        
+        return document_row
 
+    ##############################################
+
+    def main_words(self, pdf_document, minimum_count=5, minimum_length=3):
+
+        words = []
+        # Fixme: to iterator ?
+        for word_count in pdf_document.words:
+            print(word_count)
+            # if word_count.count >= minimum_count and len(word_count.word) >= minimum_length:
+            #     word_rows = _bnc_word_table.filter_by(word=word_count.word).all()
+            #     if word_rows:
+            #         for word_row in word_rows: 
+            #             if _bnc_database.is_noun(word_row):
+            #                 tag = _bnc_database.part_of_speech_tag_from_id(word_row.part_of_speech_tag_id)
+            #                 print('%6u' % word_count.count, word_count.word, tag)
+            #                 words.append(word_count)
+            #                 break
+            #     else:
+            #         print('Unknown word %6u' % word_count.count, word_count.word)
+            #         words.append(word_count)
+                
 ####################################################################################################
 # 
 # End

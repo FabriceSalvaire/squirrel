@@ -40,12 +40,11 @@ from Babel.Importer.ImporterRegistry import importer_registry
 
 ####################################################################################################
 
+_module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
 class Importer(object):
-
-    _logger = logging.getLogger(__name__)
-
-    importable_mime_types = ('application/pdf',
-                             )
 
     ##############################################
 
@@ -64,14 +63,18 @@ class Importer(object):
 
 class ImportSession(object):
 
-    _logger = logging.getLogger(__name__)
+    # fixme: purpose ?
 
+    _logger = _module_logger.getChild('ImportSession')
+   
     ##############################################
 
     def __init__(self, importer):
 
         self._importer = importer
-
+        document_database = self._importer._application.document_database
+        self._document_table = document_database.document_table
+        
     ##############################################
 
     def import_path(self, path):
@@ -87,16 +90,10 @@ class ImportSession(object):
     def import_recursively_path(self, path):
 
         for file_path in path.walk_files():
-            if self.is_file_importable(file_path):
+            if importer_registry.is_importable(file_path):
                 self.import_file(file_path)
-            # else:
-            #     self._logger.info("File %s is not importable" % (file_path))
-
-    ##############################################
-
-    def is_file_importable(self, file_path):
-
-        return file_path.mime_type in self._importer.importable_mime_types
+            else:
+                self._logger.info("File %s is not importable" % (file_path))
 
     ##############################################
 
@@ -105,36 +102,36 @@ class ImportSession(object):
         # Cases:
         #   - document is already registered (same path and checksum)
         #   - document is a duplicate (same checksum)
-        #   - document is an overwrite (same path)
+        #   - document was overwritten (same path)
         #   - new document
         
-        document_table = self._importer._application.document_database.document_table
-        query = document_table.filter_by(path=str(file_path), shasum=file_path.shasum)
+        query = self._document_table.filter_by(path=str(file_path), shasum=file_path.shasum)
         if query.count():
             self._logger.info("File %s is already imported" % (file_path))
             # then do nothing
         else:
-            query = document_table.filter_by(shasum=file_path.shasum)
+            query = self._document_table.filter_by(shasum=file_path.shasum)
             if query.count():
                 file_paths = ' '.join([row.path for row in query.all()])
-                self._logger.info("File %s is a duplicate of %s" % (file_path, file_paths))
-                # then log this file in the import session
+                self._logger.info("File %s is a duplicate of %s", file_path, file_paths)
+                # then log this file in the import session # Fixme: ???
+                document_row = importer_registry.import_file(self._document_table, file_path)
+                document_row.has_duplicate = True
+                for document_row in query:
+                    document_row.has_duplicate = True
             else:
-                query = document_table.filter_by(path=str(file_path))
+                query = self._document_table.filter_by(path=str(file_path))
                 if query.count():
-                    self._logger.info("File %s was overwritten" % (file_path))
-                    # then update data
+                    self._logger.info("File %s was overwritten", file_path)
+                    # then update shasum
                     document_row = query.one()
-                    document_row.update(file_path)
-                    document_table.commit()
+                    document_row.update_shasum(file_path)
                 else:
-                    document_table.add(file_path)
-                    document_table.commit()
-                    #try:
-                    importer_registry.import_file(file_path)
-                    #except:
-                    #    pass
-
+                    self._logger.info("Add file %s", file_path)
+                    # Fixme: self._document_table, via importer_registry ?
+                    document_row = importer_registry.import_file(self._document_table, file_path)
+            self._document_table.commit()
+                
 ####################################################################################################
 # 
 # End
