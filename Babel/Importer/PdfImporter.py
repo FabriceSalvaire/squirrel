@@ -29,9 +29,8 @@ from Babel.Pdf.PdfDocument import PdfDocument, MupdfError
 
 ####################################################################################################
 
-from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpusDataBase
-_bnc_database = BritishNationalCorpusDataBase()
-_bnc_word_table = _bnc_database.word_table
+from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpus
+_bnc = BritishNationalCorpus()
 
 ####################################################################################################
 
@@ -90,21 +89,21 @@ class PdfImporter(ImporterBase):
         # indexer process
         
         words = []
-        # Fixme: to iterator ?
+        unknown_words = []
         for word_count in pdf_document.collect_document_words(last_page):
             if word_count.count >= minimum_count and len(word_count.word) >= minimum_length:
-                word_rows = _bnc_word_table.filter_by(word=word_count.word).all()
-                if word_rows:
-                    for word_row in word_rows: 
-                        if _bnc_database.is_noun(word_row):
-                            tag = _bnc_database.part_of_speech_tag_from_id(word_row.part_of_speech_tag_id)
-                            print('%6u' % word_count.count, word_count.word, tag)
-                            words.append(word_count)
-                            break
+                tagged_words = _bnc[word_count.word]
+                if tagged_words is not None:
+                    if tagged_words.is_noun:
+                        words.append(word_count)
                 else:
-                    print('Unknown word %6u' % word_count.count, word_count.word)
-                    words.append(word_count)
-                
+                    unknown_words.append(word_count)
+        if len(words) > len(unknown_words):
+            for word_count in words:
+                print('%6u' % word_count.count, word_count.word)
+            for word_count in unknown_words:
+                print('Unknown word %6u' % word_count.count, word_count.word)
+            
 ####################################################################################################
 # 
 # End

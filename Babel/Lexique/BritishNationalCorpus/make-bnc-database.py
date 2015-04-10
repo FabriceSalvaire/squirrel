@@ -28,7 +28,7 @@ import sys
 
 ###################################################################################################
 
-from Babel.DataBase.WordDataBase import WordDataBase, PartOfSpeechTagRow
+from Babel.DataBase.WordDataBase import WordSqliteDataBase, PartOfSpeechTagRow
 from Babel.Tools.ProgramOptions import PathAction
 from .PartOfSpeechTags import part_of_speech_tags
 
@@ -53,7 +53,7 @@ args = argument_parser.parse_args()
 
 ####################################################################################################
 
-database = WordDataBase(args.sqlite_file)
+database = WordSqliteDataBase(args.sqlite_file)
 
 part_of_speech_tag_dict = {}
 part_of_speech_tag_table = database.part_of_speech_tag_table
