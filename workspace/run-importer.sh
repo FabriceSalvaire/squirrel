@@ -1,5 +1,17 @@
+####################################################################################################
+
 rm ~/.local/babel/*sqlite
-babel-console --user-script ../user-scripts/import-pdf.py --user-script-args="pdf-pool"
 
+profile='-m cProfile -o profile.txt -s cumulative'
+command="python $profile ../bin/babel-console --user-script ../user-scripts/import-pdf.py"
+
+# $command --user-script-args="pdf-pool"
+
+# Fixme: realpath
+$command --user-script-args="/home/gv/fabrice/ged/racine"
+
+####################################################################################################
+# 
 # End
-
+# 
+####################################################################################################

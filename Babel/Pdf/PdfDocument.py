@@ -32,7 +32,6 @@ from .TextPage import TextPage
 from Babel.Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
 from Babel.Tools.Object import clone
 
-
 ####################################################################################################
 
 class PdfDocument(object):
@@ -123,27 +122,37 @@ class PdfDocument(object):
 
     ##############################################
 
+    def iter_until(self, last_page=None):
+
+        if last_page is None:
+            last_page = self.number_of_pages -1
+        
+        for i in range(last_page +1):
+            yield self._page(i)
+            
+    ##############################################
+
     @property
     def words(self):
 
         """ Return a :obj:`.DocumentWords` instance. """
 
         if self._document_words is None:
-            self._document_words = self._compile_document_words()
+            self._document_words = self.collect_document_words()
 
         return self._document_words
 
     ##############################################
 
-    def _compile_document_words(self):
+    def collect_document_words(self, last_page=None):
 
         document_words = DocumentWords()
-        for page in self:
+        for page in self.iter_until(last_page):
             text_page = page.text
             tokenised_text = text_page.blocks.tokenised_text
             for token in tokenised_text.word_iterator():
                 document_words.add(str(token).lower())
-                document_words.sort()
+        document_words.sort()
 
         return document_words
 
