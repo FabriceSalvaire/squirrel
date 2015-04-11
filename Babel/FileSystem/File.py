@@ -20,6 +20,7 @@
 
 ####################################################################################################
 
+import hashlib
 import mimetypes
 import os
 import subprocess
@@ -44,7 +45,7 @@ def file_extension(filename):
 
 ####################################################################################################
 
-def run_shasum(filename, algorithm=1, text=False, binary=False, portable=False):
+def run_shasum(filename, algorithm=1, binary=False, text=True, universal=False, portable=False):
 
     if algorithm not in (1, 224, 256, 384, 512, 512224, 512256):
         raise ValueError
@@ -54,13 +55,33 @@ def run_shasum(filename, algorithm=1, text=False, binary=False, portable=False):
         args.append('--text')
     elif binary:
         args.append('--binary')
+    elif universal:
+         # read in Universal Newlines mode produces same digest on Windows/Unix/Mac
+        args.append('--universal')
     elif portable:
+         # to be deprecated
         args.append('--portable')
     args.append(filename)
     output = subprocess.check_output(args).decode('utf-8')
     shasum = output[:output.find(' ')]
 
     return shasum
+
+####################################################################################################
+
+def shasum(path, algorithm=1):
+
+    # This module implements a common interface to many different secure hash and message digest
+    # algorithms. Included are the FIPS secure hash algorithms SHA1, SHA224, SHA256, SHA384, and
+    # SHA512 (defined in FIPS 180-2)
+
+    if algorithm not in (1, 224, 256, 384, 512):
+        raise ValueError
+
+    hasher = hashlib.new('sha' + str(algorithm))
+    with open(str(path), 'rb') as f:
+         hasher.update(f.read())
+    return hasher.hexdigest()
 
 ####################################################################################################
 
@@ -419,7 +440,8 @@ class File(Path):
 
         if algorithm is None:
             algorithm = self.default_shasum_algorithm
-        self._shasum = run_shasum(self._path, algorithm, portable=True)
+        # self._shasum = run_shasum(self._path, algorithm, binary=True)
+        self._shasum = shasum(self._path, algorithm)
 
         return self._shasum
 
