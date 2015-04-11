@@ -72,8 +72,8 @@ class ImportSession(object):
     def __init__(self, importer):
 
         self._importer = importer
-        document_database = self._importer._application.document_database
-        self._document_table = document_database.document_table
+        self._document_database = self._importer._application.document_database
+        self._document_table = self._document_database.document_table
         
     ##############################################
 
@@ -116,7 +116,7 @@ class ImportSession(object):
                 file_paths = ' '.join([str(document_row.path) for document_row in duplicates])
                 self._logger.info("File %s is a duplicate of %s", file_path, file_paths)
                 # then log this file in the import session # Fixme: ???
-                document_row = importer_registry.import_file(self._document_table, file_path)
+                document_row = importer_registry.import_file(self._document_database, file_path)
                 document_row.has_duplicate = True
                 for document_row in duplicates:
                     document_row.has_duplicate = True
@@ -130,7 +130,7 @@ class ImportSession(object):
                 else:
                     self._logger.info("Add file %s", file_path)
                     # Fixme: self._document_table, via importer_registry ?
-                    document_row = importer_registry.import_file(self._document_table, file_path)
+                    document_row = importer_registry.import_file(self._document_database, file_path)
             self._document_table.commit()
                 
 ####################################################################################################

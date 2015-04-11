@@ -80,7 +80,7 @@ Part-Of-Speech Tags Row
   tag: %(tag)s
   comment: %(comment)s
 '''
-        return message % self.get_column_dict()
+        return message % self.to_dict()
 
 ####################################################################################################
 
@@ -97,10 +97,10 @@ class WordRow(SqlAlchemyBase, SqlRow):
     id = Column(Integer, primary_key=True)
     word = Column(String) # , primary_key=True
     # language_id = Column(Integer, ForeignKey('languages.id'))
-    part_of_speech_tag_id = Column(Integer) #, ForeignKey('part_of_speech_tags.id'))
+    part_of_speech_tag_id = Column(Integer) #, ForeignKey('part_of_speech_tags.id')) # Fixme: tag_id
     count = Column(Integer, default=0)
-    file_count = Column(Integer, default=0)
-    rank = Column(Integer, default=0)
+    file_count = Column(Integer, default=0) # Fixme: purpose ?
+    rank = Column(Integer, default=0) # Fixme: purpose ?
 
     # language = relationship('LanguageRow')
 
@@ -117,7 +117,7 @@ Word Row
   count: %(count)u
   part of speech tag: %(part_of_speech_tag_id)u
 '''
-        return message % self.get_column_dict()
+        return message % self.to_dict()
 
 ####################################################################################################
 

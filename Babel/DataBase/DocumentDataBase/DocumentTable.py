@@ -21,6 +21,7 @@
 ####################################################################################################
 
 import datetime
+today = datetime.datetime.today
 
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declared_attr
@@ -51,15 +52,23 @@ class DocumentRowMixin(SqlRow):
     __tablename__ = 'documents'
 
     id = Column(Integer, primary_key=True)
-    added_time = Column(DateTime)
+    record_creation_date = Column(DateTime)
+    record_update_date = Column(DateTime)
     
     path = Column(FileType, unique=True)
     inode = Column(Integer) # uniq on the same file-system
     # creation_time = Column(Integer)
 
-    shasum = Column(String(64)) # allow for duplicates
+    shasum = Column(String(64)) # duplicates are allowed
     has_duplicate = Column(Boolean, default=False)
 
+    indexation_date = Column(DateTime, default=None) # to compare with indexer generation
+    indexed_until = Column(Integer, default=0) # should be equal to number_of_pages
+                                               # page number start from 1, 0 means not indexed
+    indexation_status = Column(String, default='') # Fixme:
+    language = Column(String(10), default='') # Fixme: en
+    # indexer settings
+    
     number_of_pages = Column(Integer)
     title = Column(String, default='')
     author = Column(String, default='')
@@ -69,10 +78,21 @@ class DocumentRowMixin(SqlRow):
 
     def __init__(self, file_path):
 
-        self.added_time = datetime.datetime.today()
+        self.record_creation_date = today()
+        self.update_record_date()
         self.path = file_path
         self.inode = file_path.inode
         self.shasum = file_path.compute_shasum() # Fixme: .shasum
+
+    ##############################################
+
+    def update_record_date(self):
+        self.record_update_date = today()
+
+    ##############################################
+
+    def update_indexation_date(self):
+        self.indexation_date = today()
         
     ###############################################
 
@@ -91,7 +111,8 @@ Document Row
   path: {path}
   shasum: {shasum}
   inode: {inode}
-  added time: {added_time}
+  record date: {record_creation_date}
+  update date: {record_update_date}
   number of pages: {number_of_pages}
   title: {title}
   author: {author}
@@ -108,6 +129,7 @@ Document Row
         if file_path.compute_shasum() == self.shasum:
             self.path = file_path
             self.inode = file_path.inode
+            self.update_record_date()
         else:
             raise NameError("Attempt to update a document path with a document having different shasum")
 
@@ -116,6 +138,7 @@ Document Row
     def update_shasum(self):
 
         self.shasum = self.path.compute_shasum() # Fixme: .shasum
+        self.update_record_date()
         
 ####################################################################################################
 # 

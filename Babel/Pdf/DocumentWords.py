@@ -19,15 +19,6 @@
 ####################################################################################################
 
 ####################################################################################################
-# 
-#                                              audit 
-# 
-# - 08/08/2013 Fabrice
-#   cound or frequency
-# 
-####################################################################################################
-
-####################################################################################################
 
 class WordCount(object):
 
@@ -37,19 +28,22 @@ class WordCount(object):
 
         self._word = str(word)
         self._count = count
-
+        self._rank = None
+        
     ##############################################
 
     @property
     def word(self):
         return self._word
 
-    ##############################################
-
     @property
     def count(self):
         return self._count
 
+    @property
+    def rank(self):
+        return self._rank
+    
     ##############################################
 
     def __lt__(a ,b):
@@ -116,7 +110,9 @@ class DocumentWords(object):
         """ Sort the word by frequency in descending order. """
 
         self._sorted_words = sorted(iter(self._words.values()), reverse=True)
-
+        for rank, word_count in enumerate(self._sorted_words):
+            word_count._rank = rank
+        
 ####################################################################################################
 # 
 # End

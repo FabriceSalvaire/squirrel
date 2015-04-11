@@ -32,12 +32,18 @@ from Babel.DataBase.SqlAlchemyBase import SqlRow
 
 class WordRowMixin(SqlRow):
 
-    __tablename__ = 'words'
+    __tablename__ = 'document_words'
 
+    # indexed word global: id, language, word, count <to learn new word>
+    
     id = Column(Integer, primary_key=True)
+    language = Column(Integer, default=0) # ForeignKey, 0 = unknown, 1 = en ...
     word = Column(String)
     count = Column(Integer)
+    rank = Column(Integer)
 
+    ##############################################
+        
     # document_id = Column(Integer, ForeignKey('documents.id'), index=True)
     ## sqlalchemy.exc.InvalidRequestError: Mapper properties (i.e. deferred,column_property(),
     ## relationship(), etc.) must be declared as @declared_attr callables on declarative mixin

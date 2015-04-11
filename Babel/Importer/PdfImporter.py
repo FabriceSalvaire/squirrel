@@ -42,7 +42,7 @@ class PdfImporter(ImporterBase):
 
     ##############################################
 
-    def import_file(self, document_table, file_path):
+    def import_file(self, document_database, file_path):
 
         # PdfMetaDataExtractor
         
@@ -50,7 +50,10 @@ class PdfImporter(ImporterBase):
             pdf_document = PdfDocument(file_path)
         except MupdfError:
             return
-            
+
+        document_table = document_database.document_table
+        word_table = document_database.word_table
+        
         document_row = document_table.new_row(file_path)
 
         document_row.number_of_pages = pdf_document.number_of_pages
@@ -65,7 +68,30 @@ class PdfImporter(ImporterBase):
             last_page = number_of_pages_threshold
         else:
             last_page = pdf_document.number_of_pages -1
-        self.main_words(pdf_document, last_page)
+        words, unknown_words = self.main_words(pdf_document, last_page)
+
+        if len(words) > len(unknown_words):
+            document_row.indexed_until = last_page +1 # from 1
+            if last_page == pdf_document.number_of_pages -1:
+                document_row.indexation_status = 'full'
+            else:
+                document_row.indexation_status = 'partial'
+            document_row.language = 'en'
+            for word_count in words:
+                word_table.add_new_row(document=document_row,
+                                       language=1, # en
+                                       word=word_count.word, count=word_count.count, rank=word_count.rank)
+            for word_count in unknown_words:
+                word_table.add_new_row(document=document_row,
+                                       language=0,
+                                       word=word_count.word, count=word_count.count, rank=word_count.rank)
+            word_table.commit()
+        else:
+            self._logger.warning("Unknown language for %s", file_path)
+            document_row.indexed_until = last_page +1 # from 1
+            document_row.indexation_status = 'unknown language'
+            document_row.language = '?'
+        document_row.update_indexation_date()
         
         document_table.add(document_row, commit=False)
         
@@ -75,19 +101,6 @@ class PdfImporter(ImporterBase):
 
     def main_words(self, pdf_document, last_page=None, minimum_count=5, minimum_length=3):
 
-        # Fixme: cache bnc, measure time
-
-        # http://www.lexique.org/listes/liste_mots.php
-        
-        # ratio unknown > threshold => index error
-        # if tag = unknown => language ?
-
-        # language use id
-        # indexed word document: id, document, language, word, tag, count, rank
-        # indexed word global: id, language, word, tag, count <to learn new word>
- 
-        # indexer process
-        
         words = []
         unknown_words = []
         for word_count in pdf_document.collect_document_words(last_page):
@@ -98,11 +111,14 @@ class PdfImporter(ImporterBase):
                         words.append(word_count)
                 else:
                     unknown_words.append(word_count)
-        if len(words) > len(unknown_words):
-            for word_count in words:
-                print('%6u' % word_count.count, word_count.word)
-            for word_count in unknown_words:
-                print('Unknown word %6u' % word_count.count, word_count.word)
+                    
+        # if len(words) > len(unknown_words):
+        #     for word_count in words:
+        #         print('%6u' % word_count.count, word_count.word)
+        #     for word_count in unknown_words:
+        #         print('Unknown word %6u' % word_count.count, word_count.word)
+                    
+        return words, unknown_words
             
 ####################################################################################################
 # 
