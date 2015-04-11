@@ -37,14 +37,14 @@ import argparse
 
 ####################################################################################################
 
-from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpusDataBase
+from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpus
 
 ####################################################################################################
 #
 # Options
 #
 
-argument_parser = argparse.ArgumentParser(description='A tool to query the British National Corpus database.')
+argument_parser = argparse.ArgumentParser(description='A tool to query the British National Corpus.')
 
 argument_parser.add_argument('word', metavar='WORD',
                              help='Word')
@@ -53,23 +53,26 @@ args = argument_parser.parse_args()
 
 ####################################################################################################
 
-database = BritishNationalCorpusDataBase()
-word_table = database.word_table
-part_of_speech_tag_table = database.part_of_speech_tag_table
+bnc = BritishNationalCorpus()
 
-word_rows = word_table.filter_by(word=args.word).all()
-for word_row in word_rows:
-    tag_row = part_of_speech_tag_table.filter_by(id=word_row.part_of_speech_tag_id).one()
-    # Fixme: comment layout
-    message = '''
-Word
-  word: {}
-  count: {}
-  part of speech tag: {}
-  {}
-'''
-    print(message.format(word_row.word, word_row.count, tag_row.tag, tag_row.comment))
+####################################################################################################
 
+def search_word(word):
+
+    tagged_words = bnc[word]
+    print("\nBritish National Corpus")
+    if tagged_words:
+        print("Occurence found for word '{}'".format(word))
+        for tag in sorted(tagged_words, key=lambda x: x.tag):
+            tagged_word = tagged_words[tag]
+            print(' - {}'.format(tagged_word.tag))
+    else:
+        print("Any occurence found for word '{}'".format(word))
+
+####################################################################################################
+
+search_word(args.word)
+    
 ####################################################################################################
 # 
 # End
