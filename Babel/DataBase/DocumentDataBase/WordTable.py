@@ -63,14 +63,13 @@ class WordRowMixin(SqlRow):
     ##############################################
         
     def __repr__(self):
-        
+
         message = '''
 Word Row
   word: {word}
-  document id: {document_id}
   count: {count}
 '''
-        return message % self.get_column_dict()
+        return message.format(**self.to_dict())
 
 ####################################################################################################
 # 

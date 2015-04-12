@@ -119,7 +119,7 @@ Document Row
   comment: {comment}
 '''
 
-        return message.format(self.get_column_dict())
+        return message.format(**self.to_dict())
 
     ##############################################
 

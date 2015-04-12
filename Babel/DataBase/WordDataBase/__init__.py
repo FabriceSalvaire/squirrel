@@ -80,7 +80,7 @@ Part-Of-Speech Tags Row
   tag: %(tag)s
   comment: %(comment)s
 '''
-        return message % self.to_dict()
+        return message.format(**self.to_dict())
 
 ####################################################################################################
 
@@ -117,7 +117,7 @@ Word Row
   count: %(count)u
   part of speech tag: %(part_of_speech_tag_id)u
 '''
-        return message % self.to_dict()
+        return message.format(**self.to_dict())
 
 ####################################################################################################
 
