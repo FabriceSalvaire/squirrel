@@ -67,7 +67,6 @@ class BabelApplication(ApplicationBase):
     def _open_database(self):
 
         self.document_database = DocumentSqliteDataBase(Config.DataBase.document_database)
-        # self.word_database = WordDataBase(Config.DataBase.word_database)
 
     ###############################################
     
@@ -76,6 +75,31 @@ class BabelApplication(ApplicationBase):
         import_session = self._importer.new_session()
         import_session.import_path(Directory(path))
 
+    ##############################################
+
+    def query(self, query):
+
+        document_table = self.document_database.document_table
+        word_table = self.document_database.word_table
+
+        message = """
+  path {path}
+  title {title}
+  author {author}
+  comment {comment}
+  count {count}
+"""
+        message = message[1:]
+        
+        for word_row in word_table.filter_by(word=query):
+            document_row = word_row.document
+            print(message.format(path=document_row.path,
+                                 count=word_row.count,
+                                 title=document_row.title,
+                                 author=document_row.author,
+                                 comment=document_row.comment,
+                             ))
+            
 ####################################################################################################
 #
 # End

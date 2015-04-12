@@ -58,12 +58,20 @@ argument_parser.add_argument('--user-script-args',
                              default='',
                              help="user script args (don't forget to quote)")
 
+argument_parser.add_argument('--query',
+                             dest='query',
+                             default=None,
+                             help="Query document database")
+
 args = argument_parser.parse_args()
 
 ####################################################################################################
 
 application = BabelApplication(args=args)
 application.execute_given_user_script()
+
+if args.query is not None:
+    application.query(args.query)
 
 ####################################################################################################
 # 
