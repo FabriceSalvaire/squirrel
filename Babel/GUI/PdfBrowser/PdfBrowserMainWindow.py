@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ####################################################################################################
 # 
 # Babel - A Bibliography Manager
@@ -34,7 +32,7 @@ from PyQt5.QtCore import Qt
 from .DirectoryListWidget import DirectoryListWidget
 from .DirectoryTocWidget import DirectoryTocWidget
 from .DocumentDirectory import DocumentDirectory
-from .ImageViewer import ImageViewer
+from .PdfViewer import ViewerController
 from Babel.FileSystem.AutomaticFileRename import AutomaticFileRename
 from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.GUI.Base.MainWindowBase import MainWindowBase
@@ -68,28 +66,30 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         self._central_widget = QtWidgets.QWidget(self)
         self.setCentralWidget(self._central_widget)
+
+        self._viewer_controller = ViewerController()
         
         self._message_box = MessageBox(self)
         self._path_navigator = PathNavigator(self)
         self._file_name_label = QtWidgets.QLabel()
         self._file_counter_label = QtWidgets.QLabel()
         self._directory_toc = DirectoryTocWidget()
-        self._image_viewer = ImageViewer(self)
+        image_widget = self._viewer_controller.image_widget
         
         # Fixme: add funcs ?
         self._document_widgets = (self._file_name_label, self._file_counter_label,
-                                  self._image_viewer)
+                                  image_widget)
         
         self._vertical_layout = QtWidgets.QVBoxLayout(self._central_widget)
         self._vertical_layout.addWidget(self._message_box)
         self._vertical_layout.addWidget(self._path_navigator)
-        horizontal_layout = QtWidgets.QHBoxLayout(self)
+        horizontal_layout = QtWidgets.QHBoxLayout()
         # Fixme: layout
         horizontal_layout.addWidget(self._file_name_label)
         horizontal_layout.addWidget(self._file_counter_label)
         self._vertical_layout.addLayout(horizontal_layout)
         self._vertical_layout.addWidget(self._directory_toc)
-        self._vertical_layout.addWidget(self._image_viewer)
+        self._vertical_layout.addWidget(image_widget)
 
         self.statusBar()
         self._create_actions()
@@ -101,19 +101,11 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._directory_list_dock_widget.setWidget(self._directory_list)
         self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
 
-        self._translate_ui()
-
         self._path_navigator.path_changed.connect(self.open_directory)
         self._directory_toc.path_changed.connect(self.open_directory)
         self._directory_list.move_file.connect(self.move_file)
 
         self._directory_toc_mode()
-        
-    ##############################################
-
-    def _translate_ui(self):
-
-        pass
         
     ##############################################
     
@@ -171,26 +163,6 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcutContext=Qt.ApplicationShortcut,
                           )
 
-        self._fit_width_action = \
-            QtWidgets.QAction(icon_loader['zoom-fit-width'],
-                          'Fit width',
-                          self,
-                          toolTip='Fit width',
-                          triggered=self._image_viewer.fit_width,
-                          shortcut='Ctrl+W',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
-
-        self._fit_document_action = \
-            QtWidgets.QAction(icon_loader['zoom-fit-best'],
-                          'Fit document',
-                          self,
-                          toolTip='Fit document',
-                          triggered=self._image_viewer.fit_document,
-                          shortcut='Ctrl+B',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
-
         self._open_pdf_action = \
             QtWidgets.QAction(icon_loader['document-export'],
                           'Open PDF',
@@ -221,22 +193,18 @@ class PdfBrowserMainWindow(MainWindowBase):
                     ):
             self._main_tool_bar.addAction(item)
 
-        self._pdf_tool_bar = self.addToolBar('PDF')
+        self._document_tool_bar = self.addToolBar('Document')
         for item in (self._previous_document_action,
                      self._next_document_action,
                      self._select_action,
-                     self._fit_width_action,
-                     self._fit_document_action,
                      self._open_pdf_action,
                      self._open_pdf_viewer_action,
                     ):
-            self._pdf_tool_bar.addAction(item)
-            
-        # if isinstance(item,QtWidgets.QAction):
-        #     self._page_tool_bar.addAction(item)
-        # else:
-        #     self._page_tool_bar.addWidget(item)
+            self._document_tool_bar.addAction(item)
 
+        self.addToolBar(self._viewer_controller.tool_bar)
+        self.addToolBar(self._viewer_controller.page_controller.tool_bar)
+            
     ##############################################
 
     def init_menu(self):
@@ -340,7 +308,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             self._file_name_label.setText(str(document.path.filename_part()))
             self._file_counter_label.setText('{} / {}'.format(self._document_directory.current_index +1,
                                                               len(self._document_directory)))
-            self._image_viewer.update(document)
+            self._viewer_controller.document = document.document # Fixme: 
         except EmptyRingError:
             # self._logger.info('EmptyRingError')
             # Fixme: cf. open_directory
@@ -351,12 +319,13 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def select_document(self):
 
-        try:
-            document = self.current_document
-            document.selected = not document.selected
-            self._image_viewer.update_style()
-        except EmptyRingError:
-            pass
+        pass
+        # try:
+        #     document = self.current_document
+        #     document.selected = not document.selected
+        #     self._viewer_controller.update_style()
+        # except EmptyRingError:
+        #     pass
     
     ##############################################
 

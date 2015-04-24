@@ -70,10 +70,10 @@ class TextPage(QtWidgets.QScrollArea):
 
     ##############################################
 
-    def update_page(self):
+    def on_page_changed(self, page_index):
 
         self._clear_layout()
-        pdf_page = self._main_window._pdf_page
+        pdf_page = self._main_window._pdf_document[page_index]
         text_page = pdf_page.text
         # with codecs.open('log%u.txt' % pdf_page.page_number,
         #                  encoding='utf-8', mode='w+') as log_file:

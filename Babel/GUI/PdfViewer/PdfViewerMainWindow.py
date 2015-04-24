@@ -26,10 +26,10 @@ from PyQt5 import QtCore, QtWidgets
 
 ####################################################################################################
 
-from .ImagePage import ImagePage
 from .InfoPage import InfoPage
 from .TextPage import TextPage
 from Babel.GUI.Base.MainWindowBase import MainWindowBase
+from Babel.GUI.PdfBrowser.PdfViewer import ViewerController
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.Pdf.PdfDocument import PdfDocument
 
@@ -53,34 +53,8 @@ class PdfViewerMainWindow(MainWindowBase):
 
         self._pdf_document = PdfDocument(path)
         self._info_page.open_pdf()
-        self._last_page_number_label.setText('of %u' % self._pdf_document.number_of_pages)
-        self._set_page_number(0)
-        # Fixme: page cache, speed-up
-
-    ##############################################
-
-    def _set_page_number(self, page_number):
-
-        if 0 <= page_number < self._pdf_document.number_of_pages:
-            self._page_number_line_edit.setText(str(page_number +1))
-            self._pdf_page = self._pdf_document[page_number]
-            for page in (self._image_page,
-                         self._text_page,
-                         ):
-                page.update_page()
-
-    ##############################################
-
-    def previous_page(self):
-
-        self._set_page_number(self._pdf_page.page_number -1)
-
-    ##############################################
-
-    def next_page(self):
-
-        self._set_page_number(self._pdf_page.page_number +1)
-
+        self._viewer_controller.document = self._pdf_document
+        
     ##############################################
     
     def _create_actions(self):
@@ -118,22 +92,6 @@ class PdfViewerMainWindow(MainWindowBase):
                        ):
             self._action_group.addAction(action)
 
-        self._previous_page_action = \
-            QtWidgets.QAction(icon_loader['arrow-left'],
-                          'Previous page',
-                          self,
-                          toolTip='Previous Page',
-                          triggered=lambda: self.previous_page(),
-                          )
-
-        self._next_page_action = \
-            QtWidgets.QAction(icon_loader['arrow-right'],
-                          'Next page',
-                          self,
-                          toolTip='Next Page',
-                          triggered=lambda: self.next_page(),
-                          )
-
     ##############################################
     
     def _create_toolbar(self):
@@ -146,22 +104,9 @@ class PdfViewerMainWindow(MainWindowBase):
                        ):
             self._mode_tool_bar.addAction(action)
 
-        self._page_number_line_edit = QtWidgets.QLineEdit()
-        size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
-        self._page_number_line_edit.setSizePolicy(size_policy)
-        self._last_page_number_label = QtWidgets.QLabel()
-
-        self._page_tool_bar = self.addToolBar('Pages')
-        for item in (self._previous_page_action,
-                     self._page_number_line_edit,
-                     self._last_page_number_label,
-                     self._next_page_action,
-                     ):
-            if isinstance(item,QtWidgets.QAction):
-                self._page_tool_bar.addAction(item)
-            else:
-                self._page_tool_bar.addWidget(item)
-
+        self.addToolBar(self._viewer_controller.tool_bar)
+        self.addToolBar(self._viewer_controller.page_controller.tool_bar)
+            
     ##############################################
 
     def init_menu(self):
@@ -172,10 +117,12 @@ class PdfViewerMainWindow(MainWindowBase):
 
     def _init_ui(self):
 
+        self._viewer_controller = ViewerController()
+        
         self._stacked_widget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self._stacked_widget)
         self._info_page = InfoPage(self)
-        self._image_page = ImagePage(self)
+        self._image_page = self._viewer_controller.image_widget
         self._text_page = TextPage(self)
         for page in (self._info_page,
                      self._image_page,
@@ -185,14 +132,8 @@ class PdfViewerMainWindow(MainWindowBase):
         self.statusBar()
         self._create_actions()
         self._create_toolbar()
-
-        self._translate_ui()
-
-    ##############################################
-
-    def _translate_ui(self):
-
-        pass
+       
+        self._viewer_controller.page_controller.page_changed.connect(self._text_page.on_page_changed)
 
     ##############################################
 
