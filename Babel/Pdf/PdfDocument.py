@@ -28,6 +28,7 @@ from Babel.MuPdf import MupdfError
 ####################################################################################################
 
 from .DocumentWords import DocumentWords
+from .PdfImageCache import PdfImageCache
 from .TextPage import TextPage
 from Babel.Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
 from Babel.Tools.Object import clone
@@ -46,7 +47,7 @@ class PdfDocument(object):
 
         self._context = None
         self._c_document = None
-        self._pages = {}
+        self._pages = {} # page cache
 
         path = str(self._path).encode('utf-8')
 
@@ -60,7 +61,8 @@ class PdfDocument(object):
         self._metadata = MetaData(self)
         self._number_of_pages = mupdf.count_pages(self._c_document)
         self._document_words = None
-        
+        self._image_cache = None
+
     ##############################################
 
     def __del__(self):
@@ -156,6 +158,14 @@ class PdfDocument(object):
 
         return document_words
 
+    ##############################################
+
+    @property
+    def image_cache(self):
+        if self._image_cache is None:
+            self._image_cache = PdfImageCache(self)
+        return self._image_cache
+    
 ####################################################################################################
 
 class MetaData(ReadOnlyAttributeDictionaryInterface):
@@ -217,7 +227,7 @@ class Page(object):
 
     ##############################################
 
-    def __init__(self, document, page_number):
+    def __init__(self, document, page_number): # or page_index
 
         self._document = document
         self._context = self._document._context
@@ -335,8 +345,8 @@ class Page(object):
                                                                width, height, fit)
         
         pixmap = mupdf.new_pixmap_with_bbox(self._context,
-                                                mupdf.device_rgb(self._context),
-                                                bounding_box)
+                                            mupdf.device_rgb(self._context),
+                                            bounding_box)
         mupdf.pixmap_set_resolution(pixmap, resolution) # purpose ?
         mupdf.clear_pixmap_with_value(self._context, pixmap, 255)
 
@@ -364,9 +374,9 @@ class Page(object):
         width, height = mupdf.rect_width_height(bounding_box)
         np_array = np.zeros((height, width, 4), dtype=np.uint8)
         pixmap = mupdf.new_pixmap_with_bbox_and_data(self._context,
-                                                         mupdf.device_rgb(self._context),
-                                                         bounding_box,
-                                                         mupdf.np_array_uint8_ptr(np_array))
+                                                     mupdf.device_rgb(self._context),
+                                                     bounding_box,
+                                                     mupdf.np_array_uint8_ptr(np_array))
         mupdf.clear_pixmap_with_value(self._context, pixmap, 255)
         
         device = mupdf.new_draw_device(self._context, pixmap)
