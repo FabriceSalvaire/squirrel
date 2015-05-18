@@ -1,10 +1,15 @@
 ####################################################################################################
 
 api=doc/sphinx/source/api
-old_api=doc/sphinx/old-api
+if [ -e ${api} ]; then
+  echo "Remove ${api} ? y/n"
+  rm -r -I ${api}
+  mkdir ${api}
+fi
 
-mkdir -p ${old_api}
-#mv --backup=numbered $api ${old_api}
+# old_api=doc/sphinx/old-api
+# mkdir -p ${old_api}
+# mv --backup=numbered $api ${old_api}
 
 echo
 echo Generate RST API files
@@ -12,13 +17,13 @@ echo Generate RST API files
 
 echo
 echo Run Sphinx
-cd doc/sphinx/
+pushd doc/sphinx/
 ./make-html #--clean
-cd -
+popd
 
-echo
-echo Old api directory moved to
-ls -l -h ${old_api}
+# echo
+# echo Old api directory moved to
+# ls -l -h ${old_api}
 
 ####################################################################################################
 #
