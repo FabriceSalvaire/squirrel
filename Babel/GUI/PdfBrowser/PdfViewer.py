@@ -25,8 +25,6 @@
 # * mouse
 # * text selection
 # * zoom selection
-# * zoom fit width
-# * zoom to fit page
 # * suppress margin
 # * one page, facing page, etc.
 # * continous mode / single page
