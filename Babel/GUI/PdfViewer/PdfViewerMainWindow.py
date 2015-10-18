@@ -42,7 +42,7 @@ class PdfViewerMainWindow(MainWindowBase):
     def __init__(self, pdf_path=None, parent=None):
 
         super(PdfViewerMainWindow, self).__init__(title='Babel PDF Viewer', parent=parent)
-
+        
         self._init_ui()
         if pdf_path is not None:
             self.open_pdf(pdf_path)
@@ -54,13 +54,13 @@ class PdfViewerMainWindow(MainWindowBase):
         self._pdf_document = PdfDocument(path)
         self._info_page.open_pdf()
         self._viewer_controller.document = self._pdf_document
-        
+
     ##############################################
-    
+
     def _create_actions(self):
 
         icon_loader = IconLoader()
-
+        
         self._show_info_action = \
             QtWidgets.QAction('Info',
                           self,
@@ -68,7 +68,7 @@ class PdfViewerMainWindow(MainWindowBase):
                           checkable=True,
                           triggered=lambda: self._set_current_widget(self._info_page),
                           )
-
+        
         self._show_image_action = \
             QtWidgets.QAction('Image',
                           self,
@@ -76,7 +76,7 @@ class PdfViewerMainWindow(MainWindowBase):
                           checkable=True,
                           triggered=lambda: self._set_current_widget(self._image_page),
                           )
-
+        
         self._show_text_action = \
             QtWidgets.QAction('Text',
                           self,
@@ -84,7 +84,7 @@ class PdfViewerMainWindow(MainWindowBase):
                           checkable=True,
                           triggered=lambda: self._set_current_widget(self._text_page),
                           )
-
+        
         self._action_group = QtWidgets.QActionGroup(self)
         for action in (self._show_info_action,
                        self._show_image_action,
@@ -93,7 +93,7 @@ class PdfViewerMainWindow(MainWindowBase):
             self._action_group.addAction(action)
 
     ##############################################
-    
+
     def _create_toolbar(self):
 
         self._show_info_action.setChecked(True)
@@ -103,10 +103,10 @@ class PdfViewerMainWindow(MainWindowBase):
                        self._show_text_action,
                        ):
             self._mode_tool_bar.addAction(action)
-
+        
         self.addToolBar(self._viewer_controller.tool_bar)
         self.addToolBar(self._viewer_controller.page_controller.tool_bar)
-            
+
     ##############################################
 
     def init_menu(self):

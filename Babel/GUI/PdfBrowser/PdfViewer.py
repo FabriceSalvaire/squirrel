@@ -21,7 +21,7 @@
 ####################################################################################################
 
 ####################################################################################################
-# 
+#
 # * mouse
 # * text selection
 # * zoom selection
@@ -40,7 +40,7 @@
 # Page Controller
 #   - set document
 #   - previous/next goto first/last page, history, corresponding widgets
-#   - page changed -> 
+#   - page changed ->
 #
 # Image Viewer / Controller
 #   - set image provider
@@ -50,12 +50,12 @@
 #
 ####################################################################################################
 
-    # Fixme: PDF viewer
-    #   - set document, in fact an image provider
-    #   - set page
-    #   - get page image according the zoom mode
-    #   - the image provider can use a subprocess to perform read-ahead
-    #   - trim margin : how to get bounding box from MuPdf ?
+# Fixme: PDF viewer
+#   - set document, in fact an image provider
+#   - set page
+#   - get page image according the zoom mode
+#   - the image provider can use a subprocess to perform read-ahead
+#   - trim margin : how to get bounding box from MuPdf ?
 
 ####################################################################################################
 
@@ -85,7 +85,7 @@ class ToolBar(QtWidgets.QToolBar):
             self.addAction(item)
         else:
             self.addWidget(item)
-    
+
 ####################################################################################################
 
 class PageController(QtCore.QObject):
@@ -98,7 +98,7 @@ class PageController(QtCore.QObject):
     # next view
 
     _logger = _module_logger.getChild('PageController')
-    
+
     ##############################################
 
     def __init__(self, document=None):
@@ -111,13 +111,13 @@ class PageController(QtCore.QObject):
         self._create_toolbar()
         
         self.document = document
-        
+
     ##############################################
-    
+
     def _create_actions(self):
 
         icon_loader = IconLoader()
-    
+        
         self._previous_page_action = \
             QtWidgets.QAction(icon_loader['arrow-left'],
                           'Previous page',
@@ -125,7 +125,7 @@ class PageController(QtCore.QObject):
                           toolTip='Previous Page',
                           triggered=lambda: self.previous_page(), # Fixme:
                           )
-
+        
         self._next_page_action = \
             QtWidgets.QAction(icon_loader['arrow-right'],
                           'Next page',
@@ -135,7 +135,7 @@ class PageController(QtCore.QObject):
                           )
 
     ##############################################
-    
+
     def _create_toolbar(self):
 
         self._page_index_line_edit = QtWidgets.QLineEdit()
@@ -153,11 +153,11 @@ class PageController(QtCore.QObject):
             self._tool_bar.add(item)
 
     ##############################################
-            
+
     @property
     def tool_bar(self):
         return self._tool_bar
-            
+
     ##############################################
 
     @property
@@ -176,7 +176,7 @@ class PageController(QtCore.QObject):
         else:
             self._last_page_index_label.setText('of %u' % self._document.number_of_pages)
             self.goto_page(0) # Fixme: store last page
-            
+
     ##############################################
 
     @property
@@ -194,7 +194,7 @@ class PageController(QtCore.QObject):
             return True
         else:
             return False
-            
+
     ##############################################
 
     def previous_page(self):
@@ -206,7 +206,7 @@ class PageController(QtCore.QObject):
     def next_page(self):
 
         self.goto_page(self._page_index +1)
-       
+
 ####################################################################################################
 
 class ViewerController(QtCore.QObject):
@@ -220,7 +220,7 @@ class ViewerController(QtCore.QObject):
     resolution = 1000
     
     _logger = _module_logger.getChild('ViewerController')
-    
+
     ##############################################
 
     def __init__(self, document=None):
@@ -228,22 +228,22 @@ class ViewerController(QtCore.QObject):
         super(ViewerController, self).__init__()
         
         self._application = QtWidgets.QApplication.instance()
-
+        
         self._create_actions()
         self._create_toolbar()
-
+        
         self._page_controller = PageController()
         
         self._image_widget = ImageWidget()
         self._zoom_mode = None
         self._image_cache = None
-
+        
         self._page_controller.page_changed.connect(self._show_page)
         self._image_widget.resize_event.connect(self._show_page)
         self._image_widget.drag_event.connect(self._on_drag_event)
-
-        self.document = document
         
+        self.document = document
+
     ##############################################
 
     @property
@@ -257,9 +257,9 @@ class ViewerController(QtCore.QObject):
     @property
     def page_controller(self):
         return self._page_controller
-    
+
     ##############################################
-    
+
     def _create_actions(self):
 
         icon_loader = IconLoader()
@@ -273,7 +273,7 @@ class ViewerController(QtCore.QObject):
                           shortcut='Ctrl+W',
                           shortcutContext=Qt.ApplicationShortcut,
                           )
-
+        
         self._fit_document_action = \
             QtWidgets.QAction(icon_loader['zoom-fit-best'],
                           'Fit document',
@@ -285,7 +285,7 @@ class ViewerController(QtCore.QObject):
                           )
 
     ##############################################
-    
+
     def _create_toolbar(self):
 
         self._tool_bar = ToolBar('Viewer')
@@ -314,7 +314,7 @@ class ViewerController(QtCore.QObject):
         else:
             self._image_cache = document.image_cache
             self.fit_document() # recall _show_page
-            
+
     ##############################################
 
     def fit_width(self):
@@ -354,7 +354,7 @@ class ViewerController(QtCore.QObject):
                 self.fit_document()
             elif self._zoom_mode == self.zoom_mode_enum.fit_width:
                 self.fit_width()
-                
+
     ##############################################
 
     def _on_drag_event(self):
@@ -370,7 +370,7 @@ class ViewerController(QtCore.QObject):
             icon_loader = IconLoader()
             drag.setPixmap(icon_loader['application-pdf'].pixmap(32, 32))
             drop_action = drag.exec_()
-                
+
 ####################################################################################################
 
 class ImageWidget(QtWidgets.QScrollArea):
@@ -385,20 +385,20 @@ class ImageWidget(QtWidgets.QScrollArea):
     def __init__(self, parent=None):
 
         super(ImageWidget, self).__init__(parent)
-
+        
         self.setWidgetResizable(True)
         self._pixmap_label = QtWidgets.QLabel()
         self._pixmap_label.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         self.setWidget(self._pixmap_label)
         self._empty = True
-        
+
     ##############################################
 
     def clear(self):
 
         self._pixmap_label.clear()
         self._empty = True
-        
+
     ##############################################
 
     def set_pixmap(self, image):
@@ -415,20 +415,20 @@ class ImageWidget(QtWidgets.QScrollArea):
 
         self._logger.info("")
         self.resize_event.emit()
-        
+
     ##############################################
 
     def mousePressEvent(self, event):
 
         if not self._empty and event.button() == Qt.LeftButton:
             self.drag_event.emit()
-            
+
     ##############################################
 
     # def update_style(self):
 
     #     # Fixme: move to sub-class
-        
+
     #     if self._document.selected:
     #         margin = 15
     #         colour = QtGui.QColor()
@@ -437,7 +437,7 @@ class ImageWidget(QtWidgets.QScrollArea):
     #         margin = 0
     #         colour = QtGui.QColor(Qt.white)
     #     self._pixmap_label.setStyleSheet("border: {}px solid {};".format(margin, colour.name()))
-            
+
 ####################################################################################################
 #
 # End

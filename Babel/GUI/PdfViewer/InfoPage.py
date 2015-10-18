@@ -46,9 +46,9 @@ class InfoPage(QtWidgets.QWidget):
     def _init_ui(self):
 
         self._widgets = {}
-
+        
         vertical_layout = QtWidgets.QVBoxLayout(self)
-
+        
         grid_layout = QtWidgets.QGridLayout()
         row_layout_manager = RowLayoutManager(grid_layout)
         vertical_layout.addLayout(grid_layout)
@@ -78,7 +78,7 @@ class InfoPage(QtWidgets.QWidget):
             line_edit.setReadOnly(True)
             label.setBuddy(line_edit)
             row_layout_manager.add_row((label, line_edit))
-
+        
         label = QtWidgets.QLabel(self)
         label.setText('XML Metadata:')
         self._text_browser = QtWidgets.QTextBrowser(self)
@@ -105,7 +105,7 @@ class InfoPage(QtWidgets.QWidget):
         for key, value in key_value_pairs:
             self._widgets[key].setText(value)
         self._text_browser.setPlainText(pdf_metadata.metadata or '')
-            
+
 ####################################################################################################
 #
 # End
