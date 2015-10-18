@@ -41,8 +41,8 @@ class DocumentItem(object):
 
     def __repr__(self):
 
-        return 'DocumentItem ' + str(self._path)
-    
+        return self.__class__.__name__ + ' ' + str(self._path)
+
     ##############################################
 
     @property
@@ -66,7 +66,7 @@ class DocumentItem(object):
 class PdfDocumentItem(DocumentItem):
 
     # Fixme: purpose
-    
+
     ##############################################
 
     def __init__(self, path):
@@ -78,7 +78,7 @@ class PdfDocumentItem(DocumentItem):
         # self._cover_page = self._pdf_document[0]
 
     ##############################################
-    
+
     @property
     def document(self):
 
@@ -88,14 +88,41 @@ class PdfDocumentItem(DocumentItem):
 
 ####################################################################################################
 
-class DocumentDirectory(Ring):
+class DocumentList(Ring):
+
+    ##############################################
+
+    def find_path(self, file_path):
+
+        # find_document_by_path
+
+        for document in self:
+            if file_path == document.path:
+                return document
+        return None
+
+    ##############################################
+
+    def delete_path(self, file_path):
+
+        # delete_document_by_path
+
+        for i, document in enumerate(self):
+            if file_path == document.path:
+                self.delete_index(i) # return
+                return True
+        return False
+
+####################################################################################################
+
+class DocumentDirectory(DocumentList):
 
     __importable_mime_types__ = ('application/pdf',
                                 )
 
     __classes__ = {'application/pdf':PdfDocumentItem,
                   }
-    
+
     ##############################################
 
     def __init__(self, path, importable_mime_types=None):
@@ -107,7 +134,7 @@ class DocumentDirectory(Ring):
             self._importable_mime_types = self.__importable_mime_types__
         else:
             self._importable_mime_types = importable_mime_types
-       
+        
         self._open_directory()
 
     ##############################################
@@ -133,27 +160,8 @@ class DocumentDirectory(Ring):
                 document = document_class(file_path)
                 self.add(document)
 
-    ##############################################
-
-    def find_path(self, file_path):
-
-        for document in self:
-            if file_path == document.path:
-                return document
-        return None
-
-    ##############################################
-
-    def delete_path(self, file_path):
-
-        for i, document in enumerate(self):
-            if file_path == document.path:
-                self.delete_index(i) # return
-                return True
-        return False
-
 ####################################################################################################
-# 
+#
 # End
-# 
+#
 ####################################################################################################
