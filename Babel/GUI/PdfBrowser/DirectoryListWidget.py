@@ -49,6 +49,7 @@ class DirectoryWidget(QtWidgets.QWidget):
 
     deleted = pyqtSignal(QtWidgets.QWidget)
     dropped_file = pyqtSignal(File, Directory)
+    move_current_file = pyqtSignal(Directory)
 
     ##############################################
 
@@ -63,13 +64,15 @@ class DirectoryWidget(QtWidgets.QWidget):
         self._delete_button = QtWidgets.QToolButton(self)
         self._delete_button.setIcon(icon_loader['edit-delete'])
         self._delete_button.setAutoRaise(True)
-        self._label = QtWidgets.QLabel(self)
+        # self._label = QtWidgets.QLabel(self)
+        self._label = QtWidgets.QPushButton(self)
         self.set_label_level()
         self._horizontal_layout = QtWidgets.QHBoxLayout(self)
         self._horizontal_layout.addWidget(self._delete_button)
         self._horizontal_layout.addWidget(self._label)
 
         self._delete_button.clicked.connect(lambda x: self.deleted.emit(self))
+        self._label.clicked.connect(lambda x: self.move_current_file.emit(self._path))
 
         self.setAcceptDrops(True)
 
@@ -77,7 +80,7 @@ class DirectoryWidget(QtWidgets.QWidget):
 
     def same_path(self, path):
         return self._path == path
-        
+
     ##############################################
 
     def label(self):
@@ -98,7 +101,7 @@ class DirectoryWidget(QtWidgets.QWidget):
             sep = os.path.sep
             label = sep.join(self._path.split()[-level:])
         self._label.setText(label)
-        
+
     ##############################################
 
     def update_label_for_collision(self, other):
@@ -106,7 +109,7 @@ class DirectoryWidget(QtWidgets.QWidget):
         level = self._path.reverse_level_of_equality(other._path) +1
         self.set_label_level(level)
         other.set_label_level(level)
-            
+
     ##############################################
 
     def dragEnterEvent(self, event):
@@ -119,7 +122,7 @@ class DirectoryWidget(QtWidgets.QWidget):
             if File(urls[0]).directory != self._path:
                 self.setBackgroundRole(QtGui.QPalette.Highlight)
                 event.acceptProposedAction() # mandatory
-                
+
     ##############################################
 
     def dragLeaveEvent(self, event):
@@ -127,7 +130,7 @@ class DirectoryWidget(QtWidgets.QWidget):
         self._logger.info('')
         self.setBackgroundRole(QtGui.QPalette.Window)
         event.accept()
-        
+
     ##############################################
 
     # def dragMoveEvent(self, event):
@@ -154,6 +157,7 @@ class DirectoryListWidget(QtWidgets.QWidget):
     _logger = _module_logger.getChild('DirectoryListWidget')
 
     move_file = pyqtSignal(File, Directory)
+    move_current_file = pyqtSignal(Directory)
 
     ##############################################
 
@@ -165,8 +169,6 @@ class DirectoryListWidget(QtWidgets.QWidget):
         self._last_path = None
 
         self._widgets = []
-      
-        icon_loader = IconLoader()
 
         vertical_layout = QtWidgets.QVBoxLayout(self)
 
@@ -219,6 +221,7 @@ class DirectoryListWidget(QtWidgets.QWidget):
                 widget = DirectoryWidget(path, self)
                 widget.deleted.connect(self._delete_item)
                 widget.dropped_file.connect(self.move_file)
+                widget.move_current_file.connect(self.move_current_file)
                 index = self._vertical_layout.count() -1
                 self._vertical_layout.insertWidget(index, widget)
                 self._widgets.append(widget)
@@ -232,9 +235,8 @@ class DirectoryListWidget(QtWidgets.QWidget):
         for widget in self._widgets:
             if widget.same_path(path):
                 return False
-        else:
-            return True
-        
+        return True
+
     ##############################################
 
     def _update_label_for_collision(self):
@@ -243,7 +245,7 @@ class DirectoryListWidget(QtWidgets.QWidget):
         for widget1, widget2 in pairwise(self._widgets):
             if widget1.has_same_label(widget2):
                 widget1.update_label_for_collision(widget2)
-            
+
     ##############################################
 
     def clear(self):
@@ -265,7 +267,7 @@ class DirectoryListWidget(QtWidgets.QWidget):
         del self._widgets[index]
 
 ####################################################################################################
-# 
+#
 # End
-# 
+#
 ####################################################################################################

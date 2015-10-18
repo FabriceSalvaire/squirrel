@@ -104,6 +104,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._path_navigator.path_changed.connect(self.open_directory)
         self._directory_toc.path_changed.connect(self.open_directory)
         self._directory_list.move_file.connect(self.move_file)
+        self._directory_list.move_current_file.connect(self.move_current_file)
         
         self._directory_toc_mode()
 
@@ -354,6 +355,12 @@ class PdfBrowserMainWindow(MainWindowBase):
             if not self._document_directory.delete_path(file_path):
                 raise NameError("File {} not in the current directory".format(file_path))
         self._show_document()
+
+    ##############################################
+
+    def move_current_file(self, dst_path):
+
+        self.move_file(self.current_document.path, dst_path)
 
     ##############################################
 
