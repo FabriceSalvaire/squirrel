@@ -36,6 +36,9 @@ typedef struct fz_point_s fz_point;
 typedef struct fz_rect_s fz_rect;
 typedef struct fz_scale_cache_s fz_scale_cache;
 typedef struct fz_stream_s fz_stream;
+
+
+/*
 typedef struct fz_text_block_s fz_text_block;
 typedef struct fz_text_char_s fz_text_char;
 typedef struct fz_text_item_s fz_text_item;
@@ -44,6 +47,7 @@ typedef struct fz_text_page_s fz_text_page;
 typedef struct fz_text_sheet_s fz_text_sheet;
 typedef struct fz_text_span_s fz_text_span;
 typedef struct fz_text_style_s fz_text_style;
+*/
 
 /**************************************************************************************************/
 
@@ -119,6 +123,7 @@ struct fz_rect_s
   float x1, y1;
 };
 
+/*
 struct fz_text_s
 {
   fz_font *font;
@@ -205,6 +210,7 @@ struct fz_text_style_s
   float ascender;
   float descender;
 };
+*/
 
 /**************************************************************************************************/
 
@@ -215,7 +221,7 @@ fz_context * fz_new_context (fz_alloc_context * alloc, fz_locks_context * locks,
 fz_device * fz_new_draw_device (fz_context * ctx, fz_pixmap * dest);
 fz_device * fz_new_draw_device_type3 (fz_context * ctx, fz_pixmap * dest);
 fz_device * fz_new_draw_device_with_bbox (fz_context * ctx, fz_pixmap * dest, const fz_irect * clip);
-fz_device * fz_new_text_device (fz_context * ctx, fz_text_sheet * sheet, fz_text_page * page);
+//? fz_device * fz_new_text_device (fz_context * ctx, fz_text_sheet * sheet, fz_text_page * page);
 fz_document * fz_open_document (fz_context * ctx, const char *filename);
 fz_document * fz_open_document_with_stream (fz_context * ctx, const char *magic, fz_stream * stream);
 fz_irect * fz_round_rect (fz_irect * bbox, const fz_rect * rect);
@@ -223,49 +229,50 @@ fz_matrix * fz_concat (fz_matrix * result, const fz_matrix * left, const fz_matr
 fz_matrix * fz_pre_scale (fz_matrix * m, float sx, float sy);
 fz_matrix * fz_rotate (fz_matrix * m, float degrees);
 fz_matrix * fz_scale (fz_matrix * m, float sx, float sy);
-fz_output * fz_new_output_with_file (fz_context * ctx, FILE *);
+//! fz_output * fz_new_output_with_file (fz_context *, FILE *, int close);
 fz_pixmap * fz_new_pixmap_with_bbox (fz_context * ctx, fz_colorspace * colorspace, const fz_irect * bbox);
 fz_pixmap * fz_new_pixmap_with_bbox_and_data (fz_context * ctx, fz_colorspace * colorspace, const fz_irect * rect, unsigned char *samples);
 fz_pixmap * fz_scale_pixmap (fz_context * ctx, fz_pixmap * src, float x, float y, float w, float h, fz_irect * clip);
 fz_pixmap * fz_scale_pixmap_cached (fz_context * ctx, fz_pixmap * src, float x, float y, float w, float h, const fz_irect * clip, fz_scale_cache * cache_x, fz_scale_cache * cache_y);
-fz_rect * fz_bound_page (fz_document * doc, fz_page * page, fz_rect * rect);
+fz_rect *fz_bound_page(fz_context *ctx, fz_page *page, fz_rect *rect);
 fz_rect * fz_transform_rect (fz_rect * rect, const fz_matrix * transform);
 fz_scale_cache * fz_new_scale_cache (fz_context * ctx);
-fz_text_page * fz_new_text_page (fz_context * ctx);
-fz_text_sheet * fz_new_text_sheet (fz_context * ctx);
-int fz_count_pages (fz_document * doc);
-int fz_meta(fz_document *doc, int key, void *ptr, int size);
+//! fz_text_page * fz_new_text_page (fz_context * ctx);
+//! fz_text_sheet * fz_new_text_sheet (fz_context * ctx);
+int fz_count_pages (fz_context *ctx, fz_document * doc);
+int fz_lookup_metadata(fz_context *ctx, fz_document *doc, const char *key, char *buf, int size);
 void fz_clear_pixmap_with_value (fz_context * ctx, fz_pixmap * pix, int value);
-void fz_close_document (fz_document * doc);
-void fz_close_output (fz_output *);
-void fz_concat_push (fz_stream * concat, fz_stream * chain);
+void fz_drop_document (fz_context * ctx, fz_document * doc);
+void fz_drop_output (fz_context * ctx, fz_output *);
+void fz_concat_push (fz_context *ctx, fz_stream * concat, fz_stream * chain);
 void fz_drop_buffer (fz_context * ctx, fz_buffer * buf);
 void fz_drop_pixmap (fz_context * ctx, fz_pixmap * pix);
-void fz_free_context (fz_context * ctx);
-void fz_free_device (fz_device * dev);
-void fz_free_page (fz_document * doc, fz_page * page);
-void fz_free_scale_cache (fz_context * ctx, fz_scale_cache * cache);
-void fz_free_text_page (fz_context * ctx, fz_text_page * page);
-void fz_free_text_sheet (fz_context * ctx, fz_text_sheet * sheet);
+void fz_drop_context (fz_context * ctx);
+void fz_drop_device (fz_context * ctx, fz_device * dev);
+void fz_drop_page (fz_context * ctx, fz_page * page);
+void fz_drop_scale_cache (fz_context * ctx, fz_scale_cache * cache);
+//! void fz_drop_text_page (fz_context * ctx, fz_text_page * page);
+//! void fz_drop_text_sheet (fz_context * ctx, fz_text_sheet * sheet);
 void fz_pixmap_set_resolution (fz_pixmap * pix, int res);
-void fz_print_text_page (fz_context * ctx, fz_output * out, fz_text_page * page);
-void fz_print_text_page_html (fz_context * ctx, fz_output * out, fz_text_page * page);
-void fz_print_text_page_xml (fz_context * ctx, fz_output * out, fz_text_page * page);
-void fz_print_text_sheet (fz_context * ctx, fz_output * out, fz_text_sheet * sheet);
-void fz_run_page (fz_document * doc, fz_page * page, fz_device * dev, const fz_matrix * transform, fz_cookie * cookie);
-void fz_run_page_contents (fz_document * doc, fz_page * page, fz_device * dev, const fz_matrix * transform, fz_cookie * cookie);
+//? void fz_print_text_page (fz_context * ctx, fz_output * out, fz_text_page * page);
+//! void fz_print_text_page_html (fz_context * ctx, fz_output * out, fz_text_page * page);
+//! void fz_print_text_page_xml (fz_context * ctx, fz_output * out, fz_text_page * page);
+//! void fz_print_text_sheet (fz_context * ctx, fz_output * out, fz_text_sheet * sheet);
+void fz_register_document_handlers(fz_context *ctx);
+void fz_run_page(fz_context *ctx, fz_page *page, fz_device *dev, const fz_matrix *transform, fz_cookie *cookie);
+void fz_run_page_contents(fz_context *ctx, fz_page *page, fz_device *dev, const fz_matrix *transform, fz_cookie *cookie);
 void fz_set_aa_level (fz_context * ctx, int bits);
-void fz_write_png (fz_context * ctx, fz_pixmap * pixmap, char *filename, int savealpha);
+//! void fz_write_png (fz_context * ctx, fz_pixmap * pixmap, char *filename, int savealpha);
 
-void fz_set_throw_exit_callback(void (*throw_exit_callback) (char * message));
+//! void fz_set_throw_exit_callback(void (*throw_exit_callback) (char * message));
 
 /**************************************************************************************************/
 
 /* pdf.h */
-fz_page * fz_load_page (fz_document * doc, int number);
+fz_page * fz_load_page (fz_context *ctx, fz_document * doc, int number);
 
 /***************************************************************************************************
- * 
+ *
  * End
- * 
+ *
  **************************************************************************************************/

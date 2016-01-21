@@ -12,6 +12,20 @@
 
 /* ********************************************************************************************** */
 
+FILE *
+fz_fopen(const char *filename, const char *mode)
+{
+  return fopen(filename, mode);
+}
+
+int
+fz_fclose(FILE *file)
+{
+  return fclose(file);
+}
+
+/* ********************************************************************************************** */
+
 int
 font_is_bold(const fz_font *font)
 {
@@ -36,6 +50,7 @@ font_is_italic(const fz_font *font)
 
 /* ********************************************************************************************** */
 
+/*
 fz_text_span *
 get_text_span(fz_text_line *line, unsigned int span_index)
 {
@@ -52,34 +67,35 @@ get_text_span(fz_text_line *line, unsigned int span_index)
 
   return span;
 }
+*/
 
 /* ********************************************************************************************** */
 
 // Helper for
-//  int fz_meta(fz_document *doc, int key, void *ptr, int size);
+// int fz_lookup_metadata(fz_context *ctx, fz_document *doc, const char *key, char *buf, int size);
 int
-meta(fz_document *doc, int key, char *string, char *buffer, int buffer_size)
+meta(fz_context *ctx, fz_document *doc, const char *key, char *string, char *buffer, int buffer_size)
 {
   *(char **)buffer = string;
-  return fz_meta(doc, key, buffer, buffer_size);
+  return fz_lookup_metadata(ctx, doc, key, buffer, buffer_size);
 }
 
 /* ********************************************************************************************** */
 
 // Fixme: missing feature in mupdf/pdf.h
 fz_buffer *
-pdf_metadata(fz_document *_doc)
+pdf_metadata(fz_context *ctx, fz_document *_doc)
 {
   if (_doc) // Fixme: check document is a pdf!
     {
       pdf_document *doc = (pdf_document *)_doc;
-      pdf_obj *catalog = pdf_dict_gets(pdf_trailer(doc), "Root");
-      pdf_obj *metadata = pdf_dict_gets(catalog, "Metadata");
+      pdf_obj *catalog = pdf_dict_gets(ctx, pdf_trailer(ctx, doc), "Root");
+      pdf_obj *metadata = pdf_dict_gets(ctx, catalog, "Metadata");
       if (metadata)
 	{
-	  fz_stream *stm = pdf_open_stream(doc, pdf_to_num(metadata), pdf_to_gen(metadata));
-	  fz_buffer *buffer = fz_read_all(stm, 10240); // Fixme:
-	  fz_close(stm);
+	  fz_stream *stm = pdf_open_stream(ctx, doc, pdf_to_num(ctx, metadata), pdf_to_gen(ctx, metadata));
+	  fz_buffer *buffer = fz_read_all(ctx, stm, 10240); // Fixme:
+	  // fixme: fz_close(stm);
 	  return buffer;
 	}
     }
@@ -101,7 +117,7 @@ python_throw_exit_callback(char *message)
 
 void
 init () {
-  fz_set_throw_exit_callback(python_throw_exit_callback);
+  // fixme: fz_set_throw_exit_callback(python_throw_exit_callback);
 }
 
 fz_document *

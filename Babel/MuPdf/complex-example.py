@@ -11,7 +11,7 @@ import numpy as np
 import Babel.MuPdf as mupdf
 import Babel.MuPdf.TextIterator as mupdf_iter
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 ####################################################################################################
 
@@ -26,8 +26,7 @@ def show_metadata(ctx, doc):
         'CreationDate',
         'ModDate',
         ):
-        key = key.encode('ascii')
-        print(mupdf.decode_utf8(mupdf.get_meta_info(doc, key, 1024)))
+        print(mupdf.decode_utf8(mupdf.get_meta_info(ctx, doc, key, 1024)))
     
     fz_buffer = mupdf.pdf_metadata(doc)
     print(mupdf.decode_utf8(mupdf.buffer_data(fz_buffer)))
@@ -37,15 +36,15 @@ def show_metadata(ctx, doc):
 
 def show_pdf(np_array):
 
-    application = QtGui.QApplication(sys.argv)
+    application = QtWidgets.QApplication(sys.argv)
 
     height, width = np_array.shape[:2]
-    image = QtGui.QImage(np_array.data, width, height, QtGui.QImage.Format_ARGB32)
+    image = QtWidgets.QImage(np_array.data, width, height, QtWidgets.QImage.Format_ARGB32)
 
-    label = QtGui.QLabel()
-    label.setPixmap(QtGui.QPixmap.fromImage(image))
+    label = QtWidgets.QLabel()
+    label.setPixmap(QtWidgets.QPixmap.fromImage(image))
 
-    area = QtGui.QScrollArea()
+    area = QtWidgets.QScrollArea()
     area.setWidget(label)
     area.setWindowTitle(args.filename)
     area.show()
@@ -133,7 +132,7 @@ def dump_text_page(text_page):
 
 ####################################################################################################
 
-class GrowingTextBrowser(QtGui.QTextBrowser):
+class GrowingTextBrowser(QtWidgets.QTextBrowser):
 
     _id = 0
 
@@ -144,8 +143,8 @@ class GrowingTextBrowser(QtGui.QTextBrowser):
         GrowingTextBrowser._id += 1
         self._id = GrowingTextBrowser._id
 
-        super(GrowingTextBrowser, self).__init__(*args, **kwargs)  
-        size_policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        super(GrowingTextBrowser, self).__init__(*args, **kwargs)
+        size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         size_policy.setHeightForWidth(True)
         self.setSizePolicy(size_policy)
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -196,7 +195,7 @@ class GrowingTextBrowser(QtGui.QTextBrowser):
     def heightForWidth(self, width):
 
         print('GrowingTextBrowser.heightForWidth', self._id, width)
-        document = QtGui.QTextDocument(self._text)
+        document = QtWidgets.QTextDocument(self._text)
         document.setPageSize(QtCore.QSizeF(width, -1))
         height = document.documentLayout().documentSize().toSize().height()
         self.print_document_size(document)
@@ -219,25 +218,25 @@ def append_block(parent, vertical_layout, source_text):
     text_browser = GrowingTextBrowser(parent)
     text_browser.setPlainText(source_text)
     # vertical_layout.addWidget(text_browser)
-    horizontal_layout = QtGui.QHBoxLayout()
+    horizontal_layout = QtWidgets.QHBoxLayout()
     horizontal_layout.addWidget(text_browser, 0, QtCore.Qt.AlignTop)
     vertical_layout.addLayout(horizontal_layout)
 
 def show_text_page(text_page):
 
-    application = QtGui.QApplication(sys.argv)
+    application = QtWidgets.QApplication(sys.argv)
 
-    main_window = QtGui.QMainWindow()
+    main_window = QtWidgets.QMainWindow()
     main_window.resize(1000, 800)
     main_window.setWindowTitle(args.filename)
 
-    scroll_area = QtGui.QScrollArea(main_window)
+    scroll_area = QtWidgets.QScrollArea(main_window)
     # scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
     scroll_area.setWidgetResizable(True)
     main_window.setCentralWidget(scroll_area)
 
-    container_widget = QtGui.QWidget()
-    vertical_layout = QtGui.QVBoxLayout(container_widget) # Set container_widget layout
+    container_widget = QtWidgets.QWidget()
+    vertical_layout = QtWidgets.QVBoxLayout(container_widget) # Set container_widget layout
     scroll_area.setWidget(container_widget)
 
     for block in mupdf_iter.TextBlockIterator(text_page):
@@ -263,7 +262,7 @@ def show_text_page(text_page):
         if block_text:
             append_block(container_widget, vertical_layout, block_text)
 
-    spacer_item = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+    spacer_item = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
     vertical_layout.addItem(spacer_item)
 
     print('Show')

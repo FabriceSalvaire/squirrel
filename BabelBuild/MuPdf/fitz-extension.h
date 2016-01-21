@@ -1,7 +1,7 @@
 /**************************************************************************************************
  *
  * Add some helper functions and missing feature to MuPDF
- * 
+ *
  *************************************************************************************************/
 
 /**************************************************************************************************/
@@ -21,19 +21,10 @@
  *
  */
 
-static inline
-FILE *
-fz_fopen(const char *filename, const char *mode)
-{
-  return fopen(filename, mode);
-}
+// Fixme: inline ...
+FILE * fz_fopen(const char *filename, const char *mode);
 
-static inline
-int
-fz_fclose(FILE *file)
-{
-  return fclose(file);
-}
+int fz_fclose(FILE *file);
 
 /* ********************************************************************************************** *
  *
@@ -81,6 +72,7 @@ int font_is_italic(const fz_font *font);
  *
  */
 
+/*
 static inline
 fz_text_block *
 get_text_block(fz_text_page *page, unsigned int block_index)
@@ -101,15 +93,16 @@ get_text_char(fz_text_span *span, unsigned int char_index)
 {
   return &span->text[char_index];
 }
+*/
 
 // needed ?
-fz_text_span * get_text_span(fz_text_line *line, unsigned int span_index);
+// fz_text_span * get_text_span(fz_text_line *line, unsigned int span_index);
 
 /* ********************************************************************************************** */
 
 // Expose private API / Helper
 static inline
-char *
+unsigned char *
 fz_buffer_data(fz_buffer *buffer)
 {
   // Swig do it
@@ -121,17 +114,17 @@ fz_buffer_data(fz_buffer *buffer)
 
 /* ********************************************************************************************** */
 
-int meta(fz_document *doc, int key, char *string, char *buffer, int buffer_size);
+int meta(fz_context *ctx, fz_document *doc, const char *key, char *string, char *buffer, int buffer_size);
 
 /* ********************************************************************************************** */
 
 // Missing feature
 // Return the Metadata XML stream
-fz_buffer * pdf_metadata(fz_document *doc);
+fz_buffer * pdf_metadata(fz_context *ctx, fz_document *doc);
 
 /* ********************************************************************************************** */
 
-void init();
+void init(void);
 fz_document * open_document(fz_context * ctx, const char *filename);
 void python_throw_exit_callback(char *message);
 
@@ -140,7 +133,7 @@ void python_throw_exit_callback(char *message);
 #endif /* __FITZ_EXTENSION_H__ */
 
 /***************************************************************************************************
- * 
+ *
  * End
- * 
+ *
  **************************************************************************************************/

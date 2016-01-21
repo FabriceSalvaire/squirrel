@@ -11,7 +11,7 @@ from pycparser import parse_file, c_ast, c_generator
 class NodeVisitor(c_ast.NodeVisitor):
 
     ##############################################
-    
+
     def visit_FuncDecl(self, node):
         print('\nFunction Declaration at %s' % (node.coord))
         node.show()
@@ -28,9 +28,9 @@ if __name__ == "__main__":
 
     generator = c_generator.CGenerator()
     print(generator.visit(ast))
-    
+
 ####################################################################################################
-# 
+#
 # End
-# 
+#
 ####################################################################################################

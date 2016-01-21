@@ -53,13 +53,14 @@ class PdfDocument(object):
 
         # try:
         self._context = mupdf.new_context()
+        mupdf.register_document_handlers(self._context)
         self._c_document = mupdf.open_document(self._context, path)
         # except MupdfError as exception:
         #     raise exception
         if self._c_document == mupdf.NULL:
             raise MupdfError()
         self._metadata = MetaData(self)
-        self._number_of_pages = mupdf.count_pages(self._c_document)
+        self._number_of_pages = mupdf.count_pages(self._context, self._c_document)
         self._document_words = None
         self._image_cache = None
 
@@ -71,9 +72,9 @@ class PdfDocument(object):
         for page in self._pages.values():
             page._free() # require context
         if self._c_document is not None:
-            mupdf.close_document(self._c_document)
+            mupdf.drop_document(self._context, self._c_document)
         if self._context is not None:
-            mupdf.free_context(self._context)
+            mupdf.drop_context(self._context)
 
     ##############################################
 
@@ -131,7 +132,7 @@ class PdfDocument(object):
         
         for i in range(last_page +1):
             yield self._page(i)
-            
+
     ##############################################
 
     @property
@@ -165,13 +166,13 @@ class PdfDocument(object):
         if self._image_cache is None:
             self._image_cache = PdfImageCache(self)
         return self._image_cache
-    
+
 ####################################################################################################
 
 class MetaData(ReadOnlyAttributeDictionaryInterface):
 
     """ This class gives access to the PDF metadata.
-    
+
     Public Attributes:
 
       :attr:`Title`
@@ -208,7 +209,8 @@ class MetaData(ReadOnlyAttributeDictionaryInterface):
                 'ModDate',
         ):
             # Fixme: buffer size
-            string = mupdf.get_meta_info(c_document, key, size=1024)
+            #! string = mupdf.get_meta_info(c_document, key, size=1024)
+            string = ''
             self._dictionary[key] = string
 
         # fz_buffer = mupdf.pdf_metadata(c_document)
@@ -233,7 +235,7 @@ class Page(object):
         self._context = self._document._context
         self._c_document = self._document._c_document
         self._page_number = page_number
-        self._c_page = mupdf.load_page(self._c_document, page_number)
+        self._c_page = mupdf.load_page(self._context, self._c_document, page_number)
         self._text_page = None
 
     ##############################################
@@ -248,8 +250,8 @@ class Page(object):
 
         if self._text_page is not None:
             self._text_page._free()
-        mupdf.free_page(self._c_document, self._c_page)
-    
+        mupdf.drop_page(self._context, self._c_page)
+
     ##############################################
 
     def __del__(self):
@@ -262,7 +264,7 @@ class Page(object):
 
         # Determine the size of a page at 72 dpi.
         bounds = mupdf.Rect()
-        mupdf.bound_page(self._c_document, self._c_page, bounds)
+        mupdf.bound_page(self._context, self._c_page, bounds)
 
         return bounds
 
@@ -352,10 +354,10 @@ class Page(object):
 
         device = mupdf.new_draw_device(self._context, pixmap)
         mupdf.set_aa_level(self._context, antialiasing_level)
-        mupdf.run_page(self._c_document, self._c_page, device, transform, mupdf.NULL)
+        mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
         path = str(path).encode('utf-8')
-        mupdf.write_png(self._context, pixmap, path, False)
-        mupdf.free_device(device)
+        # mupdf.write_png(self._context, pixmap, path, False)
+        mupdf.drop_device(self._context, device)
         mupdf.drop_pixmap(self._context, pixmap)
 
     ##############################################
@@ -381,8 +383,8 @@ class Page(object):
         
         device = mupdf.new_draw_device(self._context, pixmap)
         mupdf.set_aa_level(self._context, antialiasing_level)
-        mupdf.run_page(self._c_document, self._c_page, device, transform, mupdf.NULL)
-        mupdf.free_device(device)
+        mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
+        mupdf.drop_device(self._context, device)
         mupdf.drop_pixmap(self._context, pixmap)
 
         return np_array
@@ -400,8 +402,8 @@ class Page(object):
         text_page = mupdf.new_text_page(self._context)
 
         device = mupdf.new_text_device(self._context, text_sheet, text_page)
-        mupdf.run_page(self._c_document, self._c_page, device, transform, mupdf.NULL)
-        mupdf.free_device(device)
+        mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
+        mupdf.drop_device(self._context, device)
 
         return TextPage(self, text_sheet, text_page)
 
@@ -415,7 +417,7 @@ class Page(object):
         return self._text_page
 
 ####################################################################################################
-# 
+#
 # End
-# 
+#
 ####################################################################################################

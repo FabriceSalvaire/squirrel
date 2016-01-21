@@ -29,68 +29,12 @@ The difference to the C API are the followings:
 
 ####################################################################################################
 
-import os as _os
-
-from cffi import FFI as _FFI
-
 import numpy as np
 
 ####################################################################################################
 
-from ctypes.util import find_library as _find_library
-# from util import _find_library
-
-####################################################################################################
-
-_ffi = _FFI()
-_mupdf = None
-
-# Use a function in order to don't spoil the module
-def _init():
-    mupdf_library = None
-    
-    # First if there is an environment variable pointing to the library
-    if 'MUPDF_LIBRARY' in _os.environ:
-        library_path = _os.path.realpath(_os.environ['MUPDF_LIBRARY'])
-        if _os.path.exists(library_path):
-            mupdf_library = library_path
-    
-    # Else, try to find it
-    if mupdf_library is None:
-        library_name = 'mupdf'
-        mupdf_library = _find_library(library_name)
-    
-    # Else, we failed and exit
-    if mupdf_library is None:
-        raise OSError('MUPDF library not found')
-
-    # Parse header
-    module_path = _os.path.dirname(__file__)
-    source = ''
-    for file_name in ('mupdf-api.h', 'fitz-extension-api.h'):
-        api_path = _os.path.join(module_path, file_name)
-        with open(api_path, 'r') as f:
-            source += f.read()
-    _ffi.cdef(source)
-
-    global _mupdf
-    # _mupdf = _ffi.dlopen(mupdf_library)
-    source = """
-#include <sys/types.h>
-#include <mupdf/fitz.h>
-
-#include "fitz-extension.h"
-#include "fitz-extension.c"
-"""
-    mupdf_library_path = _os.path.dirname(mupdf_library)
-    mupdf_include_path = _os.path.join(_os.path.dirname(mupdf_library_path), 'include')
-    freetype_include_path = '/usr/local/stow/freetype-2.5.2/include/freetype2' # Fixme
-    _mupdf = _ffi.verify(source,
-                         include_dirs=[mupdf_include_path, module_path, freetype_include_path],
-                         library_dirs=[mupdf_library_path],
-                         libraries=['mupdf'])
-    
-_init()
+from _mupdf import ffi as _ffi
+from _mupdf import lib as _lib
 
 ####################################################################################################
 #
@@ -123,7 +67,7 @@ def decode_utf8(ptr, max_length=None):
             return string.decode('utf-8')
         except UnicodeDecodeError:
             return str(string)
-        
+
 ####################################################################################################
 #
 # MuPdf API
@@ -151,7 +95,8 @@ def IRect():
 # for convenience
 NULL = _ffi.NULL # C NULL pointer
 
-FZ_STORE_UNLIMITED = _mupdf.FZ_STORE_UNLIMITED
+# Fixme:
+FZ_STORE_UNLIMITED = _lib.FZ_STORE_UNLIMITED
 
 ###################################################
 #
@@ -160,102 +105,102 @@ FZ_STORE_UNLIMITED = _mupdf.FZ_STORE_UNLIMITED
 
 # from fitz.h
 
-bound_page = _mupdf.fz_bound_page
-clear_pixmap_with_value = _mupdf.fz_clear_pixmap_with_value
-close_document = _mupdf.fz_close_document
-close_output = _mupdf.fz_close_output
-concat = _mupdf.fz_concat
-count_pages = _mupdf.fz_count_pages
-device_rgb = _mupdf.fz_device_rgb
-drop_buffer = _mupdf.fz_drop_buffer
-drop_pixmap = _mupdf.fz_drop_pixmap
-free_context = _mupdf.fz_free_context
-free_device = _mupdf.fz_free_device
-free_page = _mupdf.fz_free_page
-free_text_page = _mupdf.fz_free_text_page
-free_text_sheet = _mupdf.fz_free_text_sheet
-# new_context = _mupdf.fz_new_context
-new_draw_device = _mupdf.fz_new_draw_device
-new_output_with_file = _mupdf.fz_new_output_with_file
-new_pixmap_with_bbox = _mupdf.fz_new_pixmap_with_bbox
-new_pixmap_with_bbox_and_data = _mupdf.fz_new_pixmap_with_bbox_and_data
-new_text_device = _mupdf.fz_new_text_device
-new_text_page = _mupdf.fz_new_text_page
-new_text_sheet = _mupdf.fz_new_text_sheet
-# open_document = _mupdf.fz_open_document
-open_document = _mupdf.open_document
-pixmap_set_resolution = _mupdf.fz_pixmap_set_resolution
-pre_scale = _mupdf.fz_pre_scale
-print_text_page = _mupdf.fz_print_text_page
-print_text_page_html = _mupdf.fz_print_text_page_html
-print_text_page_xml = _mupdf.fz_print_text_page_html
-print_text_sheet = _mupdf.fz_print_text_sheet
-rotate = _mupdf.fz_rotate
-round_rect = _mupdf.fz_round_rect
-run_page = _mupdf.fz_run_page
-scale = _mupdf.fz_scale
-set_aa_level = _mupdf.fz_set_aa_level
-transform_rect = _mupdf.fz_transform_rect
-write_png = _mupdf.fz_write_png
+bound_page = _lib.fz_bound_page
+clear_pixmap_with_value = _lib.fz_clear_pixmap_with_value
+drop_document = _lib.fz_drop_document
+drop_output = _lib.fz_drop_output
+concat = _lib.fz_concat
+count_pages = _lib.fz_count_pages
+device_rgb = _lib.fz_device_rgb
+drop_buffer = _lib.fz_drop_buffer
+drop_pixmap = _lib.fz_drop_pixmap
+drop_context = _lib.fz_drop_context
+drop_device = _lib.fz_drop_device
+drop_page = _lib.fz_drop_page
+#! free_text_page = _lib.fz_free_text_page
+#! free_text_sheet = _lib.fz_free_text_sheet
+# new_context = _lib.fz_new_context
+new_draw_device = _lib.fz_new_draw_device
+#! new_output_with_file = _lib.fz_new_output_with_file
+new_pixmap_with_bbox = _lib.fz_new_pixmap_with_bbox
+new_pixmap_with_bbox_and_data = _lib.fz_new_pixmap_with_bbox_and_data
+#! new_text_device = _lib.fz_new_text_device
+#! new_text_page = _lib.fz_new_text_page
+#! new_text_sheet = _lib.fz_new_text_sheet
+# open_document = _lib.fz_open_document
+open_document = _lib.open_document
+pixmap_set_resolution = _lib.fz_pixmap_set_resolution
+pre_scale = _lib.fz_pre_scale
+#! print_text_page = _lib.fz_print_text_page
+#! print_text_page_html = _lib.fz_print_text_page_html
+#! print_text_page_xml = _lib.fz_print_text_page_html
+#! print_text_sheet = _lib.fz_print_text_sheet
+register_document_handlers = _lib.fz_register_document_handlers
+rotate = _lib.fz_rotate
+round_rect = _lib.fz_round_rect
+run_page = _lib.fz_run_page
+scale = _lib.fz_scale
+set_aa_level = _lib.fz_set_aa_level
+transform_rect = _lib.fz_transform_rect
+#! write_png = _lib.fz_write_png
 
 # from pdf.h
-load_page = _mupdf.fz_load_page
+load_page = _lib.fz_load_page
 
 ####################################################################################################
 #
 # Pythonic API
 #
 
-def new_context(alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_mupdf.FZ_STORE_UNLIMITED):
-    return _mupdf.fz_new_context(alloc, locks, max_store)
+def new_context(alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_lib.FZ_STORE_UNLIMITED):
+    return _lib.fz_new_context(alloc, locks, max_store)
 
 class Context(object):
-    
-    ##############################################    
 
-    def __init__(self, alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_mupdf.FZ_STORE_UNLIMITED):
+    ##############################################
 
-        self._context = _mupdf.fz_new_context(alloc, locks, max_store)
+    def __init__(self, alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_lib.FZ_STORE_UNLIMITED):
+
+        self._context = _lib.fz_new_context(alloc, locks, max_store)
 
     ##############################################
 
     def __del__(self):
 
-        _mupdf.fz_free_context(self._context)
+        _lib.fz_drop_context(self._context)
 
 ###################################################
 
-_FZ_META_INFO = 4
-def get_meta_info(document, key, size=1024):
+def get_meta_info(ctx, document, key, size=1024):
     buffer_ = _ffi.new('char[]', size) # size in bytes
     key = key.encode('utf-8')
     # key_buffer = _ffi.new('char[]', key)
     # buffer_[0] = _ffi.addressof(key_buffer, 0)
-    rc = _mupdf.meta(document, _FZ_META_INFO, key, buffer_, size)
+    rc = _lib.fz_lookup_metadata(ctx, document, key, buffer_, size)
     if rc == 1:
         return decode_utf8(buffer_)
     else:
         return ''
     # raise NameError('Meta info %s not found', key)
-    
+
 ####################################################################################################
 #
 # API extensions
 #
 
-buffer_data = _mupdf.fz_buffer_data
-copy_irect = _mupdf.fz_copy_irect
-copy_rect = _mupdf.fz_copy_rect
-fclose = _mupdf.fz_fclose
-font_is_bold = _mupdf.font_is_bold
-font_is_italic = _mupdf.font_is_italic
-fopen = _mupdf.fz_fopen
-get_font_name = _mupdf.get_font_name
-get_text_block = _mupdf.get_text_block
-get_text_char = _mupdf.get_text_char
-get_text_line = _mupdf.get_text_line
-get_text_span = _mupdf.get_text_span
-pdf_metadata = _mupdf.pdf_metadata
+buffer_data = _lib.fz_buffer_data
+copy_irect = _lib.fz_copy_irect
+copy_rect = _lib.fz_copy_rect
+fclose = _lib.fz_fclose
+font_is_bold = _lib.font_is_bold
+font_is_italic = _lib.font_is_italic
+fopen = _lib.fz_fopen
+get_font_name = _lib.get_font_name
+# get_text_block = _lib.get_text_block
+# get_text_char = _lib.get_text_char
+# get_text_line = _lib.get_text_line
+# get_text_span = _lib.get_text_span
+pdf_metadata = _lib.pdf_metadata
 
 ####################################################################################################
 
@@ -275,12 +220,10 @@ class MupdfError(NameError):
 # def throw_exit_callback(message):
 #     raise MupdfError(decode_utf8(message))
 
-# _mupdf.fz_set_throw_exit_callback(throw_exit_callback)
-
-_mupdf.init()
+# _lib.fz_set_throw_exit_callback(throw_exit_callback)
 
 ####################################################################################################
-# 
+#
 # End
-# 
+#
 ####################################################################################################

@@ -24,7 +24,6 @@ import os
 
 ####################################################################################################
 
-
 # Utility function to read the README file.
 # Used for the long_description.
 def read(file_name):
@@ -38,6 +37,8 @@ def read(file_name):
 
 ####################################################################################################
 
+from BabelBuild.MuPdf import build_mupdf
+
 setup_dict = dict(
     name='babel',
     version='0.1.0',
@@ -47,12 +48,7 @@ setup_dict = dict(
     license = "GPLv3",
     keywords = "bibliography",
     url='http://fabrice-salvaire.pagesperso-orange.fr/software/index.html',
-    scripts=['bin/babel'],
-    packages=['Babel'],
-    data_files = [('share/Babel/icons',['share/icons/babel.svg']),
-                  ('share/applications', ['spec/babel.desktop']),
-                  ],
-    long_description=read('README.pypi'),
+    long_description=read('README.txt'),
     # cf. http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         "Topic :: Scientific/Engineering",
@@ -60,12 +56,21 @@ setup_dict = dict(
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU General Public License (GPL)",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.4",
         ],
-    install_requires=[
-        'pyqt>=4.9',
-        ],
-    )
+    # install_requires=[
+    #     "cffi>=1.0.0"
+    #     # 'pyqt>=4.9',
+    #     ],
+    ext_modules=[build_mupdf.ffi.distutils_extension()],
+    # setup_requires=["cffi>=1.0.0"],
+    # cffi_modules=['Babel/MuPdf/build_mupdf.py:ffi'],
+    scripts=['bin/babel'],
+    packages=['Babel'],
+    data_files = [('share/Babel/icons',['share/icons/babel.svg']),
+                  ('share/applications', ['spec/babel.desktop']),
+    ],
+)
 
 ####################################################################################################
 #
