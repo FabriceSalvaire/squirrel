@@ -1,5 +1,5 @@
 #! /bin/bash
 
-cd Babel/GUI/ui
+pushd Babel/GUI/ui
+make clean
 make -f Makefile.pyqt
-cd -
