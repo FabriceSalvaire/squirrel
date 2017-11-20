@@ -45,7 +45,7 @@ class PdfImporter(ImporterBase):
     def import_file(self, document_database, file_path):
 
         # PdfMetaDataExtractor
-        
+
         try:
             pdf_document = PdfDocument(file_path)
         except MupdfError:
@@ -53,11 +53,11 @@ class PdfImporter(ImporterBase):
 
         document_table = document_database.document_table
         word_table = document_database.word_table
-        
+
         document_row = document_table.new_row(file_path)
 
         document_row.number_of_pages = pdf_document.number_of_pages
-        
+
         pdf_metadata = pdf_document.metadata
         # ('Title', 'Subject', 'Author', 'Creator', 'Producer', 'CreationDate', 'ModDate')}
         document_row.title = pdf_metadata['Title']
@@ -92,9 +92,9 @@ class PdfImporter(ImporterBase):
             document_row.indexation_status = 'unknown language'
             document_row.language = '?'
         document_row.update_indexation_date()
-        
+
         document_table.add(document_row, commit=False)
-        
+
         return document_row
 
     ##############################################
@@ -111,17 +111,11 @@ class PdfImporter(ImporterBase):
                         words.append(word_count)
                 else:
                     unknown_words.append(word_count)
-                    
+
         # if len(words) > len(unknown_words):
         #     for word_count in words:
         #         print('%6u' % word_count.count, word_count.word)
         #     for word_count in unknown_words:
         #         print('Unknown word %6u' % word_count.count, word_count.word)
-                    
+
         return words, unknown_words
-            
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

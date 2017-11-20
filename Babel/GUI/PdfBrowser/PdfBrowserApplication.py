@@ -36,19 +36,19 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
     # Fixme: open sqlite ...
 
     _logger = logging.getLogger(__name__)
-    
+
     ###############################################
-    
+
     def __init__(self, args):
 
 
         super(PdfBrowserApplication, self).__init__(args=args)
         self._logger.debug(str(args))
-        
+
         from .PdfBrowserMainWindow import PdfBrowserMainWindow
         self._main_window = PdfBrowserMainWindow()
         self._main_window.showMaximized()
-        
+
         self.post_init()
 
     ##############################################
@@ -78,9 +78,3 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
         """
 
         self._main_window.show_message(message, timeout, warn)
-        
-####################################################################################################
-#
-# End
-#
-####################################################################################################

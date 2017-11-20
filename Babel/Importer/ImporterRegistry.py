@@ -38,7 +38,7 @@ class ImporterRegistry(dict):
     def is_importable(self, file_path):
 
         return file_path.mime_type in self
-    
+
 ####################################################################################################
 
 importer_registry = ImporterRegistry()
@@ -69,9 +69,3 @@ class ImporterMetaClass(type):
 class ImporterBase(object, metaclass=ImporterMetaClass):
 
     __mime_types__ = ()
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

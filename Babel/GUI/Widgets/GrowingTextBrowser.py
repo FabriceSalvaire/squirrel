@@ -35,7 +35,7 @@ class GrowingTextBrowser(QtWidgets.QTextBrowser):
         GrowingTextBrowser._id += 1
         self._id = GrowingTextBrowser._id
 
-        super(GrowingTextBrowser, self).__init__(*args, **kwargs)  
+        super(GrowingTextBrowser, self).__init__(*args, **kwargs)
         size_policy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         size_policy.setHeightForWidth(True)
         self.setSizePolicy(size_policy)
@@ -102,9 +102,3 @@ class GrowingTextBrowser(QtWidgets.QTextBrowser):
         #     'new', event.size().width(), event.size().height()
         # self.print_document_size()
         return super(GrowingTextBrowser, self).resizeEvent(event)
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

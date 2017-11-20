@@ -42,7 +42,7 @@ class Icon(object):
 
     icon_directory = os.path.join(Path.share_directory, 'icons')
 
-    ##############################################    
+    ##############################################
 
     @staticmethod
     def find(file_name, size):
@@ -58,9 +58,3 @@ class WordDataBase(object):
 
     bnc_database_path = os.path.join(lexique_module_path,
                                      'BritishNationalCorpus', 'bnc.sqlite')
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

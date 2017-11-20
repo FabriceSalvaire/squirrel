@@ -44,9 +44,9 @@ class LanguageRow(SqlAlchemyBase, SqlRow):
     # international code ?
 
     ##############################################
-        
+
     def __repr__(self):
-        
+
         message = '''
 Language Row
   id: %(id)u
@@ -71,9 +71,9 @@ class PartOfSpeechTagRow(SqlAlchemyBase, SqlRow):
     comment = Column(String)
 
     ##############################################
-        
+
     def __repr__(self):
-        
+
         message = '''
 Part-Of-Speech Tags Row
   id: %(id)u
@@ -105,12 +105,12 @@ class WordRow(SqlAlchemyBase, SqlRow):
     # language = relationship('LanguageRow')
 
     ##############################################
-        
+
     def __repr__(self):
 
 #   language id: %(language_id)u
 #   common: %(common)s
-        
+
         message = '''
 Word Row
   word: %(word)s
@@ -128,11 +128,11 @@ class WordTable(SqlTable):
 ####################################################################################################
 
 class WordSqliteDataBase(SqliteDataBase):
-    
+
     __base__ = SqlAlchemyBase
 
     ##############################################
-    
+
     def __init__(self, filename, echo=False):
 
         super(WordSqliteDataBase, self).__init__(filename, echo)
@@ -140,9 +140,3 @@ class WordSqliteDataBase(SqliteDataBase):
         self.language_table = LanguageTable(self)
         self.part_of_speech_tag_table = PartOfSpeechTagTable(self)
         self.word_table = WordTable(self)
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

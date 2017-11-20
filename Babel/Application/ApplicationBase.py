@@ -38,9 +38,9 @@ class ApplicationBase(object):
     _logger = logging.getLogger(__name__)
 
     has_gui = False
-    
+
     ##############################################
-    
+
     def __init__(self, args, **kwargs):
 
         self._logger.debug(str(args) + ' ' + str(kwargs))
@@ -69,29 +69,29 @@ class ApplicationBase(object):
         # return sys.__excepthook__(exception_type, exception_value, exception_traceback)
 
     ##############################################
-    
+
     def execute_given_user_script(self):
 
         if self._args.user_script is not None:
             self.execute_user_script(self._args.user_script)
-       
+
     ##############################################
-    
+
     def execute_user_script(self, file_name):
 
         """ Execute an user script provided by file *file_name* in a context where is defined a
         variable *application* that is a reference to the application instance.
         """
-        
+
         file_name = to_absolute_path(file_name)
         self.show_message(message='Execute user script: ' + file_name, echo=True)
         source = open(file_name).read()
         bytecode = compile(source, file_name, 'exec')
         exec(bytecode, {'application':self})
         self.show_message(message='User script done', echo=True)
-        
+
     ##############################################
-    
+
     def exit(self):
 
         sys.exit(0)
@@ -103,16 +103,10 @@ class ApplicationBase(object):
         self._logger.info(message)
 
     ##############################################
-    
+
 #   # Fixme: purpose ?
 #
 #   def critical_error(self, title='Babel Critical Error', message=''):
-#       
+#
 #       ...
 #       sys.exit(1)
-        
-####################################################################################################
-#
-# End
-#
-####################################################################################################

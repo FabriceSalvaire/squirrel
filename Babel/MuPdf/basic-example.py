@@ -23,7 +23,7 @@ def show_metadata(ctx, doc):
         'ModDate',
         ):
         print(mupdf.decode_utf8(mupdf.get_meta_info(ctx, doc, key, 1024)))
-    
+
     fz_buffer = mupdf.pdf_metadata(doc)
     print(mupdf.decode_utf8(mupdf.buffer_data(fz_buffer)))
     mupdf.drop_buffer(ctx, fz_buffer)
@@ -137,9 +137,3 @@ mupdf.drop_pixmap(ctx, pixmap)
 mupdf.drop_page(ctx, page)
 mupdf.drop_document(ctx, doc)
 mupdf.drop_context(ctx)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

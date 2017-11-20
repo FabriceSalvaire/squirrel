@@ -45,7 +45,7 @@ def get_font_name(font):
     font_name = mupdf.decode_utf8(mupdf.get_font_name(font))
     i = font_name.find('+')
     if i:
-        font_name = font_name[i+1:] 
+        font_name = font_name[i+1:]
 
     return font_name
 
@@ -75,11 +75,11 @@ def span_to_string(span):
     for char in mupdf_iter.TextCharIterator(span):
         span_text += chr(char.c)
     span_text = span_text.rstrip()
-    
+
     return span_text
 
 ####################################################################################################
-    
+
 def to_text_style(style):
 
     """ Convert a MuPDF style instance to a :obj:`.TextStyle` object. """
@@ -91,11 +91,5 @@ def to_text_style(style):
                            is_bold=bool(mupdf.font_is_bold(font)),
                            is_italic=bool(mupdf.font_is_italic(font)),
                            )
-    
-    return text_style
 
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################
+    return text_style

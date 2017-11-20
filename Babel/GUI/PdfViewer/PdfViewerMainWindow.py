@@ -42,7 +42,7 @@ class PdfViewerMainWindow(MainWindowBase):
     def __init__(self, pdf_path=None, parent=None):
 
         super(PdfViewerMainWindow, self).__init__(title='Babel PDF Viewer', parent=parent)
-        
+
         self._init_ui()
         if pdf_path is not None:
             self.open_pdf(pdf_path)
@@ -60,7 +60,7 @@ class PdfViewerMainWindow(MainWindowBase):
     def _create_actions(self):
 
         icon_loader = IconLoader()
-        
+
         self._show_info_action = \
             QtWidgets.QAction('Info',
                           self,
@@ -68,7 +68,7 @@ class PdfViewerMainWindow(MainWindowBase):
                           checkable=True,
                           triggered=lambda: self._set_current_widget(self._info_page),
                           )
-        
+
         self._show_image_action = \
             QtWidgets.QAction('Image',
                           self,
@@ -76,7 +76,7 @@ class PdfViewerMainWindow(MainWindowBase):
                           checkable=True,
                           triggered=lambda: self._set_current_widget(self._image_page),
                           )
-        
+
         self._show_text_action = \
             QtWidgets.QAction('Text',
                           self,
@@ -84,7 +84,7 @@ class PdfViewerMainWindow(MainWindowBase):
                           checkable=True,
                           triggered=lambda: self._set_current_widget(self._text_page),
                           )
-        
+
         self._action_group = QtWidgets.QActionGroup(self)
         for action in (self._show_info_action,
                        self._show_image_action,
@@ -103,7 +103,7 @@ class PdfViewerMainWindow(MainWindowBase):
                        self._show_text_action,
                        ):
             self._mode_tool_bar.addAction(action)
-        
+
         self.addToolBar(self._viewer_controller.tool_bar)
         self.addToolBar(self._viewer_controller.page_controller.tool_bar)
 
@@ -118,7 +118,7 @@ class PdfViewerMainWindow(MainWindowBase):
     def _init_ui(self):
 
         self._viewer_controller = ViewerController()
-        
+
         self._stacked_widget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self._stacked_widget)
         self._info_page = InfoPage(self)
@@ -132,7 +132,7 @@ class PdfViewerMainWindow(MainWindowBase):
         self.statusBar()
         self._create_actions()
         self._create_toolbar()
-       
+
         self._viewer_controller.page_controller.page_changed.connect(self._text_page.on_page_changed)
 
     ##############################################
@@ -140,9 +140,3 @@ class PdfViewerMainWindow(MainWindowBase):
     def _set_current_widget(self, widget):
 
         self._stacked_widget.setCurrentWidget(widget)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

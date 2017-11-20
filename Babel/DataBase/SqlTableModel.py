@@ -65,7 +65,7 @@ class SqlTableModel(QtCore.QAbstractTableModel):
             return
 
         if self.sorted():
-            if self._sort_order == QtCore.Qt.AscendingOrder: 
+            if self._sort_order == QtCore.Qt.AscendingOrder:
                 query = self._query.order_by(self._sorted_column)
             else:
                 query = self._query.order_by(sqlalchemy.desc(self._sorted_column))
@@ -117,7 +117,7 @@ class SqlTableModel(QtCore.QAbstractTableModel):
                 return QtCore.QVariant(int(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter))
             else:
                 return QtCore.QVariant(int(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter))
-        
+
         if role == QtCore.Qt.DisplayRole:
             if orientation == QtCore.Qt.Horizontal:
                 column_name = self._columns[section]
@@ -141,7 +141,7 @@ class SqlTableModel(QtCore.QAbstractTableModel):
             else:
                 width = width_title
             table_view.setColumnWidth(column_index, width)
-                    
+
     ##############################################
 
     def columnCount(self, index=QtCore.QModelIndex()):
@@ -190,9 +190,3 @@ class SqlTableModel(QtCore.QAbstractTableModel):
             return self.index(index, 0)
         except:
             return None
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

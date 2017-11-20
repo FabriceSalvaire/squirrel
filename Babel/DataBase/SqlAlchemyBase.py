@@ -31,7 +31,7 @@ _module_logger = logging.getLogger(__name__)
 ####################################################################################################
 
 def autoload_table(engine, table_name):
-    
+
     metadata = sqlalchemy.MetaData()
 
     return sqlalchemy.Table(table_name, metadata, autoload=True, autoload_with=engine)
@@ -43,7 +43,7 @@ class SqlRow(object):
     __table__ = None
 
     ##############################################
-    
+
     @classmethod
     def column_names(cls, only_known=False):
 
@@ -81,7 +81,7 @@ class SqlRow(object):
         return info.get('width', None)
 
     ##############################################
-    
+
     def to_dict(self, only_known=False):
 
         return {column:getattr(self, column) for column in self.column_names(only_known)}
@@ -208,9 +208,3 @@ class ColumnDateWidthFactory(ColumnWidthFactory):
     def  __init__(self, factor=1):
 
         super(ColumnDateWidthFactory, self).__init__(template='x7777-77-77 77:77:77x', factor=factor)
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

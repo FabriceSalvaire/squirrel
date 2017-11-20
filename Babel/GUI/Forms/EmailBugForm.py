@@ -61,7 +61,7 @@ class EmailBugForm(QtWidgets.QDialog):
         from_address = str(form.from_line_edit.text())
         if not from_address:
             from_address = Config.Email.from_address
-        
+
         # Fixme: test field ?
         # QtWidgets.QMessageBox.critical(None, title, message)
 
@@ -87,7 +87,7 @@ Babel Version:
         # Fixme: singleton ?
         platform = Platform(application)
         platform.query_opengl()
-       
+
         message = template_message % {'description': str(form.description_plain_text_edit.toPlainText()),
                                       'babel_version': str(Version.babel),
                                       'platform': str(platform),
@@ -105,9 +105,3 @@ Babel Version:
         email.send()
 
         self.accept()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

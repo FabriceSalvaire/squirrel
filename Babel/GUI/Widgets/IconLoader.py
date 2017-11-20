@@ -83,9 +83,3 @@ class IconLoader(object, metaclass=SingletonMetaClass):
     def _find(self, file_name, icon_size, extension='.png'):
 
         return ConfigInstall.Icon.find(file_name + extension, icon_size)
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

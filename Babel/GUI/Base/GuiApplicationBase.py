@@ -53,9 +53,9 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
     _logger = logging.getLogger(__name__)
 
     has_gui = True
-    
+
     ##############################################
-    
+
     def __init__(self, args, **kwargs):
 
         super(GuiApplicationBase, self).__init__(args=args, **kwargs)
@@ -118,16 +118,16 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
             QtWidgets.QAction('System Information',
                           self,
                           triggered=self.show_system_information)
-        
+
         self.send_email_action = \
             QtWidgets.QAction('Send Email',
                           self,
                           triggered=self.send_email)
 
     ##############################################
-    
+
     def post_init(self):
-         
+
         self._splash.finish(self._main_window)
         self.processEvents()
         del self._splash
@@ -137,7 +137,7 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
         self.show_message('Welcome to Babel')
 
         # return to main and then enter to event loop
-        
+
     ##############################################
 
     def show_message(self, message=None, echo=False, timeout=0):
@@ -147,13 +147,13 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
             self._main_window.show_message(message, echo, timeout)
 
     ##############################################
-    
+
     # Fixme: CriticalErrorForm vs critical_error
 
     def critical_error(self, title='Babel Critical Error', message=''):
-        
+
         QtWidgets.QMessageBox.critical(None, title, message)
-        
+
         # Fixme: qt close?
         sys.exit(1)
 
@@ -170,7 +170,7 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
     ##############################################
 
     def about(self):
-        
+
         message = Messages.about_babel % {'version':str(Version.babel)}
         QtWidgets.QMessageBox.about(self.main_window, 'About Babel', message)
 
@@ -181,19 +181,13 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
         fields = dict(self._platform.__dict__)
         fields.update({
                 'babel_version': str(Version.babel),
-                })  
+                })
         message = Messages.system_information_message_pattern % fields
         QtWidgets.QMessageBox.about(self.main_window, 'System Information', message)
 
     ###############################################
 
     def send_email(self):
-        
+
         dialog = EmailBugForm()
         dialog.exec_()
-        
-####################################################################################################
-#
-# End
-#
-####################################################################################################

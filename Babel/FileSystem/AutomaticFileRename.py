@@ -38,7 +38,7 @@ class AutomaticFileRename(object):
       AutomaticFileRename('foo.py').generate()
 
     """
-    
+
     ##############################################
 
     def __init__(self, file_path):
@@ -57,7 +57,7 @@ class AutomaticFileRename(object):
 
         pattern = self._file_name + '-(\\d+)' + self._extension
         compiled_pattern = re.compile(pattern)
-        
+
         cycle = 0
         for entry, match in self._path.filter_entries(compiled_pattern):
             current_cycle = int(match.groups()[0])
@@ -70,7 +70,7 @@ class AutomaticFileRename(object):
     def _new_cycle(self):
 
         """ Return the next cycle. """
-       
+
         return self._last_cycle() +1
 
     ##############################################
@@ -81,9 +81,3 @@ class AutomaticFileRename(object):
 
         file_name = self._file_name + '-' + str(self._new_cycle()) + self._extension
         return self._path.join_filename(file_name)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

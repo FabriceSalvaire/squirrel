@@ -109,9 +109,9 @@ class PdfMetaDataExtractor(object):
         metadata = self._pdf_document.metadata
         for key in sorted(metadata.keys()):
             print(key + ': ' + str(metadata[key]))
-        
-        for text_block in self._first_text_blocks_iterator(): 
-        
+
+        for text_block in self._first_text_blocks_iterator():
+
             template = """
         Block %u
           y rank %u
@@ -184,7 +184,7 @@ class PdfMetaDataExtractor(object):
 
         if self._title_block is None:
             self._authors = []
-            return 
+            return
 
         probabilities = TextBlockProbabilities()
         for text_block in self._first_text_blocks.sorted_iter():
@@ -210,7 +210,7 @@ class PdfMetaDataExtractor(object):
 
         if author_block is None:
             self._authors = []
-            return 
+            return
 
         author_list_words = []
         space_token = Token(Token.Category.space, ' ')
@@ -233,13 +233,13 @@ class PdfMetaDataExtractor(object):
         for i, word in enumerate(author_list_words):
             word_string = str(word).lower()
             if (word.is_punctuation and word_string == ',' or
-                (word.is_word and word_string == 'and')): 
+                (word.is_word and word_string == 'and')):
                 author_separators.append(i)
         lower_index = 0
         number_of_words = len(author_list_words)
         if (not author_separators or
             (author_separators and author_separators[-1] != number_of_words -1)):
-           author_separators.append(number_of_words) 
+           author_separators.append(number_of_words)
         self._authors = []
         for upper_index in author_separators:
             author_words = author_list_words[lower_index:upper_index]
@@ -252,7 +252,7 @@ class PdfMetaDataExtractor(object):
 class TextBlockProbability(DictInitialised):
 
     """
-    
+
     Public Attributes:
 
       :attr:`text_block`
@@ -302,9 +302,3 @@ class TextBlockProbabilities(list):
 
 class DocumentMetaData(dict):
     pass
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

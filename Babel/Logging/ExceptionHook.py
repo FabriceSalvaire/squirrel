@@ -88,7 +88,7 @@ class DispatcherExceptionHook(object):
     ##############################################
 
     def _exception_hook(self, exception_type, exception_value, exception_traceback):
-     
+
         for observer in self:
             observer.notify(exception_type, exception_value, exception_traceback)
 
@@ -127,7 +127,7 @@ class StderrExceptionHook(ExceptionHook):
         print('StderrExceptionHook'.center(self._line_width), '\n', file=sys.stderr)
         # traceback.print_exc()
         traceback.print_exception(exception_type, exception_value, exception_traceback)
-        print('\n', self._line, file=sys.stderr) 
+        print('\n', self._line, file=sys.stderr)
 
 ####################################################################################################
 
@@ -166,8 +166,8 @@ Context:
 %(traceback)s
 
 ---------------------------------------------------------------------------------
-'''   
-        
+'''
+
         traceback = format_exception(exception_type, exception_value, exception_traceback)
         now = datetime.utcnow()
         platform = Platform()
@@ -177,16 +177,10 @@ Context:
                                       'platform': str(platform),
                                       'traceback': traceback,
                                       }
-        
+
         email = Email(subject='An exception occurred in Babel software',
                       recipients=Config.Email.to_address,
                       message=message,
                       )
         email.add_recipients(self._recipients)
         email.send()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

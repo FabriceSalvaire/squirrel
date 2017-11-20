@@ -41,9 +41,3 @@ args = argument_parser.parse_args(application.args.user_script_args.split())
 
 file_path = File(os.path.expanduser(args.filename)) # Fixme:
 application.open_pdf(file_path)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

@@ -57,7 +57,7 @@ class TestWordDataBase(unittest.TestCase):
         language_table.add(french_language_row)
         language_table.commit()
         print(french_language_row)
-        
+
         word_row = WordRow(word='the', language_id=english_language_row.id, count=1)
         #word_row = WordRow(word='the', language='english', count=1)
         print(word_row)
@@ -85,9 +85,3 @@ class TestWordDataBase(unittest.TestCase):
 if __name__ == '__main__':
 
     unittest.main()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

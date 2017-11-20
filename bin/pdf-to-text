@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 ####################################################################################################
-# 
+#
 # Babel - A Bibliography Manager
 # Copyright (C) 2014 Fabrice Salvaire
 #
@@ -9,15 +9,15 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 ####################################################################################################
 
 """ Analyse the text of a PDF document """
@@ -124,7 +124,7 @@ def display_page(page, output_format):
                 print(str(text_line))
     elif output_format == 'block':
         text_blocks = text_page.blocks
-        for text_block in text_blocks.sorted_iter(): 
+        for text_block in text_blocks.sorted_iter():
             template = """
 Block %u
   y rank %u
@@ -212,9 +212,3 @@ if args.pages is not None:
         for page_range in args.pages:
             for page in pdf_document[page_range]:
                 display_page(page, args.format)
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

@@ -34,7 +34,7 @@ from Babel.GUI.Widgets.IconLoader import IconLoader
 class MessageBox(QtWidgets.QWidget):
 
     ##############################################
-    
+
     def __init__(self, parent):
 
         super(MessageBox, self).__init__(parent)
@@ -112,9 +112,3 @@ class MessageBox(QtWidgets.QWidget):
             self._show_message()
         else:
             self.hide()
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

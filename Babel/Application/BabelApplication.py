@@ -39,11 +39,11 @@ class BabelApplication(ApplicationBase):
     # __metaclass__ = SingletonMetaClass
 
     _logger = logging.getLogger(__name__)
-    
+
     ###############################################
-    
+
     def __init__(self, args, **kwargs):
-         
+
         super(BabelApplication, self).__init__(args=args, **kwargs)
         self._logger.debug(str(args) + ' ' + str(kwargs))
 
@@ -54,7 +54,7 @@ class BabelApplication(ApplicationBase):
         self._importer = Importer(self)
 
     ###############################################
-    
+
     def _make_user_directory(self):
 
         for directory in (Config.Path.config_directory,
@@ -63,13 +63,13 @@ class BabelApplication(ApplicationBase):
                 os.mkdir(directory)
 
     ###############################################
-    
+
     def _open_database(self):
 
         self.document_database = DocumentSqliteDataBase(Config.DataBase.document_database)
 
     ###############################################
-    
+
     def import_path(self, path):
 
         import_session = self._importer.new_session()
@@ -90,7 +90,7 @@ class BabelApplication(ApplicationBase):
   count {count}
 """
         message = message[1:]
-        
+
         for word_row in word_table.filter_by(word=query):
             document_row = word_row.document
             print(message.format(path=document_row.path,
@@ -99,9 +99,3 @@ class BabelApplication(ApplicationBase):
                                  author=document_row.author,
                                  comment=document_row.comment,
                              ))
-            
-####################################################################################################
-#
-# End
-#
-####################################################################################################

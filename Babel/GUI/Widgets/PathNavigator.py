@@ -61,7 +61,7 @@ class PathNavigatorButton(QtWidgets.QPushButton):
         self._path = path
         self._label = path.basename()
         self._has_subdirectory = path.has_subdirectory()
-        
+
         self.setFocusPolicy(Qt.TabFocus)
         self.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         self.setMinimumHeight(parent.minimumHeight())
@@ -92,7 +92,7 @@ class PathNavigatorButton(QtWidgets.QPushButton):
     ##############################################
 
     def _set_display_hint_enabled(self, hint, enable):
-        
+
         if enable:
             self._display_hint |= hint
         else:
@@ -178,8 +178,8 @@ class PathNavigatorButton(QtWidgets.QPushButton):
     def _foreground_color(self):
 
         # Fixme: remove ? = foreground_color
-        # Fixme: has_subdirectory = False 
-        
+        # Fixme: has_subdirectory = False
+
         is_highlighted = (self._is_display_hint_enabled(self.__ENTERED_HINT__) or
                           self._is_display_hint_enabled(self.__DRAGGED_HINT__) or
                           self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__))
@@ -330,9 +330,3 @@ class PathNavigator(QtWidgets.QWidget):
             self._horizontal_layout.addWidget(widget)
             widget.clicked.connect(self._set_path)
         self._horizontal_layout.addStretch()
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

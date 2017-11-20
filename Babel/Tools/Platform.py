@@ -70,23 +70,23 @@ class Platform(object):
         self.number_of_cores = self._get_number_of_cores()
         self.cpu_khz = self._get_cpu_khz()
         self.cpu_mhz = rint(self._get_cpu_khz()/float(1000))
-        
+
         # RAM
         self.memory_size_kb = self._get_memory_size_kb()
         self.memory_size_mb = rint(self.memory_size_kb/float(1024))
-        
+
         # Screen
         try:
             application = QtWidgets.QApplication.instance()
             self.desktop = application.desktop()
-            self.number_of_screens = self.desktop.screenCount() 
+            self.number_of_screens = self.desktop.screenCount()
         except:
             self.desktop = None
             self.number_of_screens = 0
         self.screens = []
         for i in range(self.number_of_screens):
             self.screens.append(Screen(self, i))
-        
+
         # OpenGL
         self.gl_renderer = None
         self.gl_version = None
@@ -165,9 +165,9 @@ class Platform(object):
     ##############################################
 
     def query_opengl(self):
-        
+
         import OpenGL.GL as GL
-        
+
         self.gl_renderer = GL.glGetString(GL.GL_RENDERER)
         self.gl_version = GL.glGetString(GL.GL_VERSION)
         self.gl_vendor = GL.glGetString(GL.GL_VENDOR)
@@ -176,7 +176,7 @@ class Platform(object):
     ##############################################
 
     def __str__(self):
-      
+
         message_template = '''
 Platform %(node)s
   Hardware:
@@ -196,7 +196,7 @@ Platform %(node)s
 
         for screen in self.screens:
             message += str(screen)
-        
+
         message_template = '''
   Software Versions:
     OS: %(os)s
@@ -206,7 +206,7 @@ Platform %(node)s
     PyQt: %(pyqt_version)s
 '''
         message += message_template % self.__dict__
-        
+
         return message
 
 ####################################################################################################
@@ -223,7 +223,7 @@ class Screen(object):
         self.screen_width, self.screen_height = qt_screen_geometry.width(), qt_screen_geometry.height()
 
         widget = platform_obj.desktop.screen(screen_id)
-        self.dpi =  widget.physicalDpiX(), widget.physicalDpiY() 
+        self.dpi =  widget.physicalDpiX(), widget.physicalDpiY()
 
         # qt_available_geometry = self.desktop.availableGeometry(screen_id)
 
@@ -236,11 +236,5 @@ class Screen(object):
      geometry   %(screen_width)ux%(screen_height)u px
      resolution %(dpi)s dpi
 """
-        
-        return message_template % self.__dict__
 
-####################################################################################################
-#
-# End
-#
-####################################################################################################
+        return message_template % self.__dict__

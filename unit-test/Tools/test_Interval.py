@@ -31,7 +31,7 @@ from Babel.Math.Interval import *
 class TestInterval(unittest.TestCase):
 
     ##############################################
-        
+
     def test(self):
 
         ###########################################
@@ -116,7 +116,7 @@ class TestInterval(unittest.TestCase):
         ###########################################
         #
         # Test intersection
-        
+
         # Indenp
         i1 = Interval(1, 10)
         self.assertEqual(i1 & i1, i1)
@@ -166,7 +166,7 @@ class TestInterval(unittest.TestCase):
 class TestInterval2D(unittest.TestCase):
 
     ##############################################
-        
+
     def test(self):
 
         ###########################################
@@ -228,7 +228,7 @@ class TestInterval2D(unittest.TestCase):
 class TestIntervalSupOpen(unittest.TestCase):
 
     ##############################################
-        
+
     def test(self):
 
         ###########################################
@@ -272,9 +272,3 @@ class TestIntervalSupOpen(unittest.TestCase):
 if __name__ == '__main__':
 
     unittest.main()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

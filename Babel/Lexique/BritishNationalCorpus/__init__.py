@@ -51,13 +51,13 @@ class Tag(object):
 
     def __repr__(self):
         return self.tag
-    
+
 ####################################################################################################
 
 class TaggedWord(object):
 
     ##############################################
-    
+
     def __init__(self, word, tag):
 
         self.word = word
@@ -83,9 +83,9 @@ class TaggedWords(dict):
     def __init__(self):
 
         super(TaggedWords, self).__init__()
-        
+
         self.is_noun = False
-        
+
     ##############################################
 
     def add(self, tagged_word):
@@ -95,7 +95,7 @@ class TaggedWords(dict):
             self.is_noun |= tagged_word.is_noun
         else:
             raise RegistrationError("TaggedWord is already registered")
-        
+
 ####################################################################################################
 
 class BritishNationalCorpus(object):
@@ -106,7 +106,7 @@ class BritishNationalCorpus(object):
 
         self._database = BritishNationalCorpusDataBase()
         self._word_table = self._database.word_table
-        
+
         self._cached_words = {}
 
         self._tags = {}
@@ -116,23 +116,23 @@ class BritishNationalCorpus(object):
             self._tags[tag.tag] = tag
 
         self._loaded = False
-            
+
     ##############################################
 
     def load(self):
 
         if self._loaded:
             return
-        
+
         for word_row in self._word_table.query():
             try:
                 self._add(word_row)
             except RegistrationError:
                 pass
         self._loaded = True
-       
+
     ##############################################
-        
+
     def _add(self, word_row):
 
         word = word_row.word
@@ -143,7 +143,7 @@ class BritishNationalCorpus(object):
         else:
             tagged_words = self._cached_words[word]
         tagged_words.add(tagged_word)
-            
+
     ##############################################
 
     def __getitem__(self, word):
@@ -156,9 +156,3 @@ class BritishNationalCorpus(object):
             else:
                 return None
         return self._cached_words[word]
-        
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

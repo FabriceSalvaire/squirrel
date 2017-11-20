@@ -53,7 +53,7 @@ MinusInfinity = float('-inf')
 PlusInfinity = float('+inf')
 
 ####################################################################################################
-    
+
 class Interval(object):
 
     """ One-dimension Interval
@@ -64,7 +64,7 @@ class Interval(object):
     ##############################################
 
     # Fixme: better name than array ?
-    
+
     def __init__(self, *args, **kwargs):
 
         """ Initialise an interval
@@ -94,7 +94,7 @@ class Interval(object):
             self.right_open = True
 
     ##############################################
-    
+
     def _check_arguments(self, args):
 
         size = len(args)
@@ -117,7 +117,7 @@ class Interval(object):
         return self.__class__(self.inf, self.sup)
 
     ##############################################
-    
+
     def __getitem__(self, index):
 
         if isinstance(index, slice):
@@ -133,9 +133,9 @@ class Interval(object):
 
             if lower == 0 and upper == 1:
                 return self.inf, self.sup
-            elif lower == 0 and upper == 0: 
+            elif lower == 0 and upper == 0:
                 return self.inf
-            elif lower == 1 and upper == 1: 
+            elif lower == 1 and upper == 1:
                 return self.sup
             else:
                 raise IndexError("Wrong slice")
@@ -148,13 +148,13 @@ class Interval(object):
             raise IndexError("Index is out of range")
 
     ##############################################
-    
+
     def __repr__(self):
 
         return str(self.__class__) + ' ' + str(self)
 
     ##############################################
-    
+
     def __str__(self):
 
         if self.is_empty():
@@ -318,7 +318,7 @@ class Interval(object):
         """
 
         return self.inf <= x and x <= self.sup
-                
+
     ##############################################
 
     def is_included_in(i1, i2):
@@ -347,27 +347,27 @@ class Interval(object):
         return self - interval_reference.inf
 
     ##############################################
-  
+
     def map_x_in(self, x):
 
         """ Return x - inf
         """
-  
+
         return x - self.inf
-  
+
     ##############################################
-  
+
     def unmap_x_in(self, x):
 
         """ Return x + inf
         """
-  
+
         return x + self.inf
 
     ##############################################
 
     # Fixme: length -> size ?
-  
+
     def length(self):
 
         """ Return sup - inf
@@ -402,9 +402,9 @@ class Interval(object):
 
         self.inf -= dx
         self.sup += dx
-       
+
 ####################################################################################################
-    
+
 class IntervalInt(Interval):
 
     """ One-dimension Integer Interval
@@ -419,9 +419,9 @@ class IntervalInt(Interval):
             array = [int(x) for x in array[:2]] # Fixme: rint ?
 
         return array
-        
+
     ##############################################
-  
+
     def length(self):
 
         """ Return sup - inf +1
@@ -430,14 +430,14 @@ class IntervalInt(Interval):
         return self.sup - self.inf +1
 
     ##############################################
-  
+
     def length_float(self):
 
         """ Return sup - inf
         """
 
         return self.sup - self.inf
-    
+
 #################################################################################
 
 class Interval2D(object):
@@ -469,7 +469,7 @@ class Interval2D(object):
         return self.__class__(self.x, self.y)
 
     ##############################################
-    
+
     def __setitem__(self, index, interval):
 
         if index == 0:
@@ -480,7 +480,7 @@ class Interval2D(object):
             raise IndexError("Index is out of range")
 
     ##############################################
-    
+
     def __getitem__(self, index):
 
         if index == 0:
@@ -497,7 +497,7 @@ class Interval2D(object):
         return str(self.x) + '*' + str(self.y)
 
     ##############################################
-    
+
     def __repr__(self):
 
         return str(self.__class__) + ' ' + str(self)
@@ -649,7 +649,7 @@ class Interval2D(object):
 
     def size(self):
 
-        """ Return the horizontal and vertical size 
+        """ Return the horizontal and vertical size
         """
 
         return self.x.length(), self.y.length()
@@ -702,16 +702,10 @@ class Interval2D(object):
         self.y.enlarge(dx)
 
 ####################################################################################################
-    
+
 class IntervalInt2D(Interval2D):
 
     """ Two-dimension Integer Interval
     """
 
     __interval_class__ = IntervalInt
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

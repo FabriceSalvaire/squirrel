@@ -24,18 +24,18 @@
 # word: [a-zA-z\-]+[0-9]*
 #   - could be cesure or hyphenation
 #   . as in "e.g." "fig."
-# 
+#
 # number:
 #   integer: [0-9]+
 #     thousand separator "123 456"
 #   float: [0-9]+.[0-9]+
 #     ".1" "0.2"
 #     French convention "1,2"
-# 
+#
 # punctuation:
 #   terminal: . ? !
 #   speparator: , ; :
-# 
+#
 # group: ()
 
 ####################################################################################################
@@ -227,7 +227,7 @@ def strip_word_list(word_list):
     upper_index_max = len(word_list) -1
     if upper_index_max < 0:
         return ''
-    
+
     lower_index = 0
     while True:
         if word_list[lower_index].is_space:
@@ -253,7 +253,7 @@ def join_tokens(tokens):
 ####################################################################################################
 
 def strip_non_alphabetic(text):
-    
+
     upper_index = len(text) -1
     while True:
         char = text[upper_index]
@@ -266,9 +266,3 @@ def strip_non_alphabetic(text):
             return ''
 
     return text[0:upper_index +1]
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

@@ -129,7 +129,7 @@ class PdfDocument(object):
 
         if last_page is None:
             last_page = self.number_of_pages -1
-        
+
         for i in range(last_page +1):
             yield self._page(i)
 
@@ -297,7 +297,7 @@ class Page(object):
         # If a resolution is specified, check to see whether width/height are exceeded if not, unset them.
         if resolution != 72:
             actual_width = ibounds.x1 - ibounds.x0
-            actual_height = ibounds.y1 - ibounds.y0 
+            actual_height = ibounds.y1 - ibounds.y0
             if width and actual_width <= width:
                 width = 0
             if height and actual_height <= height:
@@ -345,7 +345,7 @@ class Page(object):
         transform, bounding_box = self._transform_bounding_box(rotation,
                                                                resolution,
                                                                width, height, fit)
-        
+
         pixmap = mupdf.new_pixmap_with_bbox(self._context,
                                             mupdf.device_rgb(self._context),
                                             bounding_box)
@@ -372,7 +372,7 @@ class Page(object):
         transform, bounding_box = self._transform_bounding_box(rotation,
                                                                resolution,
                                                                width, height, fit)
-        
+
         width, height = mupdf.rect_width_height(bounding_box)
         np_array = np.zeros((height, width, 4), dtype=np.uint8)
         pixmap = mupdf.new_pixmap_with_bbox_and_data(self._context,
@@ -380,7 +380,7 @@ class Page(object):
                                                      bounding_box,
                                                      mupdf.np_array_uint8_ptr(np_array))
         mupdf.clear_pixmap_with_value(self._context, pixmap, 255)
-        
+
         device = mupdf.new_draw_device(self._context, pixmap)
         mupdf.set_aa_level(self._context, antialiasing_level)
         mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
@@ -415,9 +415,3 @@ class Page(object):
         if self._text_page is None:
             self._text_page = self._to_text()
         return self._text_page
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

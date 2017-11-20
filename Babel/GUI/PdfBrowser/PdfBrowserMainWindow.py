@@ -66,20 +66,20 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         self._central_widget = QtWidgets.QWidget(self)
         self.setCentralWidget(self._central_widget)
-        
+
         self._viewer_controller = ViewerController()
-        
+
         self._message_box = MessageBox(self)
         self._path_navigator = PathNavigator(self)
         self._file_name_label = QtWidgets.QLabel()
         self._file_counter_label = QtWidgets.QLabel()
         self._directory_toc = DirectoryTocWidget()
         image_widget = self._viewer_controller.image_widget
-        
+
         # Fixme: add funcs ?
         self._document_widgets = (self._file_name_label, self._file_counter_label,
                                   image_widget)
-        
+
         self._vertical_layout = QtWidgets.QVBoxLayout(self._central_widget)
         self._vertical_layout.addWidget(self._message_box)
         self._vertical_layout.addWidget(self._path_navigator)
@@ -90,22 +90,22 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._vertical_layout.addLayout(horizontal_layout)
         self._vertical_layout.addWidget(self._directory_toc)
         self._vertical_layout.addWidget(image_widget)
-        
+
         self.statusBar()
         self._create_actions()
         self._create_toolbar()
-        
+
         self._directory_list_dock_widget = QtWidgets.QDockWidget(self)
         self._directory_list_dock_widget.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         self._directory_list = DirectoryListWidget(self)
         self._directory_list_dock_widget.setWidget(self._directory_list)
         self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
-        
+
         self._path_navigator.path_changed.connect(self.open_directory)
         self._directory_toc.path_changed.connect(self.open_directory)
         self._directory_list.move_file.connect(self.move_file)
         self._directory_list.move_current_file.connect(self.move_current_file)
-        
+
         self._directory_toc_mode()
 
     ##############################################
@@ -113,7 +113,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def _create_actions(self):
 
         icon_loader = IconLoader()
-        
+
         self._directory_toc_mode_action = \
             QtWidgets.QAction(icon_loader['folder-blue'],
                           'Directory toc mode',
@@ -123,7 +123,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcut='Ctrl+D',
                           shortcutContext=Qt.ApplicationShortcut,
                           )
-        
+
         self._pdf_browser_mode_action = \
             QtWidgets.QAction(icon_loader['application-pdf'],
                           'PDF browser mode',
@@ -133,7 +133,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcut='Ctrl+P',
                           shortcutContext=Qt.ApplicationShortcut,
                           )
-        
+
         self._previous_document_action = \
             QtWidgets.QAction(icon_loader['arrow-left'],
                           'Previous document',
@@ -143,7 +143,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcut='Backspace',
                           shortcutContext=Qt.ApplicationShortcut,
                           )
-        
+
         self._next_document_action = \
             QtWidgets.QAction(icon_loader['arrow-right'],
                           'Next document',
@@ -153,7 +153,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcut='Space',
                           shortcutContext=Qt.ApplicationShortcut,
                           )
-        
+
         self._select_action = \
             QtWidgets.QAction(icon_loader['get-hot-new-stuff'],
                           'Select document',
@@ -173,7 +173,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           shortcut='Ctrl+O',
                           shortcutContext=Qt.ApplicationShortcut,
                           )
-        
+
         self._open_pdf_viewer_action = \
             QtWidgets.QAction(icon_loader['text-field'],
                           'Open PDF Viewer',
@@ -193,7 +193,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                      self._pdf_browser_mode_action,
                     ):
             self._main_tool_bar.addAction(item)
-        
+
         self._document_tool_bar = self.addToolBar('Document')
         for item in (self._previous_document_action,
                      self._next_document_action,
@@ -202,7 +202,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                      self._open_pdf_viewer_action,
                     ):
             self._document_tool_bar.addAction(item)
-        
+
         self.addToolBar(self._viewer_controller.tool_bar)
         self.addToolBar(self._viewer_controller.page_controller.tool_bar)
 
@@ -309,7 +309,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             self._file_name_label.setText(str(document.path.filename_part()))
             self._file_counter_label.setText('{} / {}'.format(self._document_directory.current_index +1,
                                                               len(self._document_directory)))
-            self._viewer_controller.document = document.document # Fixme: 
+            self._viewer_controller.document = document.document # Fixme:
         except EmptyRingError:
             # self._logger.info('EmptyRingError')
             # Fixme: cf. open_directory
@@ -367,7 +367,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def move_file(self, file_path, dst_path):
 
         # Fixme: here ?
-        
+
         to_file_path = dst_path.join_filename(file_path.filename_part())
 
         # Test if the destination directory has already a file with the same name
@@ -396,20 +396,14 @@ class PdfBrowserMainWindow(MainWindowBase):
                      to_file_path = dst_path.join_filename(filename)
                 else:
                     return # do nothing
-        
+
         if file_path == to_file_path:
             self.show_message("Tried to move file {} to same place".format(str(file_path)), warn=True)
         else:
             # Last check
             if bool(to_file_path) and not overwrite:
                 self.show_message("Tried to overwrite file {}".format(str(file_path)), warn=True)
-            
+
             self._logger.info("Move {} to {}".format(str(file_path), str(to_file_path)))
             os.rename(str(file_path), str(to_file_path))
             self._delete_file_from_browser(file_path)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 ####################################################################################################
-# 
+#
 # Babel - A Bibliography Manager
 # Copyright (C) 2014 Fabrice Salvaire
 #
@@ -9,15 +9,15 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 ####################################################################################################
 
 """ Generate thumbnail of a PDF document """
@@ -55,27 +55,27 @@ argument_parser.add_argument('png_path', metavar='OUTPUT.png',
                              action=PathAction,
                              help='PNG file')
 
-argument_parser.add_argument('--resolution', 
+argument_parser.add_argument('--resolution',
                              type=int, default=72,
                              help='resolution in dpi (default: 72)')
 
-argument_parser.add_argument('--rotation', 
+argument_parser.add_argument('--rotation',
                              type=int, default=0,
                              help='rotate clockwise by given number of degrees')
 
-argument_parser.add_argument('--width', 
+argument_parser.add_argument('--width',
                              type=int, default=0,
                              help='width (in pixels) (maximum width if resolution is specified)')
 
-argument_parser.add_argument('--height', 
+argument_parser.add_argument('--height',
                              type=int, default=0,
                              help='height (in pixels) (maximum height if resolution is specified)')
 
-argument_parser.add_argument('--fit', 
+argument_parser.add_argument('--fit',
                              action='store_true', default=False,
                              help='fit width and/or height exactly (ignore aspect)')
 
-argument_parser.add_argument('--antialiasing-level', 
+argument_parser.add_argument('--antialiasing-level',
                              type=int, default=8,
                              help='antialiasing level')
 
@@ -91,9 +91,3 @@ first_page.to_png(path=args.png_path,
                   width=args.width, height=args.height, fit=args.fit,
                   antialiasing_level=args.antialiasing_level
                   )
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

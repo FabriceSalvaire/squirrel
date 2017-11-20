@@ -134,7 +134,7 @@ class DocumentDirectory(DocumentList):
             self._importable_mime_types = self.__importable_mime_types__
         else:
             self._importable_mime_types = importable_mime_types
-        
+
         self._open_directory()
 
     ##############################################
@@ -159,9 +159,3 @@ class DocumentDirectory(DocumentList):
                 document_class = self.__classes__[file_path.mime_type]
                 document = document_class(file_path)
                 self.add(document)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

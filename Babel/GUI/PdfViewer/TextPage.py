@@ -39,7 +39,7 @@ class TextPage(QtWidgets.QScrollArea):
     def __init__(self, main_window):
 
         super(TextPage, self).__init__()
-        
+
         self._main_window = main_window
         self._init_ui()
 
@@ -50,7 +50,7 @@ class TextPage(QtWidgets.QScrollArea):
         # self._scroll_area = QtWidgets.QScrollArea(self)
         # self._scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.setWidgetResizable(True)
-        
+
         self._container_widget = QtWidgets.QWidget()
         self._vertical_layout = QtWidgets.QVBoxLayout(self._container_widget) # Set container_widget layout
         self._spacer_item = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -95,9 +95,3 @@ class TextPage(QtWidgets.QScrollArea):
         horizontal_layout.addWidget(combo_box, 0, QtCore.Qt.AlignTop)
         horizontal_layout.addWidget(text_browser, 0, QtCore.Qt.AlignTop)
         self._vertical_layout.addLayout(horizontal_layout)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

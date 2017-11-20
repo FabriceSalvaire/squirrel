@@ -159,7 +159,7 @@ class TestLruCache(unittest.TestCase):
         self.assertEqual(len(live_objects), 0)
 
     ##############################################
-        
+
     def test_memory(self):
 
         print('\nTest Memory Mode')
@@ -186,9 +186,3 @@ class TestLruCache(unittest.TestCase):
 if __name__ == '__main__':
 
     unittest.main()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

@@ -27,19 +27,19 @@ from Babel.Tools.LruCache import LruCache
 class Image(object):
 
     ##############################################
-    
+
     def __init__(self, key, pixmap):
 
         self._key = key
         self.pixmap = pixmap
-        
+
     ##############################################
-        
+
     def key(self):
         return self._key
 
     ##############################################
-    
+
     def size(self):
         return self.pixmap.nbytes
 
@@ -50,7 +50,7 @@ class PdfImageCache(object):
     # Fixme: __XXX__
     antialiasing_level = 8
     cache_size = 128 * 1024 # Fixme: MB
-    
+
     ##############################################
 
     def __init__(self, document, cache_size=cache_size):
@@ -86,9 +86,3 @@ class PdfImageCache(object):
             obj = Image(key, pixmap)
             self._lru_cache.add(obj)
             return pixmap
-        
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

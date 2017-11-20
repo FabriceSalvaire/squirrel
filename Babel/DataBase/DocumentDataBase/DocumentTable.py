@@ -54,7 +54,7 @@ class DocumentRowMixin(SqlRow):
     id = Column(Integer, primary_key=True)
     record_creation_date = Column(DateTime)
     record_update_date = Column(DateTime)
-    
+
     path = Column(FileType, unique=True)
     inode = Column(Integer) # uniq on the same file-system
     # creation_time = Column(Integer)
@@ -68,7 +68,7 @@ class DocumentRowMixin(SqlRow):
     indexation_status = Column(String, default='') # Fixme:
     language = Column(String(10), default='') # Fixme: en
     # indexer settings
-    
+
     number_of_pages = Column(Integer)
     title = Column(String, default='')
     author = Column(String, default='')
@@ -93,7 +93,7 @@ class DocumentRowMixin(SqlRow):
 
     def update_indexation_date(self):
         self.indexation_date = today()
-        
+
     ###############################################
 
     @declared_attr
@@ -101,11 +101,11 @@ class DocumentRowMixin(SqlRow):
         return relationship('WordRow', order_by='WordRow.count', backref='document',
                             cascade="all, delete, delete-orphan",
                             )
-    
+
     ##############################################
-        
+
     def __repr__(self):
-        
+
         message = '''
 Document Row
   path: {path}
@@ -139,9 +139,3 @@ Document Row
 
         self.shasum = self.path.compute_shasum() # Fixme: .shasum
         self.update_record_date()
-        
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

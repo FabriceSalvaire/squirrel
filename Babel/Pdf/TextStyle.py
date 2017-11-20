@@ -36,7 +36,7 @@ from Babel.Tools.DictionaryTools import DictInitialised
 class TextStyle(DictInitialised):
 
     """
-    
+
     Public Attributes:
 
       :attr:`font_family`
@@ -53,7 +53,7 @@ class TextStyle(DictInitialised):
 
     """
 
-    __REQUIRED_ATTRIBUTES__ = (              
+    __REQUIRED_ATTRIBUTES__ = (
         'id',
         'font_family',
         'font_size',
@@ -123,7 +123,7 @@ class TextStyles(dict):
 class TextStyleFrequency(DictInitialised):
 
     """
-    
+
     Public Attributes:
 
       :attr:`style_id`
@@ -182,7 +182,7 @@ class TextStyleFrequencies(dict):
             self.fill(style_id, count)
 
         return self
-            
+
     ##############################################
 
     def fill(self, style_id, count):
@@ -219,13 +219,7 @@ class TextStyleFrequencies(dict):
     def max(self):
 
         """ Return the :obj:`TextStyleFrequency` instance of the most frequent font. """
-        
+
         self._sort_if_required()
 
         return self._sorted_frequencies[0]
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

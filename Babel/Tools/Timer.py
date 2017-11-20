@@ -69,7 +69,7 @@ class TimeTracker(object):
 
     def add_activity(self, name):
 
-        if name not in self: 
+        if name not in self:
             activity = TimeTrackerActivity(self, name)
             self._activities[name] = activity
             return activity
@@ -80,7 +80,7 @@ class TimeTracker(object):
 
     def ensure_activity(self, name):
 
-        if name not in self: 
+        if name not in self:
             return self.add_activity(name)
         else:
             return self[name]
@@ -159,15 +159,15 @@ class Timer(object):
     ##############################################
 
     def delta_time(self):
-        
+
         if self.t1 == 0:
             self.stop()
 
         dt = self.t1 - self.t0 # s
         s = int(dt)
-        ms = int((dt * 1e3) % 1e3)       
+        ms = int((dt * 1e3) % 1e3)
         us = int((dt * 1e6) % 1e3)
-        
+
         return (s, ms, us)
 
     ##############################################
@@ -181,9 +181,3 @@ class Timer(object):
     def delta_time_string(self):
 
         return 'Delta time: %u s %u ms %u us' % self.delta_time()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

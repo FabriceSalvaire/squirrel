@@ -43,7 +43,7 @@ class TextPage():
         self._page = page
         self._text_sheet = text_sheet
         self._text_page = text_page
-        
+
         self._page_number = self._page._page_number
         self._document = self._page._document
         self._context = self._document._context
@@ -58,7 +58,7 @@ class TextPage():
         # text_sheet and text_page was not created in TextPage
         mupdf.free_text_sheet(self._context, self._text_sheet)
         mupdf.free_text_page(self._context, self._text_page)
-        
+
     ##############################################
 
     def __del__(self):
@@ -78,7 +78,7 @@ class TextPage():
         return to_interval(self._text_page.mediabox)
 
     ##############################################
-    
+
     def _get_styles(self):
 
         """ Return an :obj:`.TextStyles` instance for the styles of the page. """
@@ -89,7 +89,7 @@ class TextPage():
             styles.register_style(to_text_style(style))
             style = style.next
         styles.sort()
-        
+
         return styles
 
     ##############################################
@@ -160,7 +160,7 @@ class TextPage():
         return self._blocks
 
     ##############################################
-    
+
     def dump_text_style(self):
 
         # Fixme: old and historical code, move elsewhere ?
@@ -233,25 +233,25 @@ class TextBlocks(object):
     ##############################################
 
     def __bool__(self):
-        
+
         return bool(self._blocks)
 
     ##############################################
 
     def __len__(self):
-        
+
         return len(self._blocks)
 
     ##############################################
 
     def __iter__(self):
-        
+
         return iter(self._blocks)
 
     ##############################################
 
     def sorted_iter(self):
-        
+
         return iter(self._sorted_blocks)
 
     ##############################################
@@ -263,7 +263,7 @@ class TextBlocks(object):
     ##############################################
 
     def append(self, text_block):
-        
+
         self._blocks.append(text_block)
         text_block.block_id = len(self._blocks) -1
         self._sorted_blocks = None
@@ -273,7 +273,7 @@ class TextBlocks(object):
     def sort(self):
 
         """ Sort the block by y in ascending order. """
-        
+
         self._sorted_blocks = sorted(self._blocks)
         y_rank = 0
         y = None
@@ -290,7 +290,7 @@ class TextBlocks(object):
     def tokenised_text(self):
 
         """ Return an instance of :obj:`TokenisedText`. """
-        
+
         if self._tokenised_text is None:
             self._tokenised_text = TokenisedText()
             for block in self:
@@ -331,7 +331,7 @@ class TextBase(object):
 
     @property
     def tokenised_text(self):
-        
+
         if self._tokenised_text is None:
             self._tokenised_text = TextTokenizer().lex(str(self._text))
 
@@ -451,7 +451,7 @@ class TextBlock(TextBase):
         return self._interval.y.inf
 
     ##############################################
-        
+
     @property
     def number_of_styles(self):
 
@@ -483,7 +483,7 @@ class TextBlock(TextBase):
             self._interval = line.interval
 
     ##############################################
- 
+
     @property
     def style_frequencies(self):
 
@@ -497,7 +497,7 @@ class TextBlock(TextBase):
         return self._style_frequencies
 
     ##############################################
- 
+
     @property
     def main_style(self):
 
@@ -526,21 +526,21 @@ class TextLine(TextBase):
         self._spans = []
 
     ##############################################
-        
+
     @property
     def interval(self):
         return self._interval
 
     ##############################################
-        
+
     @property
     def number_of_styles(self):
         return len(self._spans)
 
     ##############################################
-        
+
     def __iter__(self):
-        
+
         return iter(self._spans)
 
     ##############################################
@@ -551,7 +551,7 @@ class TextLine(TextBase):
         self._text += str(span)
 
     ##############################################
-        
+
     def style_frequencies(self):
 
         """ Return an :obj:`TextStyleFrequencies` instance for the line. """
@@ -561,7 +561,7 @@ class TextLine(TextBase):
             style_id = span.style.id
             count = len(span)
             style_frequencies.fill(style_id, count)
-        
+
         return style_frequencies
 
 ####################################################################################################
@@ -572,7 +572,7 @@ class TextSpan(TextBase):
 
     A TextSpan corresponds here to the subset of chars having the same style within a C span.
     """
-    
+
     ##############################################
 
     def __init__(self, text, style):
@@ -580,9 +580,3 @@ class TextSpan(TextBase):
         super(TextSpan, self).__init__(text)
 
         self.style = style
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

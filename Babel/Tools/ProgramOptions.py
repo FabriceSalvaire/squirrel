@@ -38,14 +38,8 @@ class PathAction(argparse.Action):
         if values is not None:
             if isinstance(values, list):
                 absolute_path = [to_absolute_path(x) for x in values]
-            else:    
+            else:
                 absolute_path = to_absolute_path(values)
         else:
             absolute_path = None
         setattr(namespace, self.dest, absolute_path)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

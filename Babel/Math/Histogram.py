@@ -46,25 +46,25 @@ class Histogram(object):
         self._accumulator = np.zeros(array_size)
         self._sum_weight_square = np.zeros(array_size)
         self._errors = np.zeros(array_size)
-        
+
         self._errors_are_dirty = True
 
     ##############################################
-        
+
     @property
     def binning(self):
 
         return self._binning
 
     ##############################################
-        
+
     @property
     def accumulator(self):
 
         return self._accumulator
 
     ##############################################
-        
+
     def __iadd__(self, obj):
 
         if self.is_consistent_with(obj):
@@ -73,13 +73,13 @@ class Histogram(object):
             raise ValueError
 
     ##############################################
-        
+
     def is_consistent_with(self, obj):
 
         return self._binning == obj._binning
 
     ##############################################
-        
+
     def clear(self, value=.0):
 
         self._accumulator[:] = value
@@ -87,7 +87,7 @@ class Histogram(object):
         self._errors_are_dirty = True
 
     ##############################################
-        
+
     def fill(self, x, weight=1.):
 
         if weight < 0:
@@ -100,35 +100,35 @@ class Histogram(object):
         self._errors_are_dirty = True
 
     ##############################################
-        
+
     def compute_errors(self):
 
         if self._errors_are_dirty:
             self._errors = np.sqrt(self._sum_weight_square)
 
     ##############################################
-        
+
     def get_bin_error(self, i):
 
         self.compute_errors()
-            
+
         return self._errors[i]
 
     ##############################################
-        
+
     def integral(self):
 
         return self._accumulator.sum()
 
     ##############################################
-        
+
     def normalise(self):
 
         self._accumulator /= self.integral()
         self._errors_are_dirty = True
 
     ##############################################
-        
+
     def to_graph(self):
 
         self.compute_errors()
@@ -147,7 +147,7 @@ class Histogram(object):
         return x_values, y_values, x_errors, y_errors
 
    ###############################################
-        
+
     def __str__(self):
 
         binning = self._binning
@@ -170,7 +170,7 @@ Histogram 1D
         return text
 
    ###############################################
-        
+
     def find_non_zero_bin_range(self):
 
         inf = 0
@@ -184,7 +184,7 @@ Histogram 1D
         return Interval(inf, sup)
 
    ###############################################
-        
+
     def non_zero_bin_range_histogram(self):
 
         bin_range = self.find_non_zero_bin_range()
@@ -200,9 +200,3 @@ Histogram 1D
         histogram.errors_are_dirty = False
 
         return histogram
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

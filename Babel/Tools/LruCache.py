@@ -35,13 +35,13 @@ def inverse_percent(x):
     return 100 * x
 
 ####################################################################################################
-    
+
 class ObjectProtocol(object):
 
     """ This class defines the Object Protocol. """
 
     ##############################################
-    
+
     def key(self):
 
         """ Return the object key. """
@@ -49,7 +49,7 @@ class ObjectProtocol(object):
         raise NotImplementedError
 
     ##############################################
-    
+
     def size(self):
 
         """ Return the object size. """
@@ -57,7 +57,7 @@ class ObjectProtocol(object):
         raise NotImplementedError
 
 ####################################################################################################
-    
+
 class CacheElement(object):
 
     """ This class implements a cache element of the LRU cache. """
@@ -65,7 +65,7 @@ class CacheElement(object):
     _logger = logging.getLogger(__name__)
 
     ##############################################
-    
+
     def __init__(self, cache_manager, obj, acquire=False):
 
         """ The stored object must implement the Object Protocol defined by the abstract class
@@ -130,7 +130,7 @@ class LruCache(object):
     _logger = logging.getLogger(__name__)
 
     ##############################################
-    
+
     def __init__(self, constraint):
 
         self._constraint = constraint
@@ -182,7 +182,7 @@ class LruCache(object):
             cache_element = cache_element._older
 
     ##############################################
-        
+
     def reset(self):
 
         # Fixme: reset -> clear ?
@@ -237,7 +237,7 @@ class LruCache(object):
             older._younger = younger
 
     ##############################################
-        
+
     def recycle(self):
 
         """ Recycle the cache. """
@@ -268,7 +268,7 @@ class LruCache(object):
         self._size += cache_element._size_in_cache
         self._cache_dict[cache_element.key] = cache_element
         self._push_element(cache_element)
-            
+
     ##############################################
 
     def remove(self, key):
@@ -315,7 +315,7 @@ class LruCache(object):
         string_template = """LRU cache:
   size =  %u / %u = %u %%
   from the younger to the older
-""" 
+"""
         text = string_template % (self._size, self._constraint,
                                   rint(inverse_percent(self._size / float(self._constraint))))
 
@@ -330,9 +330,3 @@ class LruCache(object):
             i += 1
 
         return text
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

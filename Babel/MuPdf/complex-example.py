@@ -27,7 +27,7 @@ def show_metadata(ctx, doc):
         'ModDate',
         ):
         print(mupdf.decode_utf8(mupdf.get_meta_info(ctx, doc, key, 1024)))
-    
+
     fz_buffer = mupdf.pdf_metadata(doc)
     print(mupdf.decode_utf8(mupdf.buffer_data(fz_buffer)))
     mupdf.drop_buffer(ctx, fz_buffer)
@@ -58,7 +58,7 @@ def get_font_name(font):
     font_name = mupdf.decode_utf8(mupdf.get_font_name(font))
     i = font_name.find('+')
     if i:
-        font_name = font_name[i+1:] 
+        font_name = font_name[i+1:]
 
     return font_name
 
@@ -413,9 +413,3 @@ mupdf.drop_pixmap(ctx, pixmap)
 mupdf.free_page(doc, page)
 mupdf.close_document(doc)
 mupdf.free_context(ctx)
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

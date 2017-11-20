@@ -40,7 +40,7 @@ class Filet(object):
         self.horizontal, self.vertical = horizontal, vertical
         self.top_left, self.top_right = top_left, top_right
         self.bottom_left, self.bottom_right = bottom_left, bottom_right
-        
+
 ####################################################################################################
 
 empty_filet = Filet('', '', '', '', '', '')
@@ -83,7 +83,7 @@ def format_frame(text,
         width += 2
     rule = filet.horizontal*width
     empty_line = filet.vertical + ' '*width + filet.vertical + '\n'
-    
+
     output_text = filet.top_left + rule + filet.top_right + '\n'
     if margin:
         output_text += empty_line
@@ -98,7 +98,7 @@ def format_frame(text,
     if margin:
         output_text += empty_line
     output_text += filet.bottom_left + rule + filet.bottom_right + '\n'
-    
+
     return output_text
 
 ####################################################################################################
@@ -114,7 +114,7 @@ def format_message_header(text,
 
     if not border:
         filet = empty_filet
-    
+
     rule = filet.horizontal*width
     empty_line = filet.vertical + ' '*width + filet.vertical + '\n'
 
@@ -144,9 +144,3 @@ def format_message_header(text,
         output_text += filet.bottom_left + rule + filet.bottom_right + '\n'
 
     return output_text
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

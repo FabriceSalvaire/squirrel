@@ -45,13 +45,13 @@ _module_logger = logging.getLogger(__name__)
 class CreateDirectoryDialog(QtWidgets.QDialog):
 
     SELECT_RETURN_CODE = 2
-    
+
     ##############################################
 
     def __init__(self, parent=None):
 
         super(CreateDirectoryDialog, self).__init__(parent)
-        
+
         self.setWindowTitle("Create a directory")
 
         self._line_edit = QtWidgets.QLineEdit(self)
@@ -82,7 +82,7 @@ class CreateDirectoryDialog(QtWidgets.QDialog):
 
     def select(self):
         self.done(self.SELECT_RETURN_CODE)
-        
+
 ####################################################################################################
 
 class DirectorySelector(QtWidgets.QDialog):
@@ -116,7 +116,7 @@ class DirectorySelector(QtWidgets.QDialog):
     def _init_ui(self):
 
         icon_loader = IconLoader()
-        
+
         self._path_navigator = PathNavigator(self)
         self._directory_toc = DirectoryTocWidget()
         self._path_navigator.path_changed.connect(self._open_directory)
@@ -133,7 +133,7 @@ class DirectorySelector(QtWidgets.QDialog):
         self._vertical_layout.addLayout(horizontal_layout)
         self._vertical_layout.addWidget(self._path_navigator)
         self._vertical_layout.addWidget(self._directory_toc)
-        
+
         self._open_button = QtWidgets.QPushButton('Open')
         self._cancel_button = QtWidgets.QPushButton('Cancel')
         self._open_button.clicked.connect(self.accept)
@@ -182,9 +182,3 @@ class DirectorySelector(QtWidgets.QDialog):
                 self._logger.error(str(exception))
                 application = QtWidgets.QApplication.instance()
                 application.show_message(str(exception), warn=True)
-                
-####################################################################################################
-#
-# End
-#
-####################################################################################################

@@ -29,7 +29,7 @@ class WordCount(object):
         self._word = str(word)
         self._count = count
         self._rank = None
-        
+
     ##############################################
 
     @property
@@ -43,7 +43,7 @@ class WordCount(object):
     @property
     def rank(self):
         return self._rank
-    
+
     ##############################################
 
     def __lt__(a ,b):
@@ -112,9 +112,3 @@ class DocumentWords(object):
         self._sorted_words = sorted(iter(self._words.values()), reverse=True)
         for rank, word_count in enumerate(self._sorted_words):
             word_count._rank = rank
-        
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

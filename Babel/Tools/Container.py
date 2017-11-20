@@ -129,7 +129,7 @@ class Ring(object):
 
         if self._current_index is None:
             self._current_index = 0
-            
+
     ##############################################
 
     def delete(self, item):
@@ -166,9 +166,3 @@ class Ring(object):
         current_item = self.current_item
         self._items.sort(key=key, reverse=reverse)
         self._current_index = self._items.index(current_item)
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

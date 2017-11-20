@@ -36,7 +36,7 @@ class MysqlDataBase(DataBase, metaclass=SingletonMetaClass):
     CONNECTION_STR = "mysql+oursql://{user_name}:{password}@{hostname}/{database}"
 
     ###############################################
-    
+
     def __init__(self, database_config, echo=None):
 
         self._logger.debug("Open MySql Database %s", self.CONNECTION_STR)
@@ -51,11 +51,5 @@ class MysqlDataBase(DataBase, metaclass=SingletonMetaClass):
 
         if echo is None:
             echo = database_config.echo
-        
-        super(MysqlDataBase, self).__init__(connection_str, echo=echo)
 
-####################################################################################################
-#
-# End
-#
-####################################################################################################
+        super(MysqlDataBase, self).__init__(connection_str, echo=echo)

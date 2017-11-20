@@ -31,9 +31,9 @@ from ..SqliteDataBase import SqliteDataBase
 ####################################################################################################
 
 class DocumentSqliteDataBase(SqliteDataBase):
-    
+
     ##############################################
-    
+
     def __init__(self, filename, echo=False):
 
         super(DocumentSqliteDataBase, self).__init__(filename, echo)
@@ -53,9 +53,9 @@ class DocumentSqliteDataBase(SqliteDataBase):
         if self.create():
             # self._create_indexes(analysis)
             pass
-        
+
     ##############################################
-    
+
     # def _create_indexes(self, analysis):
 
     #     indexes = []
@@ -67,9 +67,3 @@ class DocumentSqliteDataBase(SqliteDataBase):
 
     #     for index in indexes:
     #         index.create(self._engine)
-        
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

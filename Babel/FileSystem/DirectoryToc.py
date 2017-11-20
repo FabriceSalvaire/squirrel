@@ -57,7 +57,7 @@ class DirectoryToc(object):
 
     ##############################################
 
-    @property 
+    @property
     def letters(self):
         return list(self._toc.keys())
 
@@ -65,9 +65,3 @@ class DirectoryToc(object):
 
     def __getitem__(self, letter):
         return self._toc[letter]
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

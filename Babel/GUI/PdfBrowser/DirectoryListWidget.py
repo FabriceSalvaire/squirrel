@@ -265,9 +265,3 @@ class DirectoryListWidget(QtWidgets.QWidget):
         widget = self._vertical_layout.takeAt(index).widget()
         widget.deleteLater()
         del self._widgets[index]
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

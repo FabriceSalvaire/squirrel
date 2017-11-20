@@ -34,7 +34,7 @@ from Babel.Tools.AttributeDictionaryInterface import (ExtendedDictionaryInterfac
 class TestExtendedDictionaryInterface(unittest.TestCase):
 
     ##############################################
-        
+
     def test(self):
 
         extended_dictionary = ExtendedDictionaryInterface()
@@ -52,7 +52,7 @@ class TestExtendedDictionaryInterface(unittest.TestCase):
 class ReadOnlyAttributeDictionaryInterfaceExample(ReadOnlyAttributeDictionaryInterface):
 
     ##############################################
-    
+
     def __init__(self):
 
         super(ReadOnlyAttributeDictionaryInterfaceExample, self).__init__()
@@ -65,7 +65,7 @@ class ReadOnlyAttributeDictionaryInterfaceExample(ReadOnlyAttributeDictionaryInt
 class AttributeDictionaryInterfaceExample(AttributeDictionaryInterface):
 
     ##############################################
-    
+
     def __init__(self):
 
         super(AttributeDictionaryInterfaceExample, self).__init__()
@@ -78,19 +78,19 @@ class AttributeDictionaryInterfaceExample(AttributeDictionaryInterface):
 class DescriptorExample(object):
 
     ##############################################
-    
+
     def __init__(self, value):
 
         self.value = value
 
     ##############################################
-    
+
     def get(self):
 
         return self.value
 
     ##############################################
-    
+
     def set(self, value):
 
         self.value = value
@@ -100,7 +100,7 @@ class DescriptorExample(object):
 class AttributeDictionaryInterfaceDescriptorExample(AttributeDictionaryInterfaceDescriptor):
 
     ##############################################
-    
+
     def __init__(self):
 
         super(AttributeDictionaryInterfaceDescriptorExample, self).__init__()
@@ -114,9 +114,9 @@ class AttributeDictionaryInterfaceDescriptorExample(AttributeDictionaryInterface
 class TestReadOnlyBase(object):
 
     ##############################################
-        
+
     def test_base(self):
-        
+
         self.assertTrue('attribute1' in self.obj)
         self.assertEqual(self.obj.attribute1, 1)
         self.assertEqual(self.obj['attribute1'], 1)
@@ -129,13 +129,13 @@ class TestReadOnlyBase(object):
 class TestReadOnlyAttributeDictionaryInterface(unittest.TestCase, TestReadOnlyBase):
 
     ##############################################
-        
+
     def setUp(self):
-        
+
         self.obj = ReadOnlyAttributeDictionaryInterfaceExample()
 
     ##############################################
-        
+
     def test_iter(self):
 
         # self.assertListEqual(sorted(list(iter(self.obj))), [1, 2])
@@ -146,9 +146,9 @@ class TestReadOnlyAttributeDictionaryInterface(unittest.TestCase, TestReadOnlyBa
 class TestBase(object):
 
     ##############################################
-        
+
     def test_base(self):
-        
+
         self.assertTrue('attribute1' in self.obj)
         self.assertEqual(self.obj.attribute1, 1)
         self.assertEqual(self.obj['attribute1'], 1)
@@ -163,13 +163,13 @@ class TestBase(object):
 class TestAttributeDictionaryInterface(unittest.TestCase, TestBase):
 
     ##############################################
-        
+
     def setUp(self):
-        
+
         self.obj = AttributeDictionaryInterfaceExample()
 
     ##############################################
-        
+
     def test_iter(self):
 
         # self.assertListEqual(sorted(list(iter(self.obj))), [1, 2])
@@ -180,13 +180,13 @@ class TestAttributeDictionaryInterface(unittest.TestCase, TestBase):
 class TestAttributeDictionaryInterfaceDescriptor(unittest.TestCase, TestBase):
 
     ##############################################
-        
+
     def setUp(self):
-        
+
         self.obj = AttributeDictionaryInterfaceDescriptorExample()
 
     ##############################################
-        
+
     def test_iter(self):
 
         # self.assertListEqual(sorted([x.get() for x in iter(self.obj)]), [1, 2])
@@ -197,9 +197,3 @@ class TestAttributeDictionaryInterfaceDescriptor(unittest.TestCase, TestBase):
 if __name__ == '__main__':
 
     unittest.main()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

@@ -38,9 +38,9 @@ from PyQt5 import QtWidgets, QtCore
 class MainWindowBase(QtWidgets.QMainWindow):
 
     _logger = logging.getLogger(__name__)
-    
+
     ##############################################
-    
+
     def __init__(self, title='', parent=None):
 
         super(MainWindowBase, self).__init__(parent)
@@ -76,7 +76,7 @@ class MainWindowBase(QtWidgets.QMainWindow):
 
         self._file_menu = file_menu = self.menu_bar.addMenu('File')
         file_menu.addAction(application.exit_action) # Fixme: At the end
-        
+
         self._help_menu = help_menu = self.menu_bar.addMenu('Help')
         help_menu.addAction(application.help_action)
         help_menu.addSeparator()
@@ -92,7 +92,7 @@ class MainWindowBase(QtWidgets.QMainWindow):
         number of milli-seconds (timeout). If timeout is 0 (default), the message remains displayed
         until the clearMessage() slot is called or until the showMessage() slot is called again to
         change the message.
-        
+
         Note that showMessage() is called to show temporary explanations of tool tip texts, so
         passing a timeout of 0 is not sufficient to display a permanent message.
         """
@@ -111,9 +111,3 @@ class MainWindowBase(QtWidgets.QMainWindow):
     def translate(self, text):
 
         return self._application.translate(self.__class__.__name__, text)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

@@ -64,70 +64,70 @@ class Binning1D(object):
         self._inverse_bin_width = 1./self._bin_width
 
     ##############################################
-        
+
     @property
     def interval(self):
 
         return self._interval
 
     ##############################################
-        
+
     @property
     def number_of_bins(self):
 
         return self._number_of_bins
 
     ##############################################
-        
+
     @property
     def under_flow_bin(self):
 
         return self._under_flow_bin
 
     ##############################################
-        
+
     @property
     def first_bin(self):
 
         return self._first_bin
 
     ##############################################
-        
+
     @property
     def last_bin(self):
 
         return self._over_flow_bin -1
 
     ##############################################
-        
+
     @property
     def over_flow_bin(self):
 
         return self._over_flow_bin
 
     ##############################################
-        
+
     @property
     def array_size(self):
 
         return self._array_size
 
     ##############################################
-        
+
     @property
     def bin_width(self):
 
         return self._bin_width
 
     ##############################################
-        
+
     def __eq__(self, other):
 
         return (self._interval == other._interval
                 and self._number_of_bins == other._number_of_bins)
 
    ###############################################
-        
+
     def _check_bin_index(self, i, xflow=False):
 
         if xflow:
@@ -138,13 +138,13 @@ class Binning1D(object):
                 raise IndexError
 
     ##############################################
-        
+
     def clone(self):
 
         return self.__class__(self._interval, number_of_bins=self._number_of_bins)
 
     ##############################################
-        
+
     def bin_interval(self, i):
 
         if i == self._under_flow_bin:
@@ -155,32 +155,32 @@ class Binning1D(object):
             return Interval(self.bin_lower_edge(i), self.bin_upper_edge(i), right_open=True)
 
    ###############################################
-        
+
     def _bin_edge(self, i, offset=0):
 
         self._check_bin_index(i, xflow=False)
         return self._interval.inf + (i - 1 + offset)*self._bin_width
 
    ###############################################
-        
+
     def bin_lower_edge(self, i):
 
         return self._bin_edge(i)
 
    ###############################################
-        
+
     def bin_upper_edge(self, i):
 
         return self._bin_edge(i, offset=1)
 
    ###############################################
-        
+
     def bin_center(self, i):
 
         return self._bin_edge(i, offset=.5)
 
     ##############################################
-        
+
     def bins(self):
 
         bins = np.zeros(self._number_of_bins +2)
@@ -190,11 +190,11 @@ class Binning1D(object):
             np.arange(start=self._interval.inf,
                       stop=self._interval.sup + self._bin_width,
                       step=self._bin_width)
-        
+
         return bins
 
     ##############################################
-        
+
     def bin_centers(self):
 
         return np.linspace(self.bin_center(self._first_bin),
@@ -202,7 +202,7 @@ class Binning1D(object):
                            self._number_of_bins)
 
     ##############################################
-        
+
     def bin_slice(self, xflow=False):
 
         if xflow:
@@ -211,7 +211,7 @@ class Binning1D(object):
             return slice(self._first_bin, self._over_flow_bin)
 
     ##############################################
-        
+
     def bin_iterator(self, xflow=False):
 
         if xflow:
@@ -220,7 +220,7 @@ class Binning1D(object):
             return range(self._first_bin, self._over_flow_bin)
 
    ###############################################
-        
+
     def find_bin(self, x):
 
         inf = self._interval.inf
@@ -232,7 +232,7 @@ class Binning1D(object):
             return int(self._inverse_bin_width * (x - inf)) +1
 
    ###############################################
-        
+
     def __str__(self):
 
         string_format = """
@@ -250,7 +250,7 @@ Binning 1D
         return text
 
    ###############################################
-        
+
     def sub_interval(self, bin_range):
 
         inf = max(self.first_bin, bin_range.inf)
@@ -260,13 +260,7 @@ Binning 1D
                         self.bin_upper_edge(sup))
 
    ###############################################
-        
+
     def sub_binning(self, interval):
 
         return self.__class__(interval, self._bin_width)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

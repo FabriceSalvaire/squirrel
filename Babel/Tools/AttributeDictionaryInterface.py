@@ -51,7 +51,7 @@ class ExtendedDictionaryInterface(dict):
     """
 
     ##############################################
-    
+
     def __setitem__(self, key, value):
 
         if key not in self and key not in self.__dict__:
@@ -83,13 +83,13 @@ class ReadOnlyAttributeDictionaryInterface(object):
     """
 
     ##############################################
-    
+
     def __init__(self):
 
         object.__setattr__(self, '_dictionary', dict())
 
     ##############################################
-    
+
     def __getattr__(self, name):
 
         """ Get the value from its name. """
@@ -101,7 +101,7 @@ class ReadOnlyAttributeDictionaryInterface(object):
     __getitem__ = __getattr__
 
     ##############################################
-    
+
     def __iter__(self):
 
         """ Iterate over the dictionary. """
@@ -109,25 +109,25 @@ class ReadOnlyAttributeDictionaryInterface(object):
         return self.keys()
 
     ##############################################
-    
+
     def items(self):
 
         return self._dictionary.items()
 
     ##############################################
-    
+
     def keys(self):
 
         return self._dictionary.keys()
 
     ##############################################
-    
+
     def values(self):
 
         return self._dictionary.values()
 
     ##############################################
-    
+
     def __contains__(self, name):
 
         """ Test if *name* is in the dictionary. """
@@ -135,7 +135,7 @@ class ReadOnlyAttributeDictionaryInterface(object):
         return name in self._dictionary
 
     ##############################################
-    
+
     def __setattr__(self, name, value):
 
         raise NotImplementedError
@@ -167,7 +167,7 @@ class AttributeDictionaryInterface(ReadOnlyAttributeDictionaryInterface):
     """
 
     ##############################################
-    
+
     def __setattr__(self, name, value):
 
         """ Set the value from its name. """
@@ -193,10 +193,10 @@ class AttributeDictionaryInterfaceDescriptor(AttributeDictionaryInterface):
               return self.value
           def set(self, value):
               self.value = value
-      
+
       attribute_dictionary = AttributeDictionaryInterfaceDescriptor()
       attribute_dictionary._dictionary['attribute1'] = DescriptorExample(1)
-      
+
       attribute_dictionary['attribute1'] = 2
       print attribute_dictionary['attribute1']
 
@@ -204,21 +204,21 @@ class AttributeDictionaryInterfaceDescriptor(AttributeDictionaryInterface):
       print attribute_dictionary.attribute1
 
     """
-    
+
     ##############################################
-    
+
     def _get_descriptor(self, name):
 
         return self._dictionary[name]
 
     ##############################################
-    
+
     def __getattr__(self, name):
 
         return self._get_descriptor(name).get()
 
     ##############################################
-    
+
     def __setattr__(self, name, value):
 
         return self._get_descriptor(name).set(value)
@@ -227,9 +227,3 @@ class AttributeDictionaryInterfaceDescriptor(AttributeDictionaryInterface):
 
     __getitem__ = __getattr__
     __setitem__ = __setattr__
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

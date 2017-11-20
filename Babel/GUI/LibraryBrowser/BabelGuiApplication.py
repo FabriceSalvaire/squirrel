@@ -34,9 +34,9 @@ from Babel.Application.BabelApplication import BabelApplication
 class BabelGuiApplication(GuiApplicationBase, BabelApplication):
 
     _logger = logging.getLogger(__name__)
-    
+
     ###############################################
-    
+
     def __init__(self, args):
 
         #
@@ -50,7 +50,7 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
         # <type 'sip.wrapper'>
         # <type 'sip.simplewrapper'>
         # <type 'object'>
-        # 
+        #
         # ApplicationBase.__init__
         # BabelApplication.__init__
         # QtWidgets.QApplication
@@ -60,11 +60,11 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
 
         super(BabelGuiApplication, self).__init__(args=args)
         self._logger.debug(str(args))
-        
+
         from .BabelMainWindow import MainWindow
         self._main_window = MainWindow()
         self._main_window.showMaximized()
-        
+
         self.post_init()
 
     ##############################################
@@ -79,25 +79,19 @@ class BabelGuiApplication(GuiApplicationBase, BabelApplication):
                           triggered=self.open_files)
 
     ##############################################
- 
+
     def open_files(self):
- 
+
         dialog = QtWidgets.QFileDialog.getOpenFileName
         files = dialog(self.main_window, 'Open Files')
 
     ##############################################
 
     def open_pdf(self, path):
-       
+
         path = path.absolut()
         self._logger.info("Open PDF %s" % (str(path)))
 
         from Babel.GUI.PdfViewer.PdfViewerMainWindow import PdfViewerMainWindow
         pdf_viewer_main_window = PdfViewerMainWindow(path, parent=self._main_window)
         pdf_viewer_main_window.showMaximized()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

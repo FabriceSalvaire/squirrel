@@ -66,7 +66,7 @@ class ImportSession(object):
     # fixme: purpose ?
 
     _logger = _module_logger.getChild('ImportSession')
-   
+
     ##############################################
 
     def __init__(self, importer):
@@ -74,7 +74,7 @@ class ImportSession(object):
         self._importer = importer
         self._document_database = self._importer._application.document_database
         self._document_table = self._document_database.document_table
-        
+
     ##############################################
 
     def import_path(self, path):
@@ -104,7 +104,7 @@ class ImportSession(object):
         #   - document is a duplicate (same checksum)
         #   - document was overwritten (same path)
         #   - new document
-        
+
         query = self._document_table.filter_by(path=str(file_path), shasum=file_path.shasum)
         if query.count():
             self._logger.info("File %s is already imported" % (file_path))
@@ -132,9 +132,3 @@ class ImportSession(object):
                     # Fixme: self._document_table, via importer_registry ?
                     document_row = importer_registry.import_file(self._document_database, file_path)
             self._document_table.commit()
-                
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

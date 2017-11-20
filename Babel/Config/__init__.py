@@ -44,9 +44,3 @@ def create_user_directory(purpose, directory):
     elif not os.path.isdir(directory):
         raise ValueError("Path for %s directory is not a directory (given is %s)" %
                          (purpose, directory))
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

@@ -62,7 +62,7 @@ class TestRing(unittest.TestCase):
         ring.previous()
         self.assertEqual(ring.current_index, 0)
         self.assertEqual(ring.current_item, 0)
-        
+
         ring.delete(0)
         self.assertEqual(ring.current_index, 0)
         self.assertEqual(ring.current_item, 1)
@@ -92,15 +92,9 @@ class TestRing(unittest.TestCase):
         ring.delete(2)
         self.assertEqual(ring.current_index, 0)
         self.assertEqual(ring.current_item, 0)
-        
+
 ####################################################################################################
 
 if __name__ == '__main__':
 
     unittest.main()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

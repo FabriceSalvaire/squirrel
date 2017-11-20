@@ -349,7 +349,7 @@ class Parser(object):
         pair = (p[1], p[3])
         self._logger.debug('Pair ' + str(pair))
         p[0] = pair
-   
+
     def p_value(self, p):
         ''' value : string_expression
                   | Number '''
@@ -365,7 +365,7 @@ class Parser(object):
         ''' string_concatenation_right : string_expression SHARP Identifier '''
         self._logger.debug('')
         p[0] = p[1] + self._string_definitions[p[3]]
-        
+
     def p_string_expression(self, p):
         ''' string_expression : String
                               | string_concatenation_left
@@ -414,9 +414,3 @@ class Parser(object):
             if not token:
                 break
             print(token)
-
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

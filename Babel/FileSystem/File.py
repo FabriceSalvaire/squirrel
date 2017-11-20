@@ -98,39 +98,39 @@ class Path(object):
     def __repr__(self):
 
         return 'Path ' + self._path
-        
+
     ##############################################
-        
+
     def __bool__(self):
 
         return self.exists()
 
     ##############################################
-        
+
     def exists(self):
 
         return os.path.exists(self._path)
-    
+
     ##############################################
-        
+
     def __eq__(self, other):
 
         return self._path == str(other)
 
     ##############################################
-        
+
     def __ne__(self, other):
 
         return self._path != str(other)
-    
+
     ##############################################
-        
+
     def __str__(self):
 
         return self._path
 
     ##############################################
-        
+
     @property
     def path(self):
 
@@ -185,30 +185,30 @@ class Path(object):
         return self.__class__(path)
 
     ##############################################
-        
+
     def split(self):
 
         """ Return ['', 'a', 'b', 'c'] for '/a/b/c' """
 
         # Fixme: remove ''?
-        
+
         return self._path.split(os.path.sep)
 
     ##############################################
-        
+
     def split_iterator(self):
 
         """ Return [Path /, Path /a, Path /a/b, Path /a/b/c] for '/a/b/c' """
 
         # Fixme: name ?
-        
+
         path = Directory(os.path.sep)
         for directory in self.split():
             path = path.join_directory(directory)
             yield path
 
     ##############################################
-        
+
     def split_reverse_iterator(self):
 
         for directory in reversed(self.split()):
@@ -220,7 +220,7 @@ class Path(object):
     def reverse_level_of_equality(self, other):
 
         """ Return the level of subdirectory from the top matching both paths. """
-        
+
         level = 0
         for directory1, directory2 in zip(self.split_reverse_iterator(),
                                           other.split_reverse_iterator()):
@@ -229,58 +229,58 @@ class Path(object):
             else:
                 level += 1
         return level
-    
+
     ##############################################
-        
+
     def directory_part(self):
 
         return Directory(os.path.dirname(self._path))
 
     ##############################################
-        
+
     def basename(self):
 
         return os.path.basename(self._path)
 
     ##############################################
-        
+
     def filename_part(self):
 
         # Fixme: -> basename
         return self.basename()
 
     ##############################################
-        
+
     def is_directory(self):
 
         return os.path.isdir(self._path)
 
     ##############################################
-        
+
     def is_file(self):
 
         return os.path.isfile(self._path)
 
     ##############################################
-        
+
     def is_hidden(self):
 
         return self.basename().startswith('.')
 
     ##############################################
-        
+
     @property
     def inode(self):
 
         return os.stat(self._path).st_ino
 
     ##############################################
-        
+
     @property
     def creation_time(self):
 
         return os.stat(self._path).st_ctime
-    
+
 ####################################################################################################
 
 class Directory(Path):
@@ -291,7 +291,7 @@ class Directory(Path):
     parent = Path.directory_part
 
     ##############################################
-        
+
     def __bool__(self):
 
          # Fixme: right ?
@@ -328,7 +328,7 @@ class Directory(Path):
             path = self.join_path(item)
             if path.is_directory() and (hidden or not path.is_hidden()):
                 return True
-                
+
     ##############################################
 
     def iter_files(self, hidden=False):
@@ -346,7 +346,7 @@ class Directory(Path):
             match = compiled_pattern.match(item)
             if match is not None:
                 yield item, match
-                
+
     ##############################################
 
     def walk_files(self, followlinks=False):
@@ -381,30 +381,30 @@ class File(Path):
         self._directory = self.directory_part()
 
         self._shasum = None # lazy computation
- 
+
     ##############################################
-        
+
     def __bool__(self):
 
         # Fixme: right ?
         return self.exists() and os.path.isfile(self._path)
 
     ##############################################
-        
+
     @property
     def directory(self):
 
         return self._directory
 
     ##############################################
-        
+
     @property
     def filename(self):
 
         return self._filename
 
     ##############################################
-        
+
     @property
     def extension(self):
 
@@ -415,9 +415,9 @@ class File(Path):
     def split_extension(self):
 
         return os.path.splitext(self._filename)
-        
+
     ##############################################
-        
+
     @property
     def mime_type(self):
 
@@ -435,7 +435,7 @@ class File(Path):
             return self._shasum
 
     ##############################################
-        
+
     def compute_shasum(self, algorithm=None):
 
         if algorithm is None:
@@ -450,9 +450,3 @@ class File(Path):
     def delete(self):
 
         os.unlink(self._path)
-        
-####################################################################################################
-# 
-# End
-# 
-####################################################################################################

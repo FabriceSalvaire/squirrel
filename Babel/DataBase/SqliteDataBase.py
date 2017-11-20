@@ -35,11 +35,11 @@ class SqliteDataBase(DataBase):
     _logger = logging.getLogger(__name__)
 
     ##############################################
-    
+
     def __init__(self, filename, echo=False):
 
         self._logger.debug("Open SQLite Database %s" % (filename))
-        
+
         self._filename = filename
 
         self._created = not os.path.exists(self._filename)
@@ -61,7 +61,7 @@ class SqliteDataBase(DataBase):
         return  os.path.dirname(self._filename)
 
     ##############################################
-    
+
     def create(self):
 
         # Fixme: it don't check if there is any table
@@ -74,7 +74,7 @@ class SqliteDataBase(DataBase):
         return self._created
 
     ###############################################
-    
+
     def journal_exists(self):
 
         # Fixme: New extension?
@@ -82,9 +82,9 @@ class SqliteDataBase(DataBase):
         return os.path.exists(journal_filename)
 
     ###############################################
-    
+
     def alter_table(self, table_name, columns_statements):
-        
+
         # Fixme: look at
         # http://docs.sqlalchemy.org/en/rel_0_8/core/metadata.html#sqlalchemy.schema.Table
         # extend_existing=True
@@ -96,9 +96,3 @@ class SqliteDataBase(DataBase):
                 sql_statement = 'ALTER TABLE %s ADD COLUMN ' % table_name + column + ' ' + alter_table_statement
                 self._logger.info(sql_statement)
                 self.session.execute(sql_statement)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

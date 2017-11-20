@@ -25,7 +25,7 @@ import unittest
 ####################################################################################################
 
 from Babel.Tools.RevisionVersion import RevisionVersion
-            
+
 ####################################################################################################
 
 class TestRevisionVersion(unittest.TestCase):
@@ -37,7 +37,7 @@ class TestRevisionVersion(unittest.TestCase):
         super(TestRevisionVersion, self).__init__(method_name)
 
     ##############################################
-        
+
     def test(self):
 
         v0_str = 'v3.2.1'
@@ -72,9 +72,3 @@ class TestRevisionVersion(unittest.TestCase):
 if __name__ == '__main__':
 
     unittest.main()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

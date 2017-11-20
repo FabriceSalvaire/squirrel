@@ -38,7 +38,7 @@ class DataBase(object):
     _logger = logging.getLogger(__name__)
 
     ##############################################
-    
+
     def __init__(self, connection_string, echo=False):
 
         self._engine = create_engine(connection_string, echo=echo)
@@ -61,14 +61,14 @@ class DataBase(object):
         return self._engine.has_table(table_name)
 
     ###############################################
-    
+
     def table_columns(self, table_name):
 
         table = autoload_table(self._engine, table_name)
         return [column.name for column in table.columns]
 
     ###############################################
-    
+
     def table_has_columns(self, table_name, columns):
 
         table_columns = self.table_columns(table_name)
@@ -78,13 +78,13 @@ class DataBase(object):
         return True
 
     ###############################################
-    
+
     def close_session(self):
-        
+
         self.session.close()
 
     ###############################################
-    
+
     def reflect_unknown_columns(self, table_class):
 
         unknown_columns = {}
@@ -98,9 +98,3 @@ class DataBase(object):
                 unknown_columns[column_name] = Column(column_type, **column_dict)
 
         return unknown_columns
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

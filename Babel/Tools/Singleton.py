@@ -26,14 +26,14 @@ Singleton snippets.
 
 ####################################################################################################
 
-import threading 
+import threading
 
 ####################################################################################################
 
 class SingletonMetaClass(type):
 
     """ A singleton metaclass.
-    
+
     This implementation supports subclassing and is thread safe.
     """
 
@@ -49,7 +49,7 @@ class SingletonMetaClass(type):
 
         cls._instance = None
         cls._rlock = threading.RLock() # A factory function that returns a new reentrant lock object.
-        
+
     ##############################################
 
     def __call__(cls, *args, **kwargs):
@@ -70,7 +70,7 @@ class SingletonMetaClass(type):
 class singleton(object):
 
     """ A singleton class decorator.
-    
+
     This implementation doesn't support subclassing.
     """
 
@@ -99,7 +99,7 @@ class singleton(object):
 def singleton_func(cls):
 
     """ A singleton function decorator.
-    
+
     This implementation doesn't support subclassing.
     """
 
@@ -134,9 +134,3 @@ class monostate(object):
         obj.__dict__ = cls._shared_state
 
         return obj
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################
