@@ -99,6 +99,7 @@ Actually it features:
 * a GUI showing the PDF document metadatas, pages and corresponding text blocks.
 * tools to generate thumbnails, extract text from pages
 * a `MuPDF <https://mupdf.com>`_ binding using `CFFI <https://cffi.readthedocs.io/en/latest>`_ ( **it need a dynamic library and API update** )
+  see also https://github.com/FabriceSalvaire/mupdf-cmake
 * a BibTeX parser
 * Lexique tool using British National Corpus
 * *some experimental codes to extract metadata, text, and index them.*
