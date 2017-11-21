@@ -1,9 +1,9 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2017 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,11 +22,58 @@
 
 ####################################################################################################
 
-from distutils.core import setup
-# from setuptools import setup
+import glob
+import sys
+
+from setuptools import setup, find_packages
+setuptools_available = True
+
+from BabelBuild.MuPdf import build_mupdf
 
 ####################################################################################################
 
+if sys.version_info < (3,):
+    print('Babel requires Python 3', file=sys.stderr)
+    sys.exit(1)
+
 exec(compile(open('setup_data.py').read(), 'setup_data.py', 'exec'))
+
+####################################################################################################
+
+setup_dict.update(dict(
+    # include_package_data=True, # Look in MANIFEST.in
+    packages=find_packages(exclude=['unit-test']),
+    scripts=glob.glob('bin/*'),
+    package_data={
+        'Babel.Config': ['logging.yml'],
+    },
+    ext_modules=[build_mupdf.ffi.distutils_extension()],
+    data_files = [('share/Babel/icons',['share/icons/babel.svg']),
+                  ('share/applications', ['spec/babel.desktop']),
+    ],
+
+    platforms='any',
+    zip_safe=False, # due to data files
+
+    # cf. http://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[
+        'Topic :: Scientific/Engineering',
+        'Intended Audience :: Education',
+        'Development Status :: 3 - Alpha',
+        # 'Development Status :: 4 - Beta',
+        # 'Development Status :: 5 - Production/Stable',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3.6',
+        ],
+
+    install_requires=[
+        'PyYAML',
+        'cffi',
+        'PyQt5',
+    ],
+))
+
+####################################################################################################
 
 setup(**setup_dict)
