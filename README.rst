@@ -17,10 +17,10 @@
    :height: 15px
    :width:  80px
 
-.. |BabelUrl| replace:: @project_url@
+.. |BabelUrl| replace:: https://fabricesalvaire.github.io/Biblio
 
 .. |BabelHomePage| replace:: Babel Home Page
-.. _BabelHomePage: @project_url@
+.. _BabelHomePage: https://fabricesalvaire.github.io/Biblio
 
 .. |Babel@readthedocs-badge| image:: https://readthedocs.org/projects/Babel/badge/?version=latest
    :target: http://Babel.readthedocs.org/en/latest
@@ -50,8 +50,6 @@
 ..  coverage test
 ..  https://img.shields.io/pypi/status/Django.svg
 ..  https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Star
-
-.. End
 .. -*- Mode: rst -*-
 
 .. |Python| replace:: Python
@@ -71,9 +69,9 @@
 
 .. End
 
-============
+=======
  Babel
-============
+=======
 
 |Pypi License|
 |Pypi Python Version|
@@ -87,7 +85,7 @@ Overview
 ========
 
 What is Babel ?
----------------------
+---------------
 
 Babel is a Python module which implements a unit framework.
 
@@ -104,7 +102,7 @@ What are the main features ?
 How to install it ?
 -------------------
 
-Look at the `installation <@project_url@/installation.html>`_ section in the documentation.
+Look at the `installation <https://fabricesalvaire.github.io/Biblio/installation.html>`_ section in the documentation.
 
 Credits
 =======
