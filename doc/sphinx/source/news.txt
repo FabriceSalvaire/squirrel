@@ -5,9 +5,7 @@
 
 .. no title here
 
-V0 2017-10-01
+V0 2013-02-11 
 -------------
 
 Started project
-
-.. End

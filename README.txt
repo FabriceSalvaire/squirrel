@@ -18,20 +18,29 @@
 Overview
 ========
 
+.. image:: https://raw.github.com/FabriceSalvaire/Biblio/master/doc/sphinx/source/_static/pdf-browser.pdf-viewer-mode.png
+.. image:: https://raw.github.com/FabriceSalvaire/Biblio/master/doc/sphinx/source/_static/pdf-browser.browser-mode.png
+
 What is Babel ?
 ---------------
 
-Babel is a Python module which implements a unit framework.
+Babel was an attempt to develop a PDF document manager.
+
+Actually it features:
+
+* a PDF browser that permit to navigate in the file system, display PDF documents and sort (move)
+  them in a similar way than the Geeqie image viewer.
+* a GUI showing the PDF document metadatas, pages and corresponding text blocks.
+* tools to generate thumbnails, extract text from pages
+* a `MuPDF <https://mupdf.com>`_ binding using `CFFI <https://cffi.readthedocs.io/en/latest>`_ ( **it need a dynamic library and API update** )
+* a BibTeX parser
+* Lexique tool using British National Corpus
+* *some experimental codes to extract metadata, text, and index them.*
 
 Where is the Documentation ?
 ----------------------------
 
 The documentation is available on the |BabelHomePage|_.
-
-What are the main features ?
-----------------------------
-
-* to be completed
 
 How to install it ?
 -------------------
