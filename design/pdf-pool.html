@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. PDF Pool &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../index.html"/> 
+
+  
+  <script src="../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design-notes.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference-manual.html">7. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">8. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to-refer.html">9. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../donate.html">10. How to Help Further ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../related-projects.html">11. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography.html">12. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>1. PDF Pool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/design/pdf-pool.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pdf-pool">
+<h1>1. PDF Pool<a class="headerlink" href="#pdf-pool" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="requirements">
+<h2>1.1. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="portability-consideration">
+<h3>1.1.1. Portability Consideration<a class="headerlink" href="#portability-consideration" title="Permalink to this headline">¶</a></h3>
+<p>The portability on NFS is a strong requirement, but it prohibits to use extended file attributes and
+inotify API. We can solve this issue using a client-server approach, but it requires to run the
+server on the file server.</p>
+</div>
+</div>
+<div class="section" id="types-of-hierarchy">
+<h2>1.2. Types of Hierarchy<a class="headerlink" href="#types-of-hierarchy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="shasum-indexed-hierarchy">
+<h3>1.2.1. Shasum Indexed Hierarchy<a class="headerlink" href="#shasum-indexed-hierarchy" title="Permalink to this headline">¶</a></h3>
+<p>An sha256 checksum has 256 bit and thus 64 characters in hexadecimal
+representation. It provides more than 1e77 keys.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">8</span><span class="n">d10b6dd96c1a47aaf41c50f2f7cff6f66f03a58f7ae8587c27d33456a9ede1e</span>
+</pre></div>
+</div>
+<p>We could create the following hierarchy:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">XX</span><span class="o">/</span><span class="n">XX</span><span class="o">/...</span>
+</pre></div>
+</div>
+<p>which provides 16**4 = 256 * 256 = 65536 sub-folders.</p>
+</div>
+<div class="section" id="topical-hierarchy">
+<h3>1.2.2. Topical Hierarchy<a class="headerlink" href="#topical-hierarchy" title="Permalink to this headline">¶</a></h3>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">topic1</span><span class="o">/</span><span class="n">sub</span><span class="o">-</span><span class="n">topic</span><span class="o">/</span><span class="n">sub</span><span class="o">-</span><span class="n">sub</span><span class="o">-</span><span class="n">topic</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">pdf</span>
+</pre></div>
+</div>
+<p>A journal hierarchy can be included in topical hierarchy.</p>
+</div>
+<div class="section" id="author-hierarchy">
+<h3>1.2.3. Author Hierarchy<a class="headerlink" href="#author-hierarchy" title="Permalink to this headline">¶</a></h3>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">lastname</span><span class="o">/</span><span class="n">firstname</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">pdf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="how-to-connect-these-hierarchy">
+<h2>1.3. How to connect these hierarchy?<a class="headerlink" href="#how-to-connect-these-hierarchy" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>using hard-link</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>but it is not portable across file-system, <em>if we moved the pool then all the inodes will change</em></li>
+<li>hard-links are not preserved by copy</li>
+<li>rsync requires –hard-links option</li>
+<li>file is only removed when the counter reaches zero</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>using symbolic link</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Dolphin is able to display preview for them</li>
+<li>if target is removed then the link is dangling</li>
+<li>if the link is removed then the target persist</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>on Windows / MacOsX ?</li>
+</ul>
+</div>
+<div class="section" id="file-attributes">
+<h2>1.4. File Attributes<a class="headerlink" href="#file-attributes" title="Permalink to this headline">¶</a></h2>
+<p>For each file we have:</p>
+<ul class="simple">
+<li>a pool path</li>
+<li>a path</li>
+<li>a path type: standard file, symbolic link, hard-link</li>
+<li>an inode</li>
+<li>a modification and creation date</li>
+<li>a file size</li>
+<li>a mime-type (from the path, excepted for indexed hierarchy)</li>
+<li>some extended attributes</li>
+<li>a shasum</li>
+</ul>
+<div class="section" id="inode">
+<h3>1.4.1. Inode<a class="headerlink" href="#inode" title="Permalink to this headline">¶</a></h3>
+<p>A file inode is stable over:</p>
+<ul class="simple">
+<li>renaming</li>
+<li>content change</li>
+<li>NFS</li>
+</ul>
+<p>An inode is not portable across filesystem.</p>
+<p>Python recipe:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">st_ino</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="access-modification-and-creation-time">
+<h3>1.4.2. Access, Modification and Creation Time<a class="headerlink" href="#access-modification-and-creation-time" title="Permalink to this headline">¶</a></h3>
+<p>Definition:</p>
+<ul class="simple">
+<li>atime: time of most recent access,</li>
+<li>mtime: time of most recent content modification,</li>
+<li>ctime: platform dependent</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>time of most recent metadata change on Unix,</li>
+<li>or the time of creation on Windows</li>
+</ul>
+</div></blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Action</td>
+<td>atime</td>
+<td>mtime</td>
+<td>ctime</td>
+</tr>
+<tr class="row-even"><td>When the file is created</td>
+<td>t</td>
+<td>t</td>
+<td>t</td>
+</tr>
+<tr class="row-odd"><td>When the file is modified</td>
+<td>&#160;</td>
+<td>t</td>
+<td>t</td>
+</tr>
+<tr class="row-even"><td>When the file is renamed</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>t</td>
+</tr>
+<tr class="row-odd"><td>When the file permissions are modified</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>t</td>
+</tr>
+<tr class="row-even"><td>When the file is accessed for the first time</td>
+<td>t</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<p>A more recent modification time is a signature of a content modification.</p>
+</div>
+<div class="section" id="extended-user-attributes">
+<h3>1.4.3. Extended User Attributes<a class="headerlink" href="#extended-user-attributes" title="Permalink to this headline">¶</a></h3>
+<p>Extended user attributes are only allowed for regular files and directories.</p>
+<p>Is extended file attributes supported by NFSv4?</p>
+<p>Man pages:</p>
+<ul class="simple">
+<li>attr(5) - extended attributes</li>
+<li>setfattr(1) - set extended attributes of filesystem objects</li>
+<li>getfattr(1) - get extended attributes of filesystem objects</li>
+<li>attr(1) - extended attributes on XFS filesystem objects</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setfattr</span> <span class="o">-</span><span class="n">n</span> <span class="n">user</span><span class="o">.</span><span class="n">attribute1</span> <span class="o">-</span><span class="n">v</span> <span class="mi">1234</span> <span class="n">a_file</span>
+<span class="n">getfattr</span> <span class="o">-</span><span class="n">d</span> <span class="n">a_file</span>
+  <span class="c1"># file: a_file</span>
+  <span class="n">user</span><span class="o">.</span><span class="n">attribute1</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span>
+</pre></div>
+</div>
+<p>Python binding: <a class="reference external" href="http://pyxattr.k1024.org">http://pyxattr.k1024.org</a> pyxattr Extended attributes library wrapper for Python</p>
+</div>
+</div>
+<div class="section" id="file-system-events-monitoring">
+<h2>1.5. File System Events Monitoring<a class="headerlink" href="#file-system-events-monitoring" title="Permalink to this headline">¶</a></h2>
+<p>Linux provides inotify(7) API.</p>
+<ul class="simple">
+<li>OS portability</li>
+<li>Is inotify supported by NFSv4?</li>
+</ul>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://inotify.aiken.cz/?section=inotify&amp;page=faq">http://inotify.aiken.cz/?section=inotify&amp;page=faq</a></li>
+</ul>
+<p>Python binding: <a class="reference external" href="https://github.com/seb-m/pyinotify">https://github.com/seb-m/pyinotify</a></p>
+<p>pyinotify test:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pyinotify</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">tmp</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="external-modification">
+<h2>1.6. External Modification<a class="headerlink" href="#external-modification" title="Permalink to this headline">¶</a></h2>
+<p>For indexed hierarchy, we prohibit external modification.</p>
+<p>For other hierarchy, a file can be:</p>
+<ul class="simple">
+<li>moved within the pool</li>
+<li>renamed (similar to moved)</li>
+<li>deleted (or moved outside the pool)</li>
+<li>modified</li>
+</ul>
+<p>How to detect these cases?:</p>
+<ul class="simple">
+<li>moved/renamed = same inode/shasum and different path</li>
+<li>deleted = any file having this inode/shasum</li>
+<li>modified = same inode/path and more recent mtime and shasum different</li>
+</ul>
+</div>
+<div class="section" id="how-to-check-the-pool-coherency">
+<h2>1.7. How to Check the Pool Coherency?<a class="headerlink" href="#how-to-check-the-pool-coherency" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>1.7.1. Shasum Indexed Hierarchy<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>We assume there is any external modification to the file hierarchy.</p>
+<p>For shasum indexed hierarchy, the shasum path identify uniquely the file.</p>
+<p>Check Algorithm:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">pool</span><span class="p">:</span>
+  <span class="k">if</span> <span class="n">file</span> <span class="n">shasum</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">database</span><span class="p">:</span>
+     <span class="n">file</span> <span class="ow">is</span> <span class="n">new</span>
+
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">database</span><span class="p">:</span>
+  <span class="k">if</span> <span class="n">file</span> <span class="n">path</span> <span class="n">doesn</span><span class="s1">&#39;t exists:</span>
+     <span class="n">file</span> <span class="n">was</span> <span class="n">removed</span>
+</pre></div>
+</div>
+<p>A content update will change the shasum and thus imply a missing and new file.</p>
+</div>
+<div class="section" id="other-hierarchies">
+<h3>1.7.2. other Hierarchies<a class="headerlink" href="#other-hierarchies" title="Permalink to this headline">¶</a></h3>
+<p>For other hierarchies, we cannot use the path as a key since the file name could be renamed. We can
+use instead the inode or an unique identifier extended attribute.</p>
+</div>
+</div>
+<div class="section" id="design-cases">
+<h2>1.8. Design Cases<a class="headerlink" href="#design-cases" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="case-1">
+<h3>1.8.1. Case 1<a class="headerlink" href="#case-1" title="Permalink to this headline">¶</a></h3>
+<p>Design:</p>
+<ul class="simple">
+<li>file are stored in an indexed hierarchy</li>
+<li>symbolic link are used for topical hierarchy</li>
+</ul>
+<p>Properties:</p>
+<ul class="simple">
+<li>the pool cannot have doublon</li>
+<li>symbolic link targets the shasum</li>
+<li>to delete a file we have to delete it from the indexed hierarchy</li>
+</ul>
+</div>
+<div class="section" id="case-2">
+<h3>1.8.2. Case 2<a class="headerlink" href="#case-2" title="Permalink to this headline">¶</a></h3>
+<p>Design:</p>
+<ul class="simple">
+<li>the pool uses hard link to connect the hierarchies</li>
+<li>the pool uses an indexed hierarchy</li>
+</ul>
+<p>Properties:</p>
+<ul class="simple">
+<li>the pool cannot have doublon</li>
+<li>we don’t have a direct path from link to the indexed hierarchy</li>
+<li>to delete a file we have to delete it from the indexed hierarchy</li>
+<li>we have to use rsync to copy the pool</li>
+</ul>
+</div>
+</div>
+<div class="section" id="how-to-synchronise-two-pools">
+<h2>1.9. How to Synchronise two Pools?<a class="headerlink" href="#how-to-synchronise-two-pools" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../static/jquery.js"></script>
+      <script type="text/javascript" src="../static/underscore.js"></script>
+      <script type="text/javascript" src="../static/doctools.js"></script>
+      <script type="text/javascript" src="../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

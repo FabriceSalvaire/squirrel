@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.GUI.PdfBrowser.DirectoryTocWidget &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.GUI.PdfBrowser.DirectoryTocWidget</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.GUI.PdfBrowser.DirectoryTocWidget</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1"># Notes:</span>
+<span class="c1">#  DirectoryButton: class, obj, label</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">pyqtSignal</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">Babel.FileSystem.File</span> <span class="k">import</span> <span class="n">Directory</span>
+<span class="kn">from</span> <span class="nn">Babel.GUI.Widgets.ColumnLayout</span> <span class="k">import</span> <span class="n">ColumnLayout</span>
+<span class="kn">from</span> <span class="nn">Babel.GUI.Widgets.IconLoader</span> <span class="k">import</span> <span class="n">IconLoader</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="DirectoryButton"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryButton">[docs]</a><span class="k">class</span> <span class="nc">DirectoryButton</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">):</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;DirectoryButton&#39;</span><span class="p">)</span>
+
+    <span class="n">__BULLET_RADIUS__</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">__MARGIN__</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">__LEFT_MARGIN__</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">__MARGIN__</span> <span class="o">+</span> <span class="n">__BULLET_RADIUS__</span><span class="p">)</span>
+
+    <span class="n">clicked</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="n">Directory</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DirectoryButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">TabFocus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Maximum</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMinimumHeight</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">minimumHeight</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMouseTracking</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entered</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryButton.sizeHint"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryButton.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">()</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFontMetrics</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">width</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__LEFT_MARGIN__</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MARGIN__</span>
+        <span class="c1"># height = super(PathNavigatorButton, self).sizeHint().height()</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+        <span class="c1"># self._logger.info(&quot;size hint {} {}&quot;.format(width, height))</span>
+        <span class="k">return</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryButton.enterEvent"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryButton.enterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">enterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DirectoryButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">enterEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entered</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryButton.leaveEvent"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryButton.leaveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">leaveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DirectoryButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">leaveEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entered</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryButton.mousePressEvent"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryButton.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span></div>
+        <span class="c1"># super(PathNavigatorButton, self).mousePressEvent(event)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryButton._draw_hover_background"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryButton._draw_hover_background">[docs]</a>    <span class="k">def</span> <span class="nf">_draw_hover_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entered</span><span class="p">:</span>
+            <span class="c1"># The QStyleOptionViewItem class is used to describe the parameters necessary for</span>
+            <span class="c1"># drawing a frame.</span>
+            <span class="n">option</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QStyleOptionViewItem</span><span class="p">()</span>
+            <span class="n">option</span><span class="o">.</span><span class="n">initFrom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">option</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">State_Enabled</span> <span class="o">|</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">State_MouseOver</span>
+            <span class="n">option</span><span class="o">.</span><span class="n">viewItemPosition</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QStyleOptionViewItem</span><span class="o">.</span><span class="n">OnlyOne</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">drawPrimitive</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PE_PanelItemViewItem</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">painter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryButton._foreground_color"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryButton._foreground_color">[docs]</a>    <span class="k">def</span> <span class="nf">_foreground_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">foreground_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">()</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">foregroundRole</span><span class="p">())</span>
+
+        <span class="c1"># alpha = 255</span>
+        <span class="c1"># if self._entered:</span>
+        <span class="c1">#     alpha -= alpha / 4</span>
+        <span class="c1"># foreground_color.setAlpha(alpha)</span>
+
+        <span class="k">return</span> <span class="n">foreground_color</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryButton.paintEvent"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryButton.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="n">painter</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPainter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_draw_hover_background</span><span class="p">(</span><span class="n">painter</span><span class="p">)</span>
+
+        <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">()</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+
+        <span class="n">text_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
+        <span class="n">button_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+
+        <span class="n">foreground_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_foreground_color</span><span class="p">()</span>
+
+        <span class="c1"># draw bullet</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">foreground_color</span><span class="p">)</span>
+        <span class="n">brush</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QBrush</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">black</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">SolidPattern</span><span class="p">)</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">setBrush</span><span class="p">(</span><span class="n">brush</span><span class="p">)</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">drawEllipse</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__LEFT_MARGIN__</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">button_height</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__BULLET_RADIUS__</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">__BULLET_RADIUS__</span><span class="p">)</span>
+
+        <span class="c1"># draw text</span>
+        <span class="n">text_width</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__LEFT_MARGIN__</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__LEFT_MARGIN__</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">text_width</span><span class="p">,</span> <span class="n">button_height</span><span class="p">)</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="DirectoryTocWidget"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryTocWidget">[docs]</a><span class="k">class</span> <span class="nc">DirectoryTocWidget</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QScrollArea</span><span class="p">):</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;DirectoryTocWidget&#39;</span><span class="p">)</span>
+
+    <span class="n">path_changed</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="n">Directory</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DirectoryTocWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_ui</span><span class="p">()</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryTocWidget._init_ui"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryTocWidget._init_ui">[docs]</a>    <span class="k">def</span> <span class="nf">_init_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">size_policy</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">size_policy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">icon_loader</span> <span class="o">=</span> <span class="n">IconLoader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_go_up_button</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_go_up_button</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;go-up&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_go_up_button</span><span class="o">.</span><span class="n">setAutoRaise</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_go_up_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_go_up</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_go_up_button</span><span class="p">)</span>
+
+        <span class="n">font</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFont</span><span class="p">()</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setBold</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFontMetrics</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="n">letter_width</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">width</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_letter_widgets</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_letter_column_layouts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">letter_iterator</span><span class="p">():</span>
+            <span class="n">letter_widget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">size_policy</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Preferred</span><span class="p">)</span>
+            <span class="n">size_policy</span><span class="o">.</span><span class="n">setVerticalStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">letter_widget</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">size_policy</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">letter_widget</span><span class="p">)</span>
+            <span class="n">horizontal_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">(</span><span class="n">letter_widget</span><span class="p">)</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="n">letter</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeading</span><span class="o">|</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="o">|</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+            <span class="n">size_policy</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+            <span class="n">size_policy</span><span class="o">.</span><span class="n">setHorizontalStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">size_policy</span><span class="o">.</span><span class="n">setVerticalStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">size_policy</span><span class="o">.</span><span class="n">setHeightForWidth</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">sizePolicy</span><span class="p">()</span><span class="o">.</span><span class="n">hasHeightForWidth</span><span class="p">())</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">size_policy</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setMinimumSize</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="n">letter_width</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setMaximumSize</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="n">letter_width</span><span class="p">,</span> <span class="mi">16777215</span><span class="p">))</span>
+            <span class="n">horizontal_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">column_layout</span> <span class="o">=</span> <span class="n">ColumnLayout</span><span class="p">()</span>
+            <span class="n">horizontal_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">column_layout</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_letter_widgets</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="o">=</span> <span class="n">letter_widget</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_letter_column_layouts</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="o">=</span> <span class="n">column_layout</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addStretch</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryTocWidget.letter_iterator"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryTocWidget.letter_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">letter_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span> <span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="nb">chr</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryTocWidget.update"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryTocWidget.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory_toc</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span> <span class="o">=</span> <span class="n">directory_toc</span>
+
+        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">letter_iterator</span><span class="p">():</span>
+            <span class="n">letter_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_letter_widgets</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="n">letter_widget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">letter</span> <span class="ow">in</span> <span class="n">directory_toc</span><span class="o">.</span><span class="n">letters</span><span class="p">)</span>
+            <span class="n">column_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_letter_column_layouts</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="k">while</span> <span class="n">column_layout</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+                <span class="n">widget</span> <span class="o">=</span> <span class="n">column_layout</span><span class="o">.</span><span class="n">takeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">directory_toc</span><span class="o">.</span><span class="n">letters</span><span class="p">:</span>
+            <span class="n">letter_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_letter_widgets</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="n">column_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_letter_column_layouts</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">directory_toc</span><span class="p">[</span><span class="n">letter</span><span class="p">]:</span>
+                <span class="c1"># button = QtWidgets.QPushButton(directory.basename(), parent=letter_widget)</span>
+                <span class="n">button</span> <span class="o">=</span> <span class="n">DirectoryButton</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">letter_widget</span><span class="p">)</span>
+                <span class="n">column_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
+                <span class="n">button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_changed</span><span class="p">)</span>
+            <span class="n">letter_widget</span><span class="o">.</span><span class="n">updateGeometry</span><span class="p">()</span>
+
+        <span class="c1"># self._widget.updateGeometry()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryTocWidget._go_up"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryTocWidget.html#Babel.GUI.PdfBrowser.DirectoryTocWidget.DirectoryTocWidget._go_up">[docs]</a>    <span class="k">def</span> <span class="nf">_go_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

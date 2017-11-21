@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Pdf.PdfImageCache &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Pdf.PdfImageCache</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Pdf.PdfImageCache</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">Babel.Tools.LruCache</span> <span class="k">import</span> <span class="n">LruCache</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfImageCache.html#Babel.Pdf.PdfImageCache.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pixmap</span> <span class="o">=</span> <span class="n">pixmap</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Image.key"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfImageCache.html#Babel.Pdf.PdfImageCache.Image.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Image.size"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfImageCache.html#Babel.Pdf.PdfImageCache.Image.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixmap</span><span class="o">.</span><span class="n">nbytes</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="PdfImageCache"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfImageCache.html#Babel.Pdf.PdfImageCache.PdfImageCache">[docs]</a><span class="k">class</span> <span class="nc">PdfImageCache</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1"># Fixme: __XXX__</span>
+    <span class="n">antialiasing_level</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">cache_size</span> <span class="o">=</span> <span class="mi">128</span> <span class="o">*</span> <span class="mi">1024</span> <span class="c1"># Fixme: MB</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">cache_size</span><span class="o">=</span><span class="n">cache_size</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span> <span class="o">=</span> <span class="n">LruCache</span><span class="p">(</span><span class="n">constraint</span><span class="o">=</span><span class="n">cache_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document</span> <span class="o">=</span> <span class="n">document</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfImageCache.to_pixmap"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfImageCache.html#Babel.Pdf.PdfImageCache.PdfImageCache.to_pixmap">[docs]</a>    <span class="k">def</span> <span class="nf">to_pixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">page_index</span><span class="p">,</span>
+                  <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                  <span class="n">resolution</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span>
+                  <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="p">):</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">page_index</span><span class="p">,</span>
+                                         <span class="n">rotation</span><span class="p">,</span>
+                                         <span class="n">resolution</span><span class="p">,</span>
+                                         <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">antialiasing_level</span><span class="p">)])</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">pixmap</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document</span><span class="p">[</span><span class="n">page_index</span><span class="p">]</span>
+            <span class="n">pixmap</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">to_pixmap</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span>
+                                    <span class="n">resolution</span><span class="p">,</span>
+                                    <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">antialiasing_level</span><span class="p">,</span>
+                                   <span class="p">)</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">pixmap</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

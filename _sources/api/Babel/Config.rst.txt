@@ -1,0 +1,12 @@
+********
+Config
+********
+
+.. toctree::
+  Config/Config
+  Config/ConfigInstall
+  Config/Messages
+
+.. automodule:: Babel.Config
+   :members:
+   :show-inheritance:

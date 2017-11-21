@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.1.2.2. Parser &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="6.1.2. BibTeX" href="../BibTeX.html"/>
+        <link rel="next" title="6.1.3. Config" href="../Config.html"/>
+        <link rel="prev" title="6.1.2.1. Entry" href="Entry.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../Babel.html">6.1. Babel</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../Application.html">6.1.1. Application</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../BibTeX.html">6.1.2. BibTeX</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Entry.html">6.1.2.1. Entry</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.1.2.2. Parser</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../Config.html">6.1.3. Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DataBase.html">6.1.4. DataBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FileSystem.html">6.1.5. FileSystem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GUI.html">6.1.6. GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Importer.html">6.1.7. Importer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Lexique.html">6.1.8. Lexique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Logging.html">6.1.9. Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Math.html">6.1.10. Math</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MuPdf.html">6.1.11. MuPdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Pdf.html">6.1.12. Pdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tools.html">6.1.13. Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Version.html">6.1.14. Version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference-manual.html#indexes">6.2. Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../reference-manual.html">6. API Documentation</a> &raquo;</li>
+        
+          <li><a href="../../Babel.html">6.1. Babel</a> &raquo;</li>
+        
+          <li><a href="../BibTeX.html">6.1.2. BibTeX</a> &raquo;</li>
+        
+      <li>6.1.2.2. Parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/api/Babel/BibTeX/Parser.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Babel.BibTeX.Parser">
+<span id="parser"></span><h1>6.1.2.2. Parser<a class="headerlink" href="#module-Babel.BibTeX.Parser" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Babel.BibTeX.Parser.Parser">
+<em class="property">class </em><code class="descclassname">Babel.BibTeX.Parser.</code><code class="descname">Parser</code><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser._begin_block">
+<code class="descname">_begin_block</code><span class="sig-paren">(</span><em>token</em>, <em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser._begin_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser._begin_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser._begin_identified_block">
+<code class="descname">_begin_identified_block</code><span class="sig-paren">(</span><em>token</em>, <em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser._begin_identified_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser._begin_identified_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser._build">
+<code class="descname">_build</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser._build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser._build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser._decrement_block_level">
+<code class="descname">_decrement_block_level</code><span class="sig-paren">(</span><em>token</em>, <em>token_type</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser._decrement_block_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser._decrement_block_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser._end_identified_block">
+<code class="descname">_end_identified_block</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser._end_identified_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser._end_identified_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser._increment_block_level">
+<code class="descname">_increment_block_level</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser._increment_block_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser._increment_block_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser._logger">
+<code class="descname">_logger</code><em class="property"> = &lt;Logger Babel.BibTeX.Parser (NOTSET)&gt;</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser._logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser._reset">
+<code class="descname">_reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser._reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser._reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.comment_regexp">
+<code class="descname">comment_regexp</code><em class="property"> = '(?i)&#64;comment'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.comment_regexp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.delimiters">
+<code class="descname">delimiters</code><em class="property"> = '\\{\\}\\(\\)&quot;'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.delimiters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.entry_type_regexp">
+<code class="descname">entry_type_regexp</code><em class="property"> = '&#64;[^ \\t\\{\\}\\(\\)&quot;,=&#64;\\#]+'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.entry_type_regexp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.excluded_identifier_characters">
+<code class="descname">excluded_identifier_characters</code><em class="property"> = ' \\t\\{\\}\\(\\)&quot;,=&#64;\\#'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.excluded_identifier_characters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.numbers">
+<code class="descname">numbers</code><em class="property"> = '0-9'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.numbers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_entry_definition">
+<code class="descname">p_entry_definition</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_entry_definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_entry_definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>entry_definition : Entry Identifier COMMA key_value_pair_sequence EndOfBlock</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_key_value_pair">
+<code class="descname">p_key_value_pair</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_key_value_pair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_key_value_pair" title="Permalink to this definition">¶</a></dt>
+<dd><p>key_value_pair : Identifier EQUAL value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_key_value_pair_sequence">
+<code class="descname">p_key_value_pair_sequence</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_key_value_pair_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_key_value_pair_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>key_value_pair_sequence : key_value_pair COMMA key_value_pair_sequence
+| key_value_pair COMMA
+| key_value_pair</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_statement">
+<code class="descname">p_statement</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>statement : Preamble
+| Comment
+| string_definition
+| entry_definition</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_statements">
+<code class="descname">p_statements</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_statements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_statements" title="Permalink to this definition">¶</a></dt>
+<dd><p>statements : statements statement
+| statement</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_string_concatenation_left">
+<code class="descname">p_string_concatenation_left</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_string_concatenation_left"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_string_concatenation_left" title="Permalink to this definition">¶</a></dt>
+<dd><p>string_concatenation_left : Identifier SHARP string_expression</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_string_concatenation_right">
+<code class="descname">p_string_concatenation_right</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_string_concatenation_right"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_string_concatenation_right" title="Permalink to this definition">¶</a></dt>
+<dd><p>string_concatenation_right : string_expression SHARP Identifier</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_string_definition">
+<code class="descname">p_string_definition</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_string_definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_string_definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>string_definition : StringDefinition Identifier EQUAL string_expression EndOfBlock</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_string_expression">
+<code class="descname">p_string_expression</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_string_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_string_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>string_expression : String
+| string_concatenation_left
+| string_concatenation_right</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.p_value">
+<code class="descname">p_value</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.p_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.p_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>value : string_expression
+| Number</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.preamble_regexp">
+<code class="descname">preamble_regexp</code><em class="property"> = '(?i)&#64;preamble'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.preamble_regexp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.spaces">
+<code class="descname">spaces</code><em class="property"> = ' \\t'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.spaces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.special_characters">
+<code class="descname">special_characters</code><em class="property"> = ',=&#64;\\#'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.special_characters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.states">
+<code class="descname">states</code><em class="property"> = (('CommentBrace', 'exclusive'), ('CommentParenthesis', 'exclusive'), ('PreambleBrace', 'exclusive'), ('PreambleParenthesis', 'exclusive'), ('BlockBrace', 'exclusive'), ('BlockParenthesis', 'exclusive'), ('StringQuote', 'exclusive'), ('StringBrace', 'exclusive'))</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.states" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_ANY_error">
+<code class="descname">t_ANY_error</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_ANY_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_ANY_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_ANY_newline">
+<code class="descname">t_ANY_newline</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_ANY_newline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_ANY_newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>n+</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_COMMA">
+<code class="descname">t_BlockBrace_BlockParenthesis_COMMA</code><em class="property"> = ','</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_COMMA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_EQUAL">
+<code class="descname">t_BlockBrace_BlockParenthesis_EQUAL</code><em class="property"> = '='</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_EQUAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_Identifier">
+<code class="descname">t_BlockBrace_BlockParenthesis_Identifier</code><em class="property"> = '[^ \\t\\{\\}\\(\\)&quot;,=&#64;\\#0-9][^ \\t\\{\\}\\(\\)&quot;,=&#64;\\#]*'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_Identifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_Number">
+<code class="descname">t_BlockBrace_BlockParenthesis_Number</code><em class="property"> = '\\d+'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_Number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_SHARP">
+<code class="descname">t_BlockBrace_BlockParenthesis_SHARP</code><em class="property"> = '\\#'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_SHARP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_begin_braced_string">
+<code class="descname">t_BlockBrace_BlockParenthesis_begin_braced_string</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_BlockBrace_BlockParenthesis_begin_braced_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_begin_braced_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>{</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_begin_quoted_string">
+<code class="descname">t_BlockBrace_BlockParenthesis_begin_quoted_string</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_BlockBrace_BlockParenthesis_begin_quoted_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_begin_quoted_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>“</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_ignore">
+<code class="descname">t_BlockBrace_BlockParenthesis_ignore</code><em class="property"> = ' \t'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_ignore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockBrace_rbrace">
+<code class="descname">t_BlockBrace_rbrace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_BlockBrace_rbrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockBrace_rbrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_BlockParenthesis_rparenthesis">
+<code class="descname">t_BlockParenthesis_rparenthesis</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_BlockParenthesis_rparenthesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_BlockParenthesis_rparenthesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_CommentBrace_CommentParenthesis_content">
+<code class="descname">t_CommentBrace_CommentParenthesis_content</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_CommentBrace_CommentParenthesis_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_CommentBrace_CommentParenthesis_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_CommentBrace_CommentParenthesis_ignore">
+<code class="descname">t_CommentBrace_CommentParenthesis_ignore</code><em class="property"> = ''</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_CommentBrace_CommentParenthesis_ignore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_CommentBrace_lbrace">
+<code class="descname">t_CommentBrace_lbrace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_CommentBrace_lbrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_CommentBrace_lbrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>{</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_CommentBrace_rbrace">
+<code class="descname">t_CommentBrace_rbrace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_CommentBrace_rbrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_CommentBrace_rbrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_CommentParenthesis_lparenthesis">
+<code class="descname">t_CommentParenthesis_lparenthesis</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_CommentParenthesis_lparenthesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_CommentParenthesis_lparenthesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>(</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_CommentParenthesis_rparenthesis">
+<code class="descname">t_CommentParenthesis_rparenthesis</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_CommentParenthesis_rparenthesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_CommentParenthesis_rparenthesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_PreambleBrace_PreambleParenthesis_content">
+<code class="descname">t_PreambleBrace_PreambleParenthesis_content</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_PreambleBrace_PreambleParenthesis_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_PreambleBrace_PreambleParenthesis_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_PreambleBrace_PreambleParenthesis_ignore">
+<code class="descname">t_PreambleBrace_PreambleParenthesis_ignore</code><em class="property"> = ''</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_PreambleBrace_PreambleParenthesis_ignore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_PreambleBrace_lbrace">
+<code class="descname">t_PreambleBrace_lbrace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_PreambleBrace_lbrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_PreambleBrace_lbrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>{</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_PreambleBrace_rbrace">
+<code class="descname">t_PreambleBrace_rbrace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_PreambleBrace_rbrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_PreambleBrace_rbrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_PreambleParenthesis_lparenthesis">
+<code class="descname">t_PreambleParenthesis_lparenthesis</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_PreambleParenthesis_lparenthesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_PreambleParenthesis_lparenthesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>(</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_PreambleParenthesis_rparenthesis">
+<code class="descname">t_PreambleParenthesis_rparenthesis</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_PreambleParenthesis_rparenthesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_PreambleParenthesis_rparenthesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_StringBrace_StringQuote_ignore">
+<code class="descname">t_StringBrace_StringQuote_ignore</code><em class="property"> = ''</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_StringBrace_StringQuote_ignore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_StringBrace_lbrace">
+<code class="descname">t_StringBrace_lbrace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_StringBrace_lbrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_StringBrace_lbrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>{</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_StringBrace_rbrace">
+<code class="descname">t_StringBrace_rbrace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_StringBrace_rbrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_StringBrace_rbrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_StringQuote_StringBrace_content">
+<code class="descname">t_StringQuote_StringBrace_content</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_StringQuote_StringBrace_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_StringQuote_StringBrace_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_StringQuote_end">
+<code class="descname">t_StringQuote_end</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_StringQuote_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_StringQuote_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>“</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_block_begin_brace">
+<code class="descname">t_block_begin_brace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_block_begin_brace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_block_begin_brace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_block_begin_parenthesis">
+<code class="descname">t_block_begin_parenthesis</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_block_begin_parenthesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_block_begin_parenthesis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_comment_begin_brace">
+<code class="descname">t_comment_begin_brace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_comment_begin_brace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_comment_begin_brace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_comment_begin_parenthesis">
+<code class="descname">t_comment_begin_parenthesis</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_comment_begin_parenthesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_comment_begin_parenthesis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.t_ignore">
+<code class="descname">t_ignore</code><em class="property"> = ' \t'</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_ignore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_preamble_begin_brace">
+<code class="descname">t_preamble_begin_brace</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_preamble_begin_brace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_preamble_begin_brace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_preamble_begin_parenthesis">
+<code class="descname">t_preamble_begin_parenthesis</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_preamble_begin_parenthesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_preamble_begin_parenthesis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.t_text">
+<code class="descname">t_text</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.t_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.t_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>[^&#64;]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.BibTeX.Parser.Parser.test_lexer">
+<code class="descname">test_lexer</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/BibTeX/Parser.html#Parser.test_lexer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.test_lexer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.BibTeX.Parser.Parser.tokens">
+<code class="descname">tokens</code><em class="property"> = ('Comment', 'Preamble', 'StringDefinition', 'Entry', 'EndOfBlock', 'Identifier', 'String', 'Number', 'COMMA', 'EQUAL', 'SHARP')</em><a class="headerlink" href="#Babel.BibTeX.Parser.Parser.tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Config.html" class="btn btn-neutral float-right" title="6.1.3. Config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Entry.html" class="btn btn-neutral" title="6.1.2.1. Entry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

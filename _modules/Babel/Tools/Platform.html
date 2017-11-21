@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Tools.Platform &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Tools.Platform</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Tools.Platform</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1">#                                              Audit</span>
+<span class="c1">#</span>
+<span class="c1"># - 21/08/2014 simplify ?</span>
+<span class="c1">#</span>
+<span class="c1"># - 13/02/2013 Fabrice</span>
+<span class="c1">#   - add dict interface ?</span>
+<span class="c1">#   - property</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtWidgets</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">Babel.Tools.EnumFactory</span> <span class="k">import</span> <span class="n">EnumFactory</span>
+<span class="kn">from</span> <span class="nn">Babel.Math.Functions</span> <span class="k">import</span> <span class="n">rint</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">platform_enum</span> <span class="o">=</span> <span class="n">EnumFactory</span><span class="p">(</span><span class="s1">&#39;PlatformEnum&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;linux&#39;</span><span class="p">,</span> <span class="s1">&#39;windows&#39;</span><span class="p">,</span> <span class="s1">&#39;macosx&#39;</span><span class="p">))</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="Platform"><a class="viewcode-back" href="../../../api/Babel/Tools/Platform.html#Babel.Tools.Platform.Platform">[docs]</a><span class="k">class</span> <span class="nc">Platform</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">python_version</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qt_version</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QT_VERSION_STR</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pyqt_version</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">PYQT_VERSION_STR</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_os</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">node</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distribution</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">dist</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">architecture</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">architecture</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># CPU</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cpu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_of_cores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_number_of_cores</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu_khz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cpu_khz</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu_mhz</span> <span class="o">=</span> <span class="n">rint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_cpu_khz</span><span class="p">()</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+
+        <span class="c1"># RAM</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memory_size_kb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_memory_size_kb</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memory_size_mb</span> <span class="o">=</span> <span class="n">rint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory_size_kb</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="mi">1024</span><span class="p">))</span>
+
+        <span class="c1"># Screen</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">application</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">desktop</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">desktop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">number_of_screens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">desktop</span><span class="o">.</span><span class="n">screenCount</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">desktop</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">number_of_screens</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_screens</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">screens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+
+        <span class="c1"># OpenGL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_renderer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_version</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_vendor</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_extensions</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Platform._get_os"><a class="viewcode-back" href="../../../api/Babel/Tools/Platform.html#Babel.Tools.Platform.Platform._get_os">[docs]</a>    <span class="k">def</span> <span class="nf">_get_os</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">windows</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="ow">in</span> <span class="s1">&#39;linux2&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">linux</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;unknown platform&#39;</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Platform._get_cpu"><a class="viewcode-back" href="../../../api/Babel/Tools/Platform.html#Babel.Tools.Platform.Platform._get_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_get_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">==</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">linux</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/proc/cpuinfo&#39;</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cpuinfo</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">cpuinfo</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;model name&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">==</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">windows</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Platform._get_number_of_cores"><a class="viewcode-back" href="../../../api/Babel/Tools/Platform.html#Babel.Tools.Platform.Platform._get_number_of_cores">[docs]</a>    <span class="k">def</span> <span class="nf">_get_number_of_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">==</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">linux</span><span class="p">:</span>
+            <span class="n">number_of_cores</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/proc/cpuinfo&#39;</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cpuinfo</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">cpuinfo</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;processor&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">number_of_cores</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">number_of_cores</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">==</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">windows</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;NUMBER_OF_PROCESSORS&#39;</span><span class="p">))</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Platform._get_cpu_khz"><a class="viewcode-back" href="../../../api/Babel/Tools/Platform.html#Babel.Tools.Platform.Platform._get_cpu_khz">[docs]</a>    <span class="k">def</span> <span class="nf">_get_cpu_khz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">==</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">linux</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/proc/cpuinfo&#39;</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cpuinfo</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">cpuinfo</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;cpu MHz&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">==</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">windows</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Platform._get_memory_size_kb"><a class="viewcode-back" href="../../../api/Babel/Tools/Platform.html#Babel.Tools.Platform.Platform._get_memory_size_kb">[docs]</a>    <span class="k">def</span> <span class="nf">_get_memory_size_kb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">==</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">linux</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/proc/meminfo&#39;</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cpuinfo</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">cpuinfo</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;MemTotal&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+                        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span> <span class="o">==</span> <span class="n">platform_enum</span><span class="o">.</span><span class="n">windows</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Platform.query_opengl"><a class="viewcode-back" href="../../../api/Babel/Tools/Platform.html#Babel.Tools.Platform.Platform.query_opengl">[docs]</a>    <span class="k">def</span> <span class="nf">query_opengl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="kn">import</span> <span class="nn">OpenGL.GL</span> <span class="k">as</span> <span class="nn">GL</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_renderer</span> <span class="o">=</span> <span class="n">GL</span><span class="o">.</span><span class="n">glGetString</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_RENDERER</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_version</span> <span class="o">=</span> <span class="n">GL</span><span class="o">.</span><span class="n">glGetString</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_VERSION</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_vendor</span> <span class="o">=</span> <span class="n">GL</span><span class="o">.</span><span class="n">glGetString</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_VENDOR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_extensions</span> <span class="o">=</span> <span class="n">GL</span><span class="o">.</span><span class="n">glGetString</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_EXTENSIONS</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">message_template</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">Platform </span><span class="si">%(node)s</span><span class="s1"></span>
+<span class="s1">  Hardware:</span>
+<span class="s1">    Machine: </span><span class="si">%(machine)s</span><span class="s1"></span>
+<span class="s1">    Architecture: </span><span class="si">%(architecture)s</span><span class="s1"></span>
+<span class="s1">    CPU: </span><span class="si">%(cpu)s</span><span class="s1"></span>
+<span class="s1">      Number of Cores: </span><span class="si">%(number_of_cores)u</span><span class="s1"></span>
+<span class="s1">      CPU Frequence: </span><span class="si">%(cpu_mhz)u</span><span class="s1"> MHz</span>
+<span class="s1">    Memory: </span><span class="si">%(memory_size_mb)u</span><span class="s1"> MB</span>
+<span class="s1">   OpenGL</span>
+<span class="s1">     Render: </span><span class="si">%(gl_renderer)s</span><span class="s1"></span>
+<span class="s1">     Version: </span><span class="si">%(gl_version)s</span><span class="s1"></span>
+<span class="s1">     Vendor: </span><span class="si">%(gl_vendor)s</span><span class="s1"></span>
+<span class="s1">   Number of Screens: </span><span class="si">%(number_of_screens)u</span><span class="s1"></span>
+<span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message_template</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+
+        <span class="k">for</span> <span class="n">screen</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">screens</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+
+        <span class="n">message_template</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">  Software Versions:</span>
+<span class="s1">    OS: </span><span class="si">%(os)s</span><span class="s1"></span>
+<span class="s1">    Distribution: </span><span class="si">%(distribution)s</span><span class="s1"></span>
+<span class="s1">    Python: </span><span class="si">%(python_version)s</span><span class="s1"></span>
+<span class="s1">    Qt: </span><span class="si">%(qt_version)s</span><span class="s1"></span>
+<span class="s1">    PyQt: </span><span class="si">%(pyqt_version)s</span><span class="s1"></span>
+<span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="n">message_template</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+
+        <span class="k">return</span> <span class="n">message</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="Screen"><a class="viewcode-back" href="../../../api/Babel/Tools/Platform.html#Babel.Tools.Platform.Screen">[docs]</a><span class="k">class</span> <span class="nc">Screen</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">platform_obj</span><span class="p">,</span> <span class="n">screen_id</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen_id</span> <span class="o">=</span> <span class="n">screen_id</span>
+
+        <span class="n">qt_screen_geometry</span> <span class="o">=</span> <span class="n">platform_obj</span><span class="o">.</span><span class="n">desktop</span><span class="o">.</span><span class="n">screenGeometry</span><span class="p">(</span><span class="n">screen_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">=</span> <span class="n">qt_screen_geometry</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">qt_screen_geometry</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">platform_obj</span><span class="o">.</span><span class="n">desktop</span><span class="o">.</span><span class="n">screen</span><span class="p">(</span><span class="n">screen_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dpi</span> <span class="o">=</span>  <span class="n">widget</span><span class="o">.</span><span class="n">physicalDpiX</span><span class="p">(),</span> <span class="n">widget</span><span class="o">.</span><span class="n">physicalDpiY</span><span class="p">()</span>
+
+        <span class="c1"># qt_available_geometry = self.desktop.availableGeometry(screen_id)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">message_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Screen </span><span class="si">%(screen_id)u</span><span class="s2"></span>
+<span class="s2">     geometry   </span><span class="si">%(screen_width)u</span><span class="s2">x</span><span class="si">%(screen_height)u</span><span class="s2"> px</span>
+<span class="s2">     resolution </span><span class="si">%(dpi)s</span><span class="s2"> dpi</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">message_template</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

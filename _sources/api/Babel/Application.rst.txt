@@ -1,0 +1,11 @@
+*************
+Application
+*************
+
+.. toctree::
+  Application/ApplicationBase
+  Application/BabelApplication
+
+.. automodule:: Babel.Application
+   :members:
+   :show-inheritance:

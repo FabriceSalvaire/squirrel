@@ -1,0 +1,12 @@
+*******
+MuPdf
+*******
+
+.. toctree::
+  MuPdf/TextIterator
+  MuPdf/basic-example
+  MuPdf/complex-example
+
+.. automodule:: Babel.MuPdf
+   :members:
+   :show-inheritance:

@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Tools.ProcessInfo &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Tools.ProcessInfo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Tools.ProcessInfo</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1">#                                              Audit</span>
+<span class="c1">#</span>
+<span class="c1"># - 00/00/2010 Fabrice</span>
+<span class="c1">#   xx</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="c1"># From proc(5)</span>
+<span class="n">_proc_stat_fields</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;pid&#39;</span><span class="p">,</span> <span class="c1"># %d The process ID.</span>
+    <span class="s1">&#39;comm&#39;</span><span class="p">,</span> <span class="c1"># %s The filename of the executable, in parentheses.  This is visible whether or not the</span>
+            <span class="c1"># executable is swapped out.</span>
+    <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="c1"># %c One character from the string &quot;RSDZTW&quot; where R is running, S is sleeping in an</span>
+             <span class="c1"># interruptible wait, D is waiting in uninterruptible disk sleep, Z is zombie, T is</span>
+             <span class="c1"># traced or stopped (on a signal), and W is paging.</span>
+    <span class="s1">&#39;ppid&#39;</span><span class="p">,</span> <span class="c1"># %d The PID of the parent.</span>
+    <span class="s1">&#39;pgrp&#39;</span><span class="p">,</span> <span class="c1"># %d The process group ID of the process.</span>
+    <span class="s1">&#39;session&#39;</span><span class="p">,</span> <span class="c1"># %d The session ID of the process.</span>
+    <span class="s1">&#39;tty_nr&#39;</span><span class="p">,</span> <span class="c1"># %d The tty the process uses.</span>
+    <span class="s1">&#39;tpgid&#39;</span><span class="p">,</span> <span class="c1"># %d The process group ID of the process which currently owns the tty that the process</span>
+             <span class="c1"># is connected to.</span>
+    <span class="s1">&#39;flags&#39;</span><span class="p">,</span> <span class="c1"># %lu The kernel flags word of the process. For bit meanings, see the PF_* defines in</span>
+             <span class="c1"># &lt;linux/sched.h&gt;.  Details depend on the kernel version.</span>
+    <span class="s1">&#39;minflt&#39;</span><span class="p">,</span> <span class="c1"># %lu The number of minor faults the process has made which have not required loading</span>
+              <span class="c1"># a memory page from disk.</span>
+    <span class="s1">&#39;cminflt&#39;</span><span class="p">,</span> <span class="c1"># %lu The number of minor faults that the process&#39;s waited-for children have made.</span>
+    <span class="s1">&#39;majflt&#39;</span><span class="p">,</span> <span class="c1"># %lu The number of major faults the process has made which have required loading a</span>
+              <span class="c1"># memory page from disk.</span>
+    <span class="s1">&#39;cmajflt&#39;</span><span class="p">,</span> <span class="c1"># %lu The number of major faults that the process&#39;s waited-for children have made.</span>
+    <span class="s1">&#39;utime&#39;</span><span class="p">,</span> <span class="c1"># %lu The number of jiffies that this process has been scheduled in user mode.</span>
+    <span class="s1">&#39;stime&#39;</span><span class="p">,</span> <span class="c1"># %lu The number of jiffies that this process has been scheduled in kernel mode.</span>
+    <span class="s1">&#39;cutime&#39;</span><span class="p">,</span> <span class="c1"># %ld The number of jiffies that this process&#39;s waited-for children have been</span>
+              <span class="c1"># scheduled in user mode. (See also times(2).)</span>
+    <span class="s1">&#39;cstime&#39;</span><span class="p">,</span> <span class="c1"># %ld The number of jiffies that this process&#39;s waited-for children have been</span>
+              <span class="c1"># scheduled in kernel mode.</span>
+    <span class="s1">&#39;priority&#39;</span><span class="p">,</span> <span class="c1"># %ld The standard nice value, plus fifteen.  The value is never negative in the</span>
+                <span class="c1"># kernel.</span>
+    <span class="s1">&#39;nice&#39;</span><span class="p">,</span> <span class="c1"># %ld The nice value ranges from 19 (nicest) to -19 (not nice to others).</span>
+    <span class="s1">&#39;num_threads&#39;</span><span class="p">,</span> <span class="c1"># %ld Number of threads in this process (since Linux 2.6).  Before kernel 2.6,</span>
+                   <span class="c1"># this field was hard coded to 0 as a placeholder for an earlier removed field.</span>
+    <span class="s1">&#39;itrealvalue&#39;</span><span class="p">,</span> <span class="c1"># %ld The time in jiffies before the next SIGALRM is sent to the process due to</span>
+                   <span class="c1"># an interval timer.  Since Kernel 2.6.17, this field is hard coded to 0.</span>
+    <span class="s1">&#39;starttime&#39;</span><span class="p">,</span> <span class="c1"># %lu The time in jiffies the process started after system boot.</span>
+    <span class="s1">&#39;vsize&#39;</span><span class="p">,</span> <span class="c1"># %lu Virtual memory size in bytes.</span>
+    <span class="s1">&#39;rss&#39;</span><span class="p">,</span> <span class="c1"># %ld Resident Set Size: number of pages the process has in real memory, minus 3 for</span>
+           <span class="c1"># administrative purposes. This is just the pages which count towards text, data, or</span>
+           <span class="c1"># stack space.  This does not include pages which have not been demand-loaded in, or</span>
+           <span class="c1"># which are swapped out.</span>
+    <span class="s1">&#39;rlim&#39;</span><span class="p">,</span> <span class="c1"># %lu Current limit in bytes on the rss of the process (usually 4294967295 on i386).</span>
+    <span class="s1">&#39;startcode&#39;</span><span class="p">,</span> <span class="c1"># %lu The address above which program text can run.</span>
+    <span class="s1">&#39;endcode&#39;</span><span class="p">,</span> <span class="c1"># %lu The address below which program text can run.</span>
+    <span class="s1">&#39;startstack&#39;</span><span class="p">,</span> <span class="c1"># %lu The address of the start of the stack.</span>
+    <span class="s1">&#39;kstkesp&#39;</span><span class="p">,</span> <span class="c1"># %lu The current value of esp (stack pointer), as found in the kernel stack page for</span>
+               <span class="c1"># the process.</span>
+    <span class="s1">&#39;kstkeip&#39;</span><span class="p">,</span> <span class="c1"># %lu The current EIP (instruction pointer).</span>
+    <span class="s1">&#39;signal&#39;</span><span class="p">,</span> <span class="c1"># %lu The bitmap of pending signals.</span>
+    <span class="s1">&#39;blocked&#39;</span><span class="p">,</span> <span class="c1"># %lu The bitmap of blocked signals.</span>
+    <span class="s1">&#39;sigignore&#39;</span><span class="p">,</span> <span class="c1"># %lu The bitmap of ignored signals.</span>
+    <span class="s1">&#39;sigcatch&#39;</span><span class="p">,</span> <span class="c1"># %lu The bitmap of caught signals.</span>
+    <span class="s1">&#39;wchan&#39;</span><span class="p">,</span> <span class="c1"># %lu This is the &quot;channel&quot; in which the process is waiting.  It is the address of a</span>
+             <span class="c1"># system call, and can be looked up in a namelist if you need a textual name.  (If you</span>
+             <span class="c1"># have an up-to-date /etc/psdatabase, then try ps -l to see the WCHAN field in action.)</span>
+    <span class="s1">&#39;nswap&#39;</span><span class="p">,</span> <span class="c1"># %lu Number of pages swapped (not maintained).</span>
+    <span class="s1">&#39;cnswap&#39;</span><span class="p">,</span> <span class="c1"># %lu Cumulative nswap for child processes (not maintained).</span>
+    <span class="s1">&#39;exit_signal&#39;</span><span class="p">,</span> <span class="c1"># %d Signal to be sent to parent when we die.</span>
+    <span class="s1">&#39;processor&#39;</span><span class="p">,</span> <span class="c1"># %d CPU number last executed on.</span>
+    <span class="s1">&#39;rt_priority&#39;</span><span class="p">,</span> <span class="c1"># %lu (since kernel 2.5.19) Real-time scheduling priority (see</span>
+                   <span class="c1"># sched_setscheduler(2)).</span>
+    <span class="s1">&#39;policy&#39;</span><span class="p">,</span> <span class="c1"># %lu (since kernel 2.5.19) Scheduling policy (see sched_setscheduler(2)).</span>
+    <span class="s1">&#39;delayacct_blkio_ticks&#39;</span><span class="p">,</span> <span class="c1"># %llu (since Linux 2.6.18) Aggregated block I/O delays, measured in clock ticks (centiseconds).</span>
+<span class="p">]</span>
+
+<span class="n">_proc_statm_fields</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="c1"># total program size</span>
+    <span class="s1">&#39;resident&#39;</span><span class="p">,</span> <span class="c1"># resident set size</span>
+    <span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="c1"># shared pages (from shared mappings)</span>
+    <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="c1"># text (code)</span>
+    <span class="s1">&#39;lib&#39;</span><span class="p">,</span> <span class="c1"># library (unused in Linux 2.6)</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="c1"># data + stack</span>
+    <span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="c1"># dirty pages (unused in Linux 2.6)</span>
+    <span class="p">]</span>
+
+<span class="n">_proc_files</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;stat&#39;</span><span class="p">,</span> <span class="n">_proc_stat_fields</span><span class="p">),</span>
+               <span class="p">(</span><span class="s1">&#39;statm&#39;</span><span class="p">,</span> <span class="n">_proc_statm_fields</span><span class="p">),</span>
+               <span class="p">)</span>
+
+<span class="n">_proc_fields</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fields</span> <span class="ow">in</span> <span class="n">_proc_files</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+        <span class="n">_proc_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">field</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="ProcessInfo"><a class="viewcode-back" href="../../../api/Babel/Tools/ProcessInfo.html#Babel.Tools.ProcessInfo.ProcessInfo">[docs]</a><span class="k">class</span> <span class="nc">ProcessInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;pid&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;page_size&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_page_size</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="ProcessInfo._get_page_size"><a class="viewcode-back" href="../../../api/Babel/Tools/ProcessInfo.html#Babel.Tools.ProcessInfo.ProcessInfo._get_page_size">[docs]</a>    <span class="k">def</span> <span class="nf">_get_page_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;/usr/bin/getconf&#39;</span><span class="p">,</span> <span class="s1">&#39;PAGESIZE&#39;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="n">process</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="ProcessInfo.refresh"><a class="viewcode-back" href="../../../api/Babel/Tools/ProcessInfo.html#Babel.Tools.ProcessInfo.ProcessInfo.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">field_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fields</span> <span class="ow">in</span> <span class="n">_proc_files</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/proc/</span><span class="si">%u</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+              <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[:</span><span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)]:</span>
+                  <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                      <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                  <span class="n">field</span> <span class="o">=</span> <span class="n">_proc_fields</span><span class="p">[</span><span class="n">field_counter</span><span class="p">]</span>
+                  <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                  <span class="n">field_counter</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">resident_memory_size_mb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Resident memory size in MB &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statm_resident</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_size</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

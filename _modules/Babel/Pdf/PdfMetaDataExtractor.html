@@ -1,0 +1,537 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Pdf.PdfMetaDataExtractor &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Pdf.PdfMetaDataExtractor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Pdf.PdfMetaDataExtractor</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">.PdfDocument</span> <span class="k">import</span> <span class="n">PdfDocument</span>
+<span class="kn">from</span> <span class="nn">.TextTokenizer</span> <span class="k">import</span> <span class="n">Token</span><span class="p">,</span> <span class="n">strip_word_list</span><span class="p">,</span> <span class="n">strip_non_alphabetic</span>
+<span class="kn">from</span> <span class="nn">Babel.Tools.DictionaryTools</span> <span class="k">import</span> <span class="n">DictInitialised</span>
+<span class="kn">from</span> <span class="nn">Babel.Math.Statistics</span> <span class="k">import</span> <span class="n">Gaussian</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="PdfMetaDataExtractor"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.PdfMetaDataExtractor">[docs]</a><span class="k">class</span> <span class="nc">PdfMetaDataExtractor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class implements a PDF document Metadata Extractor. &quot;&quot;&quot;</span>
+
+    <span class="n">address_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span>
+            <span class="s1">&#39;avenue&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;box&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;division&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;france&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;institute&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;laboratory&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;rue&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;university&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;usa&#39;</span><span class="p">,</span>
+            <span class="p">))</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_document</span> <span class="o">=</span> <span class="n">PdfDocument</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document_metadata</span> <span class="o">=</span> <span class="n">DocumentMetaData</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document_metadata</span><span class="p">[</span><span class="s1">&#39;number_of_pages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_document</span><span class="o">.</span><span class="n">number_of_pages</span>
+
+        <span class="c1"># metadata = pdf_document.metadata</span>
+        <span class="c1"># for key in sorted(metadata.iterkeys()):</span>
+        <span class="c1">#     unicode(metadata[key])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_first_text_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_document</span><span class="o">.</span><span class="n">first_page</span><span class="o">.</span><span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_first_text_blocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_text_page</span><span class="o">.</span><span class="n">blocks</span>
+
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_first_text_blocks</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_guess_title</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_guess_authors</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># First page has not text, could be a scan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_title_block</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_authors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_title_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_block</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">authors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_authors</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_metadata</span><span class="p">[</span><span class="s1">&#39;number_of_pages&#39;</span><span class="p">]</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_document</span><span class="o">.</span><span class="n">metadata</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfMetaDataExtractor._first_text_blocks_iterator"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.PdfMetaDataExtractor._first_text_blocks_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">_first_text_blocks_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_text_blocks</span><span class="o">.</span><span class="n">sorted_iter</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfMetaDataExtractor.dump"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.PdfMetaDataExtractor.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of pages:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_document</span><span class="o">.</span><span class="n">number_of_pages</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_document</span><span class="o">.</span><span class="n">metadata</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+
+        <span class="k">for</span> <span class="n">text_block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_text_blocks_iterator</span><span class="p">():</span>
+
+            <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Block </span><span class="si">%u</span><span class="s2"></span>
+<span class="s2">          y rank </span><span class="si">%u</span><span class="s2"></span>
+<span class="s2">          Interval </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">          Horizontal Margin </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">          Is centred </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">          Is left justifier </span><span class="si">%g</span><span class="s2"></span>
+<span class="s2">          Is right justifier </span><span class="si">%g</span><span class="s2"></span>
+<span class="s2">          Number of characters </span><span class="si">%u</span><span class="s2"></span>
+<span class="s2">          Number of words </span><span class="si">%u</span><span class="s2"></span>
+<span class="s2">          main style </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">        &quot;&quot;&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="p">(</span><span class="n">text_block</span><span class="o">.</span><span class="n">block_id</span><span class="p">,</span>
+                                   <span class="n">text_block</span><span class="o">.</span><span class="n">y_rank</span><span class="p">,</span>
+                                   <span class="n">text_block</span><span class="o">.</span><span class="n">interval</span><span class="p">,</span>
+                                   <span class="nb">str</span><span class="p">(</span><span class="n">text_block</span><span class="o">.</span><span class="n">horizontal_margin</span><span class="p">),</span>
+                                   <span class="n">text_block</span><span class="o">.</span><span class="n">is_centred</span><span class="p">,</span>
+                                   <span class="n">text_block</span><span class="o">.</span><span class="n">is_left_justified</span><span class="p">,</span>
+                                   <span class="n">text_block</span><span class="o">.</span><span class="n">is_right_justified</span><span class="p">,</span>
+                                   <span class="nb">len</span><span class="p">(</span><span class="n">text_block</span><span class="p">),</span>
+                                   <span class="n">text_block</span><span class="o">.</span><span class="n">tokenised_text</span><span class="o">.</span><span class="n">count_word_number</span><span class="p">(),</span>
+                                   <span class="nb">str</span><span class="p">(</span><span class="n">text_block</span><span class="o">.</span><span class="n">main_style</span><span class="p">)</span>
+                                   <span class="p">))</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">100</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text_block</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfMetaDataExtractor.word_ratio"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.PdfMetaDataExtractor.word_ratio">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">word_ratio</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+
+        <span class="n">token_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">word_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">tokenised_text</span><span class="p">:</span>
+            <span class="n">token_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">is_word</span><span class="p">:</span>
+                <span class="n">word_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">word_counter</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">token_counter</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfMetaDataExtractor._guess_title"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.PdfMetaDataExtractor._guess_title">[docs]</a>    <span class="k">def</span> <span class="nf">_guess_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: inference ?</span>
+
+        <span class="n">title_gaussian_style_rank</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">title_gaussian_y_rank</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">probabilities</span> <span class="o">=</span> <span class="n">TextBlockProbabilities</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">text_block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_text_blocks_iterator</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_ratio</span><span class="p">(</span><span class="n">text_block</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">5</span><span class="p">:</span>
+                <span class="n">p0</span> <span class="o">=</span> <span class="n">title_gaussian_style_rank</span><span class="p">(</span><span class="n">text_block</span><span class="o">.</span><span class="n">main_style</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+                <span class="n">p1</span> <span class="o">=</span> <span class="n">title_gaussian_y_rank</span><span class="p">(</span><span class="n">text_block</span><span class="o">.</span><span class="n">y_rank</span><span class="p">)</span>
+                <span class="n">probability</span> <span class="o">=</span> <span class="n">p0</span><span class="o">*</span><span class="n">p1</span>
+                <span class="c1"># print &#39;Title probability&#39;, probability</span>
+                <span class="n">probabilities</span><span class="o">.</span><span class="n">add_candidate</span><span class="p">(</span><span class="n">text_block</span><span class="o">=</span><span class="n">text_block</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="n">probability</span><span class="p">)</span>
+        <span class="n">probabilities</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="n">text_block_probability</span> <span class="o">=</span> <span class="n">probabilities</span><span class="o">.</span><span class="n">most_probable</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">text_block_probability</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_title_block</span> <span class="o">=</span> <span class="n">text_block_probability</span><span class="o">.</span><span class="n">text_block</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_title_block</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfMetaDataExtractor._guess_authors"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.PdfMetaDataExtractor._guess_authors">[docs]</a>    <span class="k">def</span> <span class="nf">_guess_authors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_title_block</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_authors</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">return</span>
+
+        <span class="n">probabilities</span> <span class="o">=</span> <span class="n">TextBlockProbabilities</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">text_block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_text_blocks</span><span class="o">.</span><span class="n">sorted_iter</span><span class="p">():</span>
+            <span class="n">author_gaussian_y_rank</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_block</span><span class="o">.</span><span class="n">y_rank</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">author_gaussian_number_of_words</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="n">number_of_words</span> <span class="o">=</span> <span class="n">text_block</span><span class="o">.</span><span class="n">tokenised_text</span><span class="o">.</span><span class="n">count_word_number</span><span class="p">()</span>
+            <span class="n">p0</span> <span class="o">=</span> <span class="n">author_gaussian_y_rank</span><span class="p">(</span><span class="n">text_block</span><span class="o">.</span><span class="n">y_rank</span><span class="p">)</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="n">author_gaussian_number_of_words</span><span class="p">(</span><span class="n">number_of_words</span><span class="p">)</span>
+            <span class="n">probability</span> <span class="o">=</span> <span class="n">p0</span><span class="o">*</span><span class="n">p1</span>
+            <span class="c1"># print &#39;Author probability&#39;, probability</span>
+            <span class="n">probabilities</span><span class="o">.</span><span class="n">add_candidate</span><span class="p">(</span><span class="n">text_block</span><span class="o">=</span><span class="n">text_block</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="n">probability</span><span class="p">)</span>
+        <span class="n">probabilities</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="n">author_block</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">text_block_probability</span> <span class="ow">in</span> <span class="n">probabilities</span><span class="p">:</span>
+            <span class="n">text_block</span> <span class="o">=</span> <span class="n">text_block_probability</span><span class="o">.</span><span class="n">text_block</span>
+            <span class="k">if</span> <span class="n">text_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_title_block</span><span class="p">:</span>
+                <span class="n">author_block</span> <span class="o">=</span> <span class="n">text_block</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">author_block</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_author_block</span> <span class="o">=</span> <span class="n">author_block</span>
+
+        <span class="k">if</span> <span class="n">author_block</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_authors</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">return</span>
+
+        <span class="n">author_list_words</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">space_token</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">space</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">author_block</span><span class="o">.</span><span class="n">line_iterator</span><span class="p">()):</span>
+            <span class="n">line_words</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">tokenised_text</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">is_word</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">address_words</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># remove super script like: John Doe^1 Doe\dag</span>
+                    <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">is_word</span><span class="p">:</span>
+                        <span class="n">word</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">strip_non_alphabetic</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)))</span>
+                    <span class="n">line_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">author_list_words</span><span class="p">:</span>
+                    <span class="n">author_list_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">space_token</span><span class="p">)</span>
+                <span class="n">author_list_words</span> <span class="o">+=</span> <span class="n">line_words</span>
+
+        <span class="n">author_separators</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">author_list_words</span><span class="p">):</span>
+            <span class="n">word_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">is_punctuation</span> <span class="ow">and</span> <span class="n">word_string</span> <span class="o">==</span> <span class="s1">&#39;,&#39;</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">is_word</span> <span class="ow">and</span> <span class="n">word_string</span> <span class="o">==</span> <span class="s1">&#39;and&#39;</span><span class="p">)):</span>
+                <span class="n">author_separators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">lower_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">number_of_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">author_list_words</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">author_separators</span> <span class="ow">or</span>
+            <span class="p">(</span><span class="n">author_separators</span> <span class="ow">and</span> <span class="n">author_separators</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">number_of_words</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+           <span class="n">author_separators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">number_of_words</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_authors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">upper_index</span> <span class="ow">in</span> <span class="n">author_separators</span><span class="p">:</span>
+            <span class="n">author_words</span> <span class="o">=</span> <span class="n">author_list_words</span><span class="p">[</span><span class="n">lower_index</span><span class="p">:</span><span class="n">upper_index</span><span class="p">]</span>
+            <span class="n">author_words</span> <span class="o">=</span> <span class="n">strip_word_list</span><span class="p">(</span><span class="n">author_words</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_authors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">author_words</span><span class="p">)</span>
+            <span class="n">lower_index</span> <span class="o">=</span> <span class="n">upper_index</span> <span class="o">+</span><span class="mi">1</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextBlockProbability"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.TextBlockProbability">[docs]</a><span class="k">class</span> <span class="nc">TextBlockProbability</span><span class="p">(</span><span class="n">DictInitialised</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Public Attributes:</span>
+
+<span class="sd">      :attr:`text_block`</span>
+
+<span class="sd">      :attr:`probability`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__REQUIRED_ATTRIBUTES__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;text_block&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;probability&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">probability</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextBlockProbabilities"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.TextBlockProbabilities">[docs]</a><span class="k">class</span> <span class="nc">TextBlockProbabilities</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextBlockProbabilities.add_candidate"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.TextBlockProbabilities.add_candidate">[docs]</a>    <span class="k">def</span> <span class="nf">add_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">text_block_probability</span> <span class="o">=</span> <span class="n">TextBlockProbability</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text_block_probability</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextBlockProbabilities.sort"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.TextBlockProbabilities.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextBlockProbabilities</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextBlockProbabilities.most_probable"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.TextBlockProbabilities.most_probable">[docs]</a>    <span class="k">def</span> <span class="nf">most_probable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="DocumentMetaData"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfMetaDataExtractor.html#Babel.Pdf.PdfMetaDataExtractor.DocumentMetaData">[docs]</a><span class="k">class</span> <span class="nc">DocumentMetaData</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+*********
+Lexique
+*********
+
+.. toctree::
+  Lexique/BritishNationalCorpus
+
+.. automodule:: Babel.Lexique
+   :members:
+   :show-inheritance:

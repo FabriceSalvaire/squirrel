@@ -1,0 +1,12 @@
+**********
+Importer
+**********
+
+.. toctree::
+  Importer/Importer
+  Importer/ImporterRegistry
+  Importer/PdfImporter
+
+.. automodule:: Babel.Importer
+   :members:
+   :show-inheritance:

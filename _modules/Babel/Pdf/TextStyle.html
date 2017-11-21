@@ -1,0 +1,458 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Pdf.TextStyle &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Pdf.TextStyle</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Pdf.TextStyle</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1">#                                              Audit</span>
+<span class="c1">#</span>
+<span class="c1"># - 17/06/2013 Fabrice</span>
+<span class="c1">#   attribute -&gt; _attribute</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">Babel.Tools.DictionaryTools</span> <span class="k">import</span> <span class="n">DictInitialised</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextStyle"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyle">[docs]</a><span class="k">class</span> <span class="nc">TextStyle</span><span class="p">(</span><span class="n">DictInitialised</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Public Attributes:</span>
+
+<span class="sd">      :attr:`font_family`</span>
+
+<span class="sd">      :attr:`font_size`</span>
+
+<span class="sd">      :attr:`id`</span>
+
+<span class="sd">      :attr:`is_bold`</span>
+
+<span class="sd">      :attr:`is_italic`</span>
+
+<span class="sd">      :attr:`rank` font size rank, where 0 is the largest font size.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__REQUIRED_ATTRIBUTES__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;font_family&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;font_size&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">__DEFAULT_ATTRIBUTES__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">is_bold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">is_italic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># font size rank, rank 0 for the largest</span>
+        <span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_size</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">font_size</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Style ID </span><span class="si">%(id)u</span><span class="s2"></span>
+<span class="s2">  rank        </span><span class="si">%(rank)u</span><span class="s2"></span>
+<span class="s2">  font family </span><span class="si">%(font_family)s</span><span class="s2"></span>
+<span class="s2">  font size   </span><span class="si">%(font_size).2f</span><span class="s2"></span>
+<span class="s2">  bold        </span><span class="si">%(is_bold)s</span><span class="s2"></span>
+<span class="s2">  italic      </span><span class="si">%(is_italic)s</span><span class="s2"></span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">template</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextStyles"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyles">[docs]</a><span class="k">class</span> <span class="nc">TextStyles</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextStyles.register_style"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyles.register_style">[docs]</a>    <span class="k">def</span> <span class="nf">register_style</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="p">[</span><span class="n">style</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">style</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextStyles.sort"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyles.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Sort the styles by font size. &quot;&quot;&quot;</span>
+
+        <span class="n">sorted_styles</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Compute the font size rank</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">current_font_size</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">style</span> <span class="ow">in</span> <span class="n">sorted_styles</span><span class="p">:</span>
+            <span class="c1"># Fixme: better way?</span>
+            <span class="n">font_size</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">font_size</span>
+            <span class="k">if</span> <span class="n">current_font_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">font_size</span> <span class="o">&lt;</span> <span class="n">current_font_size</span><span class="p">:</span>
+                <span class="n">rank</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">current_font_size</span> <span class="o">=</span> <span class="n">font_size</span>
+            <span class="n">style</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextStyleFrequency"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyleFrequency">[docs]</a><span class="k">class</span> <span class="nc">TextStyleFrequency</span><span class="p">(</span><span class="n">DictInitialised</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Public Attributes:</span>
+
+<span class="sd">      :attr:`style_id`</span>
+
+<span class="sd">      :attr:`count`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__REQUIRED_ATTRIBUTES__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;style_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;count&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">count</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+=</span> <span class="n">count</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextStyleFrequencies"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyleFrequencies">[docs]</a><span class="k">class</span> <span class="nc">TextStyleFrequencies</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextStyleFrequencies</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_frequencies</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; iterate from the most frequent to the less frequent font. &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sort_if_required</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sorted_frequencies</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">style_id</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">style_id</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextStyleFrequencies.fill"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyleFrequencies.fill">[docs]</a>    <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style_id</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">style_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">style_id</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">style_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span> <span class="c1"># TextStyleFrequency(style_id, count) ?</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_frequencies</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextStyleFrequencies._to_list"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyleFrequencies._to_list">[docs]</a>    <span class="k">def</span> <span class="nf">_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">TextStyleFrequency</span><span class="p">(</span><span class="n">style_id</span><span class="o">=</span><span class="n">style_id</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">style_id</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextStyleFrequencies.sort"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyleFrequencies.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_frequencies</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_list</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextStyleFrequencies._sort_if_required"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyleFrequencies._sort_if_required">[docs]</a>    <span class="k">def</span> <span class="nf">_sort_if_required</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_frequencies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextStyleFrequencies.max"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextStyle.html#Babel.Pdf.TextStyle.TextStyleFrequencies.max">[docs]</a>    <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return the :obj:`TextStyleFrequency` instance of the most frequent font. &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sort_if_required</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_frequencies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

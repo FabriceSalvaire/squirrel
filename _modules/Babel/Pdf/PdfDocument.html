@@ -1,0 +1,650 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Pdf.PdfDocument &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Pdf.PdfDocument</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Pdf.PdfDocument</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">Babel.MuPdf</span> <span class="k">as</span> <span class="nn">mupdf</span>
+<span class="kn">from</span> <span class="nn">Babel.MuPdf</span> <span class="k">import</span> <span class="n">MupdfError</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">.DocumentWords</span> <span class="k">import</span> <span class="n">DocumentWords</span>
+<span class="kn">from</span> <span class="nn">.PdfImageCache</span> <span class="k">import</span> <span class="n">PdfImageCache</span>
+<span class="kn">from</span> <span class="nn">.TextPage</span> <span class="k">import</span> <span class="n">TextPage</span>
+<span class="kn">from</span> <span class="nn">Babel.Tools.AttributeDictionaryInterface</span> <span class="k">import</span> <span class="n">ReadOnlyAttributeDictionaryInterface</span>
+<span class="kn">from</span> <span class="nn">Babel.Tools.Object</span> <span class="k">import</span> <span class="n">clone</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="PdfDocument"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.PdfDocument">[docs]</a><span class="k">class</span> <span class="nc">PdfDocument</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a PDF Document. &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_document</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pages</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># page cache</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+        <span class="c1"># try:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">new_context</span><span class="p">()</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">register_document_handlers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_document</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">open_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="c1"># except MupdfError as exception:</span>
+        <span class="c1">#     raise exception</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_document</span> <span class="o">==</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">NULL</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MupdfError</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_pages</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">count_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_document</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document_words</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image_cache</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: manage properly</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pages</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">page</span><span class="o">.</span><span class="n">_free</span><span class="p">()</span> <span class="c1"># require context</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_document</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mupdf</span><span class="o">.</span><span class="n">drop_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_document</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mupdf</span><span class="o">.</span><span class="n">drop_context</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">clone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_pages</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfDocument._page"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.PdfDocument._page">[docs]</a>    <span class="k">def</span> <span class="nf">_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pages</span><span class="p">:</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pages</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span>
+            <span class="k">return</span> <span class="n">page</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pages</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">first_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">step</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_of_pages</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfDocument.iter_until"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.PdfDocument.iter_until">[docs]</a>    <span class="k">def</span> <span class="nf">iter_until</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_page</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">last_page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">last_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_pages</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">last_page</span> <span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">words</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return a :obj:`.DocumentWords` instance. &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_words</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_document_words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_document_words</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_words</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfDocument.collect_document_words"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.PdfDocument.collect_document_words">[docs]</a>    <span class="k">def</span> <span class="nf">collect_document_words</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_page</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="n">document_words</span> <span class="o">=</span> <span class="n">DocumentWords</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_until</span><span class="p">(</span><span class="n">last_page</span><span class="p">):</span>
+            <span class="n">text_page</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">tokenised_text</span> <span class="o">=</span> <span class="n">text_page</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">tokenised_text</span>
+            <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokenised_text</span><span class="o">.</span><span class="n">word_iterator</span><span class="p">():</span>
+                <span class="n">document_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="n">document_words</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">document_words</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">image_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_image_cache</span> <span class="o">=</span> <span class="n">PdfImageCache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_cache</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="MetaData"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.MetaData">[docs]</a><span class="k">class</span> <span class="nc">MetaData</span><span class="p">(</span><span class="n">ReadOnlyAttributeDictionaryInterface</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class gives access to the PDF metadata.</span>
+
+<span class="sd">    Public Attributes:</span>
+
+<span class="sd">      :attr:`Title`</span>
+
+<span class="sd">      :attr:`Subject`</span>
+
+<span class="sd">      :attr:`Author`</span>
+
+<span class="sd">      :attr:`Creator`</span>
+
+<span class="sd">      :attr:`Producer`</span>
+
+<span class="sd">      :attr:`CreationDate`</span>
+
+<span class="sd">      :attr:`ModDate`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">MetaData</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="n">c_document</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">_c_document</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Subject&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Author&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Creator&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Producer&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;CreationDate&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;ModDate&#39;</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="c1"># Fixme: buffer size</span>
+            <span class="c1">#! string = mupdf.get_meta_info(c_document, key, size=1024)</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dictionary</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">string</span>
+
+        <span class="c1"># fz_buffer = mupdf.pdf_metadata(c_document)</span>
+        <span class="c1"># string = mupdf.decode_utf8(mupdf.buffer_data(fz_buffer))</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dictionary</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">string</span></div>
+        <span class="c1"># mupdf.drop_buffer(document._context, fz_buffer)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="Page"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.Page">[docs]</a><span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a PDF Page. Its contents could be rastered to an image or extracted as</span>
+<span class="sd">    a text representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">page_number</span><span class="p">):</span> <span class="c1"># or page_index</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document</span> <span class="o">=</span> <span class="n">document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document</span><span class="o">.</span><span class="n">_context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_document</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document</span><span class="o">.</span><span class="n">_c_document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_page_number</span> <span class="o">=</span> <span class="n">page_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_page</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">load_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_document</span><span class="p">,</span> <span class="n">page_number</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">page_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_number</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Page._free"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.Page._free">[docs]</a>    <span class="k">def</span> <span class="nf">_free</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span><span class="o">.</span><span class="n">_free</span><span class="p">()</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">drop_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_page</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">pass</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Page._bounding_box"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.Page._bounding_box">[docs]</a>    <span class="k">def</span> <span class="nf">_bounding_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Determine the size of a page at 72 dpi.</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">Rect</span><span class="p">()</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">bound_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_page</span><span class="p">,</span> <span class="n">bounds</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">bounds</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Page._make_transform"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.Page._make_transform">[docs]</a>    <span class="k">def</span> <span class="nf">_make_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+        <span class="n">transform</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">Matrix</span><span class="p">()</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">rotation</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">pre_scale</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">transform</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Page._transform_bounding_box"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.Page._transform_bounding_box">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_bounding_box</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                <span class="n">resolution</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span>
+                                <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounding_box</span><span class="p">()</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">resolution</span> <span class="o">/</span> <span class="mf">72.</span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">Matrix</span><span class="p">()</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">pre_scale</span><span class="p">(</span><span class="n">mupdf</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">rotation</span><span class="p">),</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+        <span class="n">tmp_bounds</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">Rect</span><span class="p">()</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">copy_rect</span><span class="p">(</span><span class="n">tmp_bounds</span><span class="p">,</span> <span class="n">bounds</span><span class="p">)</span>
+        <span class="n">ibounds</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">IRect</span><span class="p">()</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">round_rect</span><span class="p">(</span><span class="n">ibounds</span><span class="p">,</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">transform_rect</span><span class="p">(</span><span class="n">tmp_bounds</span><span class="p">,</span> <span class="n">transform</span><span class="p">))</span>
+
+        <span class="c1"># If a resolution is specified, check to see whether width/height are exceeded if not, unset them.</span>
+        <span class="k">if</span> <span class="n">resolution</span> <span class="o">!=</span> <span class="mi">72</span><span class="p">:</span>
+            <span class="n">actual_width</span> <span class="o">=</span> <span class="n">ibounds</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">ibounds</span><span class="o">.</span><span class="n">x0</span>
+            <span class="n">actual_height</span> <span class="o">=</span> <span class="n">ibounds</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">ibounds</span><span class="o">.</span><span class="n">y0</span>
+            <span class="k">if</span> <span class="n">width</span> <span class="ow">and</span> <span class="n">actual_width</span> <span class="o">&lt;=</span> <span class="n">width</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">height</span> <span class="ow">and</span> <span class="n">actual_height</span> <span class="o">&lt;=</span> <span class="n">height</span><span class="p">:</span>
+                <span class="n">height</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Now width or height will be 0 unless they need to be enforced.</span>
+        <span class="k">if</span> <span class="n">width</span> <span class="ow">or</span> <span class="n">height</span><span class="p">:</span>
+            <span class="n">scale_x</span> <span class="o">=</span> <span class="n">width</span>  <span class="o">/</span> <span class="p">(</span><span class="n">tmp_bounds</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">tmp_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span>
+            <span class="n">scale_y</span> <span class="o">=</span> <span class="n">height</span> <span class="o">/</span> <span class="p">(</span><span class="n">tmp_bounds</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">tmp_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fit</span><span class="p">:</span> <span class="c1"># ignore aspect</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">scale_x</span><span class="p">:</span>
+                    <span class="n">scale_x</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># keep computed width</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">scale_y</span><span class="p">:</span>
+                    <span class="n">scale_y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># keep computed height</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">scale_x</span><span class="p">:</span>
+                    <span class="n">scale_x</span> <span class="o">=</span> <span class="n">scale_y</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">scale_y</span><span class="p">:</span>
+                    <span class="n">scale_y</span> <span class="o">=</span> <span class="n">scale_x</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># take the smallest scale</span>
+                    <span class="k">if</span> <span class="n">scale_x</span> <span class="o">&gt;</span> <span class="n">scale_y</span><span class="p">:</span>
+                        <span class="n">scale_x</span> <span class="o">=</span> <span class="n">scale_y</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">scale_y</span> <span class="o">=</span> <span class="n">scale_x</span>
+            <span class="n">scale_mat</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">Matrix</span><span class="p">()</span>
+            <span class="n">mupdf</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">scale_mat</span><span class="p">,</span> <span class="n">scale_x</span><span class="p">,</span> <span class="n">scale_y</span><span class="p">)</span>
+            <span class="n">mupdf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">scale_mat</span><span class="p">)</span>
+            <span class="n">mupdf</span><span class="o">.</span><span class="n">copy_rect</span><span class="p">(</span><span class="n">tmp_bounds</span><span class="p">,</span> <span class="n">bounds</span><span class="p">)</span>
+            <span class="n">mupdf</span><span class="o">.</span><span class="n">transform_rect</span><span class="p">(</span><span class="n">tmp_bounds</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span>
+
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">round_rect</span><span class="p">(</span><span class="n">ibounds</span><span class="p">,</span> <span class="n">tmp_bounds</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">transform</span><span class="p">,</span> <span class="n">ibounds</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Page.to_png"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.Page.to_png">[docs]</a>    <span class="k">def</span> <span class="nf">to_png</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span>
+               <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+               <span class="n">resolution</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span>
+               <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+               <span class="n">antialiasing_level</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+               <span class="p">):</span>
+
+        <span class="n">transform</span><span class="p">,</span> <span class="n">bounding_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_bounding_box</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span>
+                                                               <span class="n">resolution</span><span class="p">,</span>
+                                                               <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">fit</span><span class="p">)</span>
+
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">new_pixmap_with_bbox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span>
+                                            <span class="n">mupdf</span><span class="o">.</span><span class="n">device_rgb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">),</span>
+                                            <span class="n">bounding_box</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">pixmap_set_resolution</span><span class="p">(</span><span class="n">pixmap</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span> <span class="c1"># purpose ?</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">clear_pixmap_with_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+
+        <span class="n">device</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">new_draw_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">set_aa_level</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">antialiasing_level</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">run_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_page</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">NULL</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="c1"># mupdf.write_png(self._context, pixmap, path, False)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">drop_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">drop_pixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Page.to_pixmap"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.Page.to_pixmap">[docs]</a>    <span class="k">def</span> <span class="nf">to_pixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                  <span class="n">resolution</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span>
+                  <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="n">antialiasing_level</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                  <span class="p">):</span>
+
+        <span class="n">transform</span><span class="p">,</span> <span class="n">bounding_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_bounding_box</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span>
+                                                               <span class="n">resolution</span><span class="p">,</span>
+                                                               <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">fit</span><span class="p">)</span>
+
+        <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">rect_width_height</span><span class="p">(</span><span class="n">bounding_box</span><span class="p">)</span>
+        <span class="n">np_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">new_pixmap_with_bbox_and_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span>
+                                                     <span class="n">mupdf</span><span class="o">.</span><span class="n">device_rgb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">),</span>
+                                                     <span class="n">bounding_box</span><span class="p">,</span>
+                                                     <span class="n">mupdf</span><span class="o">.</span><span class="n">np_array_uint8_ptr</span><span class="p">(</span><span class="n">np_array</span><span class="p">))</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">clear_pixmap_with_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+
+        <span class="n">device</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">new_draw_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">set_aa_level</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">antialiasing_level</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">run_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_page</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">NULL</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">drop_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">drop_pixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np_array</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Page._to_text"><a class="viewcode-back" href="../../../api/Babel/Pdf/PdfDocument.html#Babel.Pdf.PdfDocument.Page._to_text">[docs]</a>    <span class="k">def</span> <span class="nf">_to_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return a :obj:`.TextPage` instance. &quot;&quot;&quot;</span>
+
+        <span class="c1"># Fixme: usage ?</span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_transform</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">rotation</span><span class="p">)</span>
+
+        <span class="n">text_sheet</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">new_text_sheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">)</span>
+        <span class="n">text_page</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">new_text_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">)</span>
+
+        <span class="n">device</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">new_text_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">text_sheet</span><span class="p">,</span> <span class="n">text_page</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">run_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_page</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">NULL</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">drop_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">TextPage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_sheet</span><span class="p">,</span> <span class="n">text_page</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_text</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

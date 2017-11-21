@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.1.6.6.5. PathNavigator &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="6.1.6.6. Widgets" href="../Widgets.html"/>
+        <link rel="next" title="6.1.6.6.6. RowLayoutManager" href="RowLayoutManager.html"/>
+        <link rel="prev" title="6.1.6.6.4. MessageBox" href="MessageBox.html"/> 
+
+  
+  <script src="../../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../reference-manual.html">6. API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../Babel.html">6.1. Babel</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../Application.html">6.1.1. Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../BibTeX.html">6.1.2. BibTeX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Config.html">6.1.3. Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DataBase.html">6.1.4. DataBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FileSystem.html">6.1.5. FileSystem</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../GUI.html">6.1.6. GUI</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../Base.html">6.1.6.1. Base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Forms.html">6.1.6.2. Forms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../LibraryBrowser.html">6.1.6.3. LibraryBrowser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PdfBrowser.html">6.1.6.4. PdfBrowser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PdfViewer.html">6.1.6.5. PdfViewer</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../Widgets.html">6.1.6.6. Widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ui.html">6.1.6.7. ui</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Importer.html">6.1.7. Importer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Lexique.html">6.1.8. Lexique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Logging.html">6.1.9. Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Math.html">6.1.10. Math</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MuPdf.html">6.1.11. MuPdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Pdf.html">6.1.12. Pdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Tools.html">6.1.13. Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Version.html">6.1.14. Version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference-manual.html#indexes">6.2. Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../reference-manual.html">6. API Documentation</a> &raquo;</li>
+        
+          <li><a href="../../../Babel.html">6.1. Babel</a> &raquo;</li>
+        
+          <li><a href="../../GUI.html">6.1.6. GUI</a> &raquo;</li>
+        
+          <li><a href="../Widgets.html">6.1.6.6. Widgets</a> &raquo;</li>
+        
+      <li>6.1.6.6.5. PathNavigator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../../_sources/api/Babel/GUI/Widgets/PathNavigator.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Babel.GUI.Widgets.PathNavigator">
+<span id="pathnavigator"></span><h1>6.1.6.6.5. PathNavigator<a class="headerlink" href="#module-Babel.GUI.Widgets.PathNavigator" title="Permalink to this headline">¶</a></h1>
+<p>This code corresponds to a simplified translation of kdelibs/kfile/kurlnavigator.cpp to Python. I
+don’t want to rely on PyKDE4.</p>
+<dl class="class">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigator">
+<em class="property">class </em><code class="descclassname">Babel.GUI.Widgets.PathNavigator.</code><code class="descname">PathNavigator</code><span class="sig-paren">(</span><em>parent=None</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigator._clear_layout">
+<code class="descname">_clear_layout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigator._clear_layout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigator._clear_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigator._logger">
+<code class="descname">_logger</code><em class="property"> = &lt;Logger Babel.GUI.Widgets.PathNavigator.PathNavigator (NOTSET)&gt;</em><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigator._logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigator._set_path">
+<code class="descname">_set_path</code><span class="sig-paren">(</span><em>path</em>, <em>emit=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigator._set_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigator._set_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigator.path">
+<code class="descname">path</code><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigator.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigator.path_changed">
+<code class="descname">path_changed</code><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigator.path_changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigator.set_path">
+<code class="descname">set_path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigator.set_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigator.set_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton">
+<em class="property">class </em><code class="descclassname">Babel.GUI.Widgets.PathNavigator.</code><code class="descname">PathNavigatorButton</code><span class="sig-paren">(</span><em>path</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt5.QtWidgets.QPushButton</span></code></p>
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._arrow_width">
+<code class="descname">_arrow_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton._arrow_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._arrow_width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._draw_hover_background">
+<code class="descname">_draw_hover_background</code><span class="sig-paren">(</span><em>painter</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton._draw_hover_background"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._draw_hover_background" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._foreground_color">
+<code class="descname">_foreground_color</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton._foreground_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._foreground_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._is_above_arrow">
+<code class="descname">_is_above_arrow</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton._is_above_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._is_above_arrow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._is_display_hint_enabled">
+<code class="descname">_is_display_hint_enabled</code><span class="sig-paren">(</span><em>hint</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton._is_display_hint_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._is_display_hint_enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._logger">
+<code class="descname">_logger</code><em class="property"> = &lt;Logger Babel.GUI.Widgets.PathNavigator.PathNavigatorButton (NOTSET)&gt;</em><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._open_sub_directories_menu">
+<code class="descname">_open_sub_directories_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton._open_sub_directories_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._open_sub_directories_menu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._set_display_hint_enabled">
+<code class="descname">_set_display_hint_enabled</code><span class="sig-paren">(</span><em>hint</em>, <em>enable</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton._set_display_hint_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton._set_display_hint_enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.clicked">
+<code class="descname">clicked</code><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.clicked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.enterEvent">
+<code class="descname">enterEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton.enterEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.enterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.leaveEvent">
+<code class="descname">leaveEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton.leaveEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.leaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.mouseMoveEvent">
+<code class="descname">mouseMoveEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton.mouseMoveEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.mousePressEvent">
+<code class="descname">mousePressEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.paintEvent">
+<code class="descname">paintEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.path">
+<code class="descname">path</code><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.sizeHint">
+<code class="descname">sizeHint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/GUI/Widgets/PathNavigator.html#PathNavigatorButton.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.GUI.Widgets.PathNavigator.PathNavigatorButton.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="RowLayoutManager.html" class="btn btn-neutral float-right" title="6.1.6.6.6. RowLayoutManager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="MessageBox.html" class="btn btn-neutral" title="6.1.6.6.4. MessageBox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

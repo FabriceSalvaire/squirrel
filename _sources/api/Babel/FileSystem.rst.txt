@@ -1,0 +1,12 @@
+************
+FileSystem
+************
+
+.. toctree::
+  FileSystem/AutomaticFileRename
+  FileSystem/DirectoryToc
+  FileSystem/File
+
+.. automodule:: Babel.FileSystem
+   :members:
+   :show-inheritance:

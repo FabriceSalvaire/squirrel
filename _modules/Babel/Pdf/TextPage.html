@@ -1,0 +1,815 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Pdf.TextPage &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Pdf.TextPage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Pdf.TextPage</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">Babel.MuPdf</span> <span class="k">as</span> <span class="nn">mupdf</span>
+<span class="kn">import</span> <span class="nn">Babel.MuPdf.TextIterator</span> <span class="k">as</span> <span class="nn">mupdf_iter</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">.MupdfTools</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.TextStyle</span> <span class="k">import</span> <span class="n">TextStyles</span><span class="p">,</span> <span class="n">TextStyleFrequencies</span>
+<span class="kn">from</span> <span class="nn">Babel.Pdf.TextTokenizer</span> <span class="k">import</span> <span class="n">TextTokenizer</span><span class="p">,</span> <span class="n">TokenisedText</span>
+<span class="kn">from</span> <span class="nn">Babel.Math.Interval</span> <span class="k">import</span> <span class="n">IntervalInt2D</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextPage"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextPage">[docs]</a><span class="k">class</span> <span class="nc">TextPage</span><span class="p">():</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents the textual content of a page. &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">text_sheet</span><span class="p">,</span> <span class="n">text_page</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_page</span> <span class="o">=</span> <span class="n">page</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text_sheet</span> <span class="o">=</span> <span class="n">text_sheet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span> <span class="o">=</span> <span class="n">text_page</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_page_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="o">.</span><span class="n">_page_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="o">.</span><span class="n">_document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document</span><span class="o">.</span><span class="n">_context</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_styles</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextPage._free"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextPage._free">[docs]</a>    <span class="k">def</span> <span class="nf">_free</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># text_sheet and text_page was not created in TextPage</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">free_text_sheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_sheet</span><span class="p">)</span>
+        <span class="n">mupdf</span><span class="o">.</span><span class="n">free_text_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">pass</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">page_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_number</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">to_interval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span><span class="o">.</span><span class="n">mediabox</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextPage._get_styles"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextPage._get_styles">[docs]</a>    <span class="k">def</span> <span class="nf">_get_styles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return an :obj:`.TextStyles` instance for the styles of the page. &quot;&quot;&quot;</span>
+
+        <span class="n">styles</span> <span class="o">=</span> <span class="n">TextStyles</span><span class="p">()</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_sheet</span><span class="o">.</span><span class="n">style</span>
+        <span class="k">while</span> <span class="n">style</span><span class="p">:</span>
+            <span class="n">styles</span><span class="o">.</span><span class="n">register_style</span><span class="p">(</span><span class="n">to_text_style</span><span class="p">(</span><span class="n">style</span><span class="p">))</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">next</span>
+        <span class="n">styles</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">styles</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">styles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_styles</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_styles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_styles</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_styles</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextPage._append_span_text"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextPage._append_span_text">[docs]</a>    <span class="k">def</span> <span class="nf">_append_span_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_line</span><span class="p">,</span> <span class="n">span_text</span><span class="p">,</span> <span class="n">style_id</span><span class="p">):</span>
+
+        <span class="n">span_text</span> <span class="o">=</span> <span class="n">span_text</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+        <span class="n">text_span</span> <span class="o">=</span> <span class="n">TextSpan</span><span class="p">(</span><span class="n">span_text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">style_id</span><span class="p">])</span>
+        <span class="n">text_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text_span</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextPage._get_blocks"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextPage._get_blocks">[docs]</a>    <span class="k">def</span> <span class="nf">_get_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return an :obj:`TextBlocks` instance for the page. &quot;&quot;&quot;</span>
+
+        <span class="n">blocks</span> <span class="o">=</span> <span class="n">TextBlocks</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">c_block</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextBlockIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span><span class="p">):</span>
+            <span class="n">text_block</span> <span class="o">=</span> <span class="n">TextBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c_line</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextLineIterator</span><span class="p">(</span><span class="n">c_block</span><span class="p">):</span>
+                <span class="n">line_interval</span> <span class="o">=</span> <span class="n">to_interval</span><span class="p">(</span><span class="n">c_line</span><span class="o">.</span><span class="n">bbox</span><span class="p">)</span>
+                <span class="n">text_line</span> <span class="o">=</span> <span class="n">TextLine</span><span class="p">(</span><span class="n">line_interval</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">c_span</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextSpanIterator</span><span class="p">(</span><span class="n">c_line</span><span class="p">):</span>
+                    <span class="n">style_id</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">span_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">for</span> <span class="n">c_char</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextCharIterator</span><span class="p">(</span><span class="n">c_span</span><span class="p">):</span>
+                        <span class="c1"># Fixme: Style addresses are alternated. Why?</span>
+                        <span class="n">char_style_id</span> <span class="o">=</span> <span class="n">c_char</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">id</span>
+                        <span class="n">char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c_char</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">char_style_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">style_id</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">span_text</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_append_span_text</span><span class="p">(</span><span class="n">text_line</span><span class="p">,</span> <span class="n">span_text</span><span class="p">,</span> <span class="n">style_id</span><span class="p">)</span>
+                            <span class="n">style_id</span> <span class="o">=</span> <span class="n">char_style_id</span>
+                            <span class="n">span_text</span> <span class="o">=</span> <span class="n">char</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">span_text</span> <span class="o">+=</span> <span class="n">char</span>
+                    <span class="k">if</span> <span class="n">span_text</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_append_span_text</span><span class="p">(</span><span class="n">text_line</span><span class="p">,</span> <span class="n">span_text</span><span class="p">,</span> <span class="n">style_id</span><span class="p">)</span>
+               <span class="c1"># If the line is empty then start a new block</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">text_line</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">text_block</span><span class="p">):</span>
+                    <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text_block</span><span class="p">)</span>
+                    <span class="n">text_block</span> <span class="o">=</span> <span class="n">TextBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">text_block</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text_line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">text_block</span><span class="p">):</span>
+                <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text_block</span><span class="p">)</span>
+
+        <span class="n">blocks</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">blocks</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_blocks</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextPage.dump_text_style"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextPage.dump_text_style">[docs]</a>    <span class="k">def</span> <span class="nf">dump_text_style</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: old and historical code, move elsewhere ?</span>
+
+        <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;span.s</span><span class="si">%u</span><span class="s1">{font-family:&quot;</span><span class="si">%s</span><span class="s1">&quot;;font-size:</span><span class="si">%g</span><span class="s1">pt&#39;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_sheet</span><span class="o">.</span><span class="n">style</span>
+        <span class="k">while</span> <span class="n">style</span><span class="p">:</span>
+            <span class="n">font</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">font</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="n">template</span> <span class="o">%</span> <span class="p">(</span><span class="n">style</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">get_font_name</span><span class="p">(</span><span class="n">font</span><span class="p">),</span> <span class="n">style</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">font_is_italic</span><span class="p">(</span><span class="n">font</span><span class="p">):</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;;font-style:italic&#39;</span>
+            <span class="k">if</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">font_is_bold</span><span class="p">(</span><span class="n">font</span><span class="p">):</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;;font-weight:bold;&#39;</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="fm">__next__</span>
+
+        <span class="k">return</span> <span class="n">text</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextPage.dump_text_page_xml"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextPage.dump_text_page_xml">[docs]</a>    <span class="k">def</span> <span class="nf">dump_text_page_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dump_char</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: old and historical code, move elsewhere ?</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&lt;page page_number=&quot;</span><span class="si">%u</span><span class="s1">&quot;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_page_number</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextBlockIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;&lt;block bbox=&quot;&#39;</span> <span class="o">+</span> <span class="n">format_bounding_box</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextLineIterator</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="s1">&#39;&lt;line bbox=&quot;&#39;</span> <span class="o">+</span> <span class="n">format_bounding_box</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextSpanIterator</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">style_id</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">dump_char</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextCharIterator</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
+                            <span class="c1"># Fixme: Style addresses are alternated. Why?</span>
+                            <span class="k">if</span> <span class="n">char</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">style_id</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">style_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                    <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s1">&#39;&lt;/span&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                <span class="n">style</span> <span class="o">=</span> <span class="n">char</span><span class="o">.</span><span class="n">style</span>
+                                <span class="n">style_id</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">id</span>
+                                <span class="n">font_name</span> <span class="o">=</span> <span class="n">get_font_name</span><span class="p">(</span><span class="n">style</span><span class="o">.</span><span class="n">font</span><span class="p">)</span>
+                                <span class="c1"># Fixme: bounding box is wrong</span>
+                                <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s1">&#39;&lt;span bbox=&quot;&#39;</span> <span class="o">+</span> <span class="n">format_bounding_box</span><span class="p">(</span><span class="n">span</span><span class="p">)</span> <span class="o">+</span> \
+                                    <span class="s1">&#39;&quot; font=&quot;</span><span class="si">%s</span><span class="s1">&quot; size=&quot;</span><span class="si">%g</span><span class="s1">&quot;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">font_name</span><span class="p">,</span> <span class="n">style</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                            <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">6</span> <span class="o">+</span> <span class="s1">&#39;&lt;char c=&quot;</span><span class="si">%s</span><span class="s1">&quot;/&gt;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">char</span><span class="o">.</span><span class="n">c</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">style_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s1">&#39;&lt;/span&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s1">&#39;&lt;p&gt;&#39;</span> <span class="o">+</span> <span class="n">span_to_string</span><span class="p">(</span><span class="n">span</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;/p&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="s1">&#39;&lt;/line&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/block&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/page&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">return</span> <span class="n">text</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextBlocks"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextBlocks">[docs]</a><span class="k">class</span> <span class="nc">TextBlocks</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class implements a list of text blocks. &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_blocks</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextBlocks.sorted_iter"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextBlocks.sorted_iter">[docs]</a>    <span class="k">def</span> <span class="nf">sorted_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sorted_blocks</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextBlocks.append"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextBlocks.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_block</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text_block</span><span class="p">)</span>
+        <span class="n">text_block</span><span class="o">.</span><span class="n">block_id</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_blocks</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextBlocks.sort"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextBlocks.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Sort the block by y in ascending order. &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_blocks</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">)</span>
+        <span class="n">y_rank</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">text_block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sorted_blocks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">text_block</span><span class="o">.</span><span class="n">y_inf</span>
+            <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">text_block</span><span class="o">.</span><span class="n">y_inf</span><span class="p">:</span>
+                <span class="n">y_rank</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">text_block</span><span class="o">.</span><span class="n">y_rank</span> <span class="o">=</span> <span class="n">y_rank</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tokenised_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return an instance of :obj:`TokenisedText`. &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span> <span class="o">=</span> <span class="n">TokenisedText</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">tokenised_text</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextBase"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextBase">[docs]</a><span class="k">class</span> <span class="nc">TextBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tokenised_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span> <span class="o">=</span> <span class="n">TextTokenizer</span><span class="p">()</span><span class="o">.</span><span class="n">lex</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenised_text</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextBlock"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextBlock">[docs]</a><span class="k">class</span> <span class="nc">TextBlock</span><span class="p">(</span><span class="n">TextBase</span><span class="p">):</span>
+
+    <span class="c1"># block id page/index X</span>
+    <span class="c1"># text X</span>
+    <span class="c1"># styles X</span>
+    <span class="c1"># main_style X</span>
+    <span class="c1"># length X</span>
+    <span class="c1"># interval X</span>
+    <span class="c1"># is centred</span>
+    <span class="c1"># y rank</span>
+    <span class="c1"># user tag</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_page</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: parent text_page versus TextBlocks</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_block_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y_rank</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span> <span class="o">=</span> <span class="n">text_page</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_style_frequencies</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">text_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">styles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_page</span><span class="o">.</span><span class="n">styles</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">block_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_block_id</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@block_id</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">block_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_block_id</span> <span class="o">=</span> <span class="n">block_id</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">horizontal_margin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">inf</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_page</span><span class="o">.</span><span class="n">interval</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">text_page</span><span class="o">.</span><span class="n">interval</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">sup</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">sup</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_centred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_margin</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">left_margin</span> <span class="o">-</span> <span class="n">right_margin</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span><span class="p">))</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">1</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_left_justified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># value indicates column</span>
+
+        <span class="n">page_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_page</span><span class="o">.</span><span class="n">interval</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+        <span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_margin</span>
+        <span class="k">return</span> <span class="n">left_margin</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">page_width</span><span class="p">)</span> <span class="c1"># &lt; .1</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_rank</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@y_rank</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">y_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_rank</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y_rank</span> <span class="o">=</span> <span class="n">y_rank</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_right_justified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">page_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_page</span><span class="o">.</span><span class="n">interval</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+        <span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_margin</span>
+        <span class="k">return</span> <span class="n">right_margin</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">page_width</span><span class="p">)</span> <span class="c1"># &lt; .1</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_inf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_styles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">number_of_styles</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">])</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_inf</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">y_inf</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextBlock.line_iterator"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextBlock.line_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">line_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextBlock.append"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextBlock.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span> <span class="o">|=</span> <span class="n">line</span><span class="o">.</span><span class="n">interval</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">interval</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">style_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return an :obj:`TextStyleFrequencies` instance for the line. &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style_frequencies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_style_frequencies</span> <span class="o">=</span> <span class="n">TextStyleFrequencies</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_iterator</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_style_frequencies</span> <span class="o">+=</span> <span class="n">line</span><span class="o">.</span><span class="n">style_frequencies</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style_frequencies</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">main_style</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return the style having the largest occurence. &quot;&quot;&quot;</span>
+
+        <span class="n">main_style_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style_frequencies</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">style_id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">main_style_id</span><span class="p">]</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextLine"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextLine">[docs]</a><span class="k">class</span> <span class="nc">TextLine</span><span class="p">(</span><span class="n">TextBase</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a line of text.</span>
+
+<span class="sd">    A line is made of several spans where the number of</span>
+<span class="sd">    spans is identical to the number of styles of the line.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span> <span class="o">=</span> <span class="n">interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spans</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_styles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spans</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spans</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextLine.append"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextLine.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">span</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">span</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">span</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextLine.style_frequencies"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextLine.style_frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">style_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Return an :obj:`TextStyleFrequencies` instance for the line. &quot;&quot;&quot;</span>
+
+        <span class="n">style_frequencies</span> <span class="o">=</span> <span class="n">TextStyleFrequencies</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">style_id</span> <span class="o">=</span> <span class="n">span</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">span</span><span class="p">)</span>
+            <span class="n">style_frequencies</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">style_id</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">style_frequencies</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextSpan"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextPage.html#Babel.Pdf.TextPage.TextSpan">[docs]</a><span class="k">class</span> <span class="nc">TextSpan</span><span class="p">(</span><span class="n">TextBase</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a span that is a piece of text having only one style.</span>
+
+<span class="sd">    A TextSpan corresponds here to the subset of chars having the same style within a C span.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextSpan</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">style</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

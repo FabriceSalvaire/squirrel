@@ -1,0 +1,649 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.BibTeX.Parser &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.BibTeX.Parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.BibTeX.Parser</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">ply.lex</span> <span class="k">as</span> <span class="nn">lex</span>
+<span class="kn">import</span> <span class="nn">ply.yacc</span> <span class="k">as</span> <span class="nn">yacc</span>
+<span class="kn">from</span> <span class="nn">ply.lex</span> <span class="k">import</span> <span class="n">TOKEN</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">.Entry</span> <span class="k">import</span> <span class="n">Entry</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;Comment&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Preamble&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;StringDefinition&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Entry&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;EndOfBlock&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Identifier&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;String&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Number&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;COMMA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;EQUAL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SHARP&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Declare the lexer states</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;CommentBrace&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;CommentParenthesis&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;PreambleBrace&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;PreambleParenthesis&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;BlockBrace&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;BlockParenthesis&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;StringQuote&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;StringBrace&#39;</span><span class="p">,</span> <span class="s1">&#39;exclusive&#39;</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Parser.t_ANY_error"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_ANY_error">[docs]</a>    <span class="k">def</span> <span class="nf">t_ANY_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Illegal character &#39;</span><span class="si">%s</span><span class="s2">&#39; at line </span><span class="si">%u</span><span class="s2"> and position </span><span class="si">%u</span><span class="s2">&quot;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span>
+                            <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">lexpos</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_newline_position</span><span class="p">))</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="n">t_ignore</span>  <span class="o">=</span> <span class="s1">&#39; </span><span class="se">\t</span><span class="s1">&#39;</span>
+
+<div class="viewcode-block" id="Parser.t_ANY_newline"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_ANY_newline">[docs]</a>    <span class="k">def</span> <span class="nf">t_ANY_newline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\n+&#39;</span>
+        <span class="c1"># Track newline</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">lineno</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_newline_position</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">lexpos</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Parser._begin_block"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser._begin_block">[docs]</a>    <span class="k">def</span> <span class="nf">_begin_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">code_start</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">lexpos</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Initial brace level</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">push_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser._increment_block_level"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser._increment_block_level">[docs]</a>    <span class="k">def</span> <span class="nf">_increment_block_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">level</span> <span class="o">+=</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Parser._decrement_block_level"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser._decrement_block_level">[docs]</a>    <span class="k">def</span> <span class="nf">_decrement_block_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">token_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">level</span> <span class="o">-=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">token_type</span>
+            <span class="n">token</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">lexdata</span><span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">code_start</span><span class="p">:</span><span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">lexpos</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">pop_state</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">token</span></div>
+
+    <span class="c1">##############################################</span>
+    <span class="c1">#</span>
+    <span class="c1"># Comment</span>
+    <span class="c1">#</span>
+
+    <span class="n">comment_regexp</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(?i)@comment&#39;</span>
+
+<div class="viewcode-block" id="Parser.t_comment_begin_brace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_comment_begin_brace">[docs]</a>    <span class="nd">@TOKEN</span><span class="p">(</span><span class="n">comment_regexp</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\{&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">t_comment_begin_brace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_block</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;CommentBrace&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_comment_begin_parenthesis"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_comment_begin_parenthesis">[docs]</a>    <span class="nd">@TOKEN</span><span class="p">(</span><span class="n">comment_regexp</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\(&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">t_comment_begin_parenthesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_block</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;CommentParenthesis&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_CommentBrace_lbrace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_CommentBrace_lbrace">[docs]</a>    <span class="k">def</span> <span class="nf">t_CommentBrace_lbrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\{&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_increment_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_CommentParenthesis_lparenthesis"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_CommentParenthesis_lparenthesis">[docs]</a>    <span class="k">def</span> <span class="nf">t_CommentParenthesis_lparenthesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\(&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_increment_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_CommentBrace_rbrace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_CommentBrace_rbrace">[docs]</a>    <span class="k">def</span> <span class="nf">t_CommentBrace_rbrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\}&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decrement_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;Comment&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_CommentParenthesis_rparenthesis"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_CommentParenthesis_rparenthesis">[docs]</a>    <span class="k">def</span> <span class="nf">t_CommentParenthesis_rparenthesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\)&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decrement_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;Comment&#39;</span><span class="p">)</span></div>
+
+    <span class="n">t_CommentBrace_CommentParenthesis_ignore</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="Parser.t_CommentBrace_CommentParenthesis_content"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_CommentBrace_CommentParenthesis_content">[docs]</a>    <span class="k">def</span> <span class="nf">t_CommentBrace_CommentParenthesis_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;.&#39;</span>
+        <span class="c1">#self._logger.debug(&#39;&#39;)</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##############################################</span>
+    <span class="c1">#</span>
+    <span class="c1"># Preamble</span>
+    <span class="c1">#</span>
+
+    <span class="n">preamble_regexp</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(?i)@preamble&#39;</span>
+
+<div class="viewcode-block" id="Parser.t_preamble_begin_brace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_preamble_begin_brace">[docs]</a>    <span class="nd">@TOKEN</span><span class="p">(</span><span class="n">preamble_regexp</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\{&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">t_preamble_begin_brace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_block</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;PreambleBrace&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_preamble_begin_parenthesis"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_preamble_begin_parenthesis">[docs]</a>    <span class="nd">@TOKEN</span><span class="p">(</span><span class="n">preamble_regexp</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\(&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">t_preamble_begin_parenthesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_block</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;PreambleParenthesis&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_PreambleBrace_lbrace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_PreambleBrace_lbrace">[docs]</a>    <span class="k">def</span> <span class="nf">t_PreambleBrace_lbrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\{&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_increment_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_PreambleParenthesis_lparenthesis"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_PreambleParenthesis_lparenthesis">[docs]</a>    <span class="k">def</span> <span class="nf">t_PreambleParenthesis_lparenthesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\(&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_increment_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_PreambleBrace_rbrace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_PreambleBrace_rbrace">[docs]</a>    <span class="k">def</span> <span class="nf">t_PreambleBrace_rbrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\}&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decrement_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;Preamble&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_PreambleParenthesis_rparenthesis"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_PreambleParenthesis_rparenthesis">[docs]</a>    <span class="k">def</span> <span class="nf">t_PreambleParenthesis_rparenthesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\)&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decrement_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;Preamble&#39;</span><span class="p">)</span></div>
+
+    <span class="n">t_PreambleBrace_PreambleParenthesis_ignore</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="Parser.t_PreambleBrace_PreambleParenthesis_content"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_PreambleBrace_PreambleParenthesis_content">[docs]</a>    <span class="k">def</span> <span class="nf">t_PreambleBrace_PreambleParenthesis_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;.&#39;</span>
+        <span class="c1">#self._logger.debug(&#39;&#39;)</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##############################################</span>
+    <span class="c1">#</span>
+    <span class="c1"># Block</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="Parser._begin_identified_block"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser._begin_identified_block">[docs]</a>    <span class="k">def</span> <span class="nf">_begin_identified_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">:</span>
+            <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;StringDefinition&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Entry&#39;</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">push_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser._end_identified_block"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser._end_identified_block">[docs]</a>    <span class="k">def</span> <span class="nf">_end_identified_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;EndOfBlock&#39;</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">pop_state</span><span class="p">()</span></div>
+
+    <span class="n">spaces</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39; \t&#39;</span>
+    <span class="n">delimiters</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\{\}\(\)&quot;&#39;</span>
+    <span class="n">special_characters</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;,=@\#&#39;</span>
+    <span class="n">numbers</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;0-9&#39;</span>
+    <span class="n">excluded_identifier_characters</span> <span class="o">=</span> <span class="n">spaces</span> <span class="o">+</span> <span class="n">delimiters</span> <span class="o">+</span> <span class="n">special_characters</span>
+    <span class="n">entry_type_regexp</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;@[^&#39;</span> <span class="o">+</span> <span class="n">excluded_identifier_characters</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;]+&#39;</span>
+
+<div class="viewcode-block" id="Parser.t_block_begin_brace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_block_begin_brace">[docs]</a>    <span class="nd">@TOKEN</span><span class="p">(</span><span class="n">entry_type_regexp</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\{&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">t_block_begin_brace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_identified_block</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;BlockBrace&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">token</span></div>
+
+<div class="viewcode-block" id="Parser.t_block_begin_parenthesis"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_block_begin_parenthesis">[docs]</a>    <span class="nd">@TOKEN</span><span class="p">(</span><span class="n">entry_type_regexp</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\(&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">t_block_begin_parenthesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_identified_block</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;BlockParenthesis&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">token</span></div>
+
+<div class="viewcode-block" id="Parser.t_BlockBrace_rbrace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_BlockBrace_rbrace">[docs]</a>    <span class="k">def</span> <span class="nf">t_BlockBrace_rbrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\}&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_identified_block</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">token</span></div>
+
+<div class="viewcode-block" id="Parser.t_BlockParenthesis_rparenthesis"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_BlockParenthesis_rparenthesis">[docs]</a>    <span class="k">def</span> <span class="nf">t_BlockParenthesis_rparenthesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\)&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_identified_block</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">token</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="n">t_BlockBrace_BlockParenthesis_ignore</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="se">\t</span><span class="s1">&#39;</span>
+    <span class="n">t_BlockBrace_BlockParenthesis_SHARP</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\#&#39;</span>
+    <span class="n">t_BlockBrace_BlockParenthesis_EQUAL</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;=&#39;</span>
+    <span class="n">t_BlockBrace_BlockParenthesis_COMMA</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;,&#39;</span>
+    <span class="n">t_BlockBrace_BlockParenthesis_Identifier</span> <span class="o">=</span> \
+        <span class="sa">r</span><span class="s1">&#39;[^&#39;</span> <span class="o">+</span> <span class="n">excluded_identifier_characters</span> <span class="o">+</span> <span class="n">numbers</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="o">+</span> \
+        <span class="sa">r</span><span class="s1">&#39;[^&#39;</span> <span class="o">+</span> <span class="n">excluded_identifier_characters</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;]*&#39;</span>
+    <span class="n">t_BlockBrace_BlockParenthesis_Number</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\d+&#39;</span>
+
+    <span class="c1">##############################################</span>
+    <span class="c1">#</span>
+    <span class="c1"># String</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="Parser.t_BlockBrace_BlockParenthesis_begin_quoted_string"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_begin_quoted_string">[docs]</a>    <span class="k">def</span> <span class="nf">t_BlockBrace_BlockParenthesis_begin_quoted_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;&quot;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_block</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;StringQuote&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_BlockBrace_BlockParenthesis_begin_braced_string"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_BlockBrace_BlockParenthesis_begin_braced_string">[docs]</a>    <span class="k">def</span> <span class="nf">t_BlockBrace_BlockParenthesis_begin_braced_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;{&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_begin_block</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;StringBrace&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_StringBrace_lbrace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_StringBrace_lbrace">[docs]</a>    <span class="k">def</span> <span class="nf">t_StringBrace_lbrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\{&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_increment_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_StringQuote_end"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_StringQuote_end">[docs]</a>    <span class="k">def</span> <span class="nf">t_StringQuote_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;&quot;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decrement_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;String&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.t_StringBrace_rbrace"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_StringBrace_rbrace">[docs]</a>    <span class="k">def</span> <span class="nf">t_StringBrace_rbrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;\}&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decrement_block_level</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s1">&#39;String&#39;</span><span class="p">)</span></div>
+
+    <span class="n">t_StringBrace_StringQuote_ignore</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="Parser.t_StringQuote_StringBrace_content"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_StringQuote_StringBrace_content">[docs]</a>    <span class="k">def</span> <span class="nf">t_StringQuote_StringBrace_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;.&#39;</span>
+        <span class="c1">#self._logger.debug(&#39;&#39;)</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##############################################</span>
+    <span class="c1">#</span>
+    <span class="c1"># Outer Contents</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="Parser.t_text"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.t_text">[docs]</a>    <span class="k">def</span> <span class="nf">t_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sa">r</span><span class="s1">&#39;[^@]&#39;</span>
+        <span class="c1">#self._logger.debug(&#39;&#39;)</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##############################################</span>
+    <span class="c1">#</span>
+    <span class="c1"># Grammar</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="Parser.p_statements"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_statements">[docs]</a>    <span class="k">def</span> <span class="nf">p_statements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; statements : statements statement</span>
+<span class="sd">                       | statement &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.p_statement"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_statement">[docs]</a>    <span class="k">def</span> <span class="nf">p_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; statement : Preamble</span>
+<span class="sd">                      | Comment</span>
+<span class="sd">                      | string_definition</span>
+<span class="sd">                      | entry_definition &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.p_string_definition"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_string_definition">[docs]</a>    <span class="k">def</span> <span class="nf">p_string_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="s1">&#39;string_definition : StringDefinition Identifier EQUAL string_expression EndOfBlock&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Define string </span><span class="si">%s</span><span class="s1"> = &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_string_definitions</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Parser.p_entry_definition"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_entry_definition">[docs]</a>    <span class="k">def</span> <span class="nf">p_entry_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="s1">&#39;entry_definition : Entry Identifier COMMA key_value_pair_sequence EndOfBlock&#39;</span>
+        <span class="n">entry_type</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">pairs</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">pairs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Entry</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Parser.p_key_value_pair_sequence"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_key_value_pair_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">p_key_value_pair_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; key_value_pair_sequence : key_value_pair COMMA key_value_pair_sequence</span>
+<span class="sd">                                    | key_value_pair COMMA</span>
+<span class="sd">                                    | key_value_pair &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">pairs</span><span class="p">,</span> <span class="n">pair</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pairs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pair</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pair</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Parser.p_key_value_pair"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_key_value_pair">[docs]</a>    <span class="k">def</span> <span class="nf">p_key_value_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="s1">&#39; key_value_pair : Identifier EQUAL value &#39;</span>
+        <span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Pair &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pair</span><span class="p">))</span>
+        <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pair</span></div>
+
+<div class="viewcode-block" id="Parser.p_value"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_value">[docs]</a>    <span class="k">def</span> <span class="nf">p_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; value : string_expression</span>
+<span class="sd">                  | Number &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Parser.p_string_concatenation_left"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_string_concatenation_left">[docs]</a>    <span class="k">def</span> <span class="nf">p_string_concatenation_left</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; string_concatenation_left : Identifier SHARP string_expression &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string_definitions</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Parser.p_string_concatenation_right"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_string_concatenation_right">[docs]</a>    <span class="k">def</span> <span class="nf">p_string_concatenation_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; string_concatenation_right : string_expression SHARP Identifier &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string_definitions</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="Parser.p_string_expression"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.p_string_expression">[docs]</a>    <span class="k">def</span> <span class="nf">p_string_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; string_expression : String</span>
+<span class="sd">                              | string_concatenation_left</span>
+<span class="sd">                              | string_concatenation_right &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Parser._build"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser._build">[docs]</a>    <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span> <span class="o">=</span> <span class="n">lex</span><span class="o">.</span><span class="n">lex</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span> <span class="o">=</span> <span class="n">yacc</span><span class="o">.</span><span class="n">yacc</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Parser._reset"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser._reset">[docs]</a>    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_newline_position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_string_definitions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Parser.parse"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lexer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Parser.test_lexer"><a class="viewcode-back" href="../../../api/Babel/BibTeX/Parser.html#Babel.BibTeX.Parser.Parser.test_lexer">[docs]</a>    <span class="k">def</span> <span class="nf">test_lexer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">token</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

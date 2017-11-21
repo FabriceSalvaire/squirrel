@@ -1,0 +1,11 @@
+***********************
+BritishNationalCorpus
+***********************
+
+.. toctree::
+  BritishNationalCorpus/PartOfSpeechTags
+  BritishNationalCorpus/make-bnc-database
+
+.. automodule:: Babel.Lexique.BritishNationalCorpus
+   :members:
+   :show-inheritance:

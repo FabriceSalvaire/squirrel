@@ -1,0 +1,8 @@
+***************
+basic-example
+***************
+
+.. automodule:: Babel.MuPdf.basic-example
+   :members:
+   :show-inheritance:
+

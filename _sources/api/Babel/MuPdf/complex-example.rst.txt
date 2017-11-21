@@ -1,0 +1,8 @@
+*****************
+complex-example
+*****************
+
+.. automodule:: Babel.MuPdf.complex-example
+   :members:
+   :show-inheritance:
+

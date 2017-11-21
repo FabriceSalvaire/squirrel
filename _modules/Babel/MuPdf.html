@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.MuPdf &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.MuPdf</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.MuPdf</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;This module implements a Python bindings for the MuPdf library using the C Foreign Function</span>
+<span class="sd">Interface for Python.</span>
+
+<span class="sd">The difference to the C API are the followings:</span>
+
+<span class="sd">* The &quot;fz_&quot; prefix is removed.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">_mupdf</span> <span class="k">import</span> <span class="n">ffi</span> <span class="k">as</span> <span class="n">_ffi</span>
+<span class="kn">from</span> <span class="nn">_mupdf</span> <span class="k">import</span> <span class="n">lib</span> <span class="k">as</span> <span class="n">_lib</span>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Numpy interface</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="np_array_ptr"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.np_array_ptr">[docs]</a><span class="k">def</span> <span class="nf">np_array_ptr</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;void *&#39;</span><span class="p">,</span> <span class="n">array</span><span class="o">.</span><span class="n">__array_interface__</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="np_array_uint8_ptr"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.np_array_uint8_ptr">[docs]</a><span class="k">def</span> <span class="nf">np_array_uint8_ptr</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;unsigned char *&#39;</span><span class="p">,</span> <span class="n">array</span><span class="o">.</span><span class="n">__array_interface__</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Wrong Numpy array type&quot;</span><span class="p">)</span></div>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># String Tools</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="decode_utf8"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.decode_utf8">[docs]</a><span class="k">def</span> <span class="nf">decode_utf8</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">ptr</span> <span class="o">==</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">max_length</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># MuPdf API</span>
+<span class="c1">#</span>
+
+<span class="c1">###################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Structures constructors</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="Matrix"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.Matrix">[docs]</a><span class="k">def</span> <span class="nf">Matrix</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;fz_matrix *&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Rect"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.Rect">[docs]</a><span class="k">def</span> <span class="nf">Rect</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;fz_rect *&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IRect"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.IRect">[docs]</a><span class="k">def</span> <span class="nf">IRect</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;fz_irect *&#39;</span><span class="p">)</span></div>
+
+<span class="c1">###################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Constantes</span>
+<span class="c1">#</span>
+
+<span class="c1"># for convenience</span>
+<span class="n">NULL</span> <span class="o">=</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">NULL</span> <span class="c1"># C NULL pointer</span>
+
+<span class="c1"># Fixme:</span>
+<span class="n">FZ_STORE_UNLIMITED</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">FZ_STORE_UNLIMITED</span>
+
+<span class="c1">###################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Functions</span>
+<span class="c1">#</span>
+
+<span class="c1"># from fitz.h</span>
+
+<span class="n">bound_page</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_bound_page</span>
+<span class="n">clear_pixmap_with_value</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_clear_pixmap_with_value</span>
+<span class="n">drop_document</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_drop_document</span>
+<span class="n">drop_output</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_drop_output</span>
+<span class="n">concat</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_concat</span>
+<span class="n">count_pages</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_count_pages</span>
+<span class="n">device_rgb</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_device_rgb</span>
+<span class="n">drop_buffer</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_drop_buffer</span>
+<span class="n">drop_pixmap</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_drop_pixmap</span>
+<span class="n">drop_context</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_drop_context</span>
+<span class="n">drop_device</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_drop_device</span>
+<span class="n">drop_page</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_drop_page</span>
+<span class="c1">#! free_text_page = _lib.fz_free_text_page</span>
+<span class="c1">#! free_text_sheet = _lib.fz_free_text_sheet</span>
+<span class="c1"># new_context = _lib.fz_new_context</span>
+<span class="n">new_draw_device</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_new_draw_device</span>
+<span class="c1">#! new_output_with_file = _lib.fz_new_output_with_file</span>
+<span class="n">new_pixmap_with_bbox</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_new_pixmap_with_bbox</span>
+<span class="n">new_pixmap_with_bbox_and_data</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_new_pixmap_with_bbox_and_data</span>
+<span class="c1">#! new_text_device = _lib.fz_new_text_device</span>
+<span class="c1">#! new_text_page = _lib.fz_new_text_page</span>
+<span class="c1">#! new_text_sheet = _lib.fz_new_text_sheet</span>
+<span class="c1"># open_document = _lib.fz_open_document</span>
+<span class="n">open_document</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">open_document</span>
+<span class="n">pixmap_set_resolution</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_pixmap_set_resolution</span>
+<span class="n">pre_scale</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_pre_scale</span>
+<span class="c1">#! print_text_page = _lib.fz_print_text_page</span>
+<span class="c1">#! print_text_page_html = _lib.fz_print_text_page_html</span>
+<span class="c1">#! print_text_page_xml = _lib.fz_print_text_page_html</span>
+<span class="c1">#! print_text_sheet = _lib.fz_print_text_sheet</span>
+<span class="n">register_document_handlers</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_register_document_handlers</span>
+<span class="n">rotate</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_rotate</span>
+<span class="n">round_rect</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_round_rect</span>
+<span class="n">run_page</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_run_page</span>
+<span class="n">scale</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_scale</span>
+<span class="n">set_aa_level</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_set_aa_level</span>
+<span class="n">transform_rect</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_transform_rect</span>
+<span class="c1">#! write_png = _lib.fz_write_png</span>
+
+<span class="c1"># from pdf.h</span>
+<span class="n">load_page</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_load_page</span>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Pythonic API</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="new_context"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.new_context">[docs]</a><span class="k">def</span> <span class="nf">new_context</span><span class="p">(</span><span class="n">alloc</span><span class="o">=</span><span class="n">_ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">locks</span><span class="o">=</span><span class="n">_ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">max_store</span><span class="o">=</span><span class="n">_lib</span><span class="o">.</span><span class="n">FZ_STORE_UNLIMITED</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_new_context</span><span class="p">(</span><span class="n">alloc</span><span class="p">,</span> <span class="n">locks</span><span class="p">,</span> <span class="n">max_store</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Context"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.Context">[docs]</a><span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">_ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">locks</span><span class="o">=</span><span class="n">_ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">max_store</span><span class="o">=</span><span class="n">_lib</span><span class="o">.</span><span class="n">FZ_STORE_UNLIMITED</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_new_context</span><span class="p">(</span><span class="n">alloc</span><span class="p">,</span> <span class="n">locks</span><span class="p">,</span> <span class="n">max_store</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">_lib</span><span class="o">.</span><span class="n">fz_drop_context</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">)</span></div>
+
+<span class="c1">###################################################</span>
+
+<div class="viewcode-block" id="get_meta_info"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.get_meta_info">[docs]</a><span class="k">def</span> <span class="nf">get_meta_info</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
+    <span class="n">buffer_</span> <span class="o">=</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;char[]&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="c1"># size in bytes</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="c1"># key_buffer = _ffi.new(&#39;char[]&#39;, key)</span>
+    <span class="c1"># buffer_[0] = _ffi.addressof(key_buffer, 0)</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_lookup_metadata</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">buffer_</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decode_utf8</span><span class="p">(</span><span class="n">buffer_</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+    <span class="c1"># raise NameError(&#39;Meta info %s not found&#39;, key)</span>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># API extensions</span>
+<span class="c1">#</span>
+
+<span class="n">buffer_data</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_buffer_data</span>
+<span class="n">copy_irect</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_copy_irect</span>
+<span class="n">copy_rect</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_copy_rect</span>
+<span class="n">fclose</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_fclose</span>
+<span class="n">font_is_bold</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">font_is_bold</span>
+<span class="n">font_is_italic</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">font_is_italic</span>
+<span class="n">fopen</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">fz_fopen</span>
+<span class="n">get_font_name</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">get_font_name</span>
+<span class="c1"># get_text_block = _lib.get_text_block</span>
+<span class="c1"># get_text_char = _lib.get_text_char</span>
+<span class="c1"># get_text_line = _lib.get_text_line</span>
+<span class="c1"># get_text_span = _lib.get_text_span</span>
+<span class="n">pdf_metadata</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">pdf_metadata</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="rect_width_height"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.rect_width_height">[docs]</a><span class="k">def</span> <span class="nf">rect_width_height</span><span class="p">(</span><span class="n">rect</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">rect</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span>
+            <span class="n">rect</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">rect</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span></div>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Error Management</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="MupdfError"><a class="viewcode-back" href="../../api/Babel/MuPdf.html#Babel.MuPdf.MupdfError">[docs]</a><span class="k">class</span> <span class="nc">MupdfError</span><span class="p">(</span><span class="ne">NameError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+<span class="c1"># @_ffi.callback(&quot;void(char *)&quot;)</span>
+<span class="c1"># def throw_exit_callback(message):</span>
+<span class="c1">#     raise MupdfError(decode_utf8(message))</span>
+
+<span class="c1"># _lib.fz_set_throw_exit_callback(throw_exit_callback)</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

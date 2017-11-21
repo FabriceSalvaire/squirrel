@@ -1,0 +1,9 @@
+**************
+WordDataBase
+**************
+
+.. toctree::
+
+.. automodule:: Babel.DataBase.WordDataBase
+   :members:
+   :show-inheritance:

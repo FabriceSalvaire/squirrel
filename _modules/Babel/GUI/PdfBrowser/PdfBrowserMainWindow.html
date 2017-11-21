@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.GUI.PdfBrowser.PdfBrowserMainWindow &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.GUI.PdfBrowser.PdfBrowserMainWindow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.GUI.PdfBrowser.PdfBrowserMainWindow</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="n">Qt</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">.DirectoryListWidget</span> <span class="k">import</span> <span class="n">DirectoryListWidget</span>
+<span class="kn">from</span> <span class="nn">.DirectoryTocWidget</span> <span class="k">import</span> <span class="n">DirectoryTocWidget</span>
+<span class="kn">from</span> <span class="nn">.DocumentDirectory</span> <span class="k">import</span> <span class="n">DocumentDirectory</span>
+<span class="kn">from</span> <span class="nn">.PdfViewer</span> <span class="k">import</span> <span class="n">ViewerController</span>
+<span class="kn">from</span> <span class="nn">Babel.FileSystem.AutomaticFileRename</span> <span class="k">import</span> <span class="n">AutomaticFileRename</span>
+<span class="kn">from</span> <span class="nn">Babel.FileSystem.DirectoryToc</span> <span class="k">import</span> <span class="n">DirectoryToc</span>
+<span class="kn">from</span> <span class="nn">Babel.GUI.Base.MainWindowBase</span> <span class="k">import</span> <span class="n">MainWindowBase</span>
+<span class="kn">from</span> <span class="nn">Babel.GUI.Widgets.IconLoader</span> <span class="k">import</span> <span class="n">IconLoader</span>
+<span class="kn">from</span> <span class="nn">Babel.GUI.Widgets.MessageBox</span> <span class="k">import</span> <span class="n">MessageBox</span>
+<span class="kn">from</span> <span class="nn">Babel.GUI.Widgets.PathNavigator</span> <span class="k">import</span> <span class="n">PathNavigator</span>
+<span class="kn">from</span> <span class="nn">Babel.Tools.Container</span> <span class="k">import</span> <span class="n">EmptyRingError</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow">[docs]</a><span class="k">class</span> <span class="nc">PdfBrowserMainWindow</span><span class="p">(</span><span class="n">MainWindowBase</span><span class="p">):</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;PdfBrowserMainWindow&#39;</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">PdfBrowserMainWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Babel PDF Browser&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_ui</span><span class="p">()</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow._init_ui"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow._init_ui">[docs]</a>    <span class="k">def</span> <span class="nf">_init_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_central_widget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_central_widget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_viewer_controller</span> <span class="o">=</span> <span class="n">ViewerController</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message_box</span> <span class="o">=</span> <span class="n">MessageBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path_navigator</span> <span class="o">=</span> <span class="n">PathNavigator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_name_label</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_counter_label</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span> <span class="o">=</span> <span class="n">DirectoryTocWidget</span><span class="p">()</span>
+        <span class="n">image_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_viewer_controller</span><span class="o">.</span><span class="n">image_widget</span>
+
+        <span class="c1"># Fixme: add funcs ?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document_widgets</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name_label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_counter_label</span><span class="p">,</span>
+                                  <span class="n">image_widget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_central_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message_box</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path_navigator</span><span class="p">)</span>
+        <span class="n">horizontal_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="c1"># Fixme: layout</span>
+        <span class="n">horizontal_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name_label</span><span class="p">)</span>
+        <span class="n">horizontal_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_counter_label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">horizontal_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">image_widget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">statusBar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_actions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_toolbar</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_list_dock_widget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_list_dock_widget</span><span class="o">.</span><span class="n">setAllowedAreas</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">LeftDockWidgetArea</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">RightDockWidgetArea</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_list</span> <span class="o">=</span> <span class="n">DirectoryListWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_list_dock_widget</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addDockWidget</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">LeftDockWidgetArea</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directory_list_dock_widget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path_navigator</span><span class="o">.</span><span class="n">path_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span><span class="o">.</span><span class="n">path_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_list</span><span class="o">.</span><span class="n">move_file</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">move_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_list</span><span class="o">.</span><span class="n">move_current_file</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">move_current_file</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc_mode</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow._create_actions"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow._create_actions">[docs]</a>    <span class="k">def</span> <span class="nf">_create_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">icon_loader</span> <span class="o">=</span> <span class="n">IconLoader</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc_mode_action</span> <span class="o">=</span> \
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;folder-blue&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;Directory toc mode&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="p">,</span>
+                          <span class="n">toolTip</span><span class="o">=</span><span class="s1">&#39;Directory toc mode&#39;</span><span class="p">,</span>
+                          <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc_mode</span><span class="p">,</span>
+                          <span class="n">shortcut</span><span class="o">=</span><span class="s1">&#39;Ctrl+D&#39;</span><span class="p">,</span>
+                          <span class="n">shortcutContext</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationShortcut</span><span class="p">,</span>
+                          <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_browser_mode_action</span> <span class="o">=</span> \
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;application-pdf&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;PDF browser mode&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="p">,</span>
+                          <span class="n">toolTip</span><span class="o">=</span><span class="s1">&#39;PDF browser mode&#39;</span><span class="p">,</span>
+                          <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pdf_browser_mode</span><span class="p">,</span>
+                          <span class="n">shortcut</span><span class="o">=</span><span class="s1">&#39;Ctrl+P&#39;</span><span class="p">,</span>
+                          <span class="n">shortcutContext</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationShortcut</span><span class="p">,</span>
+                          <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_document_action</span> <span class="o">=</span> \
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;arrow-left&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;Previous document&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="p">,</span>
+                          <span class="n">toolTip</span><span class="o">=</span><span class="s1">&#39;Previous Document&#39;</span><span class="p">,</span>
+                          <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">previous_document</span><span class="p">,</span>
+                          <span class="n">shortcut</span><span class="o">=</span><span class="s1">&#39;Backspace&#39;</span><span class="p">,</span>
+                          <span class="n">shortcutContext</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationShortcut</span><span class="p">,</span>
+                          <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_document_action</span> <span class="o">=</span> \
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;arrow-right&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;Next document&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="p">,</span>
+                          <span class="n">toolTip</span><span class="o">=</span><span class="s1">&#39;Next Document&#39;</span><span class="p">,</span>
+                          <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">next_document</span><span class="p">,</span>
+                          <span class="n">shortcut</span><span class="o">=</span><span class="s1">&#39;Space&#39;</span><span class="p">,</span>
+                          <span class="n">shortcutContext</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationShortcut</span><span class="p">,</span>
+                          <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_select_action</span> <span class="o">=</span> \
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;get-hot-new-stuff&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;Select document&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="p">,</span>
+                          <span class="n">toolTip</span><span class="o">=</span><span class="s1">&#39;Select Document&#39;</span><span class="p">,</span>
+                          <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">select_document</span><span class="p">,</span>
+                          <span class="n">shortcut</span><span class="o">=</span><span class="s1">&#39;Ctrl+S&#39;</span><span class="p">,</span>
+                          <span class="n">shortcutContext</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationShortcut</span><span class="p">,</span>
+                          <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_pdf_action</span> <span class="o">=</span> \
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;document-export&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;Open PDF&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="p">,</span>
+                          <span class="n">toolTip</span><span class="o">=</span><span class="s1">&#39;Open PDF&#39;</span><span class="p">,</span>
+                          <span class="n">triggered</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_current_document</span><span class="p">(</span><span class="n">extern</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                          <span class="n">shortcut</span><span class="o">=</span><span class="s1">&#39;Ctrl+O&#39;</span><span class="p">,</span>
+                          <span class="n">shortcutContext</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationShortcut</span><span class="p">,</span>
+                          <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_pdf_viewer_action</span> <span class="o">=</span> \
+            <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;text-field&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;Open PDF Viewer&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="p">,</span>
+                          <span class="n">toolTip</span><span class="o">=</span><span class="s1">&#39;Open PDF Viewer&#39;</span><span class="p">,</span>
+                          <span class="n">triggered</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_current_document</span><span class="p">(</span><span class="n">extern</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                          <span class="n">shortcut</span><span class="o">=</span><span class="s1">&#39;Ctrl+V&#39;</span><span class="p">,</span>
+                          <span class="n">shortcutContext</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationShortcut</span><span class="p">,</span>
+                          <span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow._create_toolbar"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow._create_toolbar">[docs]</a>    <span class="k">def</span> <span class="nf">_create_toolbar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_main_tool_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addToolBar</span><span class="p">(</span><span class="s1">&#39;Main&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc_mode_action</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_browser_mode_action</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_main_tool_bar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document_tool_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addToolBar</span><span class="p">(</span><span class="s1">&#39;Document&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_previous_document_action</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">_next_document_action</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">_select_action</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">_open_pdf_action</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">_open_pdf_viewer_action</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_document_tool_bar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">addToolBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_viewer_controller</span><span class="o">.</span><span class="n">tool_bar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addToolBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_viewer_controller</span><span class="o">.</span><span class="n">page_controller</span><span class="o">.</span><span class="n">tool_bar</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.init_menu"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.init_menu">[docs]</a>    <span class="k">def</span> <span class="nf">init_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">PdfBrowserMainWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">init_menu</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.show_message"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.show_message">[docs]</a>    <span class="k">def</span> <span class="nf">show_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Hides the normal status indications and displays the given message for the specified</span>
+<span class="sd">        number of milli-seconds (timeout). If timeout is 0 (default), the message remains displayed</span>
+<span class="sd">        until the clearMessage() slot is called or until the showMessage() slot is called again to</span>
+<span class="sd">        change the message.</span>
+
+<span class="sd">        Note that showMessage() is called to show temporary explanations of tool tip texts, so</span>
+<span class="sd">        passing a timeout of 0 is not sufficient to display a permanent message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">warn</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_message_box</span><span class="o">.</span><span class="n">push_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">status_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statusBar</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">status_bar</span><span class="o">.</span><span class="n">clearMessage</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">status_bar</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow._directory_toc_mode"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow._directory_toc_mode">[docs]</a>    <span class="k">def</span> <span class="nf">_directory_toc_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_widgets</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow._pdf_browser_mode"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow._pdf_browser_mode">[docs]</a>    <span class="k">def</span> <span class="nf">_pdf_browser_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_widgets</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.open_directory"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.open_directory">[docs]</a>    <span class="k">def</span> <span class="nf">open_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;open directory </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)))</span>
+        <span class="c1"># Fixme: move to application?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory_toc</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">DirectoryToc</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path_navigator</span><span class="o">.</span><span class="n">set_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="c1"># Fixme: path_navigator -&gt; open_directory -&gt; path_navigator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span> <span class="o">=</span> <span class="n">DocumentDirectory</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_document</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_widgets</span><span class="p">:</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_path</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span><span class="o">.</span><span class="n">current_item</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.previous_document"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.previous_document">[docs]</a>    <span class="k">def</span> <span class="nf">previous_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span><span class="o">.</span><span class="n">previous</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_document</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.next_document"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.next_document">[docs]</a>    <span class="k">def</span> <span class="nf">next_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_document</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow._show_document"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow._show_document">[docs]</a>    <span class="k">def</span> <span class="nf">_show_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">document</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_document</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_name_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">filename_part</span><span class="p">()))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_counter_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> / </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span><span class="o">.</span><span class="n">current_index</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+                                                              <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_viewer_controller</span><span class="o">.</span><span class="n">document</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">document</span> <span class="c1"># Fixme:</span>
+        <span class="k">except</span> <span class="n">EmptyRingError</span><span class="p">:</span>
+            <span class="c1"># self._logger.info(&#39;EmptyRingError&#39;)</span>
+            <span class="c1"># Fixme: cf. open_directory</span>
+            <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_widgets</span><span class="p">:</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.select_document"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.select_document">[docs]</a>    <span class="k">def</span> <span class="nf">select_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">pass</span></div>
+        <span class="c1"># try:</span>
+        <span class="c1">#     document = self.current_document</span>
+        <span class="c1">#     document.selected = not document.selected</span>
+        <span class="c1">#     self._viewer_controller.update_style()</span>
+        <span class="c1"># except EmptyRingError:</span>
+        <span class="c1">#     pass</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.open_current_document"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.open_current_document">[docs]</a>    <span class="k">def</span> <span class="nf">open_current_document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extern</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">document</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_document</span>
+            <span class="n">document_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">extern</span><span class="p">:</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">((</span><span class="s1">&#39;xdg-open&#39;</span><span class="p">,</span> <span class="n">document_path</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">Babel.GUI.PdfViewer.PdfViewerMainWindow</span> <span class="k">import</span> <span class="n">PdfViewerMainWindow</span>
+                <span class="n">pdf_viewer_window</span> <span class="o">=</span> <span class="n">PdfViewerMainWindow</span><span class="p">(</span><span class="n">document_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">pdf_viewer_window</span><span class="o">.</span><span class="n">showMaximized</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">EmptyRingError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow._delete_file_from_browser"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow._delete_file_from_browser">[docs]</a>    <span class="k">def</span> <span class="nf">_delete_file_from_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+
+        <span class="n">current_document</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_document</span> <span class="c1"># should not raise EmptyRingError</span>
+        <span class="k">if</span> <span class="n">current_document</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="n">file_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">current_document</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_directory</span><span class="o">.</span><span class="n">delete_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;File </span><span class="si">{}</span><span class="s2"> not in the current directory&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_document</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.move_current_file"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.move_current_file">[docs]</a>    <span class="k">def</span> <span class="nf">move_current_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">move_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_document</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="PdfBrowserMainWindow.move_file"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/PdfBrowserMainWindow.html#Babel.GUI.PdfBrowser.PdfBrowserMainWindow.PdfBrowserMainWindow.move_file">[docs]</a>    <span class="k">def</span> <span class="nf">move_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: here ?</span>
+
+        <span class="n">to_file_path</span> <span class="o">=</span> <span class="n">dst_path</span><span class="o">.</span><span class="n">join_filename</span><span class="p">(</span><span class="n">file_path</span><span class="o">.</span><span class="n">filename_part</span><span class="p">())</span>
+
+        <span class="c1"># Test if the destination directory has already a file with the same name</span>
+        <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">to_file_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">shasum</span> <span class="o">==</span> <span class="n">to_file_path</span><span class="o">.</span><span class="n">shasum</span><span class="p">:</span>
+                <span class="c1"># self.show_message(&quot;Destination has a duplicate of this file&quot;, warn=True)</span>
+                <span class="n">rc</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                                    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                                    <span class="s2">&quot;Destination has a duplicate of this file.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                                    <span class="s2">&quot;Remove this file instead?&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">rc</span> <span class="o">==</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Delete </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">)))</span>
+                    <span class="n">file_path</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_delete_file_from_browser</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="k">return</span> <span class="c1"># delete or do nothing</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># self.show_message(&quot;Destination has a file with the same name&quot;, warn=True)</span>
+                <span class="n">to_file_path2</span> <span class="o">=</span> <span class="n">AutomaticFileRename</span><span class="p">(</span><span class="n">to_file_path</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+                <span class="n">filename</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QInputDialog</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                                              <span class="s2">&quot;Destination has a file with the same name&quot;</span><span class="p">,</span>
+                                                              <span class="s2">&quot;Rename to:&quot;</span><span class="p">,</span>
+                                                              <span class="n">text</span><span class="o">=</span><span class="n">to_file_path2</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+                <span class="c1"># Fixme: implement overwrite</span>
+                <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                     <span class="n">to_file_path</span> <span class="o">=</span> <span class="n">dst_path</span><span class="o">.</span><span class="n">join_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="c1"># do nothing</span>
+
+        <span class="k">if</span> <span class="n">file_path</span> <span class="o">==</span> <span class="n">to_file_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_message</span><span class="p">(</span><span class="s2">&quot;Tried to move file </span><span class="si">{}</span><span class="s2"> to same place&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">)),</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Last check</span>
+            <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">to_file_path</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">show_message</span><span class="p">(</span><span class="s2">&quot;Tried to overwrite file </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">)),</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Move </span><span class="si">{}</span><span class="s2"> to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">to_file_path</span><span class="p">)))</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">to_file_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delete_file_from_browser</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

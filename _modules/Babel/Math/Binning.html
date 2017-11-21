@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Math.Binning &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Math.Binning</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Math.Binning</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Binning1D&#39;</span><span class="p">]</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">Babel.Math.Interval</span> <span class="k">import</span> <span class="n">Interval</span><span class="p">,</span> <span class="n">MinusInfinity</span><span class="p">,</span> <span class="n">PlusInfinity</span>
+<span class="kn">from</span> <span class="nn">Babel.Math.Functions</span> <span class="k">import</span> <span class="n">rint</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="Binning1D"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D">[docs]</a><span class="k">class</span> <span class="nc">Binning1D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">_under_flow_bin</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">_first_bin</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">bin_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">number_of_bins</span><span class="o">=</span><span class="kc">None</span><span class="p">,):</span>
+
+        <span class="k">if</span> <span class="n">bin_width</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">number_of_bins</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span> <span class="o">=</span> <span class="n">Interval</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="n">right_open</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bin_width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Method to adjust the x range:</span>
+            <span class="c1">#  - round sup, inf or both</span>
+            <span class="c1">#  - extend sup, inf or both</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">bin_width</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span> <span class="o">=</span> <span class="n">rint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">sup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">inf</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number_of_bins</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_bin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span> <span class="o">+</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_array_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span> <span class="o">+</span><span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_bin_width</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">under_flow_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">first_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_bin</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">last_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">over_flow_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">array_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_array_size</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bin_width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interval</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_interval</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_number_of_bins</span><span class="p">)</span>
+
+   <span class="c1">###############################################</span>
+
+<div class="viewcode-block" id="Binning1D._check_bin_index"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D._check_bin_index">[docs]</a>    <span class="k">def</span> <span class="nf">_check_bin_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">xflow</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">xflow</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Binning1D.clone"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="p">,</span> <span class="n">number_of_bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Binning1D.bin_interval"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.bin_interval">[docs]</a>    <span class="k">def</span> <span class="nf">bin_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Interval</span><span class="p">(</span><span class="n">MinusInfinity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">left_open</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_open</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Interval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">sup</span><span class="p">,</span> <span class="n">PlusInfinity</span><span class="p">,</span> <span class="n">right_open</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Interval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_lower_edge</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_upper_edge</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">right_open</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+   <span class="c1">###############################################</span>
+
+<div class="viewcode-block" id="Binning1D._bin_edge"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D._bin_edge">[docs]</a>    <span class="k">def</span> <span class="nf">_bin_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_bin_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">xflow</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">inf</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span></div>
+
+   <span class="c1">###############################################</span>
+
+<div class="viewcode-block" id="Binning1D.bin_lower_edge"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.bin_lower_edge">[docs]</a>    <span class="k">def</span> <span class="nf">bin_lower_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_edge</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+
+   <span class="c1">###############################################</span>
+
+<div class="viewcode-block" id="Binning1D.bin_upper_edge"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.bin_upper_edge">[docs]</a>    <span class="k">def</span> <span class="nf">bin_upper_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+   <span class="c1">###############################################</span>
+
+<div class="viewcode-block" id="Binning1D.bin_center"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.bin_center">[docs]</a>    <span class="k">def</span> <span class="nf">bin_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">offset</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Binning1D.bins"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.bins">[docs]</a>    <span class="k">def</span> <span class="nf">bins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span> <span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">bins</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinusInfinity</span>
+        <span class="n">bins</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span><span class="p">]</span> <span class="o">=</span> <span class="n">PlusInfinity</span>
+        <span class="n">bins</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_first_bin</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span><span class="p">]</span> <span class="o">=</span> \
+            <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+                      <span class="n">stop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">sup</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">,</span>
+                      <span class="n">step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">bins</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Binning1D.bin_centers"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.bin_centers">[docs]</a>    <span class="k">def</span> <span class="nf">bin_centers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_center</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_first_bin</span><span class="p">),</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">bin_center</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_bin</span><span class="p">),</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Binning1D.bin_slice"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.bin_slice">[docs]</a>    <span class="k">def</span> <span class="nf">bin_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xflow</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">xflow</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_array_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_first_bin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Binning1D.bin_iterator"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.bin_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">bin_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xflow</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">xflow</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_array_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_first_bin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span><span class="p">)</span></div>
+
+   <span class="c1">###############################################</span>
+
+<div class="viewcode-block" id="Binning1D.find_bin"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.find_bin">[docs]</a>    <span class="k">def</span> <span class="nf">find_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+        <span class="n">inf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">inf</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_under_flow_bin</span>
+        <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="o">.</span><span class="n">sup</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_over_flow_bin</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inverse_bin_width</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">inf</span><span class="p">))</span> <span class="o">+</span><span class="mi">1</span></div>
+
+   <span class="c1">###############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">string_format</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Binning 1D</span>
+<span class="s2">  interval: </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">  number of bins: </span><span class="si">%u</span><span class="s2"></span>
+<span class="s2">  bin width: </span><span class="si">%g</span><span class="s2"></span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="n">string_format</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_bins</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_iterator</span><span class="p">(</span><span class="n">xflow</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="c1"># Fixme: 3u count number of digits</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;  </span><span class="si">%3u</span><span class="s1"> &#39;</span> <span class="o">%</span> <span class="n">i</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_interval</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">return</span> <span class="n">text</span>
+
+   <span class="c1">###############################################</span>
+
+<div class="viewcode-block" id="Binning1D.sub_interval"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.sub_interval">[docs]</a>    <span class="k">def</span> <span class="nf">sub_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_range</span><span class="p">):</span>
+
+        <span class="n">inf</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">first_bin</span><span class="p">,</span> <span class="n">bin_range</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="n">sup</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_bin</span><span class="p">,</span> <span class="n">bin_range</span><span class="o">.</span><span class="n">sup</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Interval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_lower_edge</span><span class="p">(</span><span class="n">inf</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">bin_upper_edge</span><span class="p">(</span><span class="n">sup</span><span class="p">))</span></div>
+
+   <span class="c1">###############################################</span>
+
+<div class="viewcode-block" id="Binning1D.sub_binning"><a class="viewcode-back" href="../../../api/Babel/Math/Binning.html#Babel.Math.Binning.Binning1D.sub_binning">[docs]</a>    <span class="k">def</span> <span class="nf">sub_binning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

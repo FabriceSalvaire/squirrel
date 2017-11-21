@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.1.4.2.1. DocumentTable &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="6.1.4.2. DocumentDataBase" href="../DocumentDataBase.html"/>
+        <link rel="next" title="6.1.4.2.2. WordTable" href="WordTable.html"/>
+        <link rel="prev" title="6.1.4.2. DocumentDataBase" href="../DocumentDataBase.html"/> 
+
+  
+  <script src="../../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../reference-manual.html">6. API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../Babel.html">6.1. Babel</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../Application.html">6.1.1. Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../BibTeX.html">6.1.2. BibTeX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Config.html">6.1.3. Config</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../DataBase.html">6.1.4. DataBase</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../DataBase.html">6.1.4.1. DataBase</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../DocumentDataBase.html">6.1.4.2. DocumentDataBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MysqlDataBase.html">6.1.4.3. MysqlDataBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SqlAlchemyBase.html">6.1.4.4. SqlAlchemyBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SqlTableModel.html">6.1.4.5. SqlTableModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SqliteDataBase.html">6.1.4.6. SqliteDataBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../WordDataBase.html">6.1.4.7. WordDataBase</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../FileSystem.html">6.1.5. FileSystem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GUI.html">6.1.6. GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Importer.html">6.1.7. Importer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Lexique.html">6.1.8. Lexique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Logging.html">6.1.9. Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Math.html">6.1.10. Math</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MuPdf.html">6.1.11. MuPdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Pdf.html">6.1.12. Pdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Tools.html">6.1.13. Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Version.html">6.1.14. Version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference-manual.html#indexes">6.2. Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../reference-manual.html">6. API Documentation</a> &raquo;</li>
+        
+          <li><a href="../../../Babel.html">6.1. Babel</a> &raquo;</li>
+        
+          <li><a href="../../DataBase.html">6.1.4. DataBase</a> &raquo;</li>
+        
+          <li><a href="../DocumentDataBase.html">6.1.4.2. DocumentDataBase</a> &raquo;</li>
+        
+      <li>6.1.4.2.1. DocumentTable</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../../_sources/api/Babel/DataBase/DocumentDataBase/DocumentTable.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Babel.DataBase.DocumentDataBase.DocumentTable">
+<span id="documenttable"></span><h1>6.1.4.2.1. DocumentTable<a class="headerlink" href="#module-Babel.DataBase.DocumentDataBase.DocumentTable" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin">
+<em class="property">class </em><code class="descclassname">Babel.DataBase.DocumentDataBase.DocumentTable.</code><code class="descname">DocumentRowMixin</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/DataBase/DocumentDataBase/DocumentTable.html#DocumentRowMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../SqlAlchemyBase.html#Babel.DataBase.SqlAlchemyBase.SqlRow" title="Babel.DataBase.SqlAlchemyBase.SqlRow"><code class="xref py py-class docutils literal"><span class="pre">Babel.DataBase.SqlAlchemyBase.SqlRow</span></code></a></p>
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.author">
+<code class="descname">author</code><em class="property"> = Column(None, String(), table=None, default=ColumnDefault(''))</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.comment">
+<code class="descname">comment</code><em class="property"> = Column(None, String(), table=None, default=ColumnDefault(''))</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.comment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.has_duplicate">
+<code class="descname">has_duplicate</code><em class="property"> = Column(None, Boolean(), table=None, default=ColumnDefault(False))</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.has_duplicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.id">
+<code class="descname">id</code><em class="property"> = Column(None, Integer(), table=None, primary_key=True, nullable=False)</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.indexation_date">
+<code class="descname">indexation_date</code><em class="property"> = Column(None, DateTime(), table=None)</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.indexation_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.indexation_status">
+<code class="descname">indexation_status</code><em class="property"> = Column(None, String(), table=None, default=ColumnDefault(''))</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.indexation_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.indexed_until">
+<code class="descname">indexed_until</code><em class="property"> = Column(None, Integer(), table=None, default=ColumnDefault(0))</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.indexed_until" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.inode">
+<code class="descname">inode</code><em class="property"> = Column(None, Integer(), table=None)</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.inode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.language">
+<code class="descname">language</code><em class="property"> = Column(None, String(length=10), table=None, default=ColumnDefault(''))</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.language" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.number_of_pages">
+<code class="descname">number_of_pages</code><em class="property"> = Column(None, Integer(), table=None)</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.number_of_pages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.path">
+<code class="descname">path</code><em class="property"> = Column(None, FileType(), table=None)</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.record_creation_date">
+<code class="descname">record_creation_date</code><em class="property"> = Column(None, DateTime(), table=None)</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.record_creation_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.record_update_date">
+<code class="descname">record_update_date</code><em class="property"> = Column(None, DateTime(), table=None)</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.record_update_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.shasum">
+<code class="descname">shasum</code><em class="property"> = Column(None, String(length=64), table=None)</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.shasum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.title">
+<code class="descname">title</code><em class="property"> = Column(None, String(), table=None, default=ColumnDefault(''))</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.update_indexation_date">
+<code class="descname">update_indexation_date</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/DataBase/DocumentDataBase/DocumentTable.html#DocumentRowMixin.update_indexation_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.update_indexation_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.update_path">
+<code class="descname">update_path</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/DataBase/DocumentDataBase/DocumentTable.html#DocumentRowMixin.update_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.update_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.update_record_date">
+<code class="descname">update_record_date</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/DataBase/DocumentDataBase/DocumentTable.html#DocumentRowMixin.update_record_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.update_record_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.update_shasum">
+<code class="descname">update_shasum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/DataBase/DocumentDataBase/DocumentTable.html#DocumentRowMixin.update_shasum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.update_shasum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.words">
+<code class="descname">words</code><em class="property"> = &lt;RelationshipProperty at 0x7f9c0f1a5b48; no key&gt;</em><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.DocumentRowMixin.words" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.FileType">
+<em class="property">class </em><code class="descclassname">Babel.DataBase.DocumentDataBase.DocumentTable.</code><code class="descname">FileType</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/DataBase/DocumentDataBase/DocumentTable.html#FileType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.FileType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.sql.type_api.TypeDecorator</span></code></p>
+<p>Construct a <code class="xref py py-class docutils literal"><span class="pre">TypeDecorator</span></code>.</p>
+<p>Arguments sent here are passed to the constructor
+of the class assigned to the <code class="docutils literal"><span class="pre">impl</span></code> class level attribute,
+assuming the <code class="docutils literal"><span class="pre">impl</span></code> is a callable, and the resulting
+object is assigned to the <code class="docutils literal"><span class="pre">self.impl</span></code> instance attribute
+(thus overriding the class attribute of the same name).</p>
+<p>If the class level <code class="docutils literal"><span class="pre">impl</span></code> is not a callable (the unusual case),
+it will be assigned to the same instance attribute ‘as-is’,
+ignoring those arguments passed to the constructor.</p>
+<p>Subclasses can override this to customize the generation
+of <code class="docutils literal"><span class="pre">self.impl</span></code> entirely.</p>
+<dl class="attribute">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.FileType.impl">
+<code class="descname">impl</code><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.FileType.impl" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">String</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.FileType.process_bind_param">
+<code class="descname">process_bind_param</code><span class="sig-paren">(</span><em>value</em>, <em>dialect</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/DataBase/DocumentDataBase/DocumentTable.html#FileType.process_bind_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.FileType.process_bind_param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.FileType.process_result_value">
+<code class="descname">process_result_value</code><span class="sig-paren">(</span><em>value</em>, <em>dialect</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Babel/DataBase/DocumentDataBase/DocumentTable.html#FileType.process_result_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.FileType.process_result_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="Babel.DataBase.DocumentDataBase.DocumentTable.today">
+<code class="descclassname">Babel.DataBase.DocumentDataBase.DocumentTable.</code><code class="descname">today</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Babel.DataBase.DocumentDataBase.DocumentTable.today" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current date or datetime:  same as self.__class__.fromtimestamp(time.time()).</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="WordTable.html" class="btn btn-neutral float-right" title="6.1.4.2.2. WordTable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../DocumentDataBase.html" class="btn btn-neutral" title="6.1.4.2. DocumentDataBase" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

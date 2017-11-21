@@ -1,0 +1,11 @@
+******************
+DocumentDataBase
+******************
+
+.. toctree::
+  DocumentDataBase/DocumentTable
+  DocumentDataBase/WordTable
+
+.. automodule:: Babel.DataBase.DocumentDataBase
+   :members:
+   :show-inheritance:

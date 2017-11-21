@@ -1,0 +1,16 @@
+*****
+GUI
+*****
+
+.. toctree::
+  GUI/Base
+  GUI/Forms
+  GUI/LibraryBrowser
+  GUI/PdfBrowser
+  GUI/PdfViewer
+  GUI/Widgets
+  GUI/ui
+
+.. automodule:: Babel.GUI
+   :members:
+   :show-inheritance:

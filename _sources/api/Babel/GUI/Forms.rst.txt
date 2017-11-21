@@ -1,0 +1,12 @@
+*******
+Forms
+*******
+
+.. toctree::
+  Forms/CriticalErrorForm
+  Forms/EmailBugForm
+  Forms/NewIssueForm
+
+.. automodule:: Babel.GUI.Forms
+   :members:
+   :show-inheritance:

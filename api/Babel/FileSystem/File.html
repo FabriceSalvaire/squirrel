@@ -1,0 +1,518 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.1.5.3. File &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="6.1.5. FileSystem" href="../FileSystem.html"/>
+        <link rel="next" title="6.1.6. GUI" href="../GUI.html"/>
+        <link rel="prev" title="6.1.5.2. DirectoryToc" href="DirectoryToc.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../Babel.html">6.1. Babel</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../Application.html">6.1.1. Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../BibTeX.html">6.1.2. BibTeX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Config.html">6.1.3. Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DataBase.html">6.1.4. DataBase</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../FileSystem.html">6.1.5. FileSystem</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="AutomaticFileRename.html">6.1.5.1. AutomaticFileRename</a></li>
+<li class="toctree-l4"><a class="reference internal" href="DirectoryToc.html">6.1.5.2. DirectoryToc</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.1.5.3. File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../GUI.html">6.1.6. GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Importer.html">6.1.7. Importer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Lexique.html">6.1.8. Lexique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Logging.html">6.1.9. Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Math.html">6.1.10. Math</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MuPdf.html">6.1.11. MuPdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Pdf.html">6.1.12. Pdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tools.html">6.1.13. Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Version.html">6.1.14. Version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference-manual.html#indexes">6.2. Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../reference-manual.html">6. API Documentation</a> &raquo;</li>
+        
+          <li><a href="../../Babel.html">6.1. Babel</a> &raquo;</li>
+        
+          <li><a href="../FileSystem.html">6.1.5. FileSystem</a> &raquo;</li>
+        
+      <li>6.1.5.3. File</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/api/Babel/FileSystem/File.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Babel.FileSystem.File">
+<span id="file"></span><h1>6.1.5.3. File<a class="headerlink" href="#module-Babel.FileSystem.File" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Babel.FileSystem.File.Directory">
+<em class="property">class </em><code class="descclassname">Babel.FileSystem.File.</code><code class="descname">Directory</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Babel.FileSystem.File.Path" title="Babel.FileSystem.File.Path"><code class="xref py py-class docutils literal"><span class="pre">Babel.FileSystem.File.Path</span></code></a></p>
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.filter_entries">
+<code class="descname">filter_entries</code><span class="sig-paren">(</span><em>compiled_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory.filter_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory.filter_entries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.has_subdirectory">
+<code class="descname">has_subdirectory</code><span class="sig-paren">(</span><em>hidden=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory.has_subdirectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory.has_subdirectory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.iter_directories">
+<code class="descname">iter_directories</code><span class="sig-paren">(</span><em>hidden=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory.iter_directories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory.iter_directories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.iter_files">
+<code class="descname">iter_files</code><span class="sig-paren">(</span><em>hidden=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory.iter_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory.iter_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.join_directory">
+<code class="descname">join_directory</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory.join_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory.join_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.join_filename">
+<code class="descname">join_filename</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory.join_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory.join_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.parent">
+<code class="descname">parent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Babel.FileSystem.File.Directory.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.walk_directories">
+<code class="descname">walk_directories</code><span class="sig-paren">(</span><em>followlinks=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory.walk_directories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory.walk_directories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Directory.walk_files">
+<code class="descname">walk_files</code><span class="sig-paren">(</span><em>followlinks=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Directory.walk_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Directory.walk_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Babel.FileSystem.File.File">
+<em class="property">class </em><code class="descclassname">Babel.FileSystem.File.</code><code class="descname">File</code><span class="sig-paren">(</span><em>filename</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#File"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Babel.FileSystem.File.Path" title="Babel.FileSystem.File.Path"><code class="xref py py-class docutils literal"><span class="pre">Babel.FileSystem.File.Path</span></code></a></p>
+<dl class="method">
+<dt id="Babel.FileSystem.File.File.compute_shasum">
+<code class="descname">compute_shasum</code><span class="sig-paren">(</span><em>algorithm=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#File.compute_shasum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.File.compute_shasum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.File.default_shasum_algorithm">
+<code class="descname">default_shasum_algorithm</code><em class="property"> = 256</em><a class="headerlink" href="#Babel.FileSystem.File.File.default_shasum_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.File.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#File.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.File.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.File.directory">
+<code class="descname">directory</code><a class="headerlink" href="#Babel.FileSystem.File.File.directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.File.extension">
+<code class="descname">extension</code><a class="headerlink" href="#Babel.FileSystem.File.File.extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.File.filename">
+<code class="descname">filename</code><a class="headerlink" href="#Babel.FileSystem.File.File.filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.File.mime_type">
+<code class="descname">mime_type</code><a class="headerlink" href="#Babel.FileSystem.File.File.mime_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.File.shasum">
+<code class="descname">shasum</code><a class="headerlink" href="#Babel.FileSystem.File.File.shasum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.File.split_extension">
+<code class="descname">split_extension</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#File.split_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.File.split_extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Babel.FileSystem.File.Path">
+<em class="property">class </em><code class="descclassname">Babel.FileSystem.File.</code><code class="descname">Path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.absolut">
+<code class="descname">absolut</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.absolut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.absolut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.basename">
+<code class="descname">basename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.basename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.clone_for_path">
+<code class="descname">clone_for_path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.clone_for_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.clone_for_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.Path.creation_time">
+<code class="descname">creation_time</code><a class="headerlink" href="#Babel.FileSystem.File.Path.creation_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.directory_part">
+<code class="descname">directory_part</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.directory_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.directory_part" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.filename_part">
+<code class="descname">filename_part</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.filename_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.filename_part" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.Path.inode">
+<code class="descname">inode</code><a class="headerlink" href="#Babel.FileSystem.File.Path.inode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.is_absolut">
+<code class="descname">is_absolut</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.is_absolut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.is_absolut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.is_directory">
+<code class="descname">is_directory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.is_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.is_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.is_file">
+<code class="descname">is_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.is_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.is_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.is_hidden">
+<code class="descname">is_hidden</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.is_hidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.is_hidden" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.join_path">
+<code class="descname">join_path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.join_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.join_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.normalise">
+<code class="descname">normalise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.normalise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.normalise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.normalise_case">
+<code class="descname">normalise_case</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.normalise_case"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.normalise_case" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.FileSystem.File.Path.path">
+<code class="descname">path</code><a class="headerlink" href="#Babel.FileSystem.File.Path.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.real_path">
+<code class="descname">real_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.real_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.real_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.relative_to">
+<code class="descname">relative_to</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.relative_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.relative_to" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.reverse_level_of_equality">
+<code class="descname">reverse_level_of_equality</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.reverse_level_of_equality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.reverse_level_of_equality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the level of subdirectory from the top matching both paths.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.split">
+<code class="descname">split</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return [‘’, ‘a’, ‘b’, ‘c’] for ‘/a/b/c’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.split_iterator">
+<code class="descname">split_iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.split_iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.split_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return [Path /, Path /a, Path /a/b, Path /a/b/c] for ‘/a/b/c’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.FileSystem.File.Path.split_reverse_iterator">
+<code class="descname">split_reverse_iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#Path.split_reverse_iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.Path.split_reverse_iterator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="Babel.FileSystem.File.file_extension">
+<code class="descclassname">Babel.FileSystem.File.</code><code class="descname">file_extension</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#file_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.file_extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Babel.FileSystem.File.file_name_has_extension">
+<code class="descclassname">Babel.FileSystem.File.</code><code class="descname">file_name_has_extension</code><span class="sig-paren">(</span><em>file_name</em>, <em>extension</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#file_name_has_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.file_name_has_extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Babel.FileSystem.File.run_shasum">
+<code class="descclassname">Babel.FileSystem.File.</code><code class="descname">run_shasum</code><span class="sig-paren">(</span><em>filename</em>, <em>algorithm=1</em>, <em>binary=False</em>, <em>text=True</em>, <em>universal=False</em>, <em>portable=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#run_shasum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.run_shasum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Babel.FileSystem.File.shasum">
+<code class="descclassname">Babel.FileSystem.File.</code><code class="descname">shasum</code><span class="sig-paren">(</span><em>path</em>, <em>algorithm=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/FileSystem/File.html#shasum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.FileSystem.File.shasum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../GUI.html" class="btn btn-neutral float-right" title="6.1.6. GUI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="DirectoryToc.html" class="btn btn-neutral" title="6.1.5.2. DirectoryToc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,500 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.GUI.PdfBrowser.DirectoryListWidget &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.GUI.PdfBrowser.DirectoryListWidget</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.GUI.PdfBrowser.DirectoryListWidget</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="k">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">pyqtSignal</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">.DirectorySelector</span> <span class="k">import</span> <span class="n">DirectorySelector</span>
+<span class="kn">from</span> <span class="nn">Babel.FileSystem.File</span> <span class="k">import</span> <span class="n">Directory</span><span class="p">,</span> <span class="n">File</span>
+<span class="kn">from</span> <span class="nn">Babel.GUI.Widgets.IconLoader</span> <span class="k">import</span> <span class="n">IconLoader</span>
+<span class="kn">from</span> <span class="nn">Babel.Tools.IterTools</span> <span class="k">import</span> <span class="n">pairwise</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">icon_loader</span> <span class="o">=</span> <span class="n">IconLoader</span><span class="p">()</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget">[docs]</a><span class="k">class</span> <span class="nc">DirectoryWidget</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;DirectoryWidget&#39;</span><span class="p">)</span>
+
+    <span class="n">deleted</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">)</span>
+    <span class="n">dropped_file</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="n">File</span><span class="p">,</span> <span class="n">Directory</span><span class="p">)</span>
+    <span class="n">move_current_file</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="n">Directory</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DirectoryWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_button</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_button</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;edit-delete&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_button</span><span class="o">.</span><span class="n">setAutoRaise</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># self._label = QtWidgets.QLabel(self)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_label_level</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_horizontal_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_horizontal_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_delete_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_horizontal_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_current_file</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAcceptDrops</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget.same_path"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget.same_path">[docs]</a>    <span class="k">def</span> <span class="nf">same_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">==</span> <span class="n">path</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget.label"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget.label">[docs]</a>    <span class="k">def</span> <span class="nf">label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="o">.</span><span class="n">text</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget.has_same_label"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget.has_same_label">[docs]</a>    <span class="k">def</span> <span class="nf">has_same_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">label</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget.set_label_level"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget.set_label_level">[docs]</a>    <span class="k">def</span> <span class="nf">set_label_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="o">.</span><span class="n">basename</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="n">level</span><span class="p">:])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget.update_label_for_collision"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget.update_label_for_collision">[docs]</a>    <span class="k">def</span> <span class="nf">update_label_for_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="n">level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="o">.</span><span class="n">reverse_level_of_equality</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="o">+</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_label_level</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">set_label_level</span><span class="p">(</span><span class="n">level</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget.dragEnterEvent"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget.dragEnterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">mime_data</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mime_data</span><span class="o">.</span><span class="n">hasUrls</span><span class="p">():</span>
+            <span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">())</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">mime_data</span><span class="o">.</span><span class="n">urls</span><span class="p">()]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">urls</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">File</span><span class="p">(</span><span class="n">urls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">directory</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setBackgroundRole</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPalette</span><span class="o">.</span><span class="n">Highlight</span><span class="p">)</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">acceptProposedAction</span><span class="p">()</span> <span class="c1"># mandatory</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget.dragLeaveEvent"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget.dragLeaveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragLeaveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setBackgroundRole</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPalette</span><span class="o">.</span><span class="n">Window</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="c1"># def dragMoveEvent(self, event):</span>
+
+        <span class="c1"># self._logger.info(&#39;&#39;)</span>
+        <span class="c1"># event.acceptProposedAction()</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryWidget.dropEvent"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryWidget.dropEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dropEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+        <span class="n">mime_data</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mime_data</span><span class="o">.</span><span class="n">hasUrls</span><span class="p">():</span>
+            <span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">())</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">mime_data</span><span class="o">.</span><span class="n">urls</span><span class="p">()]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">urls</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dropped_file</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">File</span><span class="p">(</span><span class="n">urls</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setBackgroundRole</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPalette</span><span class="o">.</span><span class="n">Window</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">acceptProposedAction</span><span class="p">()</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="DirectoryListWidget"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryListWidget">[docs]</a><span class="k">class</span> <span class="nc">DirectoryListWidget</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;DirectoryListWidget&#39;</span><span class="p">)</span>
+
+    <span class="n">move_file</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="n">File</span><span class="p">,</span> <span class="n">Directory</span><span class="p">)</span>
+    <span class="n">move_current_file</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="n">Directory</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DirectoryListWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_application</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_path</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">vertical_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_button</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_button</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_button</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon_loader</span><span class="p">[</span><span class="s1">&#39;list-add&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_button</span><span class="o">.</span><span class="n">setAutoRaise</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">horizontal_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">horizontal_layout</span><span class="o">.</span><span class="n">addStretch</span><span class="p">()</span>
+        <span class="n">horizontal_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_add_button</span><span class="p">)</span>
+        <span class="n">horizontal_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_clear_button</span><span class="p">)</span>
+        <span class="n">vertical_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">horizontal_layout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scroll_area</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QScrollArea</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scroll_area</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">vertical_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scroll_area</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">size_policy</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scroll_area</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">size_policy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">addStretch</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scroll_area</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryListWidget.add"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryListWidget.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># options = (QtWidgets.QFileDialog.ShowDirsOnly |</span>
+        <span class="c1">#            QtWidgets.QFileDialog.DontUseNativeDialog |</span>
+        <span class="c1">#            QtWidgets.QFileDialog.DontResolveSymlinks)</span>
+        <span class="c1"># path = QtWidgets.QFileDialog.getExistingDirectory(self,</span>
+        <span class="c1">#                                               &quot;Select directory&quot;,</span>
+        <span class="c1">#                                               unicode(path),</span>
+        <span class="c1">#                                               options)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">current_path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_path</span>
+        <span class="n">directory_selector</span> <span class="o">=</span> <span class="n">DirectorySelector</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">directory_selector</span><span class="o">.</span><span class="n">exec_</span><span class="p">():</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">directory_selector</span><span class="o">.</span><span class="n">path</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_for_identity</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="n">widget</span> <span class="o">=</span> <span class="n">DirectoryWidget</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">deleted</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_delete_item</span><span class="p">)</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">dropped_file</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">move_file</span><span class="p">)</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">move_current_file</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">move_current_file</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">insertWidget</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">directory_part</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_update_label_for_collision</span><span class="p">()</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryListWidget._test_for_identity"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryListWidget._test_for_identity">[docs]</a>    <span class="k">def</span> <span class="nf">_test_for_identity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">same_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryListWidget._update_label_for_collision"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryListWidget._update_label_for_collision">[docs]</a>    <span class="k">def</span> <span class="nf">_update_label_for_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">label</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">widget1</span><span class="p">,</span> <span class="n">widget2</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">widget1</span><span class="o">.</span><span class="n">has_same_label</span><span class="p">(</span><span class="n">widget2</span><span class="p">):</span>
+                <span class="n">widget1</span><span class="o">.</span><span class="n">update_label_for_collision</span><span class="p">(</span><span class="n">widget2</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryListWidget.clear"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryListWidget.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span>
+        <span class="k">while</span> <span class="n">layout</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">widget</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">takeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DirectoryListWidget._delete_item"><a class="viewcode-back" href="../../../../api/Babel/GUI/PdfBrowser/DirectoryListWidget.html#Babel.GUI.PdfBrowser.DirectoryListWidget.DirectoryListWidget._delete_item">[docs]</a>    <span class="k">def</span> <span class="nf">_delete_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+        <span class="c1"># Fixme: .removeWidget(widget) ?</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertical_layout</span><span class="o">.</span><span class="n">takeAt</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

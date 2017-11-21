@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.1.13.13. RedmineRest &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="6.1.13. Tools" href="../Tools.html"/>
+        <link rel="next" title="6.1.13.14. RevisionVersion" href="RevisionVersion.html"/>
+        <link rel="prev" title="6.1.13.12. ProgramOptions" href="ProgramOptions.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../Babel.html">6.1. Babel</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../Application.html">6.1.1. Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../BibTeX.html">6.1.2. BibTeX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Config.html">6.1.3. Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DataBase.html">6.1.4. DataBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FileSystem.html">6.1.5. FileSystem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GUI.html">6.1.6. GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Importer.html">6.1.7. Importer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Lexique.html">6.1.8. Lexique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Logging.html">6.1.9. Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Math.html">6.1.10. Math</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MuPdf.html">6.1.11. MuPdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Pdf.html">6.1.12. Pdf</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../Tools.html">6.1.13. Tools</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="AttributeDictionaryInterface.html">6.1.13.1. AttributeDictionaryInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BackTrace.html">6.1.13.2. BackTrace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Container.html">6.1.13.3. Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="DictionaryTools.html">6.1.13.4. DictionaryTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="EnumFactory.html">6.1.13.5. EnumFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="IterTools.html">6.1.13.6. IterTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LruCache.html">6.1.13.7. LruCache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Object.html">6.1.13.8. Object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Path.html">6.1.13.9. Path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Platform.html">6.1.13.10. Platform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ProcessInfo.html">6.1.13.11. ProcessInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ProgramOptions.html">6.1.13.12. ProgramOptions</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.1.13.13. RedmineRest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RevisionVersion.html">6.1.13.14. RevisionVersion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Singleton.html">6.1.13.15. Singleton</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Units.html">6.1.13.16. Units</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../Version.html">6.1.14. Version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference-manual.html#indexes">6.2. Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../reference-manual.html">6. API Documentation</a> &raquo;</li>
+        
+          <li><a href="../../Babel.html">6.1. Babel</a> &raquo;</li>
+        
+          <li><a href="../Tools.html">6.1.13. Tools</a> &raquo;</li>
+        
+      <li>6.1.13.13. RedmineRest</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/api/Babel/Tools/RedmineRest.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Babel.Tools.RedmineRest">
+<span id="redminerest"></span><h1>6.1.13.13. RedmineRest<a class="headerlink" href="#module-Babel.Tools.RedmineRest" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Babel.Tools.RedmineRest.DeleteRequest">
+<em class="property">class </em><code class="descclassname">Babel.Tools.RedmineRest.</code><code class="descname">DeleteRequest</code><span class="sig-paren">(</span><em>url</em>, <em>data=None</em>, <em>headers={}</em>, <em>origin_req_host=None</em>, <em>unverifiable=False</em>, <em>method=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#DeleteRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.DeleteRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">urllib.request.Request</span></code></p>
+<p>Extend the request to handle DELETE command.</p>
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.DeleteRequest.get_method">
+<code class="descname">get_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#DeleteRequest.get_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.DeleteRequest.get_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Babel.Tools.RedmineRest.PutRequest">
+<em class="property">class </em><code class="descclassname">Babel.Tools.RedmineRest.</code><code class="descname">PutRequest</code><span class="sig-paren">(</span><em>url</em>, <em>data=None</em>, <em>headers={}</em>, <em>origin_req_host=None</em>, <em>unverifiable=False</em>, <em>method=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#PutRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.PutRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">urllib.request.Request</span></code></p>
+<p>Extend the request to handle PUT command.</p>
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.PutRequest.get_method">
+<code class="descname">get_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#PutRequest.get_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.PutRequest.get_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Babel.Tools.RedmineRest.RedmineProject">
+<em class="property">class </em><code class="descclassname">Babel.Tools.RedmineRest.</code><code class="descname">RedmineProject</code><span class="sig-paren">(</span><em>redmine_rest</em>, <em>dom</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Encapsulate a Redmine Project.</p>
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineProject.new_issue">
+<code class="descname">new_issue</code><span class="sig-paren">(</span><em>subject</em>, <em>description=''</em>, <em>priority_id=None</em>, <em>tracker_id=None</em>, <em>assigned_to_id=None</em>, <em>user_data=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineProject.new_issue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineProject.new_issue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new issue for this project.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Babel.Tools.RedmineRest.RedmineRest">
+<em class="property">class </em><code class="descclassname">Babel.Tools.RedmineRest.</code><code class="descname">RedmineRest</code><span class="sig-paren">(</span><em>url</em>, <em>key=None</em>, <em>user_name=None</em>, <em>password=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Redmine REST API.</p>
+<dl class="attribute">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.ISSUE_STATUS_ID_CLOSED">
+<code class="descname">ISSUE_STATUS_ID_CLOSED</code><em class="property"> = 5</em><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.ISSUE_STATUS_ID_CLOSED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.ISSUE_STATUS_ID_NEW">
+<code class="descname">ISSUE_STATUS_ID_NEW</code><em class="property"> = 1</em><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.ISSUE_STATUS_ID_NEW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.ISSUE_STATUS_ID_RESOLVED">
+<code class="descname">ISSUE_STATUS_ID_RESOLVED</code><em class="property"> = 3</em><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.ISSUE_STATUS_ID_RESOLVED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.add_key_to_xml_document">
+<code class="descname">add_key_to_xml_document</code><span class="sig-paren">(</span><em>xml_document</em>, <em>xml_node</em>, <em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.add_key_to_xml_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.add_key_to_xml_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a key/value pair to a given xml_document at the xml_node location.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.close_issue">
+<code class="descname">close_issue</code><span class="sig-paren">(</span><em>issue_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.close_issue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.close_issue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close an issue by setting the status to ISSUE_STATUS_ID_CLOSED.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.create_xml_document">
+<code class="descname">create_xml_document</code><span class="sig-paren">(</span><em>root_element_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.create_xml_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.create_xml_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new XML document with a child element object having the given
+root_element_name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>page</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a given object on the server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.dict_to_xml">
+<code class="descname">dict_to_xml</code><span class="sig-paren">(</span><em>root_element_name</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.dict_to_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.dict_to_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the dict to a new XML document with a child element object having the given
+root_element_name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.dom_to_dict">
+<code class="descname">dom_to_dict</code><span class="sig-paren">(</span><em>dom</em>, <em>container</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.dom_to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.dom_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the DOM into a Python dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.get_issue">
+<code class="descname">get_issue</code><span class="sig-paren">(</span><em>issue_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.get_issue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.get_issue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary for the given issue</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.get_project">
+<code class="descname">get_project</code><span class="sig-paren">(</span><em>project_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.get_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.get_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary for the given project name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.new_issue_from_dict">
+<code class="descname">new_issue_from_dict</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.new_issue_from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.new_issue_from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new issue from a dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.open_page">
+<code class="descname">open_page</code><span class="sig-paren">(</span><em>page</em>, <em>parameters={}</em>, <em>dom=None</em>, <em>http_request=&lt;class 'urllib.request.Request'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.open_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.open_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a page from the server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.parse_issue">
+<code class="descname">parse_issue</code><span class="sig-paren">(</span><em>dom</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.parse_issue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.parse_issue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse an issue DOM</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.parse_project">
+<code class="descname">parse_project</code><span class="sig-paren">(</span><em>dom</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.parse_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.parse_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a project DOM</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>page</em>, <em>dom</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post an XML object to the server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>page</em>, <em>dom</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put an XML object on the server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.resolve_issue">
+<code class="descname">resolve_issue</code><span class="sig-paren">(</span><em>issue_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.resolve_issue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.resolve_issue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close an issue by setting the status to ISSUE_STATUS_ID_RESOLVED.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Babel.Tools.RedmineRest.RedmineRest.update_issue_from_dict">
+<code class="descname">update_issue_from_dict</code><span class="sig-paren">(</span><em>issue_id</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Babel/Tools/RedmineRest.html#RedmineRest.update_issue_from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Babel.Tools.RedmineRest.RedmineRest.update_issue_from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update an issue with the given issue_id using fields from the passed dictionary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="RevisionVersion.html" class="btn btn-neutral float-right" title="6.1.13.14. RevisionVersion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ProgramOptions.html" class="btn btn-neutral" title="6.1.13.12. ProgramOptions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

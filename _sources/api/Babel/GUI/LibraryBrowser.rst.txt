@@ -1,0 +1,11 @@
+****************
+LibraryBrowser
+****************
+
+.. toctree::
+  LibraryBrowser/BabelGuiApplication
+  LibraryBrowser/BabelMainWindow
+
+.. automodule:: Babel.GUI.LibraryBrowser
+   :members:
+   :show-inheritance:

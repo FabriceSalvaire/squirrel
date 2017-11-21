@@ -1,0 +1,501 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Pdf.TextTokenizer &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Pdf.TextTokenizer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Pdf.TextTokenizer</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># word: [a-zA-z\-]+[0-9]*</span>
+<span class="c1">#   - could be cesure or hyphenation</span>
+<span class="c1">#   . as in &quot;e.g.&quot; &quot;fig.&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># number:</span>
+<span class="c1">#   integer: [0-9]+</span>
+<span class="c1">#     thousand separator &quot;123 456&quot;</span>
+<span class="c1">#   float: [0-9]+.[0-9]+</span>
+<span class="c1">#     &quot;.1&quot; &quot;0.2&quot;</span>
+<span class="c1">#     French convention &quot;1,2&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># punctuation:</span>
+<span class="c1">#   terminal: . ? !</span>
+<span class="c1">#   speparator: , ; :</span>
+<span class="c1">#</span>
+<span class="c1"># group: ()</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">unicodedata</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">Babel.Tools.EnumFactory</span> <span class="k">import</span> <span class="n">EnumFactory</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="Token"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.Token">[docs]</a><span class="k">class</span> <span class="nc">Token</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">Category</span> <span class="o">=</span> <span class="n">EnumFactory</span><span class="p">(</span><span class="s1">&#39;TokenCategory&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">,</span>
+                                             <span class="s1">&#39;number&#39;</span><span class="p">,</span>
+                                             <span class="s1">&#39;punctuation&#39;</span><span class="p">,</span>
+                                             <span class="s1">&#39;space&#39;</span><span class="p">,</span>
+                                             <span class="s1">&#39;symbol&#39;</span><span class="p">,</span>
+                                             <span class="p">))</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">=</span> <span class="n">category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_word</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">==</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">word</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">==</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">number</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_punctuation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">==</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">punctuation</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_space</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">==</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">space</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span> <span class="o">==</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">symbol</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="s1">&#39;Token </span><span class="si">%s</span><span class="s1">:&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_category</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">)</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TokenisedText"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.TokenisedText">[docs]</a><span class="k">class</span> <span class="nc">TokenisedText</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TokenisedText.word_iterator"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.TokenisedText.word_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">word_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Iterate over words. &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">word</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">token</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TokenisedText.word_number_iterator"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.TokenisedText.word_number_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">word_number_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Iterate over word and number. &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">category</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">number</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">token</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TokenisedText.count_word_number"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.TokenisedText.count_word_number">[docs]</a>    <span class="k">def</span> <span class="nf">count_word_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Count the number of words and numbers. &quot;&quot;&quot;</span>
+
+        <span class="c1"># Fixme: iterator doesn&#39;t have len method</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_number_iterator</span><span class="p">():</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">counter</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextTokenizer"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.TextTokenizer">[docs]</a><span class="k">class</span> <span class="nc">TextTokenizer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">State</span> <span class="o">=</span> <span class="n">EnumFactory</span><span class="p">(</span><span class="s1">&#39;LexerState&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;letter&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;number&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;special&#39;</span><span class="p">,</span>
+                                       <span class="p">))</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="TextTokenizer.lex"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.TextTokenizer.lex">[docs]</a>    <span class="k">def</span> <span class="nf">lex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">tokenised_text</span> <span class="o">=</span> <span class="n">TokenisedText</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">initial_transition</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">char</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Ll&#39;</span><span class="p">,</span> <span class="s1">&#39;Lu&#39;</span><span class="p">):</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">TextTokenizer</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">letter</span>
+                <span class="n">word</span> <span class="o">=</span> <span class="n">char</span>
+            <span class="k">elif</span> <span class="n">category</span> <span class="o">==</span> <span class="s1">&#39;Nd&#39;</span><span class="p">:</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">TextTokenizer</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">number</span>
+                <span class="n">word</span> <span class="o">=</span> <span class="n">char</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="s1">&#39;Zs&#39;</span><span class="p">:</span>
+                    <span class="n">token_category</span> <span class="o">=</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">space</span>
+                <span class="k">elif</span> <span class="n">category</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Po&#39;</span><span class="p">,</span> <span class="s1">&#39;Pd&#39;</span><span class="p">):</span>
+                    <span class="n">token_category</span> <span class="o">=</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">punctuation</span>
+                <span class="c1"># Ps Pe e.g. ()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">token_category</span> <span class="o">=</span> <span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">symbol</span>
+                <span class="n">tokenised_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">token_category</span><span class="p">,</span> <span class="n">char</span><span class="p">))</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">word</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">word</span>
+
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="c1"># print &#39;&gt;&#39;, char, category, state, word</span>
+            <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">,</span> <span class="n">word</span> <span class="o">=</span> <span class="n">initial_transition</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">char</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">TextTokenizer</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">letter</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Ll&#39;</span><span class="p">,</span> <span class="s1">&#39;Lu&#39;</span><span class="p">,</span> <span class="s1">&#39;Nd&#39;</span><span class="p">):</span>
+                        <span class="n">word</span> <span class="o">+=</span> <span class="n">char</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">tokenised_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">word</span><span class="p">))</span>
+                        <span class="n">state</span><span class="p">,</span> <span class="n">word</span> <span class="o">=</span> <span class="n">initial_transition</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">char</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="n">TextTokenizer</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">number</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="s1">&#39;Nd&#39;</span><span class="p">:</span>
+                        <span class="n">word</span> <span class="o">+=</span> <span class="n">char</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">tokenised_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">number</span><span class="p">,</span> <span class="n">word</span><span class="p">))</span>
+                        <span class="n">state</span><span class="p">,</span> <span class="n">word</span> <span class="o">=</span> <span class="n">initial_transition</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">char</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">word</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">TextTokenizer</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">letter</span><span class="p">:</span>
+                <span class="n">tokenised_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">word</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="n">TextTokenizer</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">number</span><span class="p">:</span>
+                <span class="n">tokenised_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">Token</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">number</span><span class="p">,</span> <span class="n">word</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">tokenised_text</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="strip_word_list"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.strip_word_list">[docs]</a><span class="k">def</span> <span class="nf">strip_word_list</span><span class="p">(</span><span class="n">word_list</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; Return a word list where the leading and trailing spaces was removed. &quot;&quot;&quot;</span>
+
+    <span class="n">upper_index_max</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">upper_index_max</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="n">lower_index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">word_list</span><span class="p">[</span><span class="n">lower_index</span><span class="p">]</span><span class="o">.</span><span class="n">is_space</span><span class="p">:</span>
+            <span class="n">lower_index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">lower_index</span> <span class="o">&gt;</span> <span class="n">upper_index_max</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">upper_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">word_list</span><span class="p">[</span><span class="n">upper_index</span><span class="p">]</span><span class="o">.</span><span class="n">is_space</span><span class="p">:</span>
+            <span class="n">upper_index</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">word_list</span><span class="p">[</span><span class="n">lower_index</span><span class="p">:</span><span class="n">upper_index</span> <span class="o">+</span><span class="mi">1</span><span class="p">]</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="join_tokens"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.join_tokens">[docs]</a><span class="k">def</span> <span class="nf">join_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">])</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="strip_non_alphabetic"><a class="viewcode-back" href="../../../api/Babel/Pdf/TextTokenizer.html#Babel.Pdf.TextTokenizer.strip_non_alphabetic">[docs]</a><span class="k">def</span> <span class="nf">strip_non_alphabetic</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+
+    <span class="n">upper_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">char</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">upper_index</span><span class="p">]</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Ll&#39;</span><span class="p">,</span> <span class="s1">&#39;Lu&#39;</span><span class="p">):</span>
+            <span class="n">upper_index</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">upper_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">upper_index</span> <span class="o">+</span><span class="mi">1</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

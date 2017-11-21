@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Babel.Pdf.MupdfTools &mdash; Babel 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Babel.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Babel 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Babel
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes/index.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">6. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">7. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">8. How to Refer to Babel ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../related-projects.html">9. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">10. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Babel</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Babel.Pdf.MupdfTools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Babel.Pdf.MupdfTools</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Babel - A Bibliography Manager</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">Babel.MuPdf</span> <span class="k">as</span> <span class="nn">mupdf</span>
+<span class="kn">import</span> <span class="nn">Babel.MuPdf.TextIterator</span> <span class="k">as</span> <span class="nn">mupdf_iter</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">.TextStyle</span> <span class="k">import</span> <span class="n">TextStyle</span>
+<span class="kn">from</span> <span class="nn">Babel.Math.Interval</span> <span class="k">import</span> <span class="n">IntervalInt2D</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="indent_line"><a class="viewcode-back" href="../../../api/Babel/Pdf/MupdfTools.html#Babel.Pdf.MupdfTools.indent_line">[docs]</a><span class="k">def</span> <span class="nf">indent_line</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">indent_level</span><span class="p">,</span> <span class="n">indent_pattern</span><span class="o">=</span><span class="s1">&#39;  &#39;</span><span class="p">):</span>
+
+    <span class="c1"># Fixme: not here, purpose ?</span>
+
+    <span class="k">return</span> <span class="n">indent_pattern</span><span class="o">*</span><span class="n">indent_level</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="get_font_name"><a class="viewcode-back" href="../../../api/Babel/Pdf/MupdfTools.html#Babel.Pdf.MupdfTools.get_font_name">[docs]</a><span class="k">def</span> <span class="nf">get_font_name</span><span class="p">(</span><span class="n">font</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; Return the name of a MuPDF font. &quot;&quot;&quot;</span>
+
+    <span class="n">font_name</span> <span class="o">=</span> <span class="n">mupdf</span><span class="o">.</span><span class="n">decode_utf8</span><span class="p">(</span><span class="n">mupdf</span><span class="o">.</span><span class="n">get_font_name</span><span class="p">(</span><span class="n">font</span><span class="p">))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">font_name</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">font_name</span> <span class="o">=</span> <span class="n">font_name</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">font_name</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="format_bounding_box"><a class="viewcode-back" href="../../../api/Babel/Pdf/MupdfTools.html#Babel.Pdf.MupdfTools.format_bounding_box">[docs]</a><span class="k">def</span> <span class="nf">format_bounding_box</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="s2">&quot;[</span><span class="si">%g</span><span class="s2"> </span><span class="si">%g</span><span class="s2"> </span><span class="si">%g</span><span class="s2"> </span><span class="si">%g</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span>
+                              <span class="n">obj</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="to_interval"><a class="viewcode-back" href="../../../api/Babel/Pdf/MupdfTools.html#Babel.Pdf.MupdfTools.to_interval">[docs]</a><span class="k">def</span> <span class="nf">to_interval</span><span class="p">(</span><span class="n">bounding_box</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; Convert a MuPDF bounding box to an :obj:`Babel.Math.Interval.IntervalInt2D` object. &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">IntervalInt2D</span><span class="p">((</span><span class="n">bounding_box</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">bounding_box</span><span class="o">.</span><span class="n">x1</span><span class="p">),</span>
+                         <span class="p">(</span><span class="n">bounding_box</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">bounding_box</span><span class="o">.</span><span class="n">y1</span><span class="p">))</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="span_to_string"><a class="viewcode-back" href="../../../api/Babel/Pdf/MupdfTools.html#Babel.Pdf.MupdfTools.span_to_string">[docs]</a><span class="k">def</span> <span class="nf">span_to_string</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; Return the unicode string corresponding to a MuPDF span. &quot;&quot;&quot;</span>
+
+    <span class="n">span_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">mupdf_iter</span><span class="o">.</span><span class="n">TextCharIterator</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
+        <span class="n">span_text</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">char</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">span_text</span> <span class="o">=</span> <span class="n">span_text</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">span_text</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="to_text_style"><a class="viewcode-back" href="../../../api/Babel/Pdf/MupdfTools.html#Babel.Pdf.MupdfTools.to_text_style">[docs]</a><span class="k">def</span> <span class="nf">to_text_style</span><span class="p">(</span><span class="n">style</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; Convert a MuPDF style instance to a :obj:`.TextStyle` object. &quot;&quot;&quot;</span>
+
+    <span class="n">font</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">font</span>
+    <span class="n">text_style</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">style</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                           <span class="n">font_family</span><span class="o">=</span><span class="n">get_font_name</span><span class="p">(</span><span class="n">font</span><span class="p">),</span>
+                           <span class="n">font_size</span><span class="o">=</span><span class="n">style</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                           <span class="n">is_bold</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">mupdf</span><span class="o">.</span><span class="n">font_is_bold</span><span class="p">(</span><span class="n">font</span><span class="p">)),</span>
+                           <span class="n">is_italic</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">mupdf</span><span class="o">.</span><span class="n">font_is_italic</span><span class="p">(</span><span class="n">font</span><span class="p">)),</span>
+                           <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">text_style</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
