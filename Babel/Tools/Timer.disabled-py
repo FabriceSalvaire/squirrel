@@ -23,7 +23,7 @@
 import logging
 import time
 
-from GVLab.C.PlatformC import calibrate_cpu_clock, CpuTSC
+from XXX.C.PlatformC import calibrate_cpu_clock, CpuTSC
 
 ####################################################################################################
 
@@ -97,7 +97,7 @@ class TimeTrackerActivity(object):
         self._name = name
 
         self._cpu_tsc = CpuTSC(self._time_tracker.cpu_clock_frequency)
-        self._number_of_cycles = 0L
+        self._number_of_cycles = 0
 
     ##############################################
 
