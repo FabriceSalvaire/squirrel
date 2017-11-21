@@ -2,10 +2,6 @@
  PDF Pool
 ==========
 
-.. toctree::
-  :maxdepth: 2
-  :numbered:
-
 Requirements
 ============
 

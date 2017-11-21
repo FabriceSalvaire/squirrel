@@ -1,0 +1,50 @@
+.. -*- Mode: rst -*-
+
+..
+   |BabelUrl|
+   |BabelHomePage|_
+   |BabelDoc|_
+   |Babel@github|_
+   |Babel@readthedocs|_
+   |Babel@readthedocs-badge|
+   |Babel@pypi|_
+
+.. |ohloh| image:: https://www.openhub.net/accounts/230426/widgets/account_tiny.gif
+   :target: https://www.openhub.net/accounts/fabricesalvaire
+   :alt: Fabrice Salvaire's Ohloh profile
+   :height: 15px
+   :width:  80px
+
+.. |BabelUrl| replace:: https://fabricesalvaire.github.io/Biblio
+
+.. |BabelHomePage| replace:: Babel Home Page
+.. _BabelHomePage: https://fabricesalvaire.github.io/Biblio
+
+.. |Babel@readthedocs-badge| image:: https://readthedocs.org/projects/Babel/badge/?version=latest
+   :target: http://Babel.readthedocs.org/en/latest
+
+.. |Babel@github| replace:: https://github.com/FabriceSalvaire/Babel
+.. .. _Babel@github: https://github.com/FabriceSalvaire/Babel
+
+.. |Babel@pypi| replace:: https://pypi.python.org/pypi/Babel
+.. .. _Babel@pypi: https://pypi.python.org/pypi/Babel
+
+.. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/Babel.svg?branch=master
+   :target: https://travis-ci.org/FabriceSalvaire/Babel
+   :alt: Babel build status @travis-ci.org
+
+.. |Pypi Version| image:: https://img.shields.io/pypi/v/Babel.svg
+   :target: https://pypi.python.org/pypi/Babel
+   :alt: Babel last version
+
+.. |Pypi License| image:: https://img.shields.io/pypi/l/Babel.svg
+   :target: https://pypi.python.org/pypi/Babel
+   :alt: Babel license
+
+.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/Babel.svg
+   :target: https://pypi.python.org/pypi/Babel
+   :alt: Babel python version
+
+..  coverage test
+..  https://img.shields.io/pypi/status/Django.svg
+..  https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Star
