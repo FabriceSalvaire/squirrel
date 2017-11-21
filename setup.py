@@ -43,7 +43,8 @@ exec(compile(open('setup_data.py').read(), 'setup_data.py', 'exec'))
 setup_dict.update(dict(
     # include_package_data=True, # Look in MANIFEST.in
     packages=find_packages(exclude=['unit-test']),
-    scripts=glob.glob('bin/*'),
+    scripts=['bin/pdf-browser'],
+    # glob.glob('bin/*'),
     package_data={
         'Babel.Config': ['logging.yml'],
     },
