@@ -63,11 +63,14 @@ source = """
 mupdf_library_path = os.path.dirname(mupdf_library)
 mupdf_include_path = os.path.join(os.path.dirname(mupdf_library_path), 'include')
 freetype_include_path = '/usr/include/freetype2'
-ffi.set_source('_mupdf',
-                source,
-                include_dirs=[mupdf_include_path, module_path, freetype_include_path],
-                library_dirs=[mupdf_library_path],
-                libraries=['mupdf-js-v8'])
+ffi.set_source(
+    '_mupdf',
+    source,
+    include_dirs=[mupdf_include_path, module_path, freetype_include_path],
+    library_dirs=[mupdf_library_path],
+    # libraries=['mupdf-js-v8'],
+    libraries=['mupdf'],
+)
 
 # Parse header
 source = ''

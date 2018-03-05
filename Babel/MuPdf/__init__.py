@@ -87,6 +87,14 @@ def Rect():
 def IRect():
     return _ffi.new('fz_irect *')
 
+def StructuredTextOptions(flags=0):
+    stext_options = _ffi.new("fz_stext_options *")
+    stext_options.flags = flags
+    return stext_options
+
+def str_rect(rect):
+    return '[{0.x0}, {0.x1}]x[{0.y0}, {0.y1}]'.format(rect)
+
 ###################################################
 #
 # Constantes
@@ -98,6 +106,12 @@ NULL = _ffi.NULL # C NULL pointer
 # Fixme:
 FZ_STORE_UNLIMITED = _lib.FZ_STORE_UNLIMITED
 
+FZ_NO_CACHE = _lib.FZ_NO_CACHE
+
+FZ_STEXT_PRESERVE_LIGATURES = _lib.FZ_STEXT_PRESERVE_LIGATURES
+FZ_STEXT_PRESERVE_WHITESPACE = _lib.FZ_STEXT_PRESERVE_WHITESPACE
+FZ_STEXT_PRESERVE_IMAGES = _lib.FZ_STEXT_PRESERVE_IMAGES
+
 ###################################################
 #
 # Functions
@@ -105,44 +119,85 @@ FZ_STORE_UNLIMITED = _lib.FZ_STORE_UNLIMITED
 
 # from fitz.h
 
-bound_page = _lib.fz_bound_page
-clear_pixmap_with_value = _lib.fz_clear_pixmap_with_value
-drop_document = _lib.fz_drop_document
-drop_output = _lib.fz_drop_output
-concat = _lib.fz_concat
-count_pages = _lib.fz_count_pages
-device_rgb = _lib.fz_device_rgb
+# buffer
 drop_buffer = _lib.fz_drop_buffer
-drop_pixmap = _lib.fz_drop_pixmap
+# buffer_storage
+string_from_buffer = _lib.fz_string_from_buffer
+
+# colorspace
+device_rgb = _lib.fz_device_rgb
+
+# context
 drop_context = _lib.fz_drop_context
+# new_context
+set_aa_level = _lib.fz_set_aa_level
+
+# device
 drop_device = _lib.fz_drop_device
+close_device = _lib.fz_close_device
+enable_device_hints= _lib.fz_enable_device_hints
+new_draw_device= _lib.fz_new_draw_device
+
+# display-list
+drop_display_list = _lib.fz_drop_display_list
+new_display_list = _lib.fz_new_display_list
+new_list_device = _lib.fz_new_list_device
+run_display_list = _lib.fz_run_display_list
+
+# document
+drop_document = _lib.fz_drop_document
 drop_page = _lib.fz_drop_page
-#! free_text_page = _lib.fz_free_text_page
-#! free_text_sheet = _lib.fz_free_text_sheet
-# new_context = _lib.fz_new_context
-new_draw_device = _lib.fz_new_draw_device
-#! new_output_with_file = _lib.fz_new_output_with_file
+bound_page = _lib.fz_bound_page
+count_pages = _lib.fz_count_pages
+load_links  = _lib.fz_load_links
+# fz_lookup_metadata
+open_document = _lib.open_document
+register_document_handlers = _lib.fz_register_document_handlers
+run_page = _lib.fz_run_page
+run_page_contents  = _lib.fz_run_page_contents
+
+# font
+font_is_bold = _lib.fz_font_is_bold
+font_is_italic = _lib.fz_font_is_italic
+font_name = _lib.fz_font_name
+
+# geometry
+identity  = _ffi.addressof(_lib.fz_identity)
+infinite_rect  = _ffi.addressof(_lib.fz_infinite_rect)
+concat = _lib.fz_concat
+pre_rotate = _lib.fz_pre_rotate
+pre_scale = _lib.fz_pre_scale
+rect_from_irect = _lib.fz_rect_from_irect
+round_rect = _lib.fz_round_rect
+rotate = _lib.fz_rotate
+scale = _lib.fz_scale
+transform_rect = _lib.fz_transform_rect
+
+# pixmap
+drop_pixmap = _lib.fz_drop_pixmap
+clear_pixmap_with_value  = _lib.fz_clear_pixmap_with_value
 new_pixmap_with_bbox = _lib.fz_new_pixmap_with_bbox
 new_pixmap_with_bbox_and_data = _lib.fz_new_pixmap_with_bbox_and_data
-#! new_text_device = _lib.fz_new_text_device
-#! new_text_page = _lib.fz_new_text_page
-#! new_text_sheet = _lib.fz_new_text_sheet
-# open_document = _lib.fz_open_document
-open_document = _lib.open_document
-pixmap_set_resolution = _lib.fz_pixmap_set_resolution
-pre_scale = _lib.fz_pre_scale
-#! print_text_page = _lib.fz_print_text_page
-#! print_text_page_html = _lib.fz_print_text_page_html
-#! print_text_page_xml = _lib.fz_print_text_page_html
-#! print_text_sheet = _lib.fz_print_text_sheet
-register_document_handlers = _lib.fz_register_document_handlers
-rotate = _lib.fz_rotate
-round_rect = _lib.fz_round_rect
-run_page = _lib.fz_run_page
-scale = _lib.fz_scale
-set_aa_level = _lib.fz_set_aa_level
-transform_rect = _lib.fz_transform_rect
-#! write_png = _lib.fz_write_png
+pixmap_height = _lib.fz_pixmap_height
+pixmap_samples = _lib.fz_pixmap_samples
+pixmap_stride = _lib.fz_pixmap_stride
+pixmap_width = _lib.fz_pixmap_width
+
+# structured-text
+drop_stext_page = _lib.fz_drop_stext_page
+new_stext_page = _lib.fz_new_stext_page
+new_stext_device = _lib.fz_new_stext_device
+stext_char_at  = _lib.fz_stext_char_at
+stext_char_count = _lib.fz_stext_char_count
+
+# util
+new_pixmap_from_page = _lib.fz_new_pixmap_from_page
+new_pixmap_from_page_number = _lib.fz_new_pixmap_from_page_number
+new_pixmap_from_page_contents = _lib.fz_new_pixmap_from_page_contents
+new_stext_page_from_page = _lib.fz_new_stext_page_from_page
+new_stext_page_from_page_number = _lib.fz_new_stext_page_from_page_number
+new_buffer_from_page = _lib.fz_new_buffer_from_page
+new_buffer_from_page_number = _lib.fz_new_buffer_from_page_number
 
 # from pdf.h
 load_page = _lib.fz_load_page
@@ -151,9 +206,16 @@ load_page = _lib.fz_load_page
 #
 # Pythonic API
 #
+####################################################################################################
 
 def new_context(alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_lib.FZ_STORE_UNLIMITED):
-    return _lib.fz_new_context(alloc, locks, max_store)
+    ctx = _lib.fz_new_context(alloc, locks, max_store)
+    if ctx == _ffi.NULL:
+        raise NameError('cannot create mupdf context')
+    else:
+        return ctx
+
+####################################################################################################
 
 class Context(object):
 
@@ -169,7 +231,7 @@ class Context(object):
 
         _lib.fz_drop_context(self._context)
 
-###################################################
+####################################################################################################
 
 def get_meta_info(ctx, document, key, size=1024):
     buffer_ = _ffi.new('char[]', size) # size in bytes
@@ -177,30 +239,21 @@ def get_meta_info(ctx, document, key, size=1024):
     # key_buffer = _ffi.new('char[]', key)
     # buffer_[0] = _ffi.addressof(key_buffer, 0)
     rc = _lib.fz_lookup_metadata(ctx, document, key, buffer_, size)
-    if rc == 1:
-        return decode_utf8(buffer_)
-    else:
+    if rc == -1: # key is not recognized or found
+        # raise NameError('Meta info %s not found', key)
         return ''
-    # raise NameError('Meta info %s not found', key)
+    else:
+        return decode_utf8(buffer_)
 
 ####################################################################################################
 #
 # API extensions
 #
 
-buffer_data = _lib.fz_buffer_data
 copy_irect = _lib.fz_copy_irect
 copy_rect = _lib.fz_copy_rect
 fclose = _lib.fz_fclose
-font_is_bold = _lib.font_is_bold
-font_is_italic = _lib.font_is_italic
 fopen = _lib.fz_fopen
-get_font_name = _lib.get_font_name
-# get_text_block = _lib.get_text_block
-# get_text_char = _lib.get_text_char
-# get_text_line = _lib.get_text_line
-# get_text_span = _lib.get_text_span
-pdf_metadata = _lib.pdf_metadata
 
 ####################################################################################################
 

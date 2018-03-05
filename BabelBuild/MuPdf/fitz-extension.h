@@ -15,18 +15,18 @@
 
 #include "mupdf/fitz.h"
 
-/* ********************************************************************************************** *
+/***************************************************************************************************
  *
  * Provide FILE
  *
  */
 
 // Fixme: inline ...
-FILE * fz_fopen(const char *filename, const char *mode);
+FILE * fz_fopen(const char * filename, const char * mode);
 
-int fz_fclose(FILE *file);
+int fz_fclose(FILE * file);
 
-/* ********************************************************************************************** *
+/***************************************************************************************************
  *
  * Add missing copy functions
  *   Only fz_copy_matrix is available
@@ -35,7 +35,7 @@ int fz_fclose(FILE *file);
 
 static inline
 fz_rect *
-fz_copy_rect(fz_rect *restrict dst, const fz_rect *restrict src)
+fz_copy_rect(fz_rect * restrict dst, const fz_rect * restrict src)
 {
   *dst = *src;
   return dst;
@@ -43,97 +43,28 @@ fz_copy_rect(fz_rect *restrict dst, const fz_rect *restrict src)
 
 static inline
 fz_irect *
-fz_copy_irect(fz_irect *restrict dst, const fz_irect *restrict src)
+fz_copy_irect(fz_irect * restrict dst, const fz_irect * restrict src)
 {
   *dst = *src;
   return dst;
 }
 
-/* ********************************************************************************************** *
- *
- * Expose Font private API
- *
- */
+/**************************************************************************************************/
 
-// still needed?
-static inline
-const char *
-get_font_name(const fz_font *font)
-{
-  return font->name;
-}
+int meta(fz_context * ctx, fz_document * doc, const char * key, char * string, char * buffer, int buffer_size);
 
-int font_is_bold(const fz_font *font);
-int font_is_italic(const fz_font *font);
-
-/* ********************************************************************************************** *
- *
- * Provide access to arrays
- *
- */
-
-/*
-static inline
-fz_text_block *
-get_text_block(fz_text_page *page, unsigned int block_index)
-{
-  return page->blocks[block_index].u.text;
-}
-
-static inline
-fz_text_line *
-get_text_line(fz_text_block *block, unsigned int line_index)
-{
-  return &block->lines[line_index];
-}
-
-static inline
-fz_text_char *
-get_text_char(fz_text_span *span, unsigned int char_index)
-{
-  return &span->text[char_index];
-}
-*/
-
-// needed ?
-// fz_text_span * get_text_span(fz_text_line *line, unsigned int span_index);
-
-/* ********************************************************************************************** */
-
-// Expose private API / Helper
-static inline
-unsigned char *
-fz_buffer_data(fz_buffer *buffer)
-{
-  // Swig do it
-  // char *string = malloc(buffer.len);
-  // strcpy(string, buffer.data);
-  // return string;
-  return buffer->data;
-}
-
-/* ********************************************************************************************** */
-
-int meta(fz_context *ctx, fz_document *doc, const char *key, char *string, char *buffer, int buffer_size);
-
-/* ********************************************************************************************** */
+/**************************************************************************************************/
 
 // Missing feature
 // Return the Metadata XML stream
-fz_buffer * pdf_metadata(fz_context *ctx, fz_document *doc);
+// fz_buffer * pdf_metadata(fz_context *ctx, fz_document *doc);
 
-/* ********************************************************************************************** */
+/**************************************************************************************************/
 
 void init(void);
 fz_document * open_document(fz_context * ctx, const char *filename);
-void python_throw_exit_callback(char *message);
+void python_throw_exit_callback(char * message);
 
-/* ********************************************************************************************** */
+/**************************************************************************************************/
 
 #endif /* __FITZ_EXTENSION_H__ */
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/
