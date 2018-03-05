@@ -51,28 +51,39 @@ class DocumentRowMixin(SqlRow):
 
     __tablename__ = 'documents'
 
+    # Record ID
     id = Column(Integer, primary_key=True)
     record_creation_date = Column(DateTime)
     record_update_date = Column(DateTime)
 
+    # Document key, note duplicates are allowed
+    shasum = Column(String(64))
+    has_duplicate = Column(Boolean, default=False)
+
+    # Other document key
     path = Column(FileType, unique=True)
     inode = Column(Integer) # uniq on the same file-system
     # creation_time = Column(Integer)
 
-    shasum = Column(String(64)) # duplicates are allowed
-    has_duplicate = Column(Boolean, default=False)
+    # Document Metadata
+    author = Column(String, default='')
+    comment = Column(String, default='')
+    language = Column(String(10), default='') # Fixme: en
+    number_of_pages = Column(Integer)
+    title = Column(String, default='')
 
+    # User classification
+    # star
+    # classification
+    # Dewey classification 'xyz.abc de' = float xyz.abcde
+
+    # Index
+    # Fixme: emplain more ???
     indexation_date = Column(DateTime, default=None) # to compare with indexer generation
     indexed_until = Column(Integer, default=0) # should be equal to number_of_pages
                                                # page number start from 1, 0 means not indexed
     indexation_status = Column(String, default='') # Fixme:
-    language = Column(String(10), default='') # Fixme: en
     # indexer settings
-
-    number_of_pages = Column(Integer)
-    title = Column(String, default='')
-    author = Column(String, default='')
-    comment = Column(String, default='')
 
     ##############################################
 
@@ -119,7 +130,7 @@ Document Row
   comment: {comment}
 '''
 
-        return message.format(**self.to_dict())
+        return message.format(**self.to_dict()) # Fixme: 0.
 
     ##############################################
 
