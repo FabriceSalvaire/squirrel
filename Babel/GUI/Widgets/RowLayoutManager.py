@@ -24,7 +24,7 @@ from PyQt5 import QtCore, QtWidgets
 
 ####################################################################################################
 
-class RowLayoutManager(object):
+class RowLayoutManager:
 
     """ This class implements a row layout manager. """
 

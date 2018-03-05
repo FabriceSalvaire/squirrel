@@ -218,7 +218,7 @@ def new_context(alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_lib.FZ_STORE_UNLIMI
 
 ####################################################################################################
 
-class Context(object):
+class Context:
 
     ##############################################
 

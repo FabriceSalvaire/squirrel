@@ -33,7 +33,7 @@ from Babel.Math.Functions import rint
 
 ####################################################################################################
 
-class Binning1D(object):
+class Binning1D:
 
     _under_flow_bin = 0
     _first_bin = 1

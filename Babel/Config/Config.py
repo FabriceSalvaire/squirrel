@@ -28,7 +28,7 @@ from PyQt5.QtGui import QColor
 
 ####################################################################################################
 
-class Path(object):
+class Path:
 
     config_directory = os.path.join(os.environ['HOME'], '.config', 'babel')
 
@@ -37,20 +37,20 @@ class Path(object):
 
 ####################################################################################################
 
-class DataBase(object):
+class DataBase:
 
     document_database = os.path.join(Path.data_directory, 'document-database.sqlite')
 
 ####################################################################################################
 
-class Email(object):
+class Email:
 
     from_address = 'fabrice.salvaire@orange.fr'
     to_address = ['fabrice.salvaire@orange.fr',]
 
 ####################################################################################################
 
-class Help(object):
+class Help:
 
     host = 'localhost'
     url_scheme = 'http'
@@ -58,7 +58,7 @@ class Help(object):
 
 ####################################################################################################
 
-class RedmineRest(object):
+class RedmineRest:
 
     url = 'http://loalhost/redmine/'
     key = '02caaf292242bbfde9000291cb9955337fa87518'
@@ -66,6 +66,6 @@ class RedmineRest(object):
 
 ####################################################################################################
 
-class Shortcut(object):
+class Shortcut:
 
     pass

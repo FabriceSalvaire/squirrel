@@ -28,7 +28,7 @@ from Babel.Tools.Container import Ring
 
 ####################################################################################################
 
-class DocumentItem(object):
+class DocumentItem:
 
     ##############################################
 

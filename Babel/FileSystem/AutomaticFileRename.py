@@ -28,7 +28,7 @@ from .File import File
 
 ####################################################################################################
 
-class AutomaticFileRename(object):
+class AutomaticFileRename:
 
     """ This class implements a suffix generator to rename automatically duplicated file name.
 

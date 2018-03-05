@@ -33,7 +33,7 @@ import Babel.Config.ConfigInstall as ConfigInstall
 ####################################################################################################
 
 @singleton
-class ExceptionHookInitialiser(object):
+class ExceptionHookInitialiser:
 
     ##############################################
 

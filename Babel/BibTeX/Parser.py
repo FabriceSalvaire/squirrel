@@ -34,7 +34,7 @@ from .Entry import Entry
 
 ####################################################################################################
 
-class Parser(object):
+class Parser:
 
     _logger = logging.getLogger(__name__)
 

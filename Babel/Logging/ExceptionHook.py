@@ -46,7 +46,7 @@ def format_exception(exception_type, exception_value, exception_traceback):
 ####################################################################################################
 
 @singleton
-class DispatcherExceptionHook(object):
+class DispatcherExceptionHook:
 
     """ DispatcherExceptionHook install an exception hook in the Python interpreter. This class is a
     singleton and follows the Observer Pattern.  When an exception is raised, it is catched by the
@@ -94,7 +94,7 @@ class DispatcherExceptionHook(object):
 
 ####################################################################################################
 
-class ExceptionHook(object):
+class ExceptionHook:
 
     ##############################################
 

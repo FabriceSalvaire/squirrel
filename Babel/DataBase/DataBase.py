@@ -33,7 +33,7 @@ from .SqlAlchemyBase import autoload_table
 
 ####################################################################################################
 
-class DataBase(object):
+class DataBase:
 
     _logger = logging.getLogger(__name__)
 

@@ -62,7 +62,7 @@ class ExtendedDictionaryInterface(dict):
 
 ####################################################################################################
 
-class ReadOnlyAttributeDictionaryInterface(object):
+class ReadOnlyAttributeDictionaryInterface:
 
     """ This class implements a read-only attribute and dictionary interface.
 
@@ -186,7 +186,7 @@ class AttributeDictionaryInterfaceDescriptor(AttributeDictionaryInterface):
 
     Example::
 
-      class DescriptorExample(object):
+      class DescriptorExample:
           def __init__(self, value):
               self.value = value
           def get(self):

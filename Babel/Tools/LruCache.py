@@ -36,7 +36,7 @@ def inverse_percent(x):
 
 ####################################################################################################
 
-class ObjectProtocol(object):
+class ObjectProtocol:
 
     """ This class defines the Object Protocol. """
 
@@ -58,7 +58,7 @@ class ObjectProtocol(object):
 
 ####################################################################################################
 
-class CacheElement(object):
+class CacheElement:
 
     """ This class implements a cache element of the LRU cache. """
 
@@ -123,7 +123,7 @@ class CacheElement(object):
 
 ####################################################################################################
 
-class LruCache(object):
+class LruCache:
 
     """ This class implements the LRU cache. """
 

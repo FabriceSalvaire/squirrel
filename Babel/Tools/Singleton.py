@@ -67,7 +67,7 @@ class SingletonMetaClass(type):
 
 ####################################################################################################
 
-class singleton(object):
+class singleton:
 
     """ A singleton class decorator.
 
@@ -117,7 +117,7 @@ def singleton_func(cls):
 
 ####################################################################################################
 
-class monostate(object):
+class monostate:
 
     """ A monostate base class.
     """

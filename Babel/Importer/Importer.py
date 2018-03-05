@@ -44,7 +44,7 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class Importer(object):
+class Importer:
 
     ##############################################
 
@@ -61,7 +61,7 @@ class Importer(object):
 
 ####################################################################################################
 
-class ImportSession(object):
+class ImportSession:
 
     # fixme: purpose ?
 

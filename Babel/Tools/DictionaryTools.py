@@ -34,7 +34,7 @@ def init_default_key(d, **kwargs):
 
 ####################################################################################################
 
-class DictInitialised(object):
+class DictInitialised:
 
     """ This ABC class implements a class initialised by a dict.
 

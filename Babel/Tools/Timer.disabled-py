@@ -27,7 +27,7 @@ from XXX.C.PlatformC import calibrate_cpu_clock, CpuTSC
 
 ####################################################################################################
 
-class TimeTracker(object):
+class TimeTracker:
 
     __cpu_clock_frequency__ = calibrate_cpu_clock(1)
 
@@ -87,7 +87,7 @@ class TimeTracker(object):
 
 ####################################################################################################
 
-class TimeTrackerActivity(object):
+class TimeTrackerActivity:
 
     ##############################################
 
@@ -131,7 +131,7 @@ class TimeTrackerActivity(object):
 
 ####################################################################################################
 
-class Timer(object):
+class Timer:
 
     _logger = logging.getLogger(__name__ + '.Timer')
 

@@ -38,7 +38,7 @@ def autoload_table(engine, table_name):
 
 ####################################################################################################
 
-class SqlRow(object):
+class SqlRow:
 
     __table__ = None
 
@@ -103,7 +103,7 @@ class SqlRow(object):
 
 ####################################################################################################
 
-class SqlTable(object):
+class SqlTable:
 
     ROW_CLASS = None
 
@@ -184,7 +184,7 @@ class SqlTable(object):
 
 ####################################################################################################
 
-class ColumnWidthFactory(object):
+class ColumnWidthFactory:
 
     ##############################################
 
