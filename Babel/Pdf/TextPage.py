@@ -52,9 +52,14 @@ class TextPage:
 
     ##############################################
 
-    def __del__(self):
+    def _free(self):
 
         mupdf.drop_stext_page(self._context, self._text_page)
+
+    def __del__(self):
+
+        # mupdf.drop_stext_page(self._context, self._text_page)
+        pass
 
     ##############################################
 
