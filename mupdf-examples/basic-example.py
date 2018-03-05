@@ -194,10 +194,11 @@ bbox = mupdf.Rect()
 mupdf.rect_from_irect(bbox, ibbox)
 print(mupdf.str_rect(bbox))
 
-width, height = ibbox.x1 - ibbox.x0, ibbox.y1 - ibbox.y0
+# width, height = ibbox.x1 - ibbox.x0, ibbox.y1 - ibbox.y0
+width, height = mupdf.rect_width_height(ibbox)
 np_array = np.zeros((height, width, 4), dtype=np.uint8)
 
-use_alpha = 1
+use_alpha = True
 # pixmap = mupdf.new_pixmap_with_bbox(ctx, color_space, ibbox, mupdf.NULL, use_alpha)
 pixmap = mupdf.new_pixmap_with_bbox_and_data(ctx, color_space, ibbox, mupdf.NULL, use_alpha,
                                               mupdf.np_array_uint8_ptr(np_array))

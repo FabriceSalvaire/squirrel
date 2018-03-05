@@ -52,7 +52,9 @@ class PdfDocument:
         path = str(self._path).encode('utf-8')
 
         # try:
+        # Create a context to hold the exception stack and various caches
         self._context = mupdf.new_context()
+        # Register the default file types to handle
         mupdf.register_document_handlers(self._context)
         self._c_document = mupdf.open_document(self._context, path)
         # except MupdfError as exception:
@@ -197,6 +199,7 @@ class MetaData(ReadOnlyAttributeDictionaryInterface):
 
         super(MetaData, self).__init__()
 
+        context = document._context
         c_document = document._c_document
 
         for key in (
@@ -209,8 +212,7 @@ class MetaData(ReadOnlyAttributeDictionaryInterface):
                 'ModDate',
         ):
             # Fixme: buffer size
-            #! string = mupdf.get_meta_info(c_document, key, size=1024)
-            string = ''
+            string = mupdf.get_meta_info(context, c_document, 'info:' + key, size=1024)
             self._dictionary[key] = string
 
         # fz_buffer = mupdf.pdf_metadata(c_document)
@@ -262,19 +264,34 @@ class Page:
 
     def _bounding_box(self):
 
-        # Determine the size of a page at 72 dpi.
-        bounds = mupdf.Rect()
-        mupdf.bound_page(self._context, self._c_page, bounds)
+        # Determine the size of the page at 72 dpi.
+        mediabox = mupdf.Rect()
+        mupdf.bound_page(self._context, self._c_page, mediabox)
+        # 'mediabox {}'.format(mupdf.str_rect(mediabox)))
 
-        return bounds
+        return mediabox
+
+    ##############################################
+
+    def _make_display_list(self, no_cache=False):
+
+        self._page_list = mupdf.new_display_list(self._context, mupdf.NULL)
+        device = mupdf.new_list_device(self._context, page_list)
+        if no_cache:
+            mupdf.enable_device_hints(self._context, device, mupdf.FZ_NO_CACHE)
+        mupdf.run_page_contents(self._context, page, device, mupdf.identity, mupdf.NULL)
+        mupdf.close_device(self._context, device)
+        mupdf.drop_device(self._context, device)
 
     ##############################################
 
     def _make_transform(self, scale=1, rotation=0):
 
         transform = mupdf.Matrix()
-        mupdf.rotate(transform, rotation)
-        mupdf.pre_scale(transform, scale, scale)
+        # mupdf.rotate(transform, rotation)
+        # mupdf.pre_scale(transform, scale, scale)
+        mupdf.scale(transform, scale, scale)
+        mupdf.pre_rotate(transform, rotation)
 
         return transform
 
@@ -342,21 +359,26 @@ class Page:
                antialiasing_level=8,
                ):
 
+        # Fixme: Check
+
         transform, bounding_box = self._transform_bounding_box(rotation,
                                                                resolution,
                                                                width, height, fit)
 
+        color_space = mupdf.device_rgb(self._context)
+        use_alpha = True
         pixmap = mupdf.new_pixmap_with_bbox(self._context,
-                                            mupdf.device_rgb(self._context),
-                                            bounding_box)
-        mupdf.pixmap_set_resolution(pixmap, resolution) # purpose ?
+                                            color_space,
+                                            bounding_box,
+                                            mupdf.NULL, use_alpha)
+        # mupdf.pixmap_set_resolution(pixmap, resolution, resolution) # purpose ?
         mupdf.clear_pixmap_with_value(self._context, pixmap, 255)
 
-        device = mupdf.new_draw_device(self._context, pixmap)
+        device = mupdf.new_draw_device(self._context, mupdf.NULL, pixmap)
         mupdf.set_aa_level(self._context, antialiasing_level)
         mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
         path = str(path).encode('utf-8')
-        # mupdf.write_png(self._context, pixmap, path, False)
+        # Fixme: mupdf.write_png(self._context, pixmap, path, False)
         mupdf.drop_device(self._context, device)
         mupdf.drop_pixmap(self._context, pixmap)
 
@@ -375,13 +397,17 @@ class Page:
 
         width, height = mupdf.rect_width_height(bounding_box)
         np_array = np.zeros((height, width, 4), dtype=np.uint8)
+        color_space = mupdf.device_rgb(self._context)
+        use_alpha = True
         pixmap = mupdf.new_pixmap_with_bbox_and_data(self._context,
-                                                     mupdf.device_rgb(self._context),
+                                                     color_space,
                                                      bounding_box,
+                                                     mupdf.NULL,
+                                                     use_alpha,
                                                      mupdf.np_array_uint8_ptr(np_array))
-        mupdf.clear_pixmap_with_value(self._context, pixmap, 255)
+        mupdf.clear_pixmap_with_value(self._context, pixmap, 255) # 0xff
 
-        device = mupdf.new_draw_device(self._context, pixmap)
+        device = mupdf.new_draw_device(self._context, mupdf.NULL, pixmap)
         mupdf.set_aa_level(self._context, antialiasing_level)
         mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
         mupdf.drop_device(self._context, device)
@@ -409,9 +435,20 @@ class Page:
 
     ##############################################
 
+    def _to_text_direct(self):
+
+        structured_text_options = mupdf.StructuredTextOptions()
+        c_buffer = mupdf.new_buffer_from_page(self._context, self._c_page, structured_text_options)
+        py_buffer = mupdf.string_from_buffer(self._context, c_buffer)
+        mupdf.drop_buffer(self._context, c_buffer)
+
+        return mupdf.decode_utf8(py_buffer)
+
+    ##############################################
+
     @property
     def text(self):
 
         if self._text_page is None:
-            self._text_page = self._to_text()
+            self._text_page = self._to_text_direct()
         return self._text_page

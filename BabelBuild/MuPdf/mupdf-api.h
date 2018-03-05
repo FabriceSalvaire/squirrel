@@ -217,6 +217,7 @@ int fz_pixmap_height(fz_context * ctx, fz_pixmap * pix);
 unsigned char * fz_pixmap_samples(fz_context * ctx, fz_pixmap * pix);
 int fz_pixmap_stride(fz_context * ctx, fz_pixmap * pix);
 int fz_pixmap_width(fz_context * ctx, fz_pixmap * pix);
+void fz_set_pixmap_resolution(fz_context * ctx, fz_pixmap * pix, int xres, int yres);
 
 // structured-text.h
 void fz_drop_stext_page(fz_context * ctx, fz_stext_page * page);

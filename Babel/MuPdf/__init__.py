@@ -182,6 +182,7 @@ pixmap_height = _lib.fz_pixmap_height
 pixmap_samples = _lib.fz_pixmap_samples
 pixmap_stride = _lib.fz_pixmap_stride
 pixmap_width = _lib.fz_pixmap_width
+set_pixmap_resolution = _lib.fz_set_pixmap_resolution
 
 # structured-text
 drop_stext_page = _lib.fz_drop_stext_page
