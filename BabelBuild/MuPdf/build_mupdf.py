@@ -33,10 +33,17 @@ from ctypes.util import find_library as _find_library
 ####################################################################################################
 
 mupdf_library = None
+libraries = ['mupdf']
 
 # First if there is an environment variable pointing to the library
-if 'MUPDF_LIBRARY' in os.environ:
-    library_path = os.path.realpath(os.environ['MUPDF_LIBRARY'])
+if 'MUPDF_LIBRARY_PATH' in os.environ:
+    mupdf_library_path = os.path.realpath(os.environ['MUPDF_LIBRARY_PATH'])
+    library_path = os.path.join(mupdf_library_path, 'libmupdf.a') # Fixme: Linux
+    if os.path.exists(library_path):
+        mupdf_library = library_path
+        libraries = ['mupdf', 'mupdfthird']
+elif 'MUPDF_SHARED_LIBRARY' in os.environ:
+    library_path = os.path.realpath(os.environ['MUPDF_SHARED_LIBRARY'])
     if os.path.exists(library_path):
         mupdf_library = library_path
 
@@ -48,6 +55,8 @@ if mupdf_library is None:
 # Else, we failed and exit
 if mupdf_library is None:
     raise OSError('MUPDF library not found')
+else:
+    print('Found MuPDF {}'.format(mupdf_library))
 
 ####################################################################################################
 
@@ -62,14 +71,13 @@ source = """
 """
 mupdf_library_path = os.path.dirname(mupdf_library)
 mupdf_include_path = os.path.join(os.path.dirname(mupdf_library_path), 'include')
-freetype_include_path = '/usr/include/freetype2'
+freetype_include_path = '/usr/include/freetype2' # Fixme: Linux
 ffi.set_source(
     '_mupdf',
     source,
     include_dirs=[mupdf_include_path, module_path, freetype_include_path],
     library_dirs=[mupdf_library_path],
-    # libraries=['mupdf-js-v8'],
-    libraries=['mupdf'],
+    libraries=libraries,
 )
 
 # Parse header
