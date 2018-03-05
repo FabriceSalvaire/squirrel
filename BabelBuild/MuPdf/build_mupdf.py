@@ -21,6 +21,7 @@
 ####################################################################################################
 
 import os
+import re
 
 ####################################################################################################
 
@@ -48,15 +49,45 @@ elif 'MUPDF_SHARED_LIBRARY' in os.environ:
         mupdf_library = library_path
 
 # Else, try to find it
+# search for shared library
 if mupdf_library is None:
     library_name = 'mupdf'
     mupdf_library = _find_library(library_name)
+
+# search for static library
+if mupdf_library is None:
+    for path in (
+            # Fixme: Linux
+            '/usr/lib64/libmupdf.a',
+            '/usr/local/lib/libmupdf.a',
+    ):
+        if os.path.exists(path):
+            mupdf_library = path
+            libraries = ['mupdf', 'mupdfthird'] # Fixme: depend how it was compiled ...
 
 # Else, we failed and exit
 if mupdf_library is None:
     raise OSError('MUPDF library not found')
 else:
-    print('Found MuPDF {}'.format(mupdf_library))
+    print('Found MuPDF library {}'.format(mupdf_library))
+
+mupdf_library_path = os.path.dirname(mupdf_library)
+mupdf_include_path = os.path.join(os.path.dirname(mupdf_library_path), 'include')
+freetype_include_path = '/usr/include/freetype2' # Fixme: Linux
+
+mupdf_version = None
+version_path = os.path.join(mupdf_include_path, 'mupdf', 'fitz', 'version.h')
+with open(version_path) as fh:
+    for line in fh.readlines():
+        regexp = re.compile('#define FZ_VERSION "(.*)"')
+        match = regexp.match(line)
+        if match is not None:
+            mupdf_version = match.group(1)
+            break
+if mupdf_version is not None:
+    print('MuPDF is {}'.format(mupdf_version))
+else:
+    raise NameError("MuPDF version not found")
 
 ####################################################################################################
 
@@ -68,10 +99,9 @@ source = """
 
 #include "fitz-extension.h"
 #include "fitz-extension.c"
-"""
-mupdf_library_path = os.path.dirname(mupdf_library)
-mupdf_include_path = os.path.join(os.path.dirname(mupdf_library_path), 'include')
-freetype_include_path = '/usr/include/freetype2' # Fixme: Linux
+
+const char * MUPDF_VERSION = FZ_VERSION;
+""" # .format(mupdf_version)
 ffi.set_source(
     '_mupdf',
     source,
@@ -81,7 +111,9 @@ ffi.set_source(
 )
 
 # Parse header
-source = ''
+source = '''
+static const char * MUPDF_VERSION;
+'''
 for file_name in ('mupdf-api.h', 'fitz-extension-api.h'):
     api_path = os.path.join(module_path, file_name)
     with open(api_path, 'r') as f:

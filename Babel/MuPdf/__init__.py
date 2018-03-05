@@ -226,6 +226,9 @@ load_page = _lib.fz_load_page
 #
 ####################################################################################################
 
+def version():
+    return decode_utf8(_lib.MUPDF_VERSION)
+
 ####################################################################################################
 
 def new_context(alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_lib.FZ_STORE_UNLIMITED):
