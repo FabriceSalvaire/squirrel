@@ -27,7 +27,7 @@ from Babel.Math.Statistics import Gaussian
 
 ####################################################################################################
 
-class PdfMetaDataExtractor(object):
+class PdfMetaDataExtractor:
 
     """ This class implements a PDF document Metadata Extractor. """
 

@@ -24,7 +24,7 @@ import Babel.MuPdf as _mupdf
 
 ####################################################################################################
 
-class GenericIterator(object):
+class GenericIterator:
 
     _getter = None
 
@@ -69,7 +69,7 @@ class GenericIterator(object):
 
 ####################################################################################################
 
-class TextSpanIterator(object):
+class TextSpanIterator:
 
     ##############################################
 

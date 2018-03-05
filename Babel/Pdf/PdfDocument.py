@@ -35,7 +35,7 @@ from Babel.Tools.Object import clone
 
 ####################################################################################################
 
-class PdfDocument(object):
+class PdfDocument:
 
     """ This class represents a PDF Document. """
 
@@ -221,7 +221,7 @@ class MetaData(ReadOnlyAttributeDictionaryInterface):
 
 ####################################################################################################
 
-class Page(object):
+class Page:
 
     """ This class represents a PDF Page. Its contents could be rastered to an image or extracted as
     a text representation.

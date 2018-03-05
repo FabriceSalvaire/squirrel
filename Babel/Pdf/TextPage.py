@@ -32,7 +32,7 @@ from Babel.Math.Interval import IntervalInt2D
 
 ####################################################################################################
 
-class TextPage():
+class TextPage:
 
     """ This class represents the textual content of a page. """
 
@@ -218,7 +218,7 @@ class TextPage():
 
 ####################################################################################################
 
-class TextBlocks(object):
+class TextBlocks:
 
     """ This class implements a list of text blocks. """
 
@@ -300,7 +300,7 @@ class TextBlocks(object):
 
 ####################################################################################################
 
-class TextBase(object):
+class TextBase:
 
     ##############################################
 

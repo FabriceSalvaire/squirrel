@@ -24,7 +24,7 @@ from Babel.Tools.LruCache import LruCache
 
 ####################################################################################################
 
-class Image(object):
+class Image:
 
     ##############################################
 
@@ -45,7 +45,7 @@ class Image(object):
 
 ####################################################################################################
 
-class PdfImageCache(object):
+class PdfImageCache:
 
     # Fixme: __XXX__
     antialiasing_level = 8

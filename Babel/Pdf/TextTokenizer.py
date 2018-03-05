@@ -48,7 +48,7 @@ from Babel.Tools.EnumFactory import EnumFactory
 
 ####################################################################################################
 
-class Token(object):
+class Token:
 
     Category = EnumFactory('TokenCategory', ('word',
                                              'number',
@@ -157,7 +157,7 @@ class TokenisedText(list):
 
 ####################################################################################################
 
-class TextTokenizer(object):
+class TextTokenizer:
 
     State = EnumFactory('LexerState', ('letter',
                                        'number',
