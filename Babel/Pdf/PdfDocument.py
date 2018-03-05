@@ -421,21 +421,24 @@ class Page:
 
         """ Return a :obj:`.TextPage` instance. """
 
-        # Fixme: usage ?
+        mediabox = self._bounding_box()
         transform = self._make_transform(scale, rotation)
+        structured_text_options = mupdf.StructuredTextOptions()
 
-        text_sheet = mupdf.new_text_sheet(self._context)
-        text_page = mupdf.new_text_page(self._context)
-
-        device = mupdf.new_text_device(self._context, text_sheet, text_page)
+        structured_text_page = mupdf.new_stext_page(self._context, mediabox)
+        device = mupdf.new_stext_device(self._context, structured_text_page, structured_text_options)
         mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
+        # run_page(self._context, page_list, device)
+        mupdf.close_device(self._context, device)
         mupdf.drop_device(self._context, device)
 
-        return TextPage(self, text_sheet, text_page)
+        # structured_text_page_ = mupdf.new_stext_page_from_page(self._context, self._c_page, structured_text_options)
+
+        return TextPage(self, structured_text_page)
 
     ##############################################
 
-    def _to_text_direct(self):
+    def text_direct(self):
 
         structured_text_options = mupdf.StructuredTextOptions()
         c_buffer = mupdf.new_buffer_from_page(self._context, self._c_page, structured_text_options)
@@ -450,5 +453,5 @@ class Page:
     def text(self):
 
         if self._text_page is None:
-            self._text_page = self._to_text_direct()
+            self._text_page = self._to_text()
         return self._text_page

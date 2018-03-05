@@ -38,10 +38,9 @@ class TextPage:
 
     ##############################################
 
-    def __init__(self, page, text_sheet, text_page):
+    def __init__(self, page, text_page):
 
         self._page = page
-        self._text_sheet = text_sheet
         self._text_page = text_page
 
         self._page_number = self._page._page_number
@@ -53,17 +52,9 @@ class TextPage:
 
     ##############################################
 
-    def _free(self):
-
-        # text_sheet and text_page was not created in TextPage
-        mupdf.free_text_sheet(self._context, self._text_sheet)
-        mupdf.free_text_page(self._context, self._text_page)
-
-    ##############################################
-
     def __del__(self):
 
-        pass
+        mupdf.drop_stext_page(self._context, self._text_page)
 
     ##############################################
 
@@ -84,11 +75,12 @@ class TextPage:
         """ Return an :obj:`.TextStyles` instance for the styles of the page. """
 
         styles = TextStyles()
-        style = self._text_sheet.style
-        while style:
-            styles.register_style(to_text_style(style))
-            style = style.next
-        styles.sort()
+        # Fixme: upgrade
+        # style = self._text_sheet.style
+        # while style:
+        #     styles.register_style(to_text_style(style))
+        #     style = style.next
+        # styles.sort()
 
         return styles
 
@@ -106,7 +98,7 @@ class TextPage:
     def _append_span_text(self, text_line, span_text, style_id):
 
         span_text = span_text.rstrip()
-        text_span = TextSpan(span_text, self.styles[style_id])
+        text_span = TextSpan(span_text, None) # Fixme: self.styles[style_id]
         text_line.append(text_span)
 
     ##############################################
@@ -116,28 +108,26 @@ class TextPage:
         """ Return an :obj:`TextBlocks` instance for the page. """
 
         blocks = TextBlocks()
-        for c_block in mupdf_iter.TextBlockIterator(self._text_page):
+        for c_block in mupdf_iter.text_block_iterator(self._text_page):
             text_block = TextBlock(self)
-            for c_line in mupdf_iter.TextLineIterator(c_block):
+            for c_line in mupdf_iter.text_line_iterator(c_block):
                 line_interval = to_interval(c_line.bbox)
                 text_line = TextLine(line_interval)
-                for c_span in mupdf_iter.TextSpanIterator(c_line):
+                span_text = ''
+                for c_char in mupdf_iter.text_char_iterator(c_line):
+                    char = chr(c_char.c)
+                    span_text += char
                     style_id = None
-                    span_text = ''
-                    for c_char in mupdf_iter.TextCharIterator(c_span):
-                        # Fixme: Style addresses are alternated. Why?
-                        char_style_id = c_char.style.id
-                        char = chr(c_char.c)
-                        if char_style_id is not style_id:
-                            if span_text:
-                                self._append_span_text(text_line, span_text, style_id)
-                            style_id = char_style_id
-                            span_text = char
-                        else:
-                            span_text += char
-                    if span_text:
-                        self._append_span_text(text_line, span_text, style_id)
-               # If the line is empty then start a new block
+                    # if span_text:
+                    #     self._append_span_text(text_line, span_text, style_id)
+                    #         span_text = char
+                    #     else:
+                    #         span_text += char
+                    # if span_text:
+                    #     self._append_span_text(text_line, span_text, style_id)
+                self._append_span_text(text_line, span_text, style_id)
+                # Fixme: ok ???
+                # If the line is empty then start a new block
                 if not bool(text_line) and bool(text_block):
                     blocks.append(text_block)
                     text_block = TextBlock(self)
@@ -167,16 +157,17 @@ class TextPage:
 
         template = 'span.s%u{font-family:"%s";font-size:%gpt'
         text = ''
-        style = self._text_sheet.style
-        while style:
-            font = style.font
-            text += template % (style.id, get_font_name(font), style.size)
-            if mupdf.font_is_italic(font):
-                text += ';font-style:italic'
-            if mupdf.font_is_bold(font):
-                text += ';font-weight:bold;'
-            text += '}\n'
-            style = style.__next__
+        # Fixme: upgrade
+        # style = self._text_sheet.style
+        # while style:
+        #     font = style.font
+        #     text += template % (style.id, get_font_name(font), style.size)
+        #     if mupdf.font_is_italic(font):
+        #         text += ';font-style:italic'
+        #     if mupdf.font_is_bold(font):
+        #         text += ';font-weight:bold;'
+        #     text += '}\n'
+        #     style = style.__next__
 
         return text
 
@@ -186,30 +177,25 @@ class TextPage:
 
         # Fixme: old and historical code, move elsewhere ?
 
-        text = '<page page_number="%u">\n' % (self._page_number)
-        for block in mupdf_iter.TextBlockIterator(self._text_page):
-            text += '<block bbox="' + format_bounding_box(block) + '">\n'
-            for line in mupdf_iter.TextLineIterator(block):
-                text += ' '*2 + '<line bbox="' + format_bounding_box(line) + '">\n'
-                for span in mupdf_iter.TextSpanIterator(line):
-                    style_id = None
-                    if dump_char:
-                        for char in mupdf_iter.TextCharIterator(span):
-                            # Fixme: Style addresses are alternated. Why?
-                            if char.style.id is not style_id:
-                                if style_id is not None:
-                                    text += ' '*4 + '</span>\n'
-                                style = char.style
-                                style_id = style.id
-                                font_name = get_font_name(style.font)
-                                # Fixme: bounding box is wrong
-                                text += ' '*4 + '<span bbox="' + format_bounding_box(span) + \
-                                    '" font="%s" size="%g">\n' % (font_name, style.size)
-                            text += ' '*6 + '<char c="%s"/>\n' % (chr(char.c))
-                        if style_id is not None:
-                            text += ' '*4 + '</span>\n'
-                    else:
-                        text += ' '*4 + '<p>' + span_to_string(span) + '</p>\n'
+        text = '<page page_number="{}">\n'.format(self._page_number)
+        for block in mupdf_iter.text_block_iterator(self._text_page):
+            text += '<block bbox="{}">\n'.format(format_bounding_box(block))
+            for line in mupdf_iter.text_line_iterator(block):
+                text += ' '*2 + '<line bbox="{} wmode="{}" dir="{}">\n'.format(
+                    format_bounding_box(line),
+                    line.wmode,
+                    '{0.x:.2f} {0.x:.2f}'.format(line.dir),
+                    )
+                # for span in mupdf_iter.TextSpanIterator(line):
+                if dump_char:
+                    for char in mupdf_iter.text_char_iterator(line):
+                        text += ' '*4 + '<char c="{}" bbox="{}" font="{}" size="{.2f}">\n'.format(
+                            chr(char.c),
+                            # char.origin
+                            format_bounding_box(char),
+                            mupdf.font_name(self._context, char.font),
+                            char.size,
+                        )
                 text += ' '*2 + '</line>\n'
             text += '</block>\n'
         text += '</page>\n'

@@ -24,76 +24,28 @@ import Babel.MuPdf as _mupdf
 
 ####################################################################################################
 
-class GenericIterator:
+def text_block_iterator(structured_text_page):
 
-    _getter = None
-
-    ##############################################
-
-    def __init__(self, obj):
-
-        self._obj = obj
-        self._index = 0
-        self._size = self._obj.len
-
-    ##############################################
-
-    def __iter__(self):
-
-        return self
-
-    ##############################################
-
-    def __next__(self):
-
-        if self._index < self._size:
-            item = self._getter(self._obj, self._index)
-            self._index += 1
-            return item
-        else:
-            raise StopIteration
-
-    # Py2
-    next = __next__
+    block = structured_text_page.first_block
+    while block != _mupdf.NULL:
+        if block.type == _mupdf.FZ_STEXT_BLOCK_TEXT:
+            yield block
+        block = block.next
 
 ####################################################################################################
 
-# class TextBlockIterator(GenericIterator):
-#     _getter = _mupdf.get_text_block
+def text_line_iterator(block):
 
-# class TextLineIterator(GenericIterator):
-#     _getter = _mupdf.get_text_line
-
-# class TextCharIterator(GenericIterator):
-#     _getter = _mupdf.get_text_char
+    line = block.u.t.first_line
+    while line != _mupdf.NULL:
+        yield line
+        line = line.next
 
 ####################################################################################################
 
-class TextSpanIterator:
+def text_char_iterator(line):
 
-    ##############################################
-
-    def __init__(self, text_line):
-
-        self._text_line = text_line
-        self._span = self._text_line.first_span
-
-    ##############################################
-
-    def __iter__(self):
-
-        return self
-
-    ##############################################
-
-    def __next__(self):
-
-        if self._span:
-            span = self._span
-            self._span = span.next
-            return span
-        else:
-            raise StopIteration
-
-    # Py2
-    next = __next__
+    char = line.first_char
+    while char != _mupdf.NULL:
+        yield char
+        char = char.next
