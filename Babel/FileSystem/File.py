@@ -47,6 +47,8 @@ def file_extension(filename):
 
 def run_shasum(filename, algorithm=1, binary=False, text=True, universal=False, portable=False):
 
+    # Fixme: Linux only
+
     if algorithm not in (1, 224, 256, 384, 512, 512224, 512256):
         raise ValueError
 
@@ -85,7 +87,9 @@ def shasum(path, algorithm=1):
 
 ####################################################################################################
 
-class Path(object):
+class Path:
+
+    # Fixme: versus Py3
 
     ##############################################
 
