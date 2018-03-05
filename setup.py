@@ -69,9 +69,9 @@ setup_dict.update(dict(
         ],
 
     install_requires=[
+        'PyQt5',
         'PyYAML',
         'cffi',
-        'PyQt5',
     ],
 ))
 
