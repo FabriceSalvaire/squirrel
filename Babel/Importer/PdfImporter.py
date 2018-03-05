@@ -68,7 +68,7 @@ class PdfImporter(ImporterBase):
             last_page = number_of_pages_threshold
         else:
             last_page = pdf_document.number_of_pages -1
-        words, unknown_words = self.main_words(pdf_document, last_page)
+        words, unknown_words = (), () #!# self.main_words(pdf_document, last_page)
 
         if len(words) > len(unknown_words):
             document_row.indexed_until = last_page +1 # from 1
