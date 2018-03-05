@@ -137,6 +137,32 @@ run_page(ctx, page_list, text_device)
 mupdf.close_device(ctx, text_device)
 mupdf.drop_device(ctx, text_device)
 print('Page has {} characters'.format(mupdf.stext_char_count(ctx, structured_text_page)))
+print('Page mediabox {}'.format(mupdf.str_rect(structured_text_page.mediabox)))
+
+block = structured_text_page.first_block
+while block != mupdf.NULL:
+    print('Block type:{} bbox:{}'.format(block.type, mupdf.str_rect_float(block.bbox)))
+    if block.type == mupdf.FZ_STEXT_BLOCK_TEXT:
+        line = block.u.t.first_line
+        while line != mupdf.NULL:
+            print('  Line wmode:{} dir:{} bbox:{}'.format(
+                line.wmode,
+                mupdf.str_point(line.dir),
+                mupdf.str_rect_float(line.bbox),
+            ))
+            char = line.first_char
+            while char != mupdf.NULL:
+                print('    Char {} origin:{} bbox:{} size:{:.2f} font:{}'.format(
+                    chr(char.c),
+                    mupdf.str_point(char.origin),
+                    mupdf.str_rect_float(char.bbox),
+                    char.size,
+                    mupdf.font_name(ctx, char.font),
+                ))
+                char = char.next
+            line = line.next
+    block = block.next
+
 mupdf.drop_stext_page(ctx, structured_text_page)
 
 structured_text_options = mupdf.StructuredTextOptions()

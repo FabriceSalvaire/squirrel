@@ -92,8 +92,22 @@ def StructuredTextOptions(flags=0):
     stext_options.flags = flags
     return stext_options
 
+
+def rect_width_height(rect):
+    return (rect.x1 - rect.x0,
+            rect.y1 - rect.y0)
+
+def str_point(point):
+    return '[{0.x:.2f}, {0.y:.2f}]'.format(point)
+
+def str_matrix(matrix):
+    return '[{0.a:.2f}, {0.b:.2f}, {0.c:.2f}, {0.d:.2f}, {0.e:.2f}, {0.f:.2f}]'.format(matrix)
+
 def str_rect(rect):
     return '[{0.x0}, {0.x1}]x[{0.y0}, {0.y1}]'.format(rect)
+
+def str_rect_float(rect):
+    return '[{0.x0:.2f}, {0.x1:.2f}]x[{0.y0:.2f}, {0.y1:.2f}]'.format(rect)
 
 ###################################################
 #
@@ -111,6 +125,9 @@ FZ_NO_CACHE = _lib.FZ_NO_CACHE
 FZ_STEXT_PRESERVE_LIGATURES = _lib.FZ_STEXT_PRESERVE_LIGATURES
 FZ_STEXT_PRESERVE_WHITESPACE = _lib.FZ_STEXT_PRESERVE_WHITESPACE
 FZ_STEXT_PRESERVE_IMAGES = _lib.FZ_STEXT_PRESERVE_IMAGES
+
+FZ_STEXT_BLOCK_TEXT = _lib.FZ_STEXT_BLOCK_TEXT
+FZ_STEXT_BLOCK_IMAGE = _lib.FZ_STEXT_BLOCK_IMAGE
 
 ###################################################
 #
@@ -159,7 +176,7 @@ run_page_contents  = _lib.fz_run_page_contents
 # font
 font_is_bold = _lib.fz_font_is_bold
 font_is_italic = _lib.fz_font_is_italic
-font_name = _lib.fz_font_name
+# font_name = _lib.fz_font_name
 
 # geometry
 identity  = _ffi.addressof(_lib.fz_identity)
@@ -209,6 +226,8 @@ load_page = _lib.fz_load_page
 #
 ####################################################################################################
 
+####################################################################################################
+
 def new_context(alloc=_ffi.NULL, locks=_ffi.NULL, max_store=_lib.FZ_STORE_UNLIMITED):
     ctx = _lib.fz_new_context(alloc, locks, max_store)
     if ctx == _ffi.NULL:
@@ -234,6 +253,11 @@ class Context:
 
 ####################################################################################################
 
+def font_name(ctx, font):
+    return decode_utf8(_lib.fz_font_name(ctx, font))
+
+####################################################################################################
+
 def get_meta_info(ctx, document, key, size=1024):
     buffer_ = _ffi.new('char[]', size) # size in bytes
     key = key.encode('utf-8')
@@ -255,12 +279,6 @@ copy_irect = _lib.fz_copy_irect
 copy_rect = _lib.fz_copy_rect
 fclose = _lib.fz_fclose
 fopen = _lib.fz_fopen
-
-####################################################################################################
-
-def rect_width_height(rect):
-    return (rect.x1 - rect.x0,
-            rect.y1 - rect.y0)
 
 ####################################################################################################
 #
