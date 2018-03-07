@@ -36,8 +36,6 @@ from PyQt5 import QtWidgets, QtCore
 
 ####################################################################################################
 
-from .EmailBugForm import EmailBugForm
-from .NewIssueForm import NewIssueForm
 from Babel.Logging.ExceptionHook import format_exception
 import Babel.Tools.BackTrace as BackTrace
 
@@ -89,17 +87,3 @@ class CriticalErrorForm(QtWidgets.QDialog, Ui_critical_error_form):
 
         # print trace_back_text_highlighted
         self.back_trace_text_browser.setHtml(self._trace_back_text_highlighted)
-
-    ###############################################
-
-    def send_email(self):
-
-        dialog = EmailBugForm(self._backtrace)
-        dialog.exec_()
-
-    ###############################################
-
-    def new_issue(self):
-
-        dialog = NewIssueForm(self._backtrace)
-        dialog.exec_()
