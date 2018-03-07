@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
@@ -28,8 +26,8 @@ import traceback
 
 ####################################################################################################
 
-from Babel.Tools.Path import to_absolute_path
-from Babel.Tools.Platform import Platform
+from ..Tools.Path import to_absolute_path
+from ..Tools.Platform import Platform
 
 ####################################################################################################
 
@@ -37,7 +35,7 @@ class ApplicationBase:
 
     _logger = logging.getLogger(__name__)
 
-    has_gui = False
+    HAS_GUI = False
 
     ##############################################
 
@@ -63,7 +61,6 @@ class ApplicationBase:
     ##############################################
 
     def _exception_hook(self, exception_type, exception_value, exception_traceback):
-
         traceback.print_exception(exception_type, exception_value, exception_traceback)
 
         # return sys.__excepthook__(exception_type, exception_value, exception_traceback)
@@ -79,8 +76,9 @@ class ApplicationBase:
 
     def execute_user_script(self, file_name):
 
-        """ Execute an user script provided by file *file_name* in a context where is defined a
-        variable *application* that is a reference to the application instance.
+        """Execute an user script provided by file *file_name* in a context where is defined a variable
+        *application* that is a reference to the application instance.
+
         """
 
         file_name = to_absolute_path(file_name)
@@ -93,13 +91,11 @@ class ApplicationBase:
     ##############################################
 
     def exit(self):
-
         sys.exit(0)
 
     ##############################################
 
     def show_message(self, message=None, **kwargs):
-
         self._logger.info(message)
 
     ##############################################

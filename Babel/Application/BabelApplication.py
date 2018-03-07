@@ -25,12 +25,13 @@ import os
 
 ####################################################################################################
 
-# from Babel.DataBase.WordDataBase import WordDataBase
-# from Babel.Tools.Singleton import SingletonMetaClass
-from Babel.Application.ApplicationBase import ApplicationBase
-from Babel.DataBase.DocumentDataBase import DocumentSqliteDataBase
-from Babel.FileSystem.File import Directory
-import Babel.Config.Config as Config
+# from ..DataBase.WordDataBase import WordDataBase
+# from ..Tools.Singleton import SingletonMetaClass
+
+from ..Application.ApplicationBase import ApplicationBase
+from ..Config import Config
+from ..DataBase.DocumentDataBase import DocumentSqliteDataBase
+from ..FileSystem.File import Directory
 
 ####################################################################################################
 
@@ -57,8 +58,10 @@ class BabelApplication(ApplicationBase):
 
     def _make_user_directory(self):
 
-        for directory in (Config.Path.config_directory,
-                          Config.Path.data_directory):
+        for directory in (
+                Config.Path.config_directory,
+                Config.Path.data_directory,
+        ):
             if not os.path.exists(directory):
                 os.mkdir(directory)
 

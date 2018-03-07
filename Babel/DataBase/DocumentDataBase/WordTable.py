@@ -37,6 +37,7 @@ class WordRowMixin(SqlRow):
     # indexed word global: id, language, word, count <to learn new word>
 
     id = Column(Integer, primary_key=True)
+
     language = Column(Integer, default=0) # ForeignKey, 0 = unknown, 1 = en ...
     word = Column(String)
     count = Column(Integer)
@@ -45,12 +46,10 @@ class WordRowMixin(SqlRow):
     ##############################################
 
     # document_id = Column(Integer, ForeignKey('documents.id'), index=True)
-    ## sqlalchemy.exc.InvalidRequestError: Mapper properties (i.e. deferred,column_property(),
-    ## relationship(), etc.) must be declared as @declared_attr callables on declarative mixin
-    ## classes.
+    ##  sqlalchemy.exc.InvalidRequestError: Mapper properties (i.e. deferred,column_property(),
+    ##  relationship(), etc.) must be declared as @declared_attr callables on declarative mixin
+    ##  classes.
     # document = relationship('DocumentRowMixin', backref=backref('words', order_by=id))
-
-    ###############################################
 
     @declared_attr
     def document_id(cls):
@@ -66,7 +65,7 @@ class WordRowMixin(SqlRow):
 
         message = '''
 Word Row
-  word: {word}
-  count: {count}
+  word: {0.word}
+  count: {0.count}
 '''
-        return message.format(**self.to_dict())
+        return message.format(self)
