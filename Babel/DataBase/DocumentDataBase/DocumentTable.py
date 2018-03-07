@@ -26,24 +26,11 @@ today = datetime.datetime.today
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import relationship
-import sqlalchemy.types as types
 
 ####################################################################################################
 
-from Babel.DataBase.SqlAlchemyBase import SqlRow
-from Babel.FileSystem.File import File
-
-####################################################################################################
-
-class FileType(types.TypeDecorator):
-
-    impl = types.String
-
-    def process_bind_param(self, value, dialect):
-        return str(value)
-
-    def process_result_value(self, value, dialect):
-        return File(value)
+from ..SqlAlchemyBase import SqlRow
+from .Types import FileType
 
 ####################################################################################################
 
@@ -61,6 +48,7 @@ class DocumentRowMixin(SqlRow):
     has_duplicate = Column(Boolean, default=False)
 
     # Other document key
+    # root_path
     path = Column(FileType, unique=True)
     inode = Column(Integer) # uniq on the same file-system
     # creation_time = Column(Integer)
@@ -84,6 +72,15 @@ class DocumentRowMixin(SqlRow):
                                                # page number start from 1, 0 means not indexed
     indexation_status = Column(String, default='') # Fixme:
     # indexer settings
+
+    # Fixme:
+    #  - manage a root cache
+    #  - split file_path
+    #  - manage filter_by path
+
+    # @declared_attr
+    # def document_root_id(cls):
+    #     return Column(Integer, ForeignKey('document_roots.id'), index=True)
 
     ##############################################
 
@@ -119,18 +116,18 @@ class DocumentRowMixin(SqlRow):
 
         message = '''
 Document Row
-  path: {path}
-  shasum: {shasum}
-  inode: {inode}
-  record date: {record_creation_date}
-  update date: {record_update_date}
-  number of pages: {number_of_pages}
-  title: {title}
-  author: {author}
-  comment: {comment}
+  path: {0.path}
+  shasum: {0.shasum}
+  inode: {0.inode}
+  record date: {0.record_creation_date}
+  update date: {0.record_update_date}
+  number of pages: {0.number_of_pages}
+  title: {0.title}
+  author: {0.author}
+  comment: {0.comment}
 '''
 
-        return message.format(**self.to_dict()) # Fixme: 0.
+        return message.format(self)
 
     ##############################################
 
