@@ -20,10 +20,12 @@
 
 ####################################################################################################
 
-import hashlib
 import mimetypes
 import os
 import subprocess
+
+from .Shasum import shasum
+from .UserXattr import UserXattr
 
 ####################################################################################################
 
@@ -42,48 +44,6 @@ def file_extension(filename):
     #     return filename[index:]
 
     return os.path.splitext(filename)[1]
-
-####################################################################################################
-
-def run_shasum(filename, algorithm=1, binary=False, text=True, universal=False, portable=False):
-
-    # Fixme: Linux only
-
-    if algorithm not in (1, 224, 256, 384, 512, 512224, 512256):
-        raise ValueError
-
-    args = ['shasum', '--algorithm=' + str(algorithm)]
-    if text:
-        args.append('--text')
-    elif binary:
-        args.append('--binary')
-    elif universal:
-         # read in Universal Newlines mode produces same digest on Windows/Unix/Mac
-        args.append('--universal')
-    elif portable:
-         # to be deprecated
-        args.append('--portable')
-    args.append(filename)
-    output = subprocess.check_output(args).decode('utf-8')
-    shasum = output[:output.find(' ')]
-
-    return shasum
-
-####################################################################################################
-
-def shasum(path, algorithm=1):
-
-    # This module implements a common interface to many different secure hash and message digest
-    # algorithms. Included are the FIPS secure hash algorithms SHA1, SHA224, SHA256, SHA384, and
-    # SHA512 (defined in FIPS 180-2)
-
-    if algorithm not in (1, 224, 256, 384, 512):
-        raise ValueError
-
-    hasher = hashlib.new('sha' + str(algorithm))
-    with open(str(path), 'rb') as f:
-         hasher.update(f.read())
-    return hasher.hexdigest()
 
 ####################################################################################################
 
@@ -371,7 +331,7 @@ class Directory(Path):
 
 class File(Path):
 
-    default_shasum_algorithm = 256
+    default_shasum_algorithm = 1 # 256
 
     ##############################################
 
@@ -384,7 +344,9 @@ class File(Path):
             raise ValueError
         self._directory = self.directory_part()
 
-        self._shasum = None # lazy computation
+        # lazy
+        self._shasum = None
+        self._xattr = None
 
     ##############################################
 
@@ -448,6 +410,17 @@ class File(Path):
         self._shasum = shasum(self._path, algorithm)
 
         return self._shasum
+
+    ##############################################
+
+    @property
+    def xattr(self):
+
+        # Fixme: api
+
+        if self._xattr is None:
+            self._xattr = UserXattr(self._path)
+        return self._xattr
 
     ##############################################
 

@@ -72,6 +72,7 @@ setup_dict.update(dict(
         'PyQt5',
         'PyYAML',
         'cffi',
+        'xattr',
     ],
 ))
 
