@@ -8,7 +8,7 @@ rm -rf ${api}
 
 echo
 echo Generate RST API files
-pyterate-rst-api PySpice
+pyterate-rst-api Babel
 
 echo
 echo Run Sphinx
