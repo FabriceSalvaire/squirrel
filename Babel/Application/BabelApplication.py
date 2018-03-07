@@ -31,6 +31,7 @@ import os
 from ..Application.ApplicationBase import ApplicationBase
 from ..Config import Config
 from ..DataBase.DocumentDataBase import DocumentSqliteDataBase
+from ..DataBase.WhooshDatabase import WhooshDatabase
 from ..FileSystem.File import Directory
 
 ####################################################################################################
@@ -70,6 +71,7 @@ class BabelApplication(ApplicationBase):
     def _open_database(self):
 
         self.document_database = DocumentSqliteDataBase(Config.DataBase.document_database)
+        self.whoosh_database = WhooshDatabase(Config.DataBase.whoosh_database)
 
     ###############################################
 

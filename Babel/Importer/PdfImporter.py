@@ -42,7 +42,7 @@ class PdfImporter(ImporterBase):
 
     ##############################################
 
-    def import_file(self, document_database, file_path):
+    def import_file(self, registry, file_path):
 
         # PdfMetaDataExtractor
 
@@ -51,8 +51,9 @@ class PdfImporter(ImporterBase):
         except MupdfError:
             return
 
-        document_table = document_database.document_table
-        word_table = document_database.word_table
+        # Fixme: registry
+        document_table = registry.document_database.document_table
+        word_table = registry.document_database.word_table
 
         document_row = document_table.new_row(file_path)
 
@@ -94,6 +95,13 @@ class PdfImporter(ImporterBase):
         document_row.update_indexation_date()
 
         document_table.add(document_row, commit=False)
+
+        whoosh_database = registry.whoosh_database
+        import subprocess
+        text = subprocess.check_output(('mutool', 'draw', '-F', 'text', str(file_path))).decode('utf-8')
+        # text = pdf_document.text()
+        # Fixme: cache sha
+        whoosh_database.index(shasum=file_path.shasum, content=text)
 
         return document_row
 

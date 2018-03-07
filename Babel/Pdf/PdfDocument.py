@@ -27,15 +27,16 @@ from Babel.MuPdf import MupdfError
 
 ####################################################################################################
 
+from ..Document.Document import Document
+from ..Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
+from ..Tools.Object import clone
 from .DocumentWords import DocumentWords
 from .PdfImageCache import PdfImageCache
 from .TextPage import TextPage
-from Babel.Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
-from Babel.Tools.Object import clone
 
 ####################################################################################################
 
-class PdfDocument:
+class PdfDocument(Document):
 
     """ This class represents a PDF Document. """
 
@@ -43,7 +44,7 @@ class PdfDocument:
 
     def __init__(self, path):
 
-        self._path = path
+        super().__init__(path)
 
         self._context = None
         self._c_document = None
@@ -79,10 +80,6 @@ class PdfDocument:
             mupdf.drop_context(self._context)
 
     ##############################################
-
-    @property
-    def path(self):
-        return clone(self._path)
 
     @property
     def metadata(self):
@@ -160,6 +157,16 @@ class PdfDocument:
         document_words.sort()
 
         return document_words
+
+    ##############################################
+
+    def text(self, last_page=None):
+
+        text = ''
+        for page in self.iter_until(last_page):
+            text += page.text_direct + '\n'
+
+        return text
 
     ##############################################
 
@@ -274,6 +281,8 @@ class Page:
     ##############################################
 
     def _make_display_list(self, no_cache=False):
+
+        # Fixme: use it
 
         self._page_list = mupdf.new_display_list(self._context, mupdf.NULL)
         device = mupdf.new_list_device(self._context, page_list)
@@ -438,7 +447,10 @@ class Page:
 
     ##############################################
 
+    @property
     def text_direct(self):
+
+        # Fixme: versus text
 
         structured_text_options = mupdf.StructuredTextOptions()
         c_buffer = mupdf.new_buffer_from_page(self._context, self._c_page, structured_text_options)

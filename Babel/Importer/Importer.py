@@ -63,7 +63,7 @@ class Importer:
 
 class ImportSession:
 
-    # fixme: purpose ?
+    # Fixme: purpose ?
 
     _logger = _module_logger.getChild('ImportSession')
 
@@ -74,6 +74,9 @@ class ImportSession:
         self._importer = importer
         self._document_database = self._importer._application.document_database
         self._document_table = self._document_database.document_table
+
+        importer_registry.document_database = self._document_database
+        importer_registry.whoosh_database = self._importer._application.whoosh_database
 
     ##############################################
 
@@ -105,18 +108,26 @@ class ImportSession:
         #   - document was overwritten (same path)
         #   - new document
 
-        query = self._document_table.filter_by(path=str(file_path), shasum=file_path.shasum)
+        # Store/Retrieve shasum from file's xattr
+        if 'sha' not in file_path.xattr:
+            shasum = file_path.shasum
+            file_path.xattr['sha'] = shasum
+        else:
+            shasum = file_path.xattr['sha']
+
+        query = self._document_table.filter_by(path=str(file_path), shasum=shasum)
         if query.count():
             self._logger.info("File %s is already imported" % (file_path))
             # then do nothing
+            # Fixme: update case
         else:
-            query = self._document_table.filter_by(shasum=file_path.shasum)
+            query = self._document_table.filter_by(shasum=shasum)
             if query.count():
                 duplicates = query.all()
                 file_paths = ' '.join([str(document_row.path) for document_row in duplicates])
                 self._logger.info("File %s is a duplicate of %s", file_path, file_paths)
                 # then log this file in the import session # Fixme: ???
-                document_row = importer_registry.import_file(self._document_database, file_path)
+                document_row = importer_registry.import_file(file_path)
                 document_row.has_duplicate = True
                 for document_row in duplicates:
                     document_row.has_duplicate = True
@@ -129,6 +140,5 @@ class ImportSession:
                     document_row.update_shasum(file_path)
                 else:
                     self._logger.info("Add file %s", file_path)
-                    # Fixme: self._document_table, via importer_registry ?
-                    document_row = importer_registry.import_file(self._document_database, file_path)
+                    document_row = importer_registry.import_file(file_path)
             self._document_table.commit()

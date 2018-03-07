@@ -20,53 +20,25 @@
 
 ####################################################################################################
 
-import os
-
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
+import argparse
 
 ####################################################################################################
 
-class Path:
-
-    config_directory = os.path.join(os.environ['HOME'], '.config', 'babel')
-
-    # data_directory = os.path.join(os.environ['HOME'], '.local', 'share', 'data', 'babel')
-    data_directory = os.path.join(os.environ['HOME'], '.local', 'babel')
+from Babel.FileSystem.File import Directory
 
 ####################################################################################################
 
-class DataBase:
+argument_parser = argparse.ArgumentParser()
 
-    document_database = os.path.join(Path.data_directory, 'document-database.sqlite')
-    whoosh_database = os.path.join(Path.data_directory, 'whoosh-database')
+argument_parser.add_argument('query', metavar='QUERY',
+                             help='query')
 
-####################################################################################################
-
-class Email:
-
-    from_address = 'fabrice.salvaire@orange.fr'
-    to_address = ['fabrice.salvaire@orange.fr',]
+print('Args:', application.args.user_script_args)
+args = argument_parser.parse_args(application.args.user_script_args.split())
 
 ####################################################################################################
 
-class Help:
-
-    host = 'localhost'
-    url_scheme = 'http'
-    url_path_pattern = '/'
-
-####################################################################################################
-
-class RedmineRest:
-
-    url = 'http://loalhost/redmine/'
-    key = '02caaf292242bbfde9000291cb9955337fa87518'
-    project = 'Babel'
-
-####################################################################################################
-
-class Shortcut:
-
-    pass
+print('Query:', args.query)
+results = application.whoosh_database.search(args.query)
+for result in results:
+    print(result)

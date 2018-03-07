@@ -18,6 +18,8 @@
 #
 ####################################################################################################
 
+# Fixme: use __init_subclass__, merge metaclass ?
+
 ####################################################################################################
 
 import logging
@@ -28,10 +30,38 @@ class ImporterRegistry(dict):
 
     ##############################################
 
-    def import_file(self, document_table, file_path):
+    def __init__(self):
+
+        super().__init__()
+
+        # Fixme: global, ok ?
+        self._document_database = None
+        self._whoosh_database = None
+
+    ##############################################
+
+    @property
+    def document_database(self):
+        return self._document_database
+
+    @document_database.setter
+    def document_database(self, value):
+        self._document_database = value
+
+    @property
+    def whoosh_database(self):
+        return self._whoosh_database
+
+    @whoosh_database.setter
+    def whoosh_database(self, value):
+        self._whoosh_database = value
+
+    ##############################################
+
+    def import_file(self, file_path):
 
         importer = self[file_path.mime_type]()
-        return importer.import_file(document_table, file_path)
+        return importer.import_file(self, file_path)
 
     ##############################################
 
@@ -49,23 +79,23 @@ class ImporterMetaClass(type):
 
     ##############################################
 
-    def __init__(cls, class_name, super_classes, class_attribute_dict):
+    def __init__(cls, name, bases, namespace):
 
         # It is called just after cls creation in order to complete cls.
 
-        # print('ImporterBase __init__:', cls, class_name, super_classes, class_attribute_dict, sep='\n... ')
+        # print('ImporterBase __init__:', cls, name, bases, namespace, sep='\n... ')
 
-        type.__init__(cls, class_name, super_classes, class_attribute_dict)
-        if class_name != 'ImporterBase':
+        type.__init__(cls, name, bases, namespace)
+        if name != 'ImporterBase':
             for mime_type in cls.__mime_types__:
                 if mime_type not in importer_registry:
                     importer_registry[mime_type] = cls
                 else:
-                    raise NameError("Mime Type %s for class %s is already registered" %
-                                    (mime_type, class_name))
+                    raise NameError("Mime Type {} for class {} is already registered".format(
+                        mime_type, name))
 
 ####################################################################################################
 
-class ImporterBase(object, metaclass=ImporterMetaClass):
+class ImporterBase(metaclass=ImporterMetaClass):
 
     __mime_types__ = ()
