@@ -38,7 +38,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from Babel.Application.ApplicationBase import ApplicationBase
 from Babel.GUI.Forms.CriticalErrorForm import CriticalErrorForm
-from Babel.GUI.Forms.EmailBugForm import EmailBugForm
 import Babel.Config.Config as Config
 import Babel.Config.Messages as Messages
 import Babel.Version as Version
@@ -118,11 +117,6 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
             QtWidgets.QAction('System Information',
                           self,
                           triggered=self.show_system_information)
-
-        self.send_email_action = \
-            QtWidgets.QAction('Send Email',
-                          self,
-                          triggered=self.send_email)
 
     ##############################################
 
