@@ -59,29 +59,32 @@ class PdfViewerMainWindow(MainWindowBase):
 
         icon_loader = IconLoader()
 
-        self._show_info_action = \
-            QtWidgets.QAction('Info',
-                          self,
-                          toolTip='Info',
-                          checkable=True,
-                          triggered=lambda: self._set_current_widget(self._info_page),
-                          )
+        self._show_info_action =  QtWidgets.QAction(
+            icon_loader['description-black@36'],
+            'Info',
+            self,
+            toolTip='Info',
+            checkable=True,
+            triggered=lambda: self._set_current_widget(self._info_page),
+        )
 
-        self._show_image_action = \
-            QtWidgets.QAction('Image',
-                          self,
-                          toolTip='Image',
-                          checkable=True,
-                          triggered=lambda: self._set_current_widget(self._image_page),
-                          )
+        self._show_image_action = QtWidgets.QAction(
+            icon_loader['image-black@36'],
+            'Image',
+            self,
+            toolTip='Image',
+            checkable=True,
+            triggered=lambda: self._set_current_widget(self._image_page),
+        )
 
-        self._show_text_action = \
-            QtWidgets.QAction('Text',
-                          self,
-                          toolTip='Text',
-                          checkable=True,
-                          triggered=lambda: self._set_current_widget(self._text_page),
-                          )
+        self._show_text_action = QtWidgets.QAction(
+            icon_loader['title-black@36'],
+            'Text',
+            self,
+            toolTip='Text',
+            checkable=True,
+            triggered=lambda: self._set_current_widget(self._text_page),
+        )
 
         self._action_group = QtWidgets.QActionGroup(self)
         for action in (self._show_info_action,

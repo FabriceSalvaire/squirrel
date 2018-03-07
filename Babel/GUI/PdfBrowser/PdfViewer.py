@@ -119,7 +119,7 @@ class PageController(QtCore.QObject):
         icon_loader = IconLoader()
 
         self._previous_page_action = \
-            QtWidgets.QAction(icon_loader['arrow-left'],
+            QtWidgets.QAction(icon_loader['chevron-left-black@36'],
                           'Previous page',
                           self._application,
                           toolTip='Previous Page',
@@ -127,7 +127,7 @@ class PageController(QtCore.QObject):
                           )
 
         self._next_page_action = \
-            QtWidgets.QAction(icon_loader['arrow-right'],
+            QtWidgets.QAction(icon_loader['chevron-right-black@36'],
                           'Next page',
                           self._application,
                           toolTip='Next Page',
@@ -265,7 +265,7 @@ class ViewerController(QtCore.QObject):
         icon_loader = IconLoader()
 
         self._fit_width_action = \
-            QtWidgets.QAction(icon_loader['zoom-fit-width'],
+            QtWidgets.QAction(icon_loader['zoom-fit-width@36'],
                           'Fit width',
                           self._application,
                           toolTip='Fit width',
@@ -275,7 +275,7 @@ class ViewerController(QtCore.QObject):
                           )
 
         self._fit_document_action = \
-            QtWidgets.QAction(icon_loader['zoom-fit-best'],
+            QtWidgets.QAction(icon_loader['settings-overscan-black@36'], # zoom-fit-best
                           'Fit document',
                           self._application,
                           toolTip='Fit document',

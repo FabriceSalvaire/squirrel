@@ -62,7 +62,7 @@ class DirectoryWidget(QtWidgets.QWidget):
         self.setToolTip(str(path))
 
         self._delete_button = QtWidgets.QToolButton(self)
-        self._delete_button.setIcon(icon_loader['edit-delete'])
+        self._delete_button.setIcon(icon_loader['delete-black@36'])
         self._delete_button.setAutoRaise(True)
         # self._label = QtWidgets.QLabel(self)
         self._label = QtWidgets.QPushButton(self)
@@ -174,7 +174,7 @@ class DirectoryListWidget(QtWidgets.QWidget):
 
         self._clear_button = QtWidgets.QPushButton('clear', self)
         self._add_button = QtWidgets.QToolButton(self)
-        self._add_button.setIcon(icon_loader['list-add'])
+        self._add_button.setIcon(icon_loader['playlist-add-black@36'])
         self._add_button.setAutoRaise(True)
 
         horizontal_layout = QtWidgets.QHBoxLayout()

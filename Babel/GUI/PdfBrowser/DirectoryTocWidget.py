@@ -196,7 +196,7 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
 
         icon_loader = IconLoader()
         self._go_up_button = QtWidgets.QToolButton(self)
-        self._go_up_button.setIcon(icon_loader['go-up'])
+        self._go_up_button.setIcon(icon_loader['arrow-upward-black@36'])
         self._go_up_button.setAutoRaise(True)
         self._go_up_button.clicked.connect(self._go_up)
         self._vertical_layout.addWidget(self._go_up_button)

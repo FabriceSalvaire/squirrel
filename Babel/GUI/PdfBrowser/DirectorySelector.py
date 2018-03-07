@@ -123,7 +123,7 @@ class DirectorySelector(QtWidgets.QDialog):
         self._directory_toc.path_changed.connect(self._open_directory)
 
         self._create_directory_button = QtWidgets.QPushButton('New', self)
-        self._create_directory_button.setIcon(icon_loader['list-add'])
+        self._create_directory_button.setIcon(icon_loader['add-black@36'])
         self._create_directory_button.clicked.connect(self.create_directory)
         horizontal_layout = QtWidgets.QHBoxLayout()
         horizontal_layout.addStretch()

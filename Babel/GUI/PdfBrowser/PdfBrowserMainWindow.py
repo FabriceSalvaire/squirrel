@@ -115,7 +115,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         icon_loader = IconLoader()
 
         self._directory_toc_mode_action = \
-            QtWidgets.QAction(icon_loader['folder-blue'],
+            QtWidgets.QAction(icon_loader['folder-open-black@36'],
                           'Directory toc mode',
                           self,
                           toolTip='Directory toc mode',
@@ -125,7 +125,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._pdf_browser_mode_action = \
-            QtWidgets.QAction(icon_loader['application-pdf'],
+            QtWidgets.QAction(icon_loader['book-black@36'], # application-pdf
                           'PDF browser mode',
                           self,
                           toolTip='PDF browser mode',
@@ -135,7 +135,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._previous_document_action = \
-            QtWidgets.QAction(icon_loader['arrow-left'],
+            QtWidgets.QAction(icon_loader['chevron-left-black@36'],
                           'Previous document',
                           self,
                           toolTip='Previous Document',
@@ -145,7 +145,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._next_document_action = \
-            QtWidgets.QAction(icon_loader['arrow-right'],
+            QtWidgets.QAction(icon_loader['chevron-right-black@36'],
                           'Next document',
                           self,
                           toolTip='Next Document',
@@ -155,7 +155,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._select_action = \
-            QtWidgets.QAction(icon_loader['get-hot-new-stuff'],
+            QtWidgets.QAction(icon_loader['star-black@36'],
                           'Select document',
                           self,
                           toolTip='Select Document',
@@ -165,7 +165,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._open_pdf_action = \
-            QtWidgets.QAction(icon_loader['document-export'],
+            QtWidgets.QAction(icon_loader['open-in-new-black@36'],
                           'Open PDF',
                           self,
                           toolTip='Open PDF',
@@ -175,7 +175,7 @@ class PdfBrowserMainWindow(MainWindowBase):
                           )
 
         self._open_pdf_viewer_action = \
-            QtWidgets.QAction(icon_loader['text-field'],
+            QtWidgets.QAction(icon_loader['description-black@36'],
                           'Open PDF Viewer',
                           self,
                           toolTip='Open PDF Viewer',
