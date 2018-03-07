@@ -26,7 +26,7 @@ import Babel.MuPdf.TextIterator as mupdf_iter
 ####################################################################################################
 
 from .MupdfTools import *
-from .TextStyle import TextStyles, TextStyleFrequencies
+from .TextStyle import TextStyle, TextStyles, TextStyleFrequencies
 from Babel.Pdf.TextTokenizer import TextTokenizer, TokenisedText
 from Babel.Math.Interval import IntervalInt2D
 
@@ -47,7 +47,7 @@ class TextPage:
         self._document = self._page._document
         self._context = self._document._context
 
-        self._styles = None
+        self._styles = TextStyles()
         self._blocks = None
 
     ##############################################
@@ -75,27 +75,8 @@ class TextPage:
 
     ##############################################
 
-    def _get_styles(self):
-
-        """ Return an :obj:`.TextStyles` instance for the styles of the page. """
-
-        styles = TextStyles()
-        # Fixme: upgrade
-        # style = self._text_sheet.style
-        # while style:
-        #     styles.register_style(to_text_style(style))
-        #     style = style.next
-        # styles.sort()
-
-        return styles
-
-    ##############################################
-
     @property
     def styles(self):
-
-        if self._styles is None:
-            self._styles = self._get_styles()
         return self._styles
 
     ##############################################
@@ -103,8 +84,26 @@ class TextPage:
     def _append_span_text(self, text_line, span_text, style_id):
 
         span_text = span_text.rstrip()
-        text_span = TextSpan(span_text, None) # Fixme: self.styles[style_id]
+        text_span = TextSpan(span_text, self._styles[style_id])
         text_line.append(text_span)
+
+    ##############################################
+
+    def _to_style(self, c_char):
+
+        size = c_char.size
+        c_font = c_char.font
+
+        is_bold = mupdf.font_is_bold(self._context, c_font)
+        is_italic = mupdf.font_is_italic(self._context, c_font)
+        font_name = mupdf.font_name(self._context, c_font)
+
+        return TextStyle(
+            font_family=font_name,
+            font_size=size,
+            is_bold=is_bold,
+            is_italic=is_italic,
+        )
 
     ##############################################
 
@@ -119,18 +118,21 @@ class TextPage:
                 line_interval = to_interval(c_line.bbox)
                 text_line = TextLine(line_interval)
                 span_text = ''
+                previous_style_id = None
                 for c_char in mupdf_iter.text_char_iterator(c_line):
+                    style = self._to_style(c_char)
+                    style_id = style.id
+                    if style_id not in self._styles:
+                        self._styles.register_style(style)
                     char = chr(c_char.c)
-                    span_text += char
-                    style_id = None
-                    # if span_text:
-                    #     self._append_span_text(text_line, span_text, style_id)
-                    #         span_text = char
-                    #     else:
-                    #         span_text += char
-                    # if span_text:
-                    #     self._append_span_text(text_line, span_text, style_id)
-                self._append_span_text(text_line, span_text, style_id)
+                    if previous_style_id is not None and style_id != previous_style_id:
+                        self._append_span_text(text_line, span_text, style_id)
+                        span_text = char
+                    else:
+                        span_text += char
+                    previous_style_id = style_id
+                if span_text:
+                    self._append_span_text(text_line, span_text, previous_style_id)
                 # Fixme: ok ???
                 # If the line is empty then start a new block
                 if not bool(text_line) and bool(text_block):
@@ -142,6 +144,8 @@ class TextPage:
                 blocks.append(text_block)
 
         blocks.sort()
+
+        self._styles.sort()
 
         return blocks
 
@@ -160,19 +164,9 @@ class TextPage:
 
         # Fixme: old and historical code, move elsewhere ?
 
-        template = 'span.s%u{font-family:"%s";font-size:%gpt'
         text = ''
-        # Fixme: upgrade
-        # style = self._text_sheet.style
-        # while style:
-        #     font = style.font
-        #     text += template % (style.id, get_font_name(font), style.size)
-        #     if mupdf.font_is_italic(font):
-        #         text += ';font-style:italic'
-        #     if mupdf.font_is_bold(font):
-        #         text += ';font-weight:bold;'
-        #     text += '}\n'
-        #     style = style.__next__
+        for style in self._styles:
+            text += str(style) + '\n'
 
         return text
 
@@ -548,11 +542,10 @@ class TextLine(TextBase):
         """ Return an :obj:`TextStyleFrequencies` instance for the line. """
 
         style_frequencies = TextStyleFrequencies()
-        # Fixme:
-        # for span in self:
-        #     style_id = span.style.id
-        #     count = len(span)
-        #     style_frequencies.fill(style_id, count)
+        for span in self:
+            style_id = span.style.id
+            count = len(span)
+            style_frequencies.fill(style_id, count)
 
         return style_frequencies
 

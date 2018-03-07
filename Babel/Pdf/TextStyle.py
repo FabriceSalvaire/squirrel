@@ -29,6 +29,8 @@
 
 ####################################################################################################
 
+import hashlib
+
 from Babel.Tools.DictionaryTools import DictInitialised
 
 ####################################################################################################
@@ -54,16 +56,24 @@ class TextStyle(DictInitialised):
     """
 
     __REQUIRED_ATTRIBUTES__ = (
-        'id',
         'font_family',
         'font_size',
-        )
+    )
 
     __DEFAULT_ATTRIBUTES__ = dict(
         is_bold=False,
         is_italic=False,
         rank=None, # font size rank, rank 0 for the largest
-        )
+    )
+
+    ##############################################
+
+    def __init__(self, **kwargs):
+
+        super().__init__(**kwargs)
+
+        mangled_id = '{0.font_family}/{0.font_size}/{0.is_bold}/{0.is_italic}'.format(self)
+        self.id = hashlib.sha1(mangled_id.encode('utf-8')).hexdigest()
 
     ##############################################
 
@@ -76,15 +86,20 @@ class TextStyle(DictInitialised):
     def __str__(self):
 
         template = """
-Style ID %(id)u
-  rank        %(rank)u
-  font family %(font_family)s
-  font size   %(font_size).2f
-  bold        %(is_bold)s
-  italic      %(is_italic)s
-"""
+Style ID {0.id}
+  rank        {0.rank}
+  font family {0.font_family}
+  font size   {0.font_size}
+  bold        {0.is_bold}
+  italic      {0.is_italic}
+""" # :.2f
 
-        return template % self.__dict__
+        return template.format(self)
+
+    ##############################################
+
+    def __hash__(self):
+        return self.id
 
 ####################################################################################################
 
@@ -135,7 +150,7 @@ class TextStyleFrequency(DictInitialised):
     __REQUIRED_ATTRIBUTES__ = (
         'style_id',
         'count',
-        )
+    )
 
     ##############################################
 
