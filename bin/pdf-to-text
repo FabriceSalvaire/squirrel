@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 ####################################################################################################
 #
@@ -23,12 +23,8 @@
 """ Analyse the text of a PDF document """
 
 ####################################################################################################
-#
-# Logging
-#
 
 import Babel.Logging.Logging as Logging
-
 logger = Logging.setup_logging('babel')
 
 ####################################################################################################
@@ -37,7 +33,7 @@ import argparse
 
 ####################################################################################################
 
-from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpusDataBase
+from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpus
 from Babel.Pdf.PdfDocument import PdfDocument
 from Babel.Math.Binning import Binning1D
 from Babel.Math.Histogram import Histogram
@@ -74,39 +70,53 @@ class DecodePageRange(argparse.Action):
 
 argument_parser = argparse.ArgumentParser(description='PDF to Text.')
 
-argument_parser.add_argument('path', metavar='FILE.pdf',
-                             action=PathAction,
-                             help='PDF file')
+argument_parser.add_argument(
+    'path', metavar='FILE.pdf',
+    action=PathAction,
+    help='PDF file',
+)
 
-argument_parser.add_argument('--info',
-                             action='store_true',
-                             default=False,
-                             help='Display Information')
+argument_parser.add_argument(
+    '--info',
+    action='store_true',
+    default=False,
+    help='Display Information',
+)
 
-argument_parser.add_argument('--words',
-                             action='store_true',
-                             default=False,
-                             help='Display document words')
+argument_parser.add_argument(
+    '--words',
+    action='store_true',
+    default=False,
+    help='Display document words',
+)
 
-argument_parser.add_argument('--main-words',
-                             action='store_true',
-                             default=False,
-                             help='Display document main words')
+argument_parser.add_argument(
+    '--main-words',
+    action='store_true',
+    default=False,
+    help='Display document main words',
+)
 
-argument_parser.add_argument('--show-histogram',
-                             action='store_true',
-                             default=False,
-                             help='show histogram words')
+argument_parser.add_argument(
+    '--show-histogram',
+    action='store_true',
+    default=False,
+    help='show histogram words',
+)
 
-argument_parser.add_argument('--pages',
-                             default=None,
-                             action=DecodePageRange,
-                             help='Page ranges')
+argument_parser.add_argument(
+    '--pages',
+    default=None,
+    action=DecodePageRange,
+    help='Page ranges',
+)
 
-argument_parser.add_argument('--format',
-                             default='text',
-                             choices=['text', 'style', 'xml', 'block'],
-                             help='Output format')
+argument_parser.add_argument(
+    '--format',
+    default='text',
+    choices=['text', 'style', 'xml', 'block'],
+    help='Output format',
+)
 
 args = argument_parser.parse_args()
 
@@ -115,7 +125,7 @@ args = argument_parser.parse_args()
 def display_page(page, output_format):
 
     print("Page %u" % (page.page_number +1))
-    text_page = page.to_text()
+    text_page = page.text
 
     if output_format == 'text':
         for block_text in sorted(text_page.blocks):
@@ -159,8 +169,7 @@ Block %u
 
 def show_words(pdf_document, main_words):
 
-    database = BritishNationalCorpusDataBase()
-    word_table = database.word_table
+    corpus = BritishNationalCorpus()
     document_words = pdf_document.words
 
     if args.show_histogram:
@@ -178,17 +187,15 @@ def show_words(pdf_document, main_words):
 
     print('Words:')
     for word_count in document_words:
-        word_rows = word_table.filter_by(word=word_count.word).all()
-        if word_rows:
-            word_row = word_rows[0]
+        word = corpus[word_count.word]
+        if word is not None:
             # print '%6u' % count, word, str([word_row.part_of_speech_tag_id for word_row in word_rows])
             if ((not args.main_words) or
                 (args.main_words and
-                 len(word_count.word) >= 3 and database.is_noun(word_row))):
-                tag = database.part_of_speech_tag_from_id(word_row.part_of_speech_tag_id)
-                print('%6u' % word_count.count, word_count.word, tag)
-        else:
-            print('%6u' % word_count.count, word_count.word)
+                 len(word_count.word) >= 3 and word.is_noun)):
+                print('{:6} {}'.format(word_count.count, word_count.word)) # tag
+            else:
+                print('{:6} {}'.format(word_count.count, word_count.word))
 
 ####################################################################################################
 
