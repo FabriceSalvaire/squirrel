@@ -361,38 +361,6 @@ class Page:
 
     ##############################################
 
-    def to_png(self, path,
-               rotation=0,
-               resolution=72,
-               width=0, height=0, fit=False,
-               antialiasing_level=8,
-               ):
-
-        # Fixme: Check
-
-        transform, bounding_box = self._transform_bounding_box(rotation,
-                                                               resolution,
-                                                               width, height, fit)
-
-        color_space = mupdf.device_rgb(self._context)
-        use_alpha = True
-        pixmap = mupdf.new_pixmap_with_bbox(self._context,
-                                            color_space,
-                                            bounding_box,
-                                            mupdf.NULL, use_alpha)
-        # mupdf.pixmap_set_resolution(pixmap, resolution, resolution) # purpose ?
-        mupdf.clear_pixmap_with_value(self._context, pixmap, 255)
-
-        device = mupdf.new_draw_device(self._context, mupdf.NULL, pixmap)
-        mupdf.set_aa_level(self._context, antialiasing_level)
-        mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
-        path = str(path).encode('utf-8')
-        # Fixme: mupdf.write_png(self._context, pixmap, path, False)
-        mupdf.drop_device(self._context, device)
-        mupdf.drop_pixmap(self._context, pixmap)
-
-    ##############################################
-
     def to_pixmap(self,
                   rotation=0,
                   resolution=72,
@@ -419,10 +387,21 @@ class Page:
         device = mupdf.new_draw_device(self._context, mupdf.NULL, pixmap)
         mupdf.set_aa_level(self._context, antialiasing_level)
         mupdf.run_page(self._context, self._c_page, device, transform, mupdf.NULL)
+        mupdf.close_device(self._context, device)
         mupdf.drop_device(self._context, device)
         mupdf.drop_pixmap(self._context, pixmap)
 
         return np_array
+
+    ##############################################
+
+    def to_png(self, path, **kwargs):
+
+        np_array = self.to_pixmap(**kwargs)
+
+        from PIL import Image
+        image = Image.fromarray(np_array, mode='RGBA')
+        image.save(path)
 
     ##############################################
 

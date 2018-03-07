@@ -189,12 +189,12 @@ class TextPage:
                 text += ' '*2 + '<line bbox="{} wmode="{}" dir="{}">\n'.format(
                     format_bounding_box(line),
                     line.wmode,
-                    '{0.x:.2f} {0.x:.2f}'.format(line.dir),
+                    '{0.x} {0.y}'.format(line.dir), # :.2f
                     )
                 # for span in mupdf_iter.TextSpanIterator(line):
                 if dump_char:
                     for char in mupdf_iter.text_char_iterator(line):
-                        text += ' '*4 + '<char c="{}" bbox="{}" font="{}" size="{.2f}">\n'.format(
+                        text += ' '*4 + '<char c="{}" bbox="{}" font="{}" size="{:.2f}">\n'.format(
                             chr(char.c),
                             # char.origin
                             format_bounding_box(char),
@@ -548,10 +548,11 @@ class TextLine(TextBase):
         """ Return an :obj:`TextStyleFrequencies` instance for the line. """
 
         style_frequencies = TextStyleFrequencies()
-        for span in self:
-            style_id = span.style.id
-            count = len(span)
-            style_frequencies.fill(style_id, count)
+        # Fixme:
+        # for span in self:
+        #     style_id = span.style.id
+        #     count = len(span)
+        #     style_frequencies.fill(style_id, count)
 
         return style_frequencies
 
