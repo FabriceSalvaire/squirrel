@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- Python -*-
 
 ####################################################################################################
@@ -39,15 +39,19 @@ from .PartOfSpeechTags import part_of_speech_tags
 
 argument_parser = argparse.ArgumentParser(description='Make BNC DataBase.')
 
-argument_parser.add_argument('sqlite_file', metavar='FILE.sqlite',
-                             action=PathAction,
-                             help='SQLite file')
+argument_parser.add_argument(
+    'sqlite_file', metavar='FILE.sqlite',
+    action=PathAction,
+    help='SQLite file',
+)
 
-argument_parser.add_argument('--word-count-min',
-                             dest='word_count_min',
-                             type=int,
-                             default=10,
-                             help='Minimum word count [10]')
+argument_parser.add_argument(
+    '--word-count-min',
+    dest='word_count_min',
+    type=int,
+    default=10,
+    help='Minimum word count [10]',
+)
 
 args = argument_parser.parse_args()
 
@@ -74,12 +78,13 @@ with sys.stdin as file_input:
                 tag = tag.upper()
                 # part_of_speech_tag_row = part_of_speech_tag_table.filter_by(tag=tag).one()
                 part_of_speech_tag_row = part_of_speech_tag_dict[tag]
-                word_table.add_new_row(word=word,
-                                       part_of_speech_tag_id=part_of_speech_tag_row.id,
-                                       rank=rank,
-                                       count=word_count,
-                                       file_count=file_count,
-                                       )
+                word_table.add_new_row(
+                    word=word,
+                    part_of_speech_tag_id=part_of_speech_tag_row.id,
+                    rank=rank,
+                    count=word_count,
+                    file_count=file_count,
+                )
                 rank += 1
                 if rank % 10000 == 0:
                     print("Rank %u" % rank)

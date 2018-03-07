@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 ####################################################################################################
 #
@@ -23,9 +23,6 @@
 """ Dump PDF metadata """
 
 ####################################################################################################
-#
-# Logging
-#
 
 import Babel.Logging.Logging as Logging
 
@@ -48,9 +45,11 @@ from Babel.Pdf.TextTokenizer import join_tokens
 
 argument_parser = argparse.ArgumentParser(description='Extract PDF Metadata.')
 
-argument_parser.add_argument('path', metavar='FILE.pdf',
-                             action=PathAction,
-                             help='PDF file')
+argument_parser.add_argument(
+    'path', metavar='FILE.pdf',
+    action=PathAction,
+    help='PDF file',
+)
 
 args = argument_parser.parse_args()
 

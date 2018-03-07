@@ -20,10 +20,10 @@
 
 ####################################################################################################
 
+from ..Math.Statistics import Gaussian
+from ..Tools.DictionaryTools import DictInitialised
 from .PdfDocument import PdfDocument
 from .TextTokenizer import Token, strip_word_list, strip_non_alphabetic
-from Babel.Tools.DictionaryTools import DictInitialised
-from Babel.Math.Statistics import Gaussian
 
 ####################################################################################################
 

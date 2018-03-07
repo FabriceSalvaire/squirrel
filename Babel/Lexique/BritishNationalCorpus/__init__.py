@@ -33,7 +33,7 @@ class BritishNationalCorpusDataBase(WordSqliteDataBase):
     def __init__(self):
 
         database_path = ConfigInstall.WordDataBase.bnc_database_path
-        super(BritishNationalCorpusDataBase, self).__init__(database_path)
+        super().__init__(database_path)
 
 ####################################################################################################
 
@@ -82,7 +82,7 @@ class TaggedWords(dict):
 
     def __init__(self):
 
-        super(TaggedWords, self).__init__()
+        super().__init__()
 
         self.is_noun = False
 

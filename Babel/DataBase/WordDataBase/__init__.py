@@ -22,7 +22,7 @@
 
 from sqlalchemy import Column, Boolean, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+# from sqlalchemy.orm import relationship
 
 ####################################################################################################
 
@@ -49,15 +49,14 @@ class LanguageRow(SqlAlchemyBase, SqlRow):
 
         message = '''
 Language Row
-  id: %(id)u
-  language: %(name)s
+  id: {0.id}
+  language: {0.name}
 '''
-        return message % self.get_column_dict()
+        return message.format(self)
 
 ####################################################################################################
 
 class LanguageTable(SqlTable):
-
     ROW_CLASS = LanguageRow
 
 ####################################################################################################
@@ -76,11 +75,11 @@ class PartOfSpeechTagRow(SqlAlchemyBase, SqlRow):
 
         message = '''
 Part-Of-Speech Tags Row
-  id: %(id)u
-  tag: %(tag)s
-  comment: %(comment)s
+  id: {0.id}
+  tag: {0.tag}
+  comment: {0.comment}
 '''
-        return message.format(**self.to_dict())
+        return message.format(self)
 
 ####################################################################################################
 
@@ -113,11 +112,11 @@ class WordRow(SqlAlchemyBase, SqlRow):
 
         message = '''
 Word Row
-  word: %(word)s
-  count: %(count)u
-  part of speech tag: %(part_of_speech_tag_id)u
+  word: {0.word}
+  count: {0.count}
+  part of speech tag: {0.part_of_speech_tag_id}
 '''
-        return message.format(**self.to_dict())
+        return message.format(self)
 
 ####################################################################################################
 

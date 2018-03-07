@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 ####################################################################################################
 #
@@ -23,12 +23,8 @@
 """ Query the BNC """
 
 ####################################################################################################
-#
-# Logging
-#
 
 import Babel.Logging.Logging as Logging
-
 logger = Logging.setup_logging('babel')
 
 ####################################################################################################
@@ -44,10 +40,14 @@ from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpus
 # Options
 #
 
-argument_parser = argparse.ArgumentParser(description='A tool to query the British National Corpus.')
+argument_parser = argparse.ArgumentParser(
+    description='A tool to query the British National Corpus.',
+)
 
-argument_parser.add_argument('word', metavar='WORD',
-                             help='Word')
+argument_parser.add_argument(
+    'word', metavar='WORD',
+    help='Word',
+)
 
 args = argument_parser.parse_args()
 

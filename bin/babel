@@ -22,10 +22,9 @@
 
 """ Babel console application """
 
+# Fixme: GUI test
+
 ####################################################################################################
-#
-# Logging
-#
 
 import Babel.Logging.Logging as Logging
 
