@@ -132,6 +132,12 @@ class Path:
 
     ##############################################
 
+    def is_relative_to(self, directory):
+
+        return str(self).startswith(directory)
+
+    ##############################################
+
     def relative_to(self, directory):
 
         return self.clone_for_path(os.path.relpath(self._path, str(directory)))

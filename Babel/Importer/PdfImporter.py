@@ -42,20 +42,20 @@ class PdfImporter(ImporterBase):
 
     ##############################################
 
-    def import_file(self, registry, file_path):
+    def import_file(self, job):
 
         # PdfMetaDataExtractor
 
         try:
-            pdf_document = PdfDocument(file_path)
+            pdf_document = PdfDocument(job.path)
         except MupdfError:
             return
 
         # Fixme: registry
-        document_table = registry.document_database.document_table
-        word_table = registry.document_database.word_table
+        document_table = job.document_database.document_table
+        word_table = job.document_database.word_table
 
-        document_row = document_table.new_row(file_path)
+        document_row = document_table.new_row(job)
 
         document_row.number_of_pages = pdf_document.number_of_pages
 
@@ -88,7 +88,7 @@ class PdfImporter(ImporterBase):
                                        word=word_count.word, count=word_count.count, rank=word_count.rank)
             word_table.commit()
         else:
-            self._logger.warning("Unknown language for %s", file_path)
+            self._logger.warning("Unknown language for %s", job.path)
             document_row.indexed_until = last_page +1 # from 1
             document_row.indexation_status = 'unknown language'
             document_row.language = '?'
@@ -96,12 +96,9 @@ class PdfImporter(ImporterBase):
 
         document_table.add(document_row, commit=False)
 
-        whoosh_database = registry.whoosh_database
-        import subprocess
-        text = subprocess.check_output(('mutool', 'draw', '-F', 'text', str(file_path))).decode('utf-8')
-        # text = pdf_document.text()
-        # Fixme: cache sha
-        whoosh_database.index(shasum=file_path.shasum, content=text)
+        whoosh_database = job.whoosh_database
+        text = pdf_document.text()
+        whoosh_database.index(shasum=job.shasum, content=text)
 
         return document_row
 

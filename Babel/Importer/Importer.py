@@ -19,24 +19,15 @@
 ####################################################################################################
 
 ####################################################################################################
-#
-#                                              Audit
-#
-# - 25/02/2013 Fabrice
-#   use prefix in file database so as to be portable accross filesystem
-#   path.relative_to(prefix)
-#
-####################################################################################################
-
-####################################################################################################
 
 import logging
 
 ####################################################################################################
 
 # from Babel.Application.BabelApplication import BabelApplication
+
 from Babel.FileSystem.File import Path, Directory, File
-from Babel.Importer.ImporterRegistry import importer_registry
+from Babel.Importer.ImporterRegistry import ImporterRegistry
 
 ####################################################################################################
 
@@ -55,9 +46,45 @@ class Importer:
 
     ##############################################
 
-    def new_session(self):
+    @property
+    def application(self):
+        return self._application
 
+    ##############################################
+
+    def new_session(self):
         return ImportSession(self)
+
+####################################################################################################
+
+class ImportJob:
+
+    ##############################################
+
+    def __init__(self, session, path, shasum):
+
+        self.session = session
+        self.path = path
+        self.shasum = shasum
+        self.relative_path = self.path.relative_to(self.root_path)
+
+    ##############################################
+
+    @property
+    def application(self):
+        return self.session.application
+
+    @property
+    def document_database(self):
+        return self.application.document_database
+
+    @property
+    def whoosh_database(self):
+        return self.application.whoosh_database
+
+    @property
+    def root_path(self):
+        return self.application.config.document_root_path
 
 ####################################################################################################
 
@@ -72,15 +99,21 @@ class ImportSession:
     def __init__(self, importer):
 
         self._importer = importer
-        self._document_database = self._importer._application.document_database
-        self._document_table = self._document_database.document_table
-
-        importer_registry.document_database = self._document_database
-        importer_registry.whoosh_database = self._importer._application.whoosh_database
+        self._document_table = self.application.document_database.document_table
+        self._root_path = self.application.config.document_root_path
 
     ##############################################
 
-    def import_path(self, path):
+    @property
+    def application(self):
+        return self._importer.application
+
+    ##############################################
+
+    def import_path(self, path=None):
+
+        if path is None:
+            path =self._root_path
 
         path = Path(path).real_path()
         if path.is_directory():
@@ -93,14 +126,18 @@ class ImportSession:
     def import_recursively_path(self, path):
 
         for file_path in path.walk_files():
-            if importer_registry.is_importable(file_path):
+            if ImporterRegistry.is_importable(file_path):
                 self.import_file(file_path)
             else:
-                self._logger.info("File %s is not importable" % (file_path))
+                self._logger.info("File {} is not importable".format(file_path))
 
     ##############################################
 
-    def import_file(self, file_path):
+    def import_file(self, path):
+
+        if not path.is_relative_to(self._root_path):
+            self._logger.error("File {} is not relative to root {}".format(path, self._root_path))
+            return
 
         # Cases:
         #   - document is already registered (same path and checksum)
@@ -109,36 +146,38 @@ class ImportSession:
         #   - new document
 
         # Store/Retrieve shasum from file's xattr
-        if 'sha' not in file_path.xattr:
-            shasum = file_path.shasum
-            file_path.xattr['sha'] = shasum
+        if 'sha' not in path.xattr:
+            shasum = path.shasum
+            path.xattr['sha'] = shasum
         else:
-            shasum = file_path.xattr['sha']
+            shasum = path.xattr['sha']
 
-        query = self._document_table.filter_by(path=str(file_path), shasum=shasum)
+        job = ImportJob(self, path, shasum)
+
+        query = self._document_table.filter_by(path=str(job.relative_path), shasum=shasum)
         if query.count():
-            self._logger.info("File %s is already imported" % (file_path))
+            self._logger.info("File {} is already imported".format(path))
             # then do nothing
             # Fixme: update case
         else:
             query = self._document_table.filter_by(shasum=shasum)
             if query.count():
                 duplicates = query.all()
-                file_paths = ' '.join([str(document_row.path) for document_row in duplicates])
-                self._logger.info("File %s is a duplicate of %s", file_path, file_paths)
+                paths = ' '.join([str(document_row.path) for document_row in duplicates])
+                self._logger.info("File {} is a duplicate of {}".format(path, paths))
                 # then log this file in the import session # Fixme: ???
-                document_row = importer_registry.import_file(file_path)
+                document_row = ImporterRegistry.import_file(job)
                 document_row.has_duplicate = True
                 for document_row in duplicates:
                     document_row.has_duplicate = True
             else:
-                query = self._document_table.filter_by(path=str(file_path))
+                query = self._document_table.filter_by(path=str(job.relative_path))
                 if query.count():
-                    self._logger.info("File %s was overwritten", file_path)
+                    self._logger.info("File {} was overwritten".format(path))
                     # then update shasum
                     document_row = query.one()
-                    document_row.update_shasum(file_path)
+                    document_row.update_shasum(path)
                 else:
-                    self._logger.info("Add file %s", file_path)
-                    document_row = importer_registry.import_file(file_path)
+                    self._logger.info("Add file {}".format(path))
+                    document_row = ImporterRegistry.import_file(job)
             self._document_table.commit()

@@ -39,6 +39,8 @@ class WhooshDatabase:
 
     def __init__(self, path):
 
+        path = str(path)
+
         # tokenizer = RegexTokenizer()
         # lower_case_filter = LowercaseFilter()
         # stem_filter = StemFilter()
@@ -69,12 +71,6 @@ class WhooshDatabase:
             procs=4, # number of processors the writer will use for indexing
             # multisegment=True,
         )
-
-    ##############################################
-
-    def __del__(self):
-
-        self._writer.commit()
 
     ##############################################
 

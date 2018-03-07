@@ -38,9 +38,9 @@ class SqliteDataBase(DataBase):
 
     def __init__(self, filename, echo=False):
 
-        self._logger.debug("Open SQLite Database %s" % (filename))
+        self._logger.debug("Open SQLite Database {}".format(filename))
 
-        self._filename = filename
+        self._filename = str(filename)
 
         self._created = not os.path.exists(self._filename)
         self._before_alter_backuped = False

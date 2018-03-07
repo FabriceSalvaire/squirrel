@@ -23,7 +23,7 @@
 import datetime
 today = datetime.datetime.today
 
-from sqlalchemy import Boolean, Column, Integer, String, DateTime
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, Float
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import relationship
 
@@ -55,15 +55,16 @@ class DocumentRowMixin(SqlRow):
 
     # Document Metadata
     author = Column(String, default='')
-    comment = Column(String, default='')
     language = Column(String(10), default='') # Fixme: en
     number_of_pages = Column(Integer)
     title = Column(String, default='')
 
     # User classification
-    # star
-    # classification
-    # Dewey classification 'xyz.abc de' = float xyz.abcde
+    comment = Column(String, default='')
+    keywords = Column(String, default='')
+    star = Column(Integer, default=0)
+    dewey = Column(Float, default=0) # Dewey classification 'xyz.abc de' = float xyz.abcde
+    # classification = ... # Fixme: how ?
 
     # Index
     # Fixme: emplain more ???
@@ -84,13 +85,13 @@ class DocumentRowMixin(SqlRow):
 
     ##############################################
 
-    def __init__(self, file_path):
+    def __init__(self, job):
 
         self.record_creation_date = today()
         self.update_record_date()
-        self.path = file_path
-        self.inode = file_path.inode
-        self.shasum = file_path.compute_shasum() # Fixme: .shasum
+        self.path = str(job.relative_path)
+        self.inode = job.path.inode
+        self.shasum = job.shasum
 
     ##############################################
 

@@ -22,32 +22,55 @@
 
 import os
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
+from ..FileSystem.File import Directory
 
 ####################################################################################################
 
 class Path:
 
-    config_directory = os.path.join(os.environ['HOME'], '.config', 'babel')
+    # Fixme: Linux
 
-    # data_directory = os.path.join(os.environ['HOME'], '.local', 'share', 'data', 'babel')
-    data_directory = os.path.join(os.environ['HOME'], '.local', 'babel')
+    CONFIG_DIRECTORY = Directory(os.path.join(os.environ['HOME'], '.config', 'babel'))
+
+    # data_directory = Directory(os.path.join(os.environ['HOME'], '.local', 'share', 'data', 'babel'))
+    DATA_DIRECTORY = Directory(os.path.join(os.environ['HOME'], '.local', 'babel'))
+
+    ##############################################
+
+    @classmethod
+    def join_config_directory(cls, path):
+        return cls.CONFIG_DIRECTORY.join_path(path)
+
+    ##############################################
+
+    @classmethod
+    def join_data_directory(cls, path):
+        return cls.DATA_DIRECTORY.join_path(path)
+
+    ##############################################
+
+    @classmethod
+    def make_user_directory(cls):
+
+        for directory in (
+                cls.config_directory,
+                cls.data_directory,
+        ):
+            directory = str(directory) # Fixme: api
+            if not os.path.exists(directory):
+                os.mkdir(directory)
 
 ####################################################################################################
 
 class DataBase:
 
-    document_database = os.path.join(Path.data_directory, 'document-database.sqlite')
-    whoosh_database = os.path.join(Path.data_directory, 'whoosh-database')
+    @classmethod
+    def document_database(cls):
+        return Path.join_data_directory('document-database.sqlite')
 
-####################################################################################################
-
-class Email:
-
-    from_address = 'fabrice.salvaire@orange.fr'
-    to_address = ['fabrice.salvaire@orange.fr',]
+    @classmethod
+    def whoosh_database(cls):
+        return Path.join_data_directory('whoosh-database')
 
 ####################################################################################################
 
@@ -59,14 +82,5 @@ class Help:
 
 ####################################################################################################
 
-class RedmineRest:
-
-    url = 'http://loalhost/redmine/'
-    key = '02caaf292242bbfde9000291cb9955337fa87518'
-    project = 'Babel'
-
-####################################################################################################
-
 class Shortcut:
-
     pass

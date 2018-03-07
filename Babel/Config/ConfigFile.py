@@ -1,7 +1,7 @@
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2017 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,54 +18,58 @@
 #
 ####################################################################################################
 
-# Fixme: use __init_subclass__, merge metaclass ?
-
 ####################################################################################################
 
 import logging
 
-####################################################################################################
-
-_module_logger = logging.getLogger(__name__)
+from . import Config
 
 ####################################################################################################
 
-class ImporterRegistry(type):
+class ConfigFile:
 
-    _logger =_module_logger.getChild('ImporterRegistry')
-
-    __importers__ = {}
-
-    ##############################################
-
-    def __init__(cls, name, bases, namespace):
-
-        type.__init__(cls, name, bases, namespace)
-
-        if name != 'ImporterBase':
-            for mime_type in cls.__mime_types__:
-                if mime_type not in ImporterRegistry.__importers__:
-                    ImporterRegistry.__importers__[mime_type] = cls
-                else:
-                    raise NameError("Mime Type {} for class {} is already registered".format(
-                        mime_type, name))
+    _logger = logging.getLogger(__name__)
 
     ##############################################
 
     @classmethod
-    def import_file(cls, job):
+    def create(cls, args):
 
-        importer = cls.__importers__[job.path.mime_type]()
-        return importer.import_file(job)
+        template = '''
+################################################################################
+#
+# Babel Configuration
+#
+################################################################################
+
+document_root_path = '{0.document_root_path}'
+'''
+
+        path = cls.path()
+        cls._logger.info('Create config file {}'.format(path))
+        content = template.format(args).lstrip()
+        Config.Path.make_user_directory()
+        with open(path, 'w') as fh:
+            fh.write(content)
+
+    ##############################################
+
+    def __init__(self):
+
+        try:
+            with open(self.path()) as fh:
+                code = fh.read()
+        except FileNotFoundError:
+            raise NameError("You must first create a configuration file using the init command")
+
+        namespace = {}
+        exec(code, {}, namespace)
+        for key, value in namespace.items():
+            setattr(self, key, value)
 
     ##############################################
 
     @classmethod
-    def is_importable(cls, file_path):
+    def path(cls):
 
-        return file_path.mime_type in cls.__importers__
-
-####################################################################################################
-
-class ImporterBase(metaclass=ImporterRegistry):
-    __mime_types__ = ()
+        return  str(Config.Path.join_config_directory('config.py'))

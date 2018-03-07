@@ -30,6 +30,7 @@ import os
 
 from ..Application.ApplicationBase import ApplicationBase
 from ..Config import Config
+from ..Config.ConfigFile import ConfigFile
 from ..DataBase.DocumentDataBase import DocumentSqliteDataBase
 from ..DataBase.WhooshDatabase import WhooshDatabase
 from ..FileSystem.File import Directory
@@ -49,40 +50,43 @@ class BabelApplication(ApplicationBase):
         super(BabelApplication, self).__init__(args=args, **kwargs)
         self._logger.debug(str(args) + ' ' + str(kwargs))
 
-        self._make_user_directory()
+        # Config.make_user_directory()
+        self._config = ConfigFile()
         self._open_database()
 
         from Babel.Importer.Importer import Importer
         self._importer = Importer(self)
 
-    ###############################################
+    ##############################################
 
-    def _make_user_directory(self):
-
-        for directory in (
-                Config.Path.config_directory,
-                Config.Path.data_directory,
-        ):
-            if not os.path.exists(directory):
-                os.mkdir(directory)
+    @property
+    def config(self):
+        return self._config
 
     ###############################################
 
     def _open_database(self):
 
-        self.document_database = DocumentSqliteDataBase(Config.DataBase.document_database)
-        self.whoosh_database = WhooshDatabase(Config.DataBase.whoosh_database)
+        self.document_database = DocumentSqliteDataBase(Config.DataBase.document_database())
+        self.whoosh_database = WhooshDatabase(Config.DataBase.whoosh_database())
 
     ###############################################
 
-    def import_path(self, path):
+    def index_all(self, args):
 
+        self._logger.info('Index {}'.format(self._config.document_root_path))
         import_session = self._importer.new_session()
-        import_session.import_path(Directory(path))
+        import_session.import_path()
 
     ##############################################
 
-    def query(self, query):
+    def query(self, args):
+
+        print('Query:', args.query)
+
+        results = self.whoosh_database.search(args.query)
+        for result in results:
+            print(result)
 
         document_table = self.document_database.document_table
         word_table = self.document_database.word_table
@@ -93,10 +97,9 @@ class BabelApplication(ApplicationBase):
   author {author}
   comment {comment}
   count {count}
-"""
-        message = message[1:]
+""".lstrip()
 
-        for word_row in word_table.filter_by(word=query):
+        for word_row in word_table.filter_by(word=args.query):
             document_row = word_row.document
             print(message.format(path=document_row.path,
                                  count=word_row.count,
