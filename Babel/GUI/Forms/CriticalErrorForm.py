@@ -67,8 +67,6 @@ class CriticalErrorForm(QtWidgets.QDialog, Ui_critical_error_form):
         # Fixme: call critical exit
         self.exit_button.clicked.connect(lambda : sys.exit(1))
         self.show_backtrace_button.clicked.connect(self.show_backtrace)
-        self.send_email_button.clicked.connect(self.send_email)
-        self.new_issue_button.clicked.connect(self.new_issue)
 
         title = str(exception_value)
         self.error_message_label.setText(title[:50])
