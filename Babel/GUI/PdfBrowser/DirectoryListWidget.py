@@ -18,6 +18,13 @@
 #
 ####################################################################################################
 
+"""This module implements a list widget where items are made of a label and a delete icon.
+
+"""
+
+# Fixme: Must be generic
+#        MVC list model and item delegate
+
 ####################################################################################################
 
 import logging
@@ -28,10 +35,10 @@ from PyQt5.QtCore import Qt, pyqtSignal
 
 ####################################################################################################
 
-from .DirectorySelector import DirectorySelector
 from Babel.FileSystem.File import Directory, File
-from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.Tools.IterTools import pairwise
+from ..Widgets.IconLoader import IconLoader
+from .DirectorySelector import DirectorySelector
 
 ####################################################################################################
 
@@ -44,6 +51,10 @@ icon_loader = IconLoader()
 ####################################################################################################
 
 class DirectoryWidget(QtWidgets.QWidget):
+
+    """Implement a widget made of a label and a delete icon.
+
+    """
 
     _logger = _module_logger.getChild('DirectoryWidget')
 
@@ -64,9 +75,11 @@ class DirectoryWidget(QtWidgets.QWidget):
         self._delete_button = QtWidgets.QToolButton(self)
         self._delete_button.setIcon(icon_loader['delete-black@36'])
         self._delete_button.setAutoRaise(True)
+
         # self._label = QtWidgets.QLabel(self)
         self._label = QtWidgets.QPushButton(self)
         self.set_label_level()
+
         self._horizontal_layout = QtWidgets.QHBoxLayout(self)
         self._horizontal_layout.addWidget(self._delete_button)
         self._horizontal_layout.addWidget(self._label)
@@ -114,6 +127,8 @@ class DirectoryWidget(QtWidgets.QWidget):
 
     def dragEnterEvent(self, event):
 
+        # Fixme: usefull ? click is easier !
+
         self._logger.info('')
         mime_data = event.mimeData()
         if mime_data.hasUrls():
@@ -153,6 +168,8 @@ class DirectoryWidget(QtWidgets.QWidget):
 ####################################################################################################
 
 class DirectoryListWidget(QtWidgets.QWidget):
+
+    """Implement a list view"""
 
     _logger = _module_logger.getChild('DirectoryListWidget')
 

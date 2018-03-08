@@ -51,13 +51,9 @@ class DocumentItem:
     def path(self):
         return self._path
 
-    ##############################################
-
     @property
     def selected(self):
         return self._selected
-
-    ##############################################
 
     @selected.setter
     def selected(self, value):
@@ -73,7 +69,7 @@ class PdfDocumentItem(DocumentItem):
 
     def __init__(self, path):
 
-        super(PdfDocumentItem, self).__init__(path)
+        super().__init__(path)
 
         self._document = None
 
@@ -131,7 +127,7 @@ class DocumentDirectory(DocumentList):
 
     def __init__(self, path, importable_mime_types=None):
 
-        super(DocumentDirectory, self).__init__()
+        super().__init__()
 
         self._path = Directory(path)
         if importable_mime_types is None:
@@ -150,13 +146,13 @@ class DocumentDirectory(DocumentList):
     ##############################################
 
     def _is_file_importable(self, file_path):
-
         return file_path.mime_type in self._importable_mime_types
 
     ##############################################
 
     def _open_directory(self):
 
+        # Fixme: to func
         file_paths = sorted(self._path.iter_files(), key=lambda x: str(x.path))
         for file_path in file_paths:
             if self._is_file_importable(file_path):

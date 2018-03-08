@@ -27,19 +27,17 @@ import subprocess
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
-####################################################################################################
-
+from Babel.FileSystem.AutomaticFileRename import AutomaticFileRename
+from Babel.FileSystem.DirectoryToc import DirectoryToc
+from Babel.Tools.Container import EmptyRingError
+from ..Base.MainWindowBase import MainWindowBase
+from ..Widgets.IconLoader import IconLoader
+from ..Widgets.MessageBox import MessageBox
+from ..Widgets.PathNavigator import PathNavigator
 from .DirectoryListWidget import DirectoryListWidget
 from .DirectoryTocWidget import DirectoryTocWidget
 from .DocumentDirectory import DocumentDirectory
 from .PdfViewer import ViewerController
-from Babel.FileSystem.AutomaticFileRename import AutomaticFileRename
-from Babel.FileSystem.DirectoryToc import DirectoryToc
-from Babel.GUI.Base.MainWindowBase import MainWindowBase
-from Babel.GUI.Widgets.IconLoader import IconLoader
-from Babel.GUI.Widgets.MessageBox import MessageBox
-from Babel.GUI.Widgets.PathNavigator import PathNavigator
-from Babel.Tools.Container import EmptyRingError
 
 ####################################################################################################
 
@@ -55,7 +53,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def __init__(self, parent=None):
 
-        super(PdfBrowserMainWindow, self).__init__(title='Babel PDF Browser', parent=parent)
+        super().__init__(title='Babel PDF Browser', parent=parent)
 
         self._current_path = None
         self._init_ui()
@@ -77,8 +75,11 @@ class PdfBrowserMainWindow(MainWindowBase):
         image_widget = self._viewer_controller.image_widget
 
         # Fixme: add funcs ?
-        self._document_widgets = (self._file_name_label, self._file_counter_label,
-                                  image_widget)
+        self._document_widgets = (
+            self._file_name_label,
+            self._file_counter_label,
+            image_widget,
+        )
 
         self._vertical_layout = QtWidgets.QVBoxLayout(self._central_widget)
         self._vertical_layout.addWidget(self._message_box)
@@ -114,93 +115,95 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         icon_loader = IconLoader()
 
-        self._directory_toc_mode_action = \
-            QtWidgets.QAction(icon_loader['folder-open-black@36'],
-                          'Directory toc mode',
-                          self,
-                          toolTip='Directory toc mode',
-                          triggered=self._directory_toc_mode,
-                          shortcut='Ctrl+D',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._directory_toc_mode_action = QtWidgets.QAction(
+            icon_loader['folder-open-black@36'],
+            'Directory toc mode',
+            self,
+            toolTip='Directory toc mode',
+            triggered=self._directory_toc_mode,
+            shortcut='Ctrl+D',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
-        self._pdf_browser_mode_action = \
-            QtWidgets.QAction(icon_loader['book-black@36'], # application-pdf
-                          'PDF browser mode',
-                          self,
-                          toolTip='PDF browser mode',
-                          triggered=self._pdf_browser_mode,
-                          shortcut='Ctrl+P',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._pdf_browser_mode_action = QtWidgets.QAction(
+            icon_loader['book-black@36'], # application-pdf
+            'PDF browser mode',
+            self,
+            toolTip='PDF browser mode',
+            triggered=self._pdf_browser_mode,
+            shortcut='Ctrl+P',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
-        self._previous_document_action = \
-            QtWidgets.QAction(icon_loader['chevron-left-black@36'],
-                          'Previous document',
-                          self,
-                          toolTip='Previous Document',
-                          triggered=self.previous_document,
-                          shortcut='Backspace',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._previous_document_action = QtWidgets.QAction(
+            icon_loader['chevron-left-black@36'],
+            'Previous document',
+            self,
+            toolTip='Previous Document',
+            triggered=self.previous_document,
+            shortcut='Backspace',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
-        self._next_document_action = \
-            QtWidgets.QAction(icon_loader['chevron-right-black@36'],
-                          'Next document',
-                          self,
-                          toolTip='Next Document',
-                          triggered=self.next_document,
-                          shortcut='Space',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._next_document_action = QtWidgets.QAction(
+            icon_loader['chevron-right-black@36'],
+            'Next document',
+            self,
+            toolTip='Next Document',
+            triggered=self.next_document,
+            shortcut='Space',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
-        self._select_action = \
-            QtWidgets.QAction(icon_loader['star-black@36'],
-                          'Select document',
-                          self,
-                          toolTip='Select Document',
-                          triggered=self.select_document,
-                          shortcut='Ctrl+S',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._select_action = QtWidgets.QAction(
+            icon_loader['star-black@36'],
+            'Select document',
+            self,
+            toolTip='Select Document',
+            triggered=self.select_document,
+            shortcut='Ctrl+S',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
-        self._open_pdf_action = \
-            QtWidgets.QAction(icon_loader['open-in-new-black@36'],
-                          'Open PDF',
-                          self,
-                          toolTip='Open PDF',
-                          triggered=lambda x: self.open_current_document(extern=True),
-                          shortcut='Ctrl+O',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._open_pdf_action = QtWidgets.QAction(
+            icon_loader['open-in-new-black@36'],
+            'Open PDF',
+            self,
+            toolTip='Open PDF',
+            triggered=lambda x: self.open_current_document(extern=True),
+            shortcut='Ctrl+O',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
-        self._open_pdf_viewer_action = \
-            QtWidgets.QAction(icon_loader['description-black@36'],
-                          'Open PDF Viewer',
-                          self,
-                          toolTip='Open PDF Viewer',
-                          triggered=lambda x: self.open_current_document(extern=False),
-                          shortcut='Ctrl+V',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._open_pdf_viewer_action = QtWidgets.QAction(
+            icon_loader['description-black@36'],
+            'Open PDF Viewer',
+            self,
+            toolTip='Open PDF Viewer',
+            triggered=lambda x: self.open_current_document(extern=False),
+            shortcut='Ctrl+V',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
     ##############################################
 
     def _create_toolbar(self):
 
         self._main_tool_bar = self.addToolBar('Main')
-        for item in (self._directory_toc_mode_action,
-                     self._pdf_browser_mode_action,
-                    ):
+        for item in (
+                self._directory_toc_mode_action,
+                self._pdf_browser_mode_action,
+        ):
             self._main_tool_bar.addAction(item)
 
         self._document_tool_bar = self.addToolBar('Document')
-        for item in (self._previous_document_action,
-                     self._next_document_action,
-                     self._select_action,
-                     self._open_pdf_action,
-                     self._open_pdf_viewer_action,
-                    ):
+        for item in (
+                self._previous_document_action,
+                self._next_document_action,
+                self._select_action,
+                self._open_pdf_action,
+                self._open_pdf_viewer_action,
+        ):
             self._document_tool_bar.addAction(item)
 
         self.addToolBar(self._viewer_controller.tool_bar)
@@ -295,6 +298,7 @@ class PdfBrowserMainWindow(MainWindowBase):
     def next_document(self):
 
         try:
+            # Fixme: document_directory -~-> document changed
             next(self._document_directory)
             self._show_document()
         except StopIteration:
@@ -307,8 +311,10 @@ class PdfBrowserMainWindow(MainWindowBase):
         try:
             document = self.current_document
             self._file_name_label.setText(str(document.path.filename_part()))
-            self._file_counter_label.setText('{} / {}'.format(self._document_directory.current_index +1,
-                                                              len(self._document_directory)))
+            self._file_counter_label.setText('{} / {}'.format(
+                self._document_directory.current_index +1,
+                len(self._document_directory)),
+            )
             self._viewer_controller.document = document.document # Fixme:
         except EmptyRingError:
             # self._logger.info('EmptyRingError')
@@ -375,10 +381,12 @@ class PdfBrowserMainWindow(MainWindowBase):
         if bool(to_file_path):
             if file_path.shasum == to_file_path.shasum:
                 # self.show_message("Destination has a duplicate of this file", warn=True)
-                rc = QtWidgets.QMessageBox.question(self,
-                                                    "",
-                                                    "Destination has a duplicate of this file.\n"
-                                                    "Remove this file instead?")
+                rc = QtWidgets.QMessageBox.question(
+                    self,
+                    "",
+                    "Destination has a duplicate of this file.\n"
+                    "Remove this file instead?"
+                )
                 if rc == QtWidgets.QMessageBox.Yes:
                     self._logger.info("Delete {}".format(str(file_path)))
                     file_path.delete()
@@ -387,10 +395,12 @@ class PdfBrowserMainWindow(MainWindowBase):
             else:
                 # self.show_message("Destination has a file with the same name", warn=True)
                 to_file_path2 = AutomaticFileRename(to_file_path).generate()
-                filename, ok = QtWidgets.QInputDialog.getText(self,
-                                                              "Destination has a file with the same name",
-                                                              "Rename to:",
-                                                              text=to_file_path2.filename)
+                filename, ok = QtWidgets.QInputDialog.getText(
+                    self,
+                    "Destination has a file with the same name",
+                    "Rename to:",
+                    text=to_file_path2.filename
+                )
                 # Fixme: implement overwrite
                 if ok:
                      to_file_path = dst_path.join_filename(filename)

@@ -18,8 +18,9 @@
 #
 ####################################################################################################
 
-"""This code corresponds to a simplified translation of kdelibs/kfile/kurlnavigator.cpp to Python. I
-don't want to rely on PyKDE4.
+"""Implement a path navigator.
+
+This code corresponds to a simplified translation of kdelibs/kfile/kurlnavigator.cpp to Python.
 
 """
 
@@ -161,9 +162,11 @@ class PathNavigatorButton(QtWidgets.QPushButton):
 
     def _draw_hover_background(self, painter):
 
-        is_highlighted = (self._is_display_hint_enabled(self.__ENTERED_HINT__) or
-                          self._is_display_hint_enabled(self.__DRAGGED_HINT__) or
-                          self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__))
+        is_highlighted = (
+            self._is_display_hint_enabled(self.__ENTERED_HINT__) or
+            self._is_display_hint_enabled(self.__DRAGGED_HINT__) or
+            self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__)
+        )
 
         if is_highlighted:
             # TODO: the backgroundColor should be applied to the style
@@ -180,9 +183,11 @@ class PathNavigatorButton(QtWidgets.QPushButton):
         # Fixme: remove ? = foreground_color
         # Fixme: has_subdirectory = False
 
-        is_highlighted = (self._is_display_hint_enabled(self.__ENTERED_HINT__) or
-                          self._is_display_hint_enabled(self.__DRAGGED_HINT__) or
-                          self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__))
+        is_highlighted = (
+            self._is_display_hint_enabled(self.__ENTERED_HINT__) or
+            self._is_display_hint_enabled(self.__DRAGGED_HINT__) or
+            self._is_display_hint_enabled(self.__POPUP_ACTIVE_HINT__)
+        )
 
         foreground_color = self.palette().color(self.foregroundRole())
         foreground_color.setAlpha(255)

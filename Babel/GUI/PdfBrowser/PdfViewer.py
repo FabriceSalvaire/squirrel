@@ -20,6 +20,9 @@
 #
 ####################################################################################################
 
+"""Implement a PDF Viewer Widget.
+"""
+
 ####################################################################################################
 #
 # * mouse
@@ -64,10 +67,8 @@ import logging
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, pyqtSignal
 
-####################################################################################################
-
-from ..Widgets.IconLoader import IconLoader
 from Babel.Tools.EnumFactory import EnumFactory
+from ..Widgets.IconLoader import IconLoader
 
 ####################################################################################################
 
@@ -76,6 +77,8 @@ _module_logger = logging.getLogger(__name__)
 ####################################################################################################
 
 class ToolBar(QtWidgets.QToolBar):
+
+    # Fixme: move
 
     ##############################################
 
@@ -90,6 +93,8 @@ class ToolBar(QtWidgets.QToolBar):
 
 class PageController(QtCore.QObject):
 
+    # Fixme: MVC ?
+
     page_changed = pyqtSignal(int)
 
     # go to first page
@@ -103,7 +108,7 @@ class PageController(QtCore.QObject):
 
     def __init__(self, document=None):
 
-        super(PageController, self).__init__()
+        super().__init__()
 
         self._application = QtWidgets.QApplication.instance()
 
@@ -118,21 +123,21 @@ class PageController(QtCore.QObject):
 
         icon_loader = IconLoader()
 
-        self._previous_page_action = \
-            QtWidgets.QAction(icon_loader['chevron-left-black@36'],
-                          'Previous page',
-                          self._application,
-                          toolTip='Previous Page',
-                          triggered=lambda: self.previous_page(), # Fixme:
-                          )
+        self._previous_page_action = QtWidgets.QAction(
+            icon_loader['chevron-left-black@36'],
+            'Previous page',
+            self._application,
+            toolTip='Previous Page',
+            triggered=lambda: self.previous_page(), # Fixme:
+        )
 
-        self._next_page_action = \
-            QtWidgets.QAction(icon_loader['chevron-right-black@36'],
-                          'Next page',
-                          self._application,
-                          toolTip='Next Page',
-                          triggered=lambda: self.next_page(),
-                          )
+        self._next_page_action = QtWidgets.QAction(
+            icon_loader['chevron-right-black@36'],
+            'Next page',
+            self._application,
+            toolTip='Next Page',
+            triggered=lambda: self.next_page(),
+        )
 
     ##############################################
 
@@ -211,6 +216,8 @@ class PageController(QtCore.QObject):
 
 class ViewerController(QtCore.QObject):
 
+    # Fixme: purpose, versus PageController
+
     zoom_mode_enum = EnumFactory('ZoomModeEnum', ('fit_document', 'fit_width'))
 
     # Fixme
@@ -225,7 +232,7 @@ class ViewerController(QtCore.QObject):
 
     def __init__(self, document=None):
 
-        super(ViewerController, self).__init__()
+        super().__init__()
 
         self._application = QtWidgets.QApplication.instance()
 
@@ -264,34 +271,35 @@ class ViewerController(QtCore.QObject):
 
         icon_loader = IconLoader()
 
-        self._fit_width_action = \
-            QtWidgets.QAction(icon_loader['zoom-fit-width@36'],
-                          'Fit width',
-                          self._application,
-                          toolTip='Fit width',
-                          triggered=self.fit_width,
-                          shortcut='Ctrl+W',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._fit_width_action = QtWidgets.QAction(
+            icon_loader['zoom-fit-width@36'],
+            'Fit width',
+            self._application,
+            toolTip='Fit width',
+            triggered=self.fit_width,
+            shortcut='Ctrl+W',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
-        self._fit_document_action = \
-            QtWidgets.QAction(icon_loader['settings-overscan-black@36'], # zoom-fit-best
-                          'Fit document',
-                          self._application,
-                          toolTip='Fit document',
-                          triggered=self.fit_document,
-                          shortcut='Ctrl+B',
-                          shortcutContext=Qt.ApplicationShortcut,
-                          )
+        self._fit_document_action = QtWidgets.QAction(
+            icon_loader['settings-overscan-black@36'], # zoom-fit-best
+            'Fit document',
+            self._application,
+            toolTip='Fit document',
+            triggered=self.fit_document,
+            shortcut='Ctrl+B',
+            shortcutContext=Qt.ApplicationShortcut,
+        )
 
     ##############################################
 
     def _create_toolbar(self):
 
         self._tool_bar = ToolBar('Viewer')
-        for item in (self._fit_width_action,
-                     self._fit_document_action,
-                     ):
+        for item in (
+                self._fit_width_action,
+                self._fit_document_action,
+        ):
             self._tool_bar.add(item)
 
     ##############################################
@@ -324,10 +332,12 @@ class ViewerController(QtCore.QObject):
         self._zoom_mode = self.zoom_mode_enum.fit_width
         # Fixme: update page
         image_widget = self._image_widget
-        image = self._image_cache.to_pixmap(self._page_controller.page_index,
-                                            width=image_widget.width() -self.horizontal_margin,
-                                            height=0,
-                                            resolution=1000)
+        image = self._image_cache.to_pixmap(
+            self._page_controller.page_index,
+            width=image_widget.width() -self.horizontal_margin,
+            height=0,
+            resolution=1000,
+        )
         image_widget.set_pixmap(image)
 
     ##############################################
@@ -337,10 +347,12 @@ class ViewerController(QtCore.QObject):
         image_widget = self._image_widget
         self._logger.info('widget size: %ux%u', image_widget.width(), image_widget.height())
         self._zoom_mode = self.zoom_mode_enum.fit_document
-        image = self._image_cache.to_pixmap(self._page_controller.page_index,
-                                            width=image_widget.width() -self.horizontal_margin,
-                                            height=image_widget.height() -self.vertical_margin,
-                                            resolution=1000)
+        image = self._image_cache.to_pixmap(
+            self._page_controller.page_index,
+            width=image_widget.width() -self.horizontal_margin,
+            height=image_widget.height() -self.vertical_margin,
+            resolution=1000,
+        )
         image_widget.set_pixmap(image)
 
     ##############################################
@@ -384,7 +396,7 @@ class ImageWidget(QtWidgets.QScrollArea):
 
     def __init__(self, parent=None):
 
-        super(ImageWidget, self).__init__(parent)
+        super().__init__(parent)
 
         self.setWidgetResizable(True)
         self._pixmap_label = QtWidgets.QLabel()

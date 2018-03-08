@@ -20,7 +20,7 @@
 #
 ####################################################################################################
 
-"""Popup window to select a directory
+"""Implement a popup window to select a directory.
 
 """
 
@@ -32,12 +32,10 @@ import os
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
 
-####################################################################################################
-
 from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.FileSystem.File import Directory
-from Babel.GUI.Widgets.IconLoader import IconLoader
-from Babel.GUI.Widgets.PathNavigator import PathNavigator
+from ..Widgets.IconLoader import IconLoader
+from ..Widgets.PathNavigator import PathNavigator
 from .DirectoryTocWidget import DirectoryTocWidget
 
 ####################################################################################################

@@ -18,6 +18,10 @@
 #
 ####################################################################################################
 
+"""Implement a directory navigator widget rendered as table of contents.
+
+"""
+
 # Notes:
 #  DirectoryButton: class, obj, label
 
