@@ -128,8 +128,8 @@ class ImportSession:
         for file_path in path.walk_files():
             if ImporterRegistry.is_importable(file_path):
                 self.import_file(file_path)
-            else:
-                self._logger.info("File {} is not importable".format(file_path))
+            # else:
+            #     self._logger.info("File {} is not importable".format(file_path))
 
     ##############################################
 
