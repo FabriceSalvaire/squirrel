@@ -55,7 +55,7 @@ class DirectoryWidget(QtWidgets.QWidget):
 
     def __init__(self, path, parent=None):
 
-        super(DirectoryWidget, self).__init__(parent)
+        super().__init__(parent)
 
         self._path = path
 
@@ -163,7 +163,7 @@ class DirectoryListWidget(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
 
-        super(DirectoryListWidget, self).__init__(parent)
+        super().__init__(parent)
 
         self._application = QtWidgets.QApplication.instance()
         self._last_path = None

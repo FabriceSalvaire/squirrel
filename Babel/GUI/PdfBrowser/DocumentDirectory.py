@@ -18,7 +18,9 @@
 #
 ####################################################################################################
 
-# Fixme: move elsewhere? not an importer or FileSystem
+# Fixme:
+#   Not UI component
+#   move elsewhere? not an importer or FileSystem
 
 ####################################################################################################
 
@@ -117,11 +119,13 @@ class DocumentList(Ring):
 
 class DocumentDirectory(DocumentList):
 
-    __importable_mime_types__ = ('application/pdf',
-                                )
+    __importable_mime_types__ = (
+        'application/pdf',
+    )
 
-    __classes__ = {'application/pdf':PdfDocumentItem,
-                  }
+    __classes__ = {
+        'application/pdf':PdfDocumentItem,
+    }
 
     ##############################################
 

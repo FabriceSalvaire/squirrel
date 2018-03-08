@@ -66,7 +66,7 @@ from PyQt5.QtCore import Qt, pyqtSignal
 
 ####################################################################################################
 
-from Babel.GUI.Widgets.IconLoader import IconLoader
+from ..Widgets.IconLoader import IconLoader
 from Babel.Tools.EnumFactory import EnumFactory
 
 ####################################################################################################

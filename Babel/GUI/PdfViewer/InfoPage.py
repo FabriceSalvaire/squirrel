@@ -24,7 +24,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 ####################################################################################################
 
-from Babel.GUI.Widgets.RowLayoutManager import RowLayoutManager
+from ..Widgets.RowLayoutManager import RowLayoutManager
 
 ####################################################################################################
 
@@ -93,11 +93,15 @@ class InfoPage(QtWidgets.QWidget):
 
     def open_pdf(self):
 
+        # QML: pass a QmlPdfDocument
+        #   requires properties
+
         pdf_document = self._main_window._pdf_document
         pdf_metadata = pdf_document.metadata
-        key_value_pairs = [('path', str(pdf_document.path)),
-                           ('number_of_pages', str(pdf_document.number_of_pages)),
-                           ]
+        key_value_pairs = [
+            ('path', str(pdf_document.path)),
+            ('number_of_pages', str(pdf_document.number_of_pages)),
+        ]
         for key in ('Title', 'Subject', 'Author', 'Creator', 'Producer', 'CreationDate', 'ModDate'):
             key_value_pairs.append((key, pdf_metadata[key] or ''))
         for key, value in key_value_pairs:

@@ -20,6 +20,10 @@
 #
 ####################################################################################################
 
+"""Popup window to select a directory
+
+"""
+
 ####################################################################################################
 
 import logging
@@ -30,11 +34,11 @@ from PyQt5.QtCore import Qt
 
 ####################################################################################################
 
-from .DirectoryTocWidget import DirectoryTocWidget
 from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.FileSystem.File import Directory
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.GUI.Widgets.PathNavigator import PathNavigator
+from .DirectoryTocWidget import DirectoryTocWidget
 
 ####################################################################################################
 
@@ -163,6 +167,8 @@ class DirectorySelector(QtWidgets.QDialog):
     ##############################################
 
     def create_directory(self):
+
+        # Fixme: mix ui and logic
 
         dialog = CreateDirectoryDialog(self)
         rc = dialog.exec_()

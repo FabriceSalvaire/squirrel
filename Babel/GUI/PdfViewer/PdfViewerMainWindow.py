@@ -24,12 +24,12 @@ from PyQt5 import QtCore, QtWidgets
 
 ####################################################################################################
 
-from .InfoPage import InfoPage
-from .TextPage import TextPage
 from Babel.GUI.Base.MainWindowBase import MainWindowBase
 from Babel.GUI.PdfBrowser.PdfViewer import ViewerController
 from Babel.GUI.Widgets.IconLoader import IconLoader
 from Babel.Pdf.PdfDocument import PdfDocument
+from .InfoPage import InfoPage
+from .TextPage import TextPage
 
 ####################################################################################################
 
@@ -39,7 +39,7 @@ class PdfViewerMainWindow(MainWindowBase):
 
     def __init__(self, pdf_path=None, parent=None):
 
-        super(PdfViewerMainWindow, self).__init__(title='Babel PDF Viewer', parent=parent)
+        super().__init__(title='Babel PDF Viewer', parent=parent)
 
         self._init_ui()
         if pdf_path is not None:
@@ -111,7 +111,6 @@ class PdfViewerMainWindow(MainWindowBase):
     ##############################################
 
     def init_menu(self):
-
         super(PdfViewerMainWindow, self).init_menu()
 
     ##############################################
@@ -125,10 +124,11 @@ class PdfViewerMainWindow(MainWindowBase):
         self._info_page = InfoPage(self)
         self._image_page = self._viewer_controller.image_widget
         self._text_page = TextPage(self)
-        for page in (self._info_page,
-                     self._image_page,
-                     self._text_page,
-                     ):
+        for page in (
+                self._info_page,
+                self._image_page,
+                self._text_page,
+        ):
             self._stacked_widget.addWidget(page)
         self.statusBar()
         self._create_actions()
@@ -139,5 +139,4 @@ class PdfViewerMainWindow(MainWindowBase):
     ##############################################
 
     def _set_current_widget(self, widget):
-
         self._stacked_widget.setCurrentWidget(widget)
