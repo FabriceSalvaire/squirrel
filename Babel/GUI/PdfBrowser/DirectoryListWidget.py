@@ -189,8 +189,13 @@ class DirectoryListWidget(QtWidgets.QWidget):
 
         vertical_layout = QtWidgets.QVBoxLayout(self)
 
-        self._clear_button = QtWidgets.QPushButton('clear', self)
+        self._clear_button = QtWidgets.QToolButton(self)
+        self._clear_button.setToolTip('Remove all destinations')
+        self._clear_button.setIcon(icon_loader['delete-black@36'])
+        self._clear_button.setAutoRaise(True)
+
         self._add_button = QtWidgets.QToolButton(self)
+        self._add_button.setToolTip('Add a destination')
         self._add_button.setIcon(icon_loader['playlist-add-black@36'])
         self._add_button.setAutoRaise(True)
 
