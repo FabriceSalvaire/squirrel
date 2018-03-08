@@ -176,7 +176,7 @@ class ImportSession:
             try:
                 path.xattr['sha'] = shasum
             except PermissionError:
-                self._logger.error("Permission issue for file {}".format(path))                
+                self._logger.error("Permission issue for file {}".format(path))
         else:
             shasum = path.xattr['sha']
 
