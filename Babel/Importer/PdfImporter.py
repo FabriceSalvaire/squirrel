@@ -51,6 +51,10 @@ class PdfImporter(ImporterBase):
         except MupdfError:
             return
 
+        whoosh_database = job.whoosh_database
+        text = pdf_document.text()
+        whoosh_database.index(shasum=job.shasum, content=text)
+
         # Fixme: registry
         document_table = job.document_database.document_table
         word_table = job.document_database.word_table
@@ -95,10 +99,6 @@ class PdfImporter(ImporterBase):
         document_row.update_indexation_date()
 
         document_table.add(document_row, commit=False)
-
-        whoosh_database = job.whoosh_database
-        text = pdf_document.text()
-        whoosh_database.index(shasum=job.shasum, content=text)
 
         return document_row
 

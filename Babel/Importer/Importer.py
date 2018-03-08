@@ -20,6 +20,8 @@
 
 ####################################################################################################
 
+import os
+
 import logging
 
 ####################################################################################################
@@ -135,9 +137,26 @@ class ImportSession:
 
     def import_file(self, path):
 
+        # Fixme: whoosh guard
+
         if not path.is_relative_to(self._root_path):
             self._logger.error("File {} is not relative to root {}".format(path, self._root_path))
             return
+
+        # skip link ?
+        if not path and os.path.lexists(str(path)):
+            self._logger.error("File {} is a broken link".format(path))
+            return
+
+        try:
+            str(path).encode('utf8')
+        except UnicodeEncodeError:
+            # UnicodeEncodeError: 'utf-8' codec can't encode character '\udce9' in position 84: surrogates not allowed
+            # /home/from-salus/fabrice/home/ged/projets/lexique/Lexique380/Licence Lexique D\xe9tails.pdf
+            self._logger.error("Unicode issue on file {}".format(str(path).encode('utf-8', 'surrogateescape')))
+            return
+
+        # self._logger.info("Look file {}".format(path))
 
         # Cases:
         #   - document is already registered (same path and checksum)
@@ -148,7 +167,10 @@ class ImportSession:
         # Store/Retrieve shasum from file's xattr
         if 'sha' not in path.xattr:
             shasum = path.shasum
-            path.xattr['sha'] = shasum
+            try:
+                path.xattr['sha'] = shasum
+            except PermissionError:
+                self._logger.error("Permission issue for file {}".format(path))                
         else:
             shasum = path.xattr['sha']
 
