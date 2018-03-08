@@ -53,8 +53,8 @@ class Path:
     def make_user_directory(cls):
 
         for directory in (
-                cls.config_directory,
-                cls.data_directory,
+                cls.CONFIG_DIRECTORY,
+                cls.DATA_DIRECTORY,
         ):
             directory = str(directory) # Fixme: api
             if not os.path.exists(directory):
