@@ -32,8 +32,6 @@ import logging
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, pyqtSignal
 
-####################################################################################################
-
 from Babel.FileSystem.File import Directory
 from Babel.GUI.Widgets.ColumnLayout import ColumnLayout
 from Babel.GUI.Widgets.IconLoader import IconLoader

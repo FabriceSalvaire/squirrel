@@ -27,6 +27,7 @@ import subprocess
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
+from Babel.Document.DocumentDirectory import DocumentDirectory
 from Babel.FileSystem.AutomaticFileRename import AutomaticFileRename
 from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.Tools.Container import EmptyRingError
@@ -36,7 +37,6 @@ from ..Widgets.MessageBox import MessageBox
 from ..Widgets.PathNavigator import PathNavigator
 from .DirectoryListWidget import DirectoryListWidget
 from .DirectoryTocWidget import DirectoryTocWidget
-from .DocumentDirectory import DocumentDirectory
 from .PdfViewer import ViewerController
 
 ####################################################################################################

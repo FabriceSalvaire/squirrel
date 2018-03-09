@@ -33,8 +33,6 @@ import os
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, pyqtSignal
 
-####################################################################################################
-
 from Babel.FileSystem.File import Directory, File
 from Babel.Tools.IterTools import pairwise
 from ..Widgets.IconLoader import IconLoader
