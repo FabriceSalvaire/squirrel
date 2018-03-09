@@ -24,6 +24,8 @@
 
 """
 
+# Fixme: port to QML
+
 ####################################################################################################
 
 import logging
@@ -32,11 +34,11 @@ import os
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
 
-from Babel.FileSystem.DirectoryToc import DirectoryToc
-from Babel.FileSystem.File import Directory
 from ..Widgets.IconLoader import IconLoader
 from ..Widgets.PathNavigator import PathNavigator
+from .DirectoryToc import DirectoryToc
 from .DirectoryTocWidget import DirectoryTocWidget
+from Babel.FileSystem.File import Directory
 
 ####################################################################################################
 

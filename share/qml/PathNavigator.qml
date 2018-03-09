@@ -71,7 +71,6 @@ Rectangle {
                         color: Qt.lighter(path_navigator.color, control.pressed ? 0 : (control.hovered ? 5 : 0))
                     }
                 }
-                onHoveredChanged: console.info('hover')
                 onClicked: {
                     console.info('Clicked on directory', model.index)
                 }

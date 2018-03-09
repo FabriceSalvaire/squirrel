@@ -33,15 +33,15 @@ from PyQt5.QtCore import Qt
 from Babel.Config import ConfigInstall
 from Babel.Document.DocumentDirectory import DocumentDirectory
 from Babel.FileSystem.AutomaticFileRename import AutomaticFileRename
-from Babel.FileSystem.DirectoryToc import DirectoryToc
-from Babel.Tools.Container import EmptyRingError
 from ..Base.MainWindowBase import MainWindowBase
 from ..Widgets.IconLoader import IconLoader, IconProvider
 from ..Widgets.MessageBox import MessageBox
 from ..Widgets.PathNavigator import PathNavigator
 from .DirectoryListWidget import DirectoryListWidget
+from .DirectoryToc import DirectoryToc
 from .DirectoryTocWidget import DirectoryTocWidget
 from .PdfViewer import ViewerController
+from Babel.Tools.Container import EmptyRingError
 
 ####################################################################################################
 
@@ -104,13 +104,8 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._directory_list_dock_widget = self._create_dock(
             Qt.LeftDockWidgetArea, self._directory_list)
 
-        # self._document_metadata_dock_widget = self._create_dock(
-        #     Qt.RightDockWidgetArea, self._create_document_metadata_panel()
-        # )
-
         self._document_metadata_dock_widget = self._create_dock(
-            Qt.BottomDockWidgetArea, self._create_document_metadata_panel(),
-            allowed_area=Qt.BottomDockWidgetArea,
+            Qt.RightDockWidgetArea, self._create_document_metadata_panel()
         )
 
         self._path_navigator.path_changed.connect(self.open_directory)
@@ -153,9 +148,8 @@ class PdfBrowserMainWindow(MainWindowBase):
         # self._container.setMaximumSize(200, 200)
         self._container.setFocusPolicy(Qt.TabFocus)
 
-        # path = ConfigInstall.Path.join_qml_path('document_metadata_panel.qml')
-        # path = ConfigInstall.Path.join_qml_path('DestinationList.qml')
-        path = ConfigInstall.Path.join_qml_path('PathNavigator.qml')
+        # path = ConfigInstall.Path.join_qml_path('DocumentMetadataPanel.qml')
+        path = ConfigInstall.Path.join_qml_path('DirectoryToc.qml')
         self._view.setSource(QtCore.QUrl(path))
 
         return self._container

@@ -24,6 +24,8 @@ This code corresponds to a simplified translation of kdelibs/kfile/kurlnavigator
 
 """
 
+# Fixme: see PathNavigator.qml for QML port
+
 ####################################################################################################
 
 import logging

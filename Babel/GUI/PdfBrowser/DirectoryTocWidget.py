@@ -22,6 +22,8 @@
 
 """
 
+# Fixme: see DirectoryToc.qml for a QML implementation
+
 # Notes:
 #  DirectoryButton: class, obj, label
 
@@ -33,8 +35,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, pyqtSignal
 
 from Babel.FileSystem.File import Directory
-from Babel.GUI.Widgets.ColumnLayout import ColumnLayout
-from Babel.GUI.Widgets.IconLoader import IconLoader
+from ..Widgets.ColumnLayout import ColumnLayout
+from ..Widgets.IconLoader import IconLoader
 
 ####################################################################################################
 
@@ -56,7 +58,7 @@ class DirectoryButton(QtWidgets.QPushButton):
 
     def __init__(self, path, parent=None):
 
-        super(DirectoryButton, self).__init__(parent)
+        super().__init__(parent)
 
         self.setFocusPolicy(Qt.TabFocus)
         self.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
@@ -176,7 +178,7 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
 
     def __init__(self, parent=None):
 
-        super(DirectoryTocWidget, self).__init__(parent)
+        super().__init__(parent)
 
         self._directory_toc = None
 
@@ -247,6 +249,8 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
 
     def update(self, directory_toc):
 
+        # receive model
+
         self._logger.info('')
 
         self._directory_toc = directory_toc
@@ -275,6 +279,8 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
     ##############################################
 
     def _go_up(self):
+
+        # signal to model
 
         path = self._directory_toc.path.parent()
         self.path_changed.emit(path)

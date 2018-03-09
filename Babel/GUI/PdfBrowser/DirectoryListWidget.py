@@ -22,8 +22,10 @@
 
 """
 
-# Fixme: Must be generic
-#        MVC list model and item delegate
+# Fixme:
+#  see DirectoryList.qml for QML port
+#  Must be generic
+#  MVC list model and item delegate
 
 ####################################################################################################
 
