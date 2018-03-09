@@ -23,16 +23,24 @@
 
 ####################################################################################################
 
-from PyQt5 import QtGui
+import logging
 
-####################################################################################################
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QIcon
+from PyQt5.QtQuick import QQuickImageProvider
 
 from Babel.Tools.Singleton import SingletonMetaClass
 import Babel.Config.ConfigInstall as ConfigInstall
 
 ####################################################################################################
 
-class IconLoader(object, metaclass=SingletonMetaClass):
+_module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
+class IconLoader(metaclass=SingletonMetaClass):
+
+    _logger = _module_logger.getChild('IconLoader')
 
     icon_size = 32
 
@@ -74,7 +82,7 @@ class IconLoader(object, metaclass=SingletonMetaClass):
         mangled_icon_name = self._mangle_icon_name(icon_name, icon_size)
         if mangled_icon_name not in self._cache:
             icon_path = self._find(icon_name, icon_size)
-            self._cache[mangled_icon_name] = QtGui.QIcon(icon_path)
+            self._cache[mangled_icon_name] = QIcon(icon_path)
 
         return self._cache[mangled_icon_name]
 
@@ -83,3 +91,42 @@ class IconLoader(object, metaclass=SingletonMetaClass):
     def _find(self, file_name, icon_size, extension='.png'):
 
         return ConfigInstall.Icon.find(file_name + extension, icon_size)
+
+####################################################################################################
+
+class IconProvider(QQuickImageProvider):
+
+    _logger = _module_logger.getChild('IconProvider')
+
+    ##############################################
+
+    def __init__(self):
+
+        super().__init__(QQuickImageProvider.Pixmap |
+                         QQuickImageProvider.Image)
+
+        self._icon_loader = IconLoader()
+
+    ##############################################
+
+    def requestImage(self, icon_name, requested_size):
+
+        self._logger.debug('Request image {} {}'.format(icon_name, requested_size))
+
+        raise NotImplementedError
+
+    ##############################################
+
+    def requestPixmap(self, icon_name, requested_size):
+
+        # Fixme: QML cache pixmap
+
+        self._logger.debug('Request pixmap {} {}'.format(icon_name, requested_size))
+
+        if requested_size.isValid():
+            icon = self._icon_loader.get_icon(icon_name, requested_size)
+            return icon.pixmap(requested_size), requested_size
+        else:
+            icon = self._icon_loader[icon_name]
+            size = icon.availableSizes()[0]
+            return icon.pixmap(size), size

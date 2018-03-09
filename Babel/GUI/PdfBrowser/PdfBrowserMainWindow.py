@@ -24,15 +24,19 @@ import logging
 import os
 import subprocess
 
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import QtQuick
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
+from Babel.Config import ConfigInstall
 from Babel.Document.DocumentDirectory import DocumentDirectory
 from Babel.FileSystem.AutomaticFileRename import AutomaticFileRename
 from Babel.FileSystem.DirectoryToc import DirectoryToc
 from Babel.Tools.Container import EmptyRingError
 from ..Base.MainWindowBase import MainWindowBase
-from ..Widgets.IconLoader import IconLoader
+from ..Widgets.IconLoader import IconLoader, IconProvider
 from ..Widgets.MessageBox import MessageBox
 from ..Widgets.PathNavigator import PathNavigator
 from .DirectoryListWidget import DirectoryListWidget
@@ -96,11 +100,18 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._create_actions()
         self._create_toolbar()
 
-        self._directory_list_dock_widget = QtWidgets.QDockWidget(self)
-        self._directory_list_dock_widget.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         self._directory_list = DirectoryListWidget(self)
-        self._directory_list_dock_widget.setWidget(self._directory_list)
-        self.addDockWidget(Qt.LeftDockWidgetArea, self._directory_list_dock_widget)
+        self._directory_list_dock_widget = self._create_dock(
+            Qt.LeftDockWidgetArea, self._directory_list)
+
+        # self._document_metadata_dock_widget = self._create_dock(
+        #     Qt.RightDockWidgetArea, self._create_document_metadata_panel()
+        # )
+
+        self._document_metadata_dock_widget = self._create_dock(
+            Qt.BottomDockWidgetArea, self._create_document_metadata_panel(),
+            allowed_area=Qt.BottomDockWidgetArea,
+        )
 
         self._path_navigator.path_changed.connect(self.open_directory)
         self._directory_toc.path_changed.connect(self.open_directory)
@@ -108,6 +119,46 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._directory_list.move_current_file.connect(self.move_current_file)
 
         self._directory_toc_mode()
+
+    ##############################################
+
+    def _create_dock(self, area, widget,
+                     allowed_area=Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea):
+
+        dock_widget = QtWidgets.QDockWidget(self)
+        dock_widget.setAllowedAreas(allowed_area)
+        dock_widget.setWidget(widget)
+        self.addDockWidget(area, dock_widget)
+
+        return dock_widget
+
+    ##############################################
+
+    def _create_document_metadata_panel(self):
+
+        self._view = QtQuick.QQuickView()
+        engine = self._view.engine()
+        context = engine.rootContext()
+        context.setContextProperty('application_style', self.application.application_style)
+
+        self._icon_provider = IconProvider()
+        engine.addImageProvider('icon_provider', self._icon_provider)
+
+        # Fixme:
+        # QML2_IMPORT_PATH
+        engine.addImportPath(ConfigInstall.Path.join_share_directory('qml'))
+
+        self._container = QtWidgets.QWidget.createWindowContainer(self._view, self)
+        self._container.setMinimumSize(200, 200)
+        # self._container.setMaximumSize(200, 200)
+        self._container.setFocusPolicy(Qt.TabFocus)
+
+        # path = ConfigInstall.Path.join_qml_path('document_metadata_panel.qml')
+        # path = ConfigInstall.Path.join_qml_path('DestinationList.qml')
+        path = ConfigInstall.Path.join_qml_path('PathNavigator.qml')
+        self._view.setSource(QtCore.QUrl(path))
+
+        return self._container
 
     ##############################################
 

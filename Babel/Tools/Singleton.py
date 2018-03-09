@@ -20,8 +20,8 @@
 
 ####################################################################################################
 
-"""
-Singleton snippets.
+"""Implement Singleton
+
 """
 
 ####################################################################################################
@@ -32,9 +32,10 @@ import threading
 
 class SingletonMetaClass(type):
 
-    """ A singleton metaclass.
+    """A singleton metaclass.
 
     This implementation supports subclassing and is thread safe.
+
     """
 
     ##############################################

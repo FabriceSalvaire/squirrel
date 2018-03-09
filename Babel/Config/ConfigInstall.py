@@ -22,6 +22,18 @@ class Path:
     config_directory = os.path.dirname(_this_file)
     share_directory = os.path.realpath(os.path.join(config_directory, '..', '..', 'share'))
 
+    ##############################################
+
+    @classmethod
+    def join_share_directory(cls, *args):
+        return os.path.join(cls.share_directory, *args)
+
+    ##############################################
+
+    @classmethod
+    def join_qml_path(cls, *args):
+        return os.path.join(cls.share_directory, 'qml', *args)
+
 ####################################################################################################
 
 class Logging:

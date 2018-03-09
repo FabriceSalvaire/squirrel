@@ -38,14 +38,14 @@ class Path:
     ##############################################
 
     @classmethod
-    def join_config_directory(cls, path):
-        return cls.CONFIG_DIRECTORY.join_path(path)
+    def join_config_directory(cls, *args):
+        return cls.CONFIG_DIRECTORY.join_path(*args)
 
     ##############################################
 
     @classmethod
-    def join_data_directory(cls, path):
-        return cls.DATA_DIRECTORY.join_path(path)
+    def join_data_directory(cls, *args):
+        return cls.DATA_DIRECTORY.join_path(*args)
 
     ##############################################
 

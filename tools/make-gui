@@ -1,5 +1,11 @@
 #! /bin/bash
 
 pushd Babel/GUI/ui
-make clean
+# make clean
 make -f Makefile.pyqt
+popd
+
+pushd share
+# make clean
+make
+popd

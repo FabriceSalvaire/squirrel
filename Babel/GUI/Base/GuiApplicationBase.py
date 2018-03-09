@@ -32,22 +32,28 @@ import logging
 import sys
 import traceback
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt, QResource, QTimer, QUrl
+from PyQt5.QtGui import QDesktopServices, QPixmap
+from PyQt5.QtWidgets import (
+    QAction, QApplication, QMessageBox, QSplashScreen,
+)
 
 ####################################################################################################
 
 from Babel.Application.ApplicationBase import ApplicationBase
-from Babel.GUI.Forms.CriticalErrorForm import CriticalErrorForm
 import Babel.Config.Config as Config
+import Babel.Config.ConfigInstall as ConfigInstall
 import Babel.Config.Messages as Messages
 import Babel.Version as Version
+from ..Forms.CriticalErrorForm import CriticalErrorForm
+from .ApplicationStyle import ApplicationStyle
 
 # Load RC
 #import Babel.gui.ui.babel_rc
 
 ####################################################################################################
 
-class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
+class GuiApplicationBase(ApplicationBase, QApplication):
 
     _logger = logging.getLogger(__name__)
 
@@ -59,9 +65,19 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
 
         super(GuiApplicationBase, self).__init__(args=args, **kwargs)
         # Fixme: Why ?
-        self._logger.debug("QtWidgets.QApplication " + str(sys.argv))
-        QtWidgets.QApplication.__init__(self, sys.argv)
+        self._logger.debug("QApplication " + str(sys.argv))
+        QApplication.__init__(self, sys.argv)
         self._logger.debug('GuiApplicationBase ' + str(args) + ' ' + str(kwargs))
+
+        self.setAttribute(Qt.AA_EnableHighDpiScaling)
+
+        # from . import BabelRessource
+        rcc_path = ConfigInstall.Path.join_share_directory('babel.rcc')
+        self._logger.debug('Load ressource {}'.format(rcc_path))
+        if not QResource.registerResource(rcc_path):
+            self._logger.debug('Failed to load ressource {}'.format(rcc_path))
+
+        self._application_style = ApplicationStyle()
 
         self._display_splash_screen()
 
@@ -73,6 +89,10 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
     @property
     def main_window(self):
         return self._main_window
+
+    @property
+    def application_style(self):
+        return self._application_style
 
     ##############################################
 
@@ -88,8 +108,8 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
 
     def _display_splash_screen(self):
 
-        pixmap = QtGui.QPixmap(':/splash screen/images/splash_screen.png')
-        self._splash = QtWidgets.QSplashScreen(pixmap)
+        pixmap = QPixmap(':/splash screen/images/splash_screen.png')
+        self._splash = QSplashScreen(pixmap)
         self._splash.show()
         self._splash.showMessage('<h2>Babel %(version)s</h2>' % {'version':str(Version.babel)})
         self.processEvents()
@@ -98,25 +118,29 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
 
     def _init_actions(self):
 
-        self.about_action = \
-            QtWidgets.QAction('About Babel',
-                          self,
-                          triggered=self.about)
+        self.about_action = QAction(
+            'About Babel',
+            self,
+            triggered=self.about,
+        )
 
-        self.exit_action = \
-            QtWidgets.QAction('Exit',
-                          self,
-                          triggered=self.exit)
+        self.exit_action = QAction(
+            'Exit',
+            self,
+            triggered=self.exit,
+        )
 
-        self.help_action = \
-            QtWidgets.QAction('Help',
-                          self,
-                          triggered=self.open_help)
+        self.help_action = QAction(
+            'Help',
+            self,
+            triggered=self.open_help,
+        )
 
-        self.show_system_information_action = \
-            QtWidgets.QAction('System Information',
-                          self,
-                          triggered=self.show_system_information)
+        self.show_system_information_action = QAction(
+            'System Information',
+            self,
+            triggered=self.show_system_information,
+        )
 
     ##############################################
 
@@ -126,7 +150,7 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
         self.processEvents()
         del self._splash
 
-        QtCore.QTimer.singleShot(0, self.execute_given_user_script)
+        QTimer.singleShot(0, self.execute_given_user_script)
 
         self.show_message('Welcome to Babel')
 
@@ -146,7 +170,7 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
 
     def critical_error(self, title='Babel Critical Error', message=''):
 
-        QtWidgets.QMessageBox.critical(None, title, message)
+        QMessageBox.critical(None, title, message)
 
         # Fixme: qt close?
         sys.exit(1)
@@ -155,18 +179,18 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
 
     def open_help(self):
 
-        url = QtCore.QUrl()
+        url = QUrl()
         url.setScheme(Config.Help.url_scheme)
         url.setHost(Config.Help.host)
         url.setPath(Config.Help.url_path_pattern) # % str(Version.babel))
-        QtWidgets.QDesktopServices.openUrl(url)
+        QDesktopServices.openUrl(url)
 
     ##############################################
 
     def about(self):
 
         message = Messages.about_babel % {'version':str(Version.babel)}
-        QtWidgets.QMessageBox.about(self.main_window, 'About Babel', message)
+        QMessageBox.about(self.main_window, 'About Babel', message)
 
     ##############################################
 
@@ -177,7 +201,7 @@ class GuiApplicationBase(ApplicationBase, QtWidgets.QApplication):
                 'babel_version': str(Version.babel),
                 })
         message = Messages.system_information_message_pattern % fields
-        QtWidgets.QMessageBox.about(self.main_window, 'System Information', message)
+        QMessageBox.about(self.main_window, 'System Information', message)
 
     ###############################################
 

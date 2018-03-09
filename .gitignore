@@ -1,9 +1,12 @@
 # -*- mode: conf -*-
 *~
 __pycache__
+*.qmlc
 #
 build/
 Babel/GUI/ui/*_ui.py
+Babel/GUI/Base/BabelRessource.py
+share/BabelRessource.py
 #
 doc/sphinx/build
 doc/sphinx/old-api
@@ -69,6 +72,7 @@ _mupdf.c
 _mupdf.cpython-36m-x86_64-linux-gnu.so
 artifex.txt
 build.log
+cshare/icons/36x36-unused/
 database-old/
 devel-test/
 doc/sphinx/source/_static/babel1.png
@@ -77,11 +81,23 @@ doc/sphinx/source/_static/babel3.png
 doc/sphinx/source/_static/babel4.png
 doc/sphinx/source/donate.rst-
 find.txt
+foo.png
+ged-local/
 indexer-test/
 mupdf-build.log
 old-vcs/
+ressources/divers/
+ressources/softwares/
+share/babel.py
+share/babel.qrc-disabled
+share/babel.rcc
+share/qml/trash.qml
 template-variables.txt
+text.txt
+todo.sh
 tools/upload-www
 udcsummary-skos.zip
 unit-test/BibTeX/mendeyley.bib
 unit-test/BibTeX/test1.bib
+workspace/babel
+workspace/test/
