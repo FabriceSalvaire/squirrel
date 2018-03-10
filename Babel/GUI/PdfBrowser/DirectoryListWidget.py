@@ -185,6 +185,8 @@ class DirectoryListWidget(QtWidgets.QWidget):
         self._application = QtWidgets.QApplication.instance()
         self._last_path = None
 
+        self.setMinimumSize(200, 300)
+
         self._widgets = []
 
         vertical_layout = QtWidgets.QVBoxLayout(self)

@@ -6,6 +6,7 @@
         <file>icons/36x36/book-black.png</file>
         <file>icons/36x36/chevron-left-black.png</file>
         <file>icons/36x36/chevron-right-black.png</file>
+	<file>icons/36x36/close-black.png</file>
         <file>icons/36x36/delete-black.png</file>
         <file>icons/36x36/description-black.png</file>
         <file>icons/36x36/folder-black.png</file>
@@ -13,8 +14,10 @@
         <file>icons/36x36/image-black.png</file>
         <file>icons/36x36/open-in-new-black.png</file>
         <file>icons/36x36/playlist-add-black.png</file>
+	<file>icons/36x36/search-black.png</file>
         <file>icons/36x36/settings-overscan-black.png</file>
         <file>icons/36x36/star-black.png</file>
+	<file>icons/36x36/star-border-black.png</file>
         <file>icons/36x36/title-black.png</file>
         <file>icons/36x36/zoom-fit-width.png</file>
     </qresource>

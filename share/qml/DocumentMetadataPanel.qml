@@ -1,6 +1,6 @@
 /***************************************************************************************************
  *
- * Copyright (C) 2017 Fabrice Salvaire
+ * Copyright (C) 2018 Fabrice Salvaire
  * Contact: http://www.fabrice-salvaire.fr
  *
  * This file is part of the Babel software.
@@ -25,43 +25,124 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
+import Constants 1.0
+
 Rectangle {
     id: document_metadata_panel
-    anchors.fill: parent
+
+    // anchors.fill: parent
+
     color: application_style.window_color
 
-    /* ScrollView { */
-    /*     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff */
-
-    Column {
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: document_metadata_panel.width - 20
-        // padding: 50
-        spacing: 10
+    ColumnLayout {
+	anchors.fill: parent
+        anchors.margins: Style.spacing.base
+        spacing: Style.spacing.base_vertical
 
         TextArea {
-            width: parent.width
-            height: contentHeight * 1.1
+	    id: title_text_area
+	    Layout.fillWidth: true
+            implicitHeight: contentHeight * 1.1
             // placeholderText: qsTr('Enter title')
             text: qsTr("Title ...")
         }
 
-        Row { // RowLayout
-            width: parent.width
-            spacing: 10
+        RowLayout {
+	    Layout.fillWidth: true
+            spacing: Style.spacing.base_horizontal
+
             Text {
-                id: author_label
-                // Layout.alignment: Qt.AlignTop
+                Layout.alignment: Qt.AlignTop
                 text: qsTr('Author')
             }
+
             TextArea {
-                // Layout.alignment: Qt.AlignTop
-                // Layout.fillWidth: true
-                width: parent.width - author_label.width - 10
+		id: author_text_area
+                Layout.alignment: Qt.AlignTop
+                Layout.fillWidth: true
+                implicitHeight: contentHeight * 1.1
                 text: '...'
-                height: contentHeight * 1.1
+            }
+	}
+
+        RowLayout {
+	    Layout.fillWidth: true
+            spacing: Style.spacing.base_horizontal
+
+            Text {
+                text: qsTr('Star')
+            }
+
+	    Item {
+		implicitWidth: childrenRect.width
+		implicitHeight: childrenRect.height
+
+		Row {
+		    Repeater {
+			id: repeater
+			model: 5
+			Image {
+			    property bool stared: false
+			    source: 'qrc:/icons/36x36/' + (stared ? 'star-black.png' : 'star-border-black.png')
+			}
+		    }
+		}
+
+		MouseArea {
+		    anchors.fill: parent
+		    onPositionChanged: update_star_count(mouse)
+		    onPressed: update_star_count(mouse)
+
+		    function update_star_count(mouse) {
+			var star_count = Math.ceil(mouse.x / parent.width * 5) -1
+			for (var i = 0; i < 5; i++) {
+			    var star = repeater.itemAt(i)
+			    star.stared = i <= star_count
+			}
+		    }
+		}
+	    }
+	}
+
+        RowLayout {
+	    Layout.fillWidth: true
+            spacing: Style.spacing.base_horizontal
+
+            Text {
+                text: qsTr('Language')
+            }
+
+	    ComboBox {
+		model: ['en', 'fr']
+	    }
+	}
+
+	RowLayout {
+	    Layout.fillWidth: true
+            spacing: Style.spacing.base_horizontal
+
+            Text {
+                text: qsTr('Number of pages')
+            }
+
+            Text {
+		id: number_of_page
+                text: '...'
+            }
+	}
+
+	ColumnLayout {
+	    Layout.fillWidth: true
+            Text {
+		Layout.fillWidth: true
+                text: qsTr('Comment')
+            }
+	    TextArea {
+		id: comment_area
+		Layout.fillWidth: true
+		implicitHeight: contentHeight * 1.1
+		text: ''
             }
         }
     }
-    // }
 }

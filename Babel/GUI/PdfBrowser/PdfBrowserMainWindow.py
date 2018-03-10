@@ -28,7 +28,8 @@ from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtQuick
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt5.QtQuickWidgets import QQuickWidget
+from PyQt5.QtCore import Qt, QUrl
 
 from Babel.Config import ConfigInstall
 from Babel.Document.DocumentDirectory import DocumentDirectory
@@ -53,6 +54,8 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     _logger = _module_logger.getChild('PdfBrowserMainWindow')
 
+    HORIZONTAL_DOCK_AREA = Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea
+
     ##############################################
 
     def __init__(self, parent=None):
@@ -60,7 +63,26 @@ class PdfBrowserMainWindow(MainWindowBase):
         super().__init__(title='Babel PDF Browser', parent=parent)
 
         self._current_path = None
+
         self._init_ui()
+
+    ##############################################
+
+    def _tr(self, text):
+
+        self._application.translate('main_window', text)
+
+    ##############################################
+
+    def _initialise_qml_engine(self, engine):
+
+        engine.addImportPath(ConfigInstall.Path.join_share_directory('qml'))
+
+        context = engine.rootContext()
+        context.setContextProperty('application_style', self.application.application_style)
+
+        self._icon_provider = IconProvider()
+        engine.addImageProvider('icon_provider', self._icon_provider)
 
     ##############################################
 
@@ -68,6 +90,8 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         self._central_widget = QtWidgets.QWidget(self)
         self.setCentralWidget(self._central_widget)
+
+        self.statusBar()
 
         self._viewer_controller = ViewerController()
 
@@ -96,16 +120,26 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._vertical_layout.addWidget(self._directory_toc)
         self._vertical_layout.addWidget(image_widget)
 
-        self.statusBar()
-        self._create_actions()
-        self._create_toolbar()
-
         self._directory_list = DirectoryListWidget(self)
         self._directory_list_dock_widget = self._create_dock(
-            Qt.LeftDockWidgetArea, self._directory_list)
+            'Move Document',
+            self._directory_list,
+            self.HORIZONTAL_DOCK_AREA,
+            Qt.LeftDockWidgetArea,
+        )
 
-        self._document_metadata_dock_widget = self._create_dock(
-            Qt.RightDockWidgetArea, self._create_document_metadata_panel()
+        self._search_dock = self._create_dock(
+            'Search Document',
+            self._create_qml_view('SearchPanel.qml', minimum_size=(500, 300)),
+            self.HORIZONTAL_DOCK_AREA,
+            Qt.RightDockWidgetArea,
+        )
+
+        self._document_metadata_dock = self._create_dock(
+            'Document Metadata',
+            self._create_qml_view('DocumentMetadataPanel.qml', minimum_size=(500, 300)),
+            self.HORIZONTAL_DOCK_AREA,
+            Qt.RightDockWidgetArea,
         )
 
         self._path_navigator.path_changed.connect(self.open_directory)
@@ -113,14 +147,16 @@ class PdfBrowserMainWindow(MainWindowBase):
         self._directory_list.move_file.connect(self.move_file)
         self._directory_list.move_current_file.connect(self.move_current_file)
 
+        self._create_actions()
+        self._create_toolbar()
+
         self._directory_toc_mode()
 
     ##############################################
 
-    def _create_dock(self, area, widget,
-                     allowed_area=Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea):
+    def _create_dock(self, title, widget, allowed_area, area):
 
-        dock_widget = QtWidgets.QDockWidget(self)
+        dock_widget = QtWidgets.QDockWidget(title, self)
         dock_widget.setAllowedAreas(allowed_area)
         dock_widget.setWidget(widget)
         self.addDockWidget(area, dock_widget)
@@ -129,30 +165,32 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     ##############################################
 
-    def _create_document_metadata_panel(self):
+    def _create_qml_view(self, qml_file, minimum_size=(0,0)):
 
-        self._view = QtQuick.QQuickView()
-        engine = self._view.engine()
-        context = engine.rootContext()
-        context.setContextProperty('application_style', self.application.application_style)
+        url = QUrl(ConfigInstall.Path.join_qml_path(qml_file))
 
-        self._icon_provider = IconProvider()
-        engine.addImageProvider('icon_provider', self._icon_provider)
+        # view = QtQuick.QQuickView()
+        # self._initialise_qml_engine(view.engine())
 
-        # Fixme:
-        # QML2_IMPORT_PATH
-        engine.addImportPath(ConfigInstall.Path.join_share_directory('qml'))
+        # container = QtWidgets.QWidget.createWindowContainer(view, self, Qt.Widget)
+        # container.setMinimumSize(*minimum_size)
+        # # container.setMaximumSize(0, 0)
+        # container.setFocusPolicy(Qt.TabFocus)
 
-        self._container = QtWidgets.QWidget.createWindowContainer(self._view, self)
-        self._container.setMinimumSize(200, 200)
-        # self._container.setMaximumSize(200, 200)
-        self._container.setFocusPolicy(Qt.TabFocus)
+        # view.setSource(url)
 
-        # path = ConfigInstall.Path.join_qml_path('DocumentMetadataPanel.qml')
-        path = ConfigInstall.Path.join_qml_path('DirectoryToc.qml')
-        self._view.setSource(QtCore.QUrl(path))
+        # return container
 
-        return self._container
+        widget = QQuickWidget()
+        # The view will automatically resize the root item to the size of the view.
+        widget.setResizeMode(QQuickWidget.SizeRootObjectToView)
+        # The view resizes with the root item in the QML.
+        # widget.setResizeMode(QQuickWidget.SizeViewToRootObject)
+        self._initialise_qml_engine(widget.engine())
+        widget.setSource(url)
+        widget.resize(*minimum_size)
+
+        return widget
 
     ##############################################
 
@@ -164,7 +202,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             icon_loader['folder-open-black@36'],
             'Directory toc mode',
             self,
-            toolTip='Directory toc mode',
+            toolTip=self._tr('Directory toc mode'),
             triggered=self._directory_toc_mode,
             shortcut='Ctrl+D',
             shortcutContext=Qt.ApplicationShortcut,
@@ -174,17 +212,25 @@ class PdfBrowserMainWindow(MainWindowBase):
             icon_loader['book-black@36'], # application-pdf
             'PDF browser mode',
             self,
-            toolTip='PDF browser mode',
+            toolTip=self._tr('PDF browser mode'),
             triggered=self._pdf_browser_mode,
             shortcut='Ctrl+P',
             shortcutContext=Qt.ApplicationShortcut,
         )
 
+        self._search_dock_action = self._search_dock.toggleViewAction()
+        self._search_dock_action.setIcon(icon_loader['search-black@36'])
+        self._search_dock_action.setToolTip(self._tr('Toggle Search Panel'))
+
+        self._document_metadata_dock_action = self._document_metadata_dock.toggleViewAction()
+        self._document_metadata_dock_action.setIcon(icon_loader['description-black@36'])
+        self._document_metadata_dock_action.setToolTip(self._tr('Toggle Metadata Panel'))
+
         self._previous_document_action = QtWidgets.QAction(
             icon_loader['chevron-left-black@36'],
             'Previous document',
             self,
-            toolTip='Previous Document',
+            toolTip=self._tr('Previous Document'),
             triggered=self.previous_document,
             shortcut='Backspace',
             shortcutContext=Qt.ApplicationShortcut,
@@ -194,7 +240,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             icon_loader['chevron-right-black@36'],
             'Next document',
             self,
-            toolTip='Next Document',
+            toolTip=self._tr('Next Document'),
             triggered=self.next_document,
             shortcut='Space',
             shortcutContext=Qt.ApplicationShortcut,
@@ -204,7 +250,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             icon_loader['star-black@36'],
             'Select document',
             self,
-            toolTip='Select Document',
+            toolTip=self._tr('Select Document'),
             triggered=self.select_document,
             shortcut='Ctrl+S',
             shortcutContext=Qt.ApplicationShortcut,
@@ -214,7 +260,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             icon_loader['open-in-new-black@36'],
             'Open PDF',
             self,
-            toolTip='Open PDF',
+            toolTip=self._tr('Open PDF'),
             triggered=lambda x: self.open_current_document(extern=True),
             shortcut='Ctrl+O',
             shortcutContext=Qt.ApplicationShortcut,
@@ -224,7 +270,7 @@ class PdfBrowserMainWindow(MainWindowBase):
             icon_loader['description-black@36'],
             'Open PDF Viewer',
             self,
-            toolTip='Open PDF Viewer',
+            toolTip=self._tr('Open PDF Viewer'),
             triggered=lambda x: self.open_current_document(extern=False),
             shortcut='Ctrl+V',
             shortcutContext=Qt.ApplicationShortcut,
@@ -236,6 +282,8 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         self._main_tool_bar = self.addToolBar('Main')
         for item in (
+                self._search_dock_action,
+                self._document_metadata_dock_action,
                 self._directory_toc_mode_action,
                 self._pdf_browser_mode_action,
         ):

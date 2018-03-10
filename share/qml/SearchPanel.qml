@@ -28,23 +28,28 @@ import QtQuick.Layouts 1.3
 import Constants 1.0
 
 Rectangle {
-    id: destination_list
+    id: search_panel
 
-    anchors.fill: parent
+    // anchors.fill: parent
 
     color: application_style.window_color
 
     ListModel {
-        id: destination_list_model
+        id: document_list_model
     }
 
-    function fill_destination_list() {
-        for (var i = 0; i < 50; i++)
-            destination_list_model.insert(i, {'name': 'dir' + i})
+    function fill_document_list() {
+        for (var i = 0; i < 40; i++) {
+	    var dict = {
+		'path': 'path' + i,
+		'title': 'Title ' + i
+	    }
+	    document_list_model.insert(i, dict)
+	}
     }
 
     Component.onCompleted: {
-        // fill_destination_list()
+        fill_document_list()
     }
 
     ColumnLayout {
@@ -56,44 +61,48 @@ Rectangle {
             Layout.fillWidth: true
 
 	    ToolButton {
-                id: add_destination_button
-                iconSource: 'qrc:/icons/36x36/playlist-add-black.png'
-                // Fixme: don't work ???
-                // iconSource: 'image://icon_provider/playlist-add-black@36'
-                onClicked: fill_destination_list()
+                iconSource: 'qrc:/icons/36x36/search-black.png'
+		// onClicked:
 	    }
+
+	    TextField {
+		id: query
+		Layout.fillWidth: true
+		placeholderText: qsTr("Enter query")
+		onEditingFinished: console.info('Query', text)
+	    }
+
 	    ToolButton {
-                id: clear_button
                 iconSource: 'qrc:/icons/36x36/delete-black.png'
-                onClicked: destination_list_model.clear()
+		onClicked: query.text = ''
 	    }
 	}
 
-        ScrollView {
+	ScrollView {
             Layout.fillHeight: true
             Layout.fillWidth: true
             verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
 
             ListView {
-                id: directory_list
+                id: document_list
                 width: parent.width
                 spacing: Style.spacing.base_vertical
 
-                model: destination_list_model
+                model: document_list_model
 
                 delegate: RowLayout {
                     width: parent.width
 
                     Button {
-                        Layout.fillWidth: true
-                        text: name
-                        onClicked: console.info('Clicked on destination', model.index)
+			// Layout.fillWidth: true
+                        text: title
+			style: ButtonStyle {
+			    background: Rectangle {
+				color: Qt.lighter(search_panel.color, control.pressed ? 0 : (control.hovered ? 5 : 0))
+			    }
+			}
+                        onClicked: console.info('Clicked on document', title)
                     }
-	            ToolButton {
-                        iconSource: 'qrc:/icons/36x36/delete-black.png'
-
-                        onClicked: destination_list_model.remove(model.index)
-	            }
                 }
             }
         }
