@@ -25,12 +25,9 @@ import logging
 ####################################################################################################
 
 from .ImporterRegistry import ImporterBase
+from Babel.Corpus.CorpusRegistry import CorpusRegistry
 from Babel.Pdf.PdfDocument import PdfDocument, MupdfError
-
-####################################################################################################
-
-from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpus
-_bnc = BritishNationalCorpus()
+from Babel.Tools.Lazy import LazyInstantiator
 
 ####################################################################################################
 
@@ -81,7 +78,7 @@ class PdfImporter(ImporterBase):
                 document_row.indexation_status = 'full'
             else:
                 document_row.indexation_status = 'partial'
-            document_row.language = 'en'
+            document_row.language = 'en' # Fixme: other language !!!
             for word_count in words:
                 word_table.add_new_row(document=document_row,
                                        language=1, # en
@@ -106,13 +103,16 @@ class PdfImporter(ImporterBase):
 
     def main_words(self, pdf_document, last_page=None, minimum_count=5, minimum_length=3):
 
+        corpus_registry = CorpusRegistry()
+
         words = []
         unknown_words = []
         for word_count in pdf_document.collect_document_words(last_page):
             if word_count.count >= minimum_count and len(word_count.word) >= minimum_length:
-                tagged_words = _bnc[word_count.word]
-                if tagged_words is not None:
-                    if tagged_words.is_noun:
+                corpus_entry = corpus_registry[word_count.word]
+                if corpus_entry is not None:
+                    word_entry = corpus_entry.most_probable_language
+                    if word_entry.is_noun:
                         words.append(word_count)
                 else:
                     unknown_words.append(word_count)
@@ -122,5 +122,7 @@ class PdfImporter(ImporterBase):
         #         print('%6u' % word_count.count, word_count.word)
         #     for word_count in unknown_words:
         #         print('Unknown word %6u' % word_count.count, word_count.word)
+
+        # Fixme: filter work like 'xxxxx'
 
         return words, unknown_words

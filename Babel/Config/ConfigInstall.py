@@ -6,33 +6,33 @@
 
 ####################################################################################################
 
-import os
-
-####################################################################################################
+from pathlib import Path
 
 import Babel.Tools.Path as PathTools # due to Path class
 
 ####################################################################################################
 
-_this_file = PathTools.to_absolute_path(__file__)
+_this_file = Path(__file__).resolve()
 
 class Path:
 
-    babel_module_directory = PathTools.parent_directory_of(_this_file, step=2)
-    config_directory = os.path.dirname(_this_file)
-    share_directory = os.path.realpath(os.path.join(config_directory, '..', '..', 'share'))
+    babel_module_directory = _this_file.parents[1]
+    config_directory = _this_file.parent
+
+    # Fixme
+    share_directory = babel_module_directory.parent.joinpath('share')
 
     ##############################################
 
     @classmethod
     def join_share_directory(cls, *args):
-        return os.path.join(cls.share_directory, *args)
+        return cls.share_directory.joinpath(*args)
 
     ##############################################
 
     @classmethod
     def join_qml_path(cls, *args):
-        return os.path.join(cls.share_directory, 'qml', *args)
+        return cls.join_share_directory('qml', *args)
 
 ####################################################################################################
 
@@ -43,30 +43,28 @@ class Logging:
 
     ##############################################
 
-    @staticmethod
-    def find(config_file):
+    @classmethod
+    def find(cls, config_file):
 
-        return PathTools.find(config_file, Logging.directories)
+        return PathTools.find(config_file, cls.directories)
 
 ####################################################################################################
 
 class Icon:
 
-    icon_directory = os.path.join(Path.share_directory, 'icons')
+    icon_directory = Path.join_share_directory('icons')
 
     ##############################################
 
-    @staticmethod
-    def find(file_name, size):
+    @classmethod
+    def find(cls, file_name, size):
 
-        icon_directory = os.path.join(Icon.icon_directory, '%ux%u' % (size, size))
+        icon_directory = cls.icon_directory.join('{0}x{0}'.format(size))
         return PathTools.find(file_name, (icon_directory,))
 
 ####################################################################################################
 
-class WordDataBase:
+class Corpus:
 
-    lexique_module_path = os.path.join(Path.babel_module_directory, 'Lexique')
-
-    bnc_database_path = os.path.join(lexique_module_path,
-                                     'BritishNationalCorpus', 'bnc.sqlite')
+    languages = ('en', 'fr')
+    sqlite_path = Path.join_share_directory('data', 'corpus', 'corpus.sqlite')

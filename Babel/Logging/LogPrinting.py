@@ -71,14 +71,19 @@ def format_frame(text,
                  filet=solid_thin_filet,
                  centered=False,
                  margin=False,
-                 console_width=100):
+                 console_width=100,
+                 minimum_width=100,
+):
 
     console_width_margin = 2
     lines = []
     for line in text.splitlines():
         sub_lines = textwrap.wrap(line, width=(console_width-console_width_margin))
-        lines += [sub_lines[0]] + [' '*console_width_margin + sub_line for sub_line in sub_lines[1:]]
-    width = max([len(line) for line in lines])
+        if sub_lines:
+            lines += [sub_lines[0]] + [' '*console_width_margin + sub_line for sub_line in sub_lines[1:]]
+        else:
+            lines += ['']
+    width = max(max([len(line) for line in lines]), minimum_width)
     if margin:
         width += 2
     rule = filet.horizontal*width

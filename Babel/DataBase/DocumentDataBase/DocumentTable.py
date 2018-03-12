@@ -105,11 +105,11 @@ class DocumentRowMixin(SqlRow):
 
     ###############################################
 
+    # DOCUMENT_WORD_TABLE_CLS = None
+
     @declared_attr
-    def words(self):
-        return relationship('WordRow', order_by='WordRow.count', backref='document',
-                            cascade="all, delete, delete-orphan",
-                            )
+    def words(cls):
+        return relationship('WordRow', secondary='document_words', back_populates='documents')
 
     ##############################################
 

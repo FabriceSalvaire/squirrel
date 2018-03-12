@@ -1,7 +1,7 @@
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2018 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,30 +18,37 @@
 #
 ####################################################################################################
 
-####################################################################################################
-
-import os
-from pathlib import Path
+from ..Tags import TagsAbc
 
 ####################################################################################################
 
-def to_absolute_path(path):
+class Tags(TagsAbc):
 
-    # Expand ~ . and Remove trailing '/'
+    __language__ = 'fr'
 
-    # return os.path.abspath(os.path.expanduser(path))
-    return Path(path).expanduser().resolve()
+    __tags__ = {
+        'ADJ': 'Adjectif',
+        'ADJ:dem': 'Adjectif démonstratif',
+        'ADJ:int': 'Adjectif interrogatif',
+        'ADJ:ind': 'Adjectif indéfini',
+        'ADJ:num': 'Adjectif numérique',
+        'ADJ:pos': 'Adjectif possessif',
+        'ADV': 'Adverbe',
+        'ART:def': 'Article défini',
+        'ART:ind': 'Article indéfini',
+        'AUX': 'Auxiliaire',
+        'CON': 'Conjonction',
+        'LIA': "Liaison euphonique (l')",
+        'NOM': 'Nom commun',
+        'ONO': 'Onomatopée',
+        'PRE': 'Préposition',
+        'PRO:dem': 'Pronom démonstratif',
+        'PRO:ind': 'Pronom indéfini',
+        'PRO:int': 'Pronom interrogatif',
+        'PRO:per': 'Pronom personnel',
+        'PRO:pos': 'Pronom possessif',
+        'PRO:rel': 'Pronom relatif',
+        'VER': 'Verbe',
+    }
 
-####################################################################################################
-
-def find(file_name, directories):
-
-    if isinstance(directories, (str, Path)):
-        directories = (directories,)
-
-    for directory in directories:
-        for directory_path, _, file_names in os.walk(str(directory)):
-            if file_name in file_names:
-                return Path(directory_path).joinpath(file_name)
-
-    raise NameError("File {} not found in directories {}".format(file_name, directories))
+    __noun_tags__ = ('NOM')

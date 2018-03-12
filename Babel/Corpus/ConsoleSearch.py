@@ -1,7 +1,9 @@
+#! /usr/bin/env python3
+
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2017 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,28 +22,20 @@
 
 ####################################################################################################
 
-import os
-from pathlib import Path
+from Babel.Corpus.CorpusRegistry import CorpusRegistry
 
 ####################################################################################################
 
-def to_absolute_path(path):
+def console_search(args):
 
-    # Expand ~ . and Remove trailing '/'
+    word = args.query
 
-    # return os.path.abspath(os.path.expanduser(path))
-    return Path(path).expanduser().resolve()
+    corpus_registry = CorpusRegistry()
 
-####################################################################################################
-
-def find(file_name, directories):
-
-    if isinstance(directories, (str, Path)):
-        directories = (directories,)
-
-    for directory in directories:
-        for directory_path, _, file_names in os.walk(str(directory)):
-            if file_name in file_names:
-                return Path(directory_path).joinpath(file_name)
-
-    raise NameError("File {} not found in directories {}".format(file_name, directories))
+    corpus_entry = corpus_registry[word]
+    if corpus_entry is not None:
+        print("Occurence found for word '{}'".format(word))
+        for word_entry in corpus_entry.sorted_languages:
+            print(word_entry)
+    else:
+        print("Any occurence found for word '{}'".format(word))

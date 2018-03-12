@@ -1,7 +1,7 @@
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2017 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,28 +20,36 @@
 
 ####################################################################################################
 
-import os
-from pathlib import Path
+import unittest
+
+from Babel.Corpus import tag_registry
 
 ####################################################################################################
 
-def to_absolute_path(path):
+class TestTags(unittest.TestCase):
 
-    # Expand ~ . and Remove trailing '/'
+    ##############################################
 
-    # return os.path.abspath(os.path.expanduser(path))
-    return Path(path).expanduser().resolve()
+    def test(self):
+
+        en_tags = tag_registry['en']
+        # print(en_tags._tag_map)
+
+        for tags in (
+                (0, 61),
+                (0, 62),
+                (0, 63),
+                (0, 64),
+                (0, 65),
+                (0, len(en_tags) -1),
+                (0, 61, 62, 63, 64, 65, len(en_tags) -1),
+                ):
+            tags = [en_tags[i] for i in tags]
+            bits = en_tags.encode_tags(tags)
+            self.assertEqual(tags, en_tags.decode_tags(*bits))
 
 ####################################################################################################
 
-def find(file_name, directories):
+if __name__ == '__main__':
 
-    if isinstance(directories, (str, Path)):
-        directories = (directories,)
-
-    for directory in directories:
-        for directory_path, _, file_names in os.walk(str(directory)):
-            if file_name in file_names:
-                return Path(directory_path).joinpath(file_name)
-
-    raise NameError("File {} not found in directories {}".format(file_name, directories))
+    unittest.main()

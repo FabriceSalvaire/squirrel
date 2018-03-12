@@ -1,9 +1,7 @@
-#! /usr/bin/bash
-
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2018 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,5 +18,15 @@
 #
 ####################################################################################################
 
-rm bnc.sqlite
-zcat ../../../notes/word-frequency/all.num.gz | ./make-bnc-database.py bnc.sqlite
+####################################################################################################
+
+from .BritishNationalCorpus import Tags as en_tags
+from .FrenchCorpus import Tags as fr_tags
+
+from .Tags import TagRegistry
+# from .CorpusRegistry import CorpusRegistry
+
+####################################################################################################
+
+tag_registry = TagRegistry()
+# corpus_registry = CorpusRegistry() # lazy

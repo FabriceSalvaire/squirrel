@@ -27,8 +27,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine.reflection import Inspector
 from sqlalchemy.orm import sessionmaker
 
-####################################################################################################
-
 from .SqlAlchemyBase import autoload_table
 
 ####################################################################################################
@@ -43,21 +41,51 @@ class DataBase:
 
         self._engine = create_engine(connection_string, echo=echo)
         self.session = sessionmaker(bind=self._engine)()
-        self._declarative_base_class = None
+        self._declarative_base_cls = None
+
+    ##############################################
+
+    @classmethod
+    def create_schema_classes(self, *args, **kwargs):
+
+        """Return declarative_base_cls, row_classes, table_classes
+        """
+
+        raise NotImplementedError
+
+    ##############################################
+
+    def init_schema(self, *args, **kwargs):
+
+        (self._declarative_base_cls,
+         row_classes, table_classes) = self.create_schema_classes(*args, **kwargs)
+
+        for name in row_classes:
+            row_cls = row_classes[name]
+            table_cls = table_classes[name]
+            setattr(self, '_{}_row_cls'.format(name), row_cls)
+            setattr(self, '_{}_table_cls'.format(name), table_cls)
+            setattr(self, '{}_table'.format(name), table_cls(self))
+            # setattr(self, '_{}_table'.format(name), table_cls(self))
+            # def getter(self):
+            #     return table_cls(self)
+            # setattr(self, '{}_table'.format(name), property(getter))
 
     ###############################################
 
     @property
     def inspector(self):
-
         return Inspector.from_engine(self._engine)
 
     ###############################################
 
+    def close_session(self):
+        self.session.close()
+
+    ###############################################
+
     def has_table(self, table_name):
-
         # Fixme: give acces to engine ?
-
         return self._engine.has_table(table_name)
 
     ###############################################
@@ -79,20 +107,14 @@ class DataBase:
 
     ###############################################
 
-    def close_session(self):
-
-        self.session.close()
-
-    ###############################################
-
-    def reflect_unknown_columns(self, table_class):
+    def reflect_unknown_columns(self, table_cls):
 
         unknown_columns = {}
-        for column_dict in self.inspector.get_columns(table_class.__tablename__):
+        for column_dict in self.inspector.get_columns(table_cls.__tablename__):
             #? column_dict = dict(column_dict)
             column_name = column_dict['name']
-            if column_name not in table_class.__dict__:
-                column_type = column_dict['type'].__class__
+            if column_name not in table_cls.__dict__:
+                column_type = column_dict['type'].__cls__
                 del column_dict['type']
                 column_dict['info'] = {'title':column_name, 'unknown':True}
                 unknown_columns[column_name] = Column(column_type, **column_dict)

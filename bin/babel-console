@@ -23,12 +23,8 @@
 """ Babel GUI application """
 
 ####################################################################################################
-#
-# Logging
-#
 
 import Babel.Logging.Logging as Logging
-
 logger = Logging.setup_logging('babel')
 
 ####################################################################################################
@@ -108,14 +104,25 @@ index_parser.set_defaults(func=lambda args: application.index_all(args))
 
 ####################################################################################################
 
-query_parser = subparsers.add_parser('query', help='Query document database')
+search = subparsers.add_parser('search', help='Search in the document database')
 
-query_parser.add_argument(
+search.add_argument(
     'query', metavar='Query',
     help='Query',
 )
 
-query_parser.set_defaults(func=lambda args: application.query(args))
+search.set_defaults(func=lambda args: application.console_search(args))
+
+####################################################################################################
+
+corpus_search = subparsers.add_parser('corpus_search', help='Search in the corpus database')
+
+corpus_search.add_argument(
+    'query', metavar='Query',
+    help='Query',
+)
+
+corpus_search.set_defaults(func=lambda args: application.console_corpus_search(args))
 
 ####################################################################################################
 

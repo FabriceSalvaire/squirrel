@@ -21,10 +21,8 @@
 ####################################################################################################
 
 import logging
-import os
 import stat
-
-####################################################################################################
+from pathlib import Path
 
 from .DataBase import DataBase
 
@@ -38,15 +36,17 @@ class SqliteDataBase(DataBase):
 
     def __init__(self, filename, echo=False):
 
-        self._logger.debug("Open SQLite Database {}".format(filename))
+        self._filename = Path(str(filename))
 
-        self._filename = str(filename)
+        self._logger.debug("Open SQLite Database {}".format(self._filename))
 
-        self._created = not os.path.exists(self._filename)
+        self._created = self._filename.exists()
         self._before_alter_backuped = False
 
-        super(SqliteDataBase, self).__init__(connection_string="sqlite:///" + self._filename,
-                                             echo=echo)
+        super().__init__(
+            connection_string='sqlite:///{}'.format(self._filename),
+            echo=echo,
+        )
 
     ###############################################
 
@@ -54,11 +54,9 @@ class SqliteDataBase(DataBase):
     def filename(self):
         return self._filename
 
-    ###############################################
-
     @property
     def dirname(self):
-        return  os.path.dirname(self._filename)
+        return self._filename.parent
 
     ##############################################
 
@@ -66,33 +64,18 @@ class SqliteDataBase(DataBase):
 
         # Fixme: it don't check if there is any table
 
-        if self._created:
-            self._logger.info("Create DataBase %s" % (self._filename))
-            self._declarative_base_class.metadata.create_all(bind=self._engine)
+        if not self._created:
+            self._logger.info("Create DataBase {}".format(self._filename))
+            self._declarative_base_cls.metadata.create_all(bind=self._engine)
             # Set POSIX permission, user needs the right privilege to achieve it
-            os.chmod(self._filename, stat.S_IRUSR|stat.S_IWUSR|stat.S_IRGRP|stat.S_IWGRP)
+            self._filename.chmod(stat.S_IRUSR|stat.S_IWUSR|stat.S_IRGRP|stat.S_IWGRP)
+            self._created = True
         return self._created
 
     ###############################################
 
     def journal_exists(self):
 
-        # Fixme: New extension?
+        # Fixme: New extension ?
         journal_filename = self._filename + '-journal'
-        return os.path.exists(journal_filename)
-
-    ###############################################
-
-    def alter_table(self, table_name, columns_statements):
-
-        # Fixme: look at
-        # http://docs.sqlalchemy.org/en/rel_0_8/core/metadata.html#sqlalchemy.schema.Table
-        # extend_existing=True
-
-        table_columns = self.table_columns(table_name)
-        for column, alter_table_statement in columns_statements:
-            if column not in table_columns:
-                # self.backup_file(suffix='.before-alter')
-                sql_statement = 'ALTER TABLE %s ADD COLUMN ' % table_name + column + ' ' + alter_table_statement
-                self._logger.info(sql_statement)
-                self.session.execute(sql_statement)
+        return Path(journal_filename).exists()

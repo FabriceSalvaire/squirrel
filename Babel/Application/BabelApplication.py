@@ -21,7 +21,6 @@
 ###################################################################################################
 
 import logging
-import os
 
 ####################################################################################################
 
@@ -54,8 +53,11 @@ class BabelApplication(ApplicationBase):
         self._config = ConfigFile()
         self._open_database()
 
-        from Babel.Importer.Importer import Importer
+        from ..Importer.Importer import Importer
         self._importer = Importer(self)
+
+        from ..Search import Searcher
+        self._searcher = Searcher(self)
 
     ##############################################
 
@@ -63,16 +65,26 @@ class BabelApplication(ApplicationBase):
     def config(self):
         return self._config
 
+    @property
+    def document_database(self):
+        return self._document_database
+
+    @property
+    def whoosh_database(self):
+        return self._whoosh_database
+
     ###############################################
 
     def _open_database(self):
 
-        self.document_database = DocumentSqliteDataBase(Config.DataBase.document_database())
-        self.whoosh_database = WhooshDatabase(Config.DataBase.whoosh_database())
+        self._document_database = DocumentSqliteDataBase(Config.DataBase.document_database())
+        self._whoosh_database = WhooshDatabase(Config.DataBase.whoosh_database())
 
     ###############################################
 
     def index_all(self, args):
+
+        # Fixme: name ??? update_index, index
 
         self._logger.info('Index {}'.format(self._config.document_root_path))
         import_session = self._importer.new_session()
@@ -80,30 +92,12 @@ class BabelApplication(ApplicationBase):
 
     ##############################################
 
-    def query(self, args):
+    def console_search(self, args):
+        self._searcher.console_search(args)
 
-        print('Query:', args.query)
+    ##############################################
 
-        results = self.whoosh_database.search(args.query)
-        for result in results:
-            print(result)
+    def console_corpus_search(self, args):
+        from Babel.Corpus.ConsoleSearch import console_search
+        console_search(args)
 
-        document_table = self.document_database.document_table
-        word_table = self.document_database.word_table
-
-        message = """
-  path {path}
-  title {title}
-  author {author}
-  comment {comment}
-  count {count}
-""".lstrip()
-
-        for word_row in word_table.filter_by(word=args.query):
-            document_row = word_row.document
-            print(message.format(path=document_row.path,
-                                 count=word_row.count,
-                                 title=document_row.title,
-                                 author=document_row.author,
-                                 comment=document_row.comment,
-                             ))

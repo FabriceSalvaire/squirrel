@@ -1,7 +1,7 @@
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2018 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,28 +20,30 @@
 
 ####################################################################################################
 
-import os
-from pathlib import Path
+import logging
+
+_module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-def to_absolute_path(path):
+class LazyInstantiator:
 
-    # Expand ~ . and Remove trailing '/'
+    _logger = _module_logger.getChild('LazyInstantiator')
 
-    # return os.path.abspath(os.path.expanduser(path))
-    return Path(path).expanduser().resolve()
+    ##############################################
 
-####################################################################################################
+    def __init__(self, cls, *args, **kwargs):
 
-def find(file_name, directories):
+        self._cls = cls
+        self._args =args
+        self._kwargs = kwargs
+        self._instance = None
 
-    if isinstance(directories, (str, Path)):
-        directories = (directories,)
+    ##############################################
 
-    for directory in directories:
-        for directory_path, _, file_names in os.walk(str(directory)):
-            if file_name in file_names:
-                return Path(directory_path).joinpath(file_name)
+    def __call__(self):
 
-    raise NameError("File {} not found in directories {}".format(file_name, directories))
+        if self._instance is None:
+            self._logger.debug('Instanciate {}'.format(self._cls))
+            self._instance = self._cls(*self._args, **self._kwargs)
+        return self._instance
