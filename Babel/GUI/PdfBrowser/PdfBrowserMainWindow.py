@@ -304,13 +304,14 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def show_message(self, message=None, timeout=0, warn=False):
 
-        """ Hides the normal status indications and displays the given message for the specified
-        number of milli-seconds (timeout). If timeout is 0 (default), the message remains displayed
-        until the clearMessage() slot is called or until the showMessage() slot is called again to
-        change the message.
+        """Hides the normal status indications and displays the given message for the specified number of
+        milli-seconds (timeout). If timeout is 0 (default), the message remains displayed until the
+        clearMessage() slot is called or until the showMessage() slot is called again to change the
+        message.
 
         Note that showMessage() is called to show temporary explanations of tool tip texts, so
         passing a timeout of 0 is not sufficient to display a permanent message.
+
         """
 
         if warn:

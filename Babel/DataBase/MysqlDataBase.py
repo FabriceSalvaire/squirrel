@@ -22,10 +22,8 @@
 
 import logging
 
-####################################################################################################
-
-from .DataBase import DataBase
 from Babel.Tools.Singleton import SingletonMetaClass
+from .DataBase import DataBase
 
 ####################################################################################################
 
@@ -52,4 +50,4 @@ class MysqlDataBase(DataBase, metaclass=SingletonMetaClass):
         if echo is None:
             echo = database_config.echo
 
-        super(MysqlDataBase, self).__init__(connection_str, echo=echo)
+        super().__init__(connection_str, echo=echo)
