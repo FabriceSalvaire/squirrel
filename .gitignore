@@ -2,6 +2,9 @@
 *~
 __pycache__
 *.qmlc
+.directory
+trash.py
+test.py
 #
 Babel/GUI/Base/BabelRessource.py
 Babel/GUI/ui/critical_error_form_ui.py
@@ -21,6 +24,8 @@ old-vcs/
 pdf-pool/
 ressources/divers/
 ressources/indexer-test/
+ressources/lexiques/
+ressources/screenshots/
 ressources/softwares/
 ressources/unsupported-pdf/
 tools/upload-www
