@@ -1,7 +1,7 @@
 ####################################################################################################
 #
 # Babel - A Bibliography Manager
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2018 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,27 +18,27 @@
 #
 ####################################################################################################
 
+"""User Script Template
+
+These variables are defined:
+
+* `application`
+
+"""
+
 ####################################################################################################
 
 import argparse
 
 ####################################################################################################
 
-from Babel.FileSystem.File import Directory
-
-####################################################################################################
-
 argument_parser = argparse.ArgumentParser()
 
-argument_parser.add_argument('query', metavar='QUERY',
-                             help='query')
+# argument_parser.add_argument(...)
 
 print('Args:', application.args.user_script_args)
 args = argument_parser.parse_args(application.args.user_script_args.split())
 
 ####################################################################################################
 
-print('Query:', args.query)
-results = application.whoosh_database.search(args.query)
-for result in results:
-    print(result)
+# ...
