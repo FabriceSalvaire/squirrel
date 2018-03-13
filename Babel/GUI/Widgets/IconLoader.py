@@ -81,7 +81,7 @@ class IconLoader(metaclass=SingletonMetaClass):
 
         mangled_icon_name = self._mangle_icon_name(icon_name, icon_size)
         if mangled_icon_name not in self._cache:
-            icon_path = self._find(icon_name, icon_size)
+            icon_path = str(self._find(icon_name, icon_size))
             self._cache[mangled_icon_name] = QIcon(icon_path)
 
         return self._cache[mangled_icon_name]

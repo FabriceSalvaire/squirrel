@@ -21,6 +21,7 @@ class Path:
 
     # Fixme
     share_directory = babel_module_directory.parent.joinpath('share')
+    qml_path = share_directory.joinpath('qml')
 
     ##############################################
 
@@ -32,7 +33,7 @@ class Path:
 
     @classmethod
     def join_qml_path(cls, *args):
-        return cls.join_share_directory('qml', *args)
+        return cls.qml_path.joinpath(*args)
 
 ####################################################################################################
 
@@ -59,7 +60,7 @@ class Icon:
     @classmethod
     def find(cls, file_name, size):
 
-        icon_directory = cls.icon_directory.join('{0}x{0}'.format(size))
+        icon_directory = cls.icon_directory.joinpath('{0}x{0}'.format(size))
         return PathTools.find(file_name, (icon_directory,))
 
 ####################################################################################################

@@ -74,7 +74,7 @@ class GuiApplicationBase(ApplicationBase, QApplication):
         # from . import BabelRessource
         rcc_path = ConfigInstall.Path.join_share_directory('babel.rcc')
         self._logger.debug('Load ressource {}'.format(rcc_path))
-        if not QResource.registerResource(rcc_path):
+        if not QResource.registerResource(str(rcc_path)):
             self._logger.debug('Failed to load ressource {}'.format(rcc_path))
 
         self._application_style = ApplicationStyle()

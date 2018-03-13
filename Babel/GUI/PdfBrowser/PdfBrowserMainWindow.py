@@ -79,7 +79,8 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         self._qml_engine = QQmlEngine(self._application)
 
-        self._qml_engine.addImportPath(ConfigInstall.Path.join_share_directory('qml'))
+        qml_path = str(ConfigInstall.Path.qml_path)
+        self._qml_engine.addImportPath(qml_path)
 
         context = self._qml_engine.rootContext()
         context.setContextProperty('application_style', self.application.application_style)
@@ -172,14 +173,14 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def _create_qml_view(self, qml_file, minimum_size=(0,0)):
 
-        url = QUrl(ConfigInstall.Path.join_qml_path(qml_file))
+        path = str(ConfigInstall.Path.join_qml_path(qml_file))
 
         widget = QQuickWidget(self._qml_engine, self)
         # The view will automatically resize the root item to the size of the view.
         widget.setResizeMode(QQuickWidget.SizeRootObjectToView)
         # The view resizes with the root item in the QML.
         # widget.setResizeMode(QQuickWidget.SizeViewToRootObject)
-        widget.setSource(url)
+        widget.setSource(QUrl(path))
         widget.resize(*minimum_size)
 
         return widget
