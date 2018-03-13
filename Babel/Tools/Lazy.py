@@ -1,6 +1,6 @@
 ####################################################################################################
 #
-# Babel - A Bibliography Manager
+# Babel - An Electronic Document Management System
 # Copyright (C) 2018 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
