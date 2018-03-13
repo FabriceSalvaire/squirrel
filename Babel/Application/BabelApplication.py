@@ -101,3 +101,8 @@ class BabelApplication(ApplicationBase):
         from Babel.Corpus.ConsoleSearch import console_search
         console_search(args)
 
+    ##############################################
+
+    def console_database_statistics(self, args):
+        from Babel.DataBaseStatistics import console_database_statistics
+        console_database_statistics(self, args)

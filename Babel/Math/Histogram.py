@@ -22,8 +22,6 @@
 
 import numpy as np
 
-####################################################################################################
-
 from Babel.Math.Binning import Binning1D
 from Babel.Math.Interval import Interval
 
@@ -116,16 +114,27 @@ class Histogram:
 
     ##############################################
 
-    def integral(self):
+    def integral(self, interval=None, interval_x=None):
 
-        return self._accumulator.sum()
+        if interval is None and interval_x is None:
+            return self._accumulator.sum()
+        else:
+            if interval_x is not None:
+                start = self.binning.find_bin(interval_x.inf)
+                stop = self.binning.find_bin(interval_x.sup)
+            else:
+                start = interval.inf
+                stop = interval.sup
+            return self._accumulator[start:stop +1].sum(), Interval(start, stop)
 
     ##############################################
 
-    def normalise(self):
+    def normalise(self, scale=1):
 
         self._accumulator /= self.integral()
         self._errors_are_dirty = True
+        if scale != 1:
+            self._accumulator *= scale
 
     ##############################################
 

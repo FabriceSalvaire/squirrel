@@ -126,6 +126,15 @@ corpus_search.set_defaults(func=lambda args: application.console_corpus_search(a
 
 ####################################################################################################
 
+database_statistics = subparsers.add_parser('database_statistics', help='Show database statistics')
+
+# database_statistics.add_argument(
+# )
+
+database_statistics.set_defaults(func=lambda args: application.console_database_statistics(args))
+
+####################################################################################################
+
 args = main_parser.parse_args()
 
 # Show version and exit
