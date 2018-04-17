@@ -46,10 +46,7 @@ import Babel.Config.ConfigInstall as ConfigInstall
 import Babel.Config.Messages as Messages
 import Babel.Version as Version
 from ..Forms.CriticalErrorForm import CriticalErrorForm
-from .ApplicationStyle import ApplicationStyle
-
-# Load RC
-#import Babel.gui.ui.babel_rc
+from ..Qml.ApplicationStyle import ApplicationStyle
 
 ####################################################################################################
 

@@ -43,6 +43,6 @@ class ApplicationStyle(QObject):
 
     ##############################################
 
-    @pyqtProperty('QColor')
+    @pyqtProperty('QColor', constant=True)
     def window_color(self):
         return self._window_color
