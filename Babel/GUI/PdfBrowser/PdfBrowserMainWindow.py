@@ -71,6 +71,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def _tr(self, text):
 
+        # Fixme: translate
         self._application.translate('main_window', text)
 
     ##############################################

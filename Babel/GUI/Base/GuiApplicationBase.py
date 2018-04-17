@@ -199,10 +199,3 @@ class GuiApplicationBase(ApplicationBase, QApplication):
                 })
         message = Messages.system_information_message_pattern % fields
         QMessageBox.about(self.main_window, 'System Information', message)
-
-    ###############################################
-
-    def send_email(self):
-
-        dialog = EmailBugForm()
-        dialog.exec_()
