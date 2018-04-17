@@ -29,7 +29,7 @@ from PyQt5 import QtGui
 from PyQt5 import QtQuick
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtQml import QQmlEngine
+from PyQt5.QtQml import QQmlEngine, qmlRegisterType
 from PyQt5.QtQuickWidgets import QQuickWidget
 
 from Babel.Config import ConfigInstall
@@ -77,6 +77,9 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     def _initialise_qml_engine(self):
 
+        from ..Qml.Search import QmlDocument, QmlSearchManager
+        qmlRegisterType(QmlDocument, 'Local', 1, 0, 'Document')
+
         self._qml_engine = QQmlEngine(self._application)
 
         qml_path = str(ConfigInstall.Path.qml_path)
@@ -84,6 +87,9 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         context = self._qml_engine.rootContext()
         context.setContextProperty('application_style', self.application.application_style)
+
+        self._qml_search_manager = QmlSearchManager(self._application)
+        context.setContextProperty('search_manager', self._qml_search_manager)
 
         self._icon_provider = IconProvider()
         self._qml_engine.addImageProvider('icon_provider', self._icon_provider)

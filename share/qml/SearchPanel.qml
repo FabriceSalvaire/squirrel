@@ -26,6 +26,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
 import Constants 1.0
+import Local 1.0
 
 Rectangle {
     id: search_panel
@@ -34,22 +35,22 @@ Rectangle {
 
     color: application_style.window_color
 
-    ListModel {
-        id: document_list_model
-    }
+    // ListModel {
+    //     id: document_list_model
+    // }
 
-    function fill_document_list() {
-        for (var i = 0; i < 40; i++) {
-	    var dict = {
-		'path': 'path' + i,
-		'title': 'Title ' + i
-	    }
-	    document_list_model.insert(i, dict)
-	}
-    }
+    // function fill_document_list() {
+    //     for (var i = 0; i < 40; i++) {
+    // 	    var dict = {
+    // 		'path': 'path' + i,
+    // 		'title': 'Title ' + i
+    // 	    }
+    // 	    document_list_model.insert(i, dict)
+    // 	}
+    // }
 
     Component.onCompleted: {
-        fill_document_list()
+        // fill_document_list()
     }
 
     ColumnLayout {
@@ -60,16 +61,21 @@ Rectangle {
 	RowLayout {
             Layout.fillWidth: true
 
+	    function search() {
+		console.info('Query', query.text)
+		search_manager.query = query.text
+	    }
+
 	    ToolButton {
                 iconSource: 'qrc:/icons/36x36/search-black.png'
-		// onClicked:
+		onClicked: parent.search()
 	    }
 
 	    TextField {
 		id: query
 		Layout.fillWidth: true
 		placeholderText: qsTr("Enter query")
-		onEditingFinished: console.info('Query', text)
+		onEditingFinished: parent.search()
 	    }
 
 	    ToolButton {
@@ -88,7 +94,7 @@ Rectangle {
                 width: parent.width
                 spacing: Style.spacing.base_vertical
 
-                model: document_list_model
+                model: search_manager.results
 
                 delegate: RowLayout {
                     width: parent.width
