@@ -70,7 +70,15 @@ class QmlDocument(QObject):
 
     @pyqtProperty('QString', notify=path_changed)
     def path(self):
-        return self._row.path
+        return str(self._row.path)
+
+    ##############################################
+
+    basename_changed = pyqtSignal()
+
+    @pyqtProperty('QString', notify=basename_changed)
+    def basename(self):
+        return str(self._row.path.basename())
 
     ##############################################
 

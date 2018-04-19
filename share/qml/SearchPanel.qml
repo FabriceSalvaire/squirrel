@@ -100,13 +100,16 @@ Rectangle {
                     width: parent.width
 
                     Button {
-			// Layout.fillWidth: true
-                        text: title
-			style: ButtonStyle {
-			    background: Rectangle {
-				color: Qt.lighter(search_panel.color, control.pressed ? 0 : (control.hovered ? 5 : 0))
-			    }
-			}
+		        Layout.fillWidth: true
+                        text: title || basename
+		        style: ButtonStyle {
+		            background: Rectangle {
+		        	color: Qt.lighter(search_panel.color, control.pressed ? 0 : (control.hovered ? 5 : 0))
+		            }
+                            label: Text {
+                                text: control.text
+                            }
+		        }
                         onClicked: console.info('Clicked on document', title)
                     }
                 }
