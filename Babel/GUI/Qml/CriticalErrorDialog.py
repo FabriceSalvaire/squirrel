@@ -29,7 +29,7 @@ from PyQt5 import QtWidgets, QtCore
 
 from Babel.Logging.ExceptionHook import format_exception
 import Babel.Tools.BackTrace as BackTrace
-from ..Widgets.QmlDialog import QmlDialog
+from .QmlDialog import QmlDialog
 
 ####################################################################################################
 

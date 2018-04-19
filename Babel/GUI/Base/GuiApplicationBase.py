@@ -42,8 +42,8 @@ from PyQt5.QtWidgets import (
 ####################################################################################################
 
 from ..Qml.ApplicationStyle import ApplicationStyle
+from ..Qml.CriticalErrorDialog import CriticalErrorDialog
 from ..Widgets.IconLoader import IconProvider
-from .CriticalErrorDialog import CriticalErrorDialog
 from Babel.Application.ApplicationBase import ApplicationBase
 import Babel.Config.Config as Config
 import Babel.Config.ConfigInstall as ConfigInstall
