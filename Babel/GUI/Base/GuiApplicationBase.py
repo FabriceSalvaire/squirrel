@@ -34,19 +34,21 @@ import traceback
 
 from PyQt5.QtCore import Qt, QResource, QTimer, QUrl
 from PyQt5.QtGui import QDesktopServices, QPixmap
+from PyQt5.QtQml import QQmlEngine
 from PyQt5.QtWidgets import (
     QAction, QApplication, QMessageBox, QSplashScreen,
 )
 
 ####################################################################################################
 
+from ..Qml.ApplicationStyle import ApplicationStyle
+from ..Widgets.IconLoader import IconProvider
+from .CriticalErrorDialog import CriticalErrorDialog
 from Babel.Application.ApplicationBase import ApplicationBase
 import Babel.Config.Config as Config
 import Babel.Config.ConfigInstall as ConfigInstall
 import Babel.Config.Messages as Messages
 import Babel.Version as Version
-from ..Forms.CriticalErrorForm import CriticalErrorForm
-from ..Qml.ApplicationStyle import ApplicationStyle
 
 ####################################################################################################
 
@@ -74,11 +76,10 @@ class GuiApplicationBase(ApplicationBase, QApplication):
         if not QResource.registerResource(str(rcc_path)):
             self._logger.debug('Failed to load ressource {}'.format(rcc_path))
 
-        self._application_style = ApplicationStyle()
-
-        self._display_splash_screen()
+        # self._display_splash_screen()
 
         self._main_window = None
+        self._initialise_qml_engine()
         self._init_actions()
 
     ##############################################
@@ -88,16 +89,25 @@ class GuiApplicationBase(ApplicationBase, QApplication):
         return self._main_window
 
     @property
-    def application_style(self):
-        return self._application_style
+    def qml_engine(self):
+        return self._qml_engine
+
+    @property
+    def qml_context(self):
+        return self._qml_engine.rootContext()
 
     ##############################################
 
     def _exception_hook(self, exception_type, exception_value, exception_traceback):
 
         traceback.print_exception(exception_type, exception_value, exception_traceback)
-        dialog = CriticalErrorForm(exception_type, exception_value, exception_traceback)
-        dialog.exec_()
+        dialog = CriticalErrorDialog(
+            exception_type, exception_value, exception_traceback,
+            qml_engine=self._qml_engine
+        )
+        rc = dialog.exec_()
+        if rc == -1:
+            self.exit()
 
         # return sys.__excepthook__(exception_type, exception_value, exception_traceback)
 
@@ -110,6 +120,22 @@ class GuiApplicationBase(ApplicationBase, QApplication):
         self._splash.show()
         self._splash.showMessage('<h2>Babel %(version)s</h2>' % {'version':str(Version.babel)})
         self.processEvents()
+
+    ##############################################
+
+    def _initialise_qml_engine(self):
+
+        self._qml_engine = QQmlEngine(self)
+
+        qml_path = str(ConfigInstall.Path.qml_path)
+        self._qml_engine.addImportPath(qml_path)
+
+        context = self.qml_context
+        self._application_style = ApplicationStyle()
+        context.setContextProperty('application_style', self._application_style)
+
+        self._icon_provider = IconProvider()
+        self._qml_engine.addImageProvider('icon_provider', self._icon_provider)
 
     ##############################################
 
@@ -143,9 +169,9 @@ class GuiApplicationBase(ApplicationBase, QApplication):
 
     def post_init(self):
 
-        self._splash.finish(self._main_window)
-        self.processEvents()
-        del self._splash
+        # self._splash.finish(self._main_window)
+        # self.processEvents()
+        # del self._splash
 
         QTimer.singleShot(0, self.execute_given_user_script)
 
@@ -163,14 +189,14 @@ class GuiApplicationBase(ApplicationBase, QApplication):
 
     ##############################################
 
-    # Fixme: CriticalErrorForm vs critical_error
-
-    def critical_error(self, title='Babel Critical Error', message=''):
-
-        QMessageBox.critical(None, title, message)
-
-        # Fixme: qt close?
-        sys.exit(1)
+#    def critical_error(self, title='Babel Critical Error', message=''):
+#
+#        # Fixme: CriticalErrorForm vs critical_error
+#
+#        QMessageBox.critical(None, title, message)
+#
+#        # Fixme: qt close?
+#        sys.exit(1)
 
     ##############################################
 

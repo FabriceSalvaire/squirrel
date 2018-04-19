@@ -29,7 +29,6 @@ from PyQt5 import QtGui
 from PyQt5 import QtQuick
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtQml import QQmlEngine, qmlRegisterType
 from PyQt5.QtQuickWidgets import QQuickWidget
 
 from Babel.Config import ConfigInstall
@@ -69,6 +68,12 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     ##############################################
 
+    @property
+    def qml_engine(self):
+        return self._application.qml_engine
+
+    ##############################################
+
     def _tr(self, text):
 
         # Fixme: translate
@@ -76,30 +81,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     ##############################################
 
-    def _initialise_qml_engine(self):
-
-        from ..Qml.Search import QmlDocument, QmlSearchManager
-        qmlRegisterType(QmlDocument, 'Local', 1, 0, 'Document')
-
-        self._qml_engine = QQmlEngine(self._application)
-
-        qml_path = str(ConfigInstall.Path.qml_path)
-        self._qml_engine.addImportPath(qml_path)
-
-        context = self._qml_engine.rootContext()
-        context.setContextProperty('application_style', self.application.application_style)
-
-        self._qml_search_manager = QmlSearchManager(self._application)
-        context.setContextProperty('search_manager', self._qml_search_manager)
-
-        self._icon_provider = IconProvider()
-        self._qml_engine.addImageProvider('icon_provider', self._icon_provider)
-
-    ##############################################
-
     def _init_ui(self):
-
-        self._initialise_qml_engine()
 
         self._central_widget = QtWidgets.QWidget(self)
         self.setCentralWidget(self._central_widget)
@@ -182,7 +164,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         path = str(ConfigInstall.Path.join_qml_path(qml_file))
 
-        widget = QQuickWidget(self._qml_engine, self)
+        widget = QQuickWidget(self.qml_engine, self)
         # The view will automatically resize the root item to the size of the view.
         widget.setResizeMode(QQuickWidget.SizeRootObjectToView)
         # The view resizes with the root item in the QML.

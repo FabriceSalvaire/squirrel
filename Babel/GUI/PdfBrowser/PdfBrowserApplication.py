@@ -23,11 +23,11 @@
 import logging
 
 from PyQt5 import QtCore, QtWidgets
-
-####################################################################################################
+from PyQt5.QtQml import qmlRegisterType
 
 from Babel.GUI.Base.GuiApplicationBase import GuiApplicationBase
 from Babel.Application.BabelApplication import BabelApplication
+from ..Qml.Search import QmlDocument, QmlSearchManager
 
 ####################################################################################################
 
@@ -50,6 +50,18 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
         self._main_window.showMaximized()
 
         self.post_init()
+
+    ##############################################
+
+    def _initialise_qml_engine(self):
+
+        super()._initialise_qml_engine()
+
+        qmlRegisterType(QmlDocument, 'Local', 1, 0, 'Document')
+
+        context = self.qml_context
+        self._qml_search_manager = QmlSearchManager(self)
+        context.setContextProperty('search_manager', self._qml_search_manager)
 
     ##############################################
 
