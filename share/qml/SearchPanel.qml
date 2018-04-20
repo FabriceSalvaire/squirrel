@@ -35,6 +35,8 @@ Rectangle {
 
     color: application_style.window_color
 
+    signal document_clicked(variant document, int index)
+
     // ListModel {
     //     id: document_list_model
     // }
@@ -96,21 +98,33 @@ Rectangle {
 
                 model: search_manager.results
 
+                onModelChanged: document_list.currentIndex = -1
+
                 delegate: RowLayout {
+                    id: document_delegate
                     width: parent.width
 
                     Button {
+                        id: wrapper
 		        Layout.fillWidth: true
                         text: title || basename
 		        style: ButtonStyle {
 		            background: Rectangle {
-		        	color: Qt.lighter(search_panel.color, control.pressed ? 0 : (control.hovered ? 5 : 0))
+		        	color: Qt.lighter(
+                                    search_panel.color,
+                                    control.pressed ? 0 :
+                                        ((control.hovered || document_delegate.ListView.isCurrentItem) ? 5 : 0))
 		            }
                             label: Text {
                                 text: control.text
                             }
 		        }
-                        onClicked: console.info('Clicked on document', title)
+                        onClicked: {
+                            var document = model.modelData // .index
+                            console.info('clicked on', title, document, index)
+                            document_list.currentIndex = index
+                            search_panel.document_clicked(document, index)
+                        }
                     }
                 }
             }

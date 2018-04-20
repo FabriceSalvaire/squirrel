@@ -123,16 +123,22 @@ class PdfBrowserMainWindow(MainWindowBase):
             Qt.LeftDockWidgetArea,
         )
 
+        search_panel_widget = self._create_qml_view('SearchPanel.qml', minimum_size=(500, 300))
+        root_object = search_panel_widget.rootObject()
+        root_object.document_clicked.connect(self._on_document_clicked)
         self._search_dock = self._create_dock(
             'Search Document',
-            self._create_qml_view('SearchPanel.qml', minimum_size=(500, 300)),
+            search_panel_widget,
             self.HORIZONTAL_DOCK_AREA,
             Qt.RightDockWidgetArea,
         )
 
+        document_metadata_widget = self._create_qml_view('DocumentMetadataPanel.qml', minimum_size=(500, 300))
+        self._document_metadata_panel = document_metadata_widget.rootObject()
+        root_object.document_clicked.connect(self._document_metadata_panel.set_document)
         self._document_metadata_dock = self._create_dock(
             'Document Metadata',
-            self._create_qml_view('DocumentMetadataPanel.qml', minimum_size=(500, 300)),
+            document_metadata_widget,
             self.HORIZONTAL_DOCK_AREA,
             Qt.RightDockWidgetArea,
         )
@@ -493,3 +499,10 @@ class PdfBrowserMainWindow(MainWindowBase):
             self._logger.info("Move {} to {}".format(str(file_path), str(to_file_path)))
             os.rename(str(file_path), str(to_file_path))
             self._delete_file_from_browser(file_path)
+
+    ##############################################
+
+    def _on_document_clicked(self, document, index):
+
+        self._logger.info('clicked on\n{}'.format(document))
+        # self._document_metadata_panel.set_document(document)

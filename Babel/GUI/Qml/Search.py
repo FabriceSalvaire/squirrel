@@ -108,7 +108,7 @@ class QmlDocument(QObject):
 
     ##############################################
 
-    @pyqtProperty('QString', constant=True)
+    @pyqtProperty('int', constant=True)
     def number_of_pages(self):
         return self._row.number_of_pages
 
@@ -199,6 +199,17 @@ class QmlSearchManager(QObject):
 
         self._results = []
         self._query = ''
+
+    ##############################################
+
+    def __len__(self):
+        return len(self._results)
+
+    def __iter__(self):
+        return iter(self._results)
+
+    def __getitem__(self, slice_):
+        return self._results[slice_]
 
     ##############################################
 
