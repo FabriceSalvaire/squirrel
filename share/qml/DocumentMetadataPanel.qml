@@ -34,11 +34,15 @@ Rectangle {
 
     color: application_style.window_color
 
+    property var languages: ['en', 'fr']
+
     function set_document(document) {
         title_text_area.text = document.title
         author_text_area.text = document.author
+	star_count_wrapper.set_star_count(document.star)
+	language_combobox.set_language(document.language)
         number_of_page.text = document.number_of_pages
-        comment_area.text = ''
+        comment_area.text = document.commentx
     }
 
     ColumnLayout {
@@ -87,11 +91,20 @@ Rectangle {
 
 		Row {
 		    Repeater {
-			id: repeater
-			model: 5
+			id: star_count_wrapper
+			readonly property int number_of_stars: 5
+			model: number_of_stars
+
 			Image {
 			    property bool stared: false
 			    source: 'qrc:/icons/36x36/' + (stared ? 'star-black.png' : 'star-border-black.png')
+			}
+
+			function set_star_count(star_count) {
+			    for (var i = 0; i < number_of_stars; i++) {
+				var star = star_count_wrapper.itemAt(i)
+				star.stared = star_count ? i <= star_count : false
+			    }
 			}
 		    }
 		}
@@ -103,10 +116,7 @@ Rectangle {
 
 		    function update_star_count(mouse) {
 			var star_count = Math.ceil(mouse.x / parent.width * 5) -1
-			for (var i = 0; i < 5; i++) {
-			    var star = repeater.itemAt(i)
-			    star.stared = i <= star_count
-			}
+			star_count_wrapper.set_star_count(star_count)
 		    }
 		}
 	    }
@@ -121,7 +131,15 @@ Rectangle {
             }
 
 	    ComboBox {
-		model: ['en', 'fr']
+		id: language_combobox
+		model: languages
+
+		function set_language(language) {
+		    var language_index = languages.findIndex(function(element) {
+			return element == language;
+		    })
+		    language_combobox.currentIndex = language_index
+		}
 	    }
 	}
 
