@@ -34,13 +34,7 @@ Rectangle {
 
     color: application_style.window_color
 
-    function set_document(document, index) {
-        console.info('set_document', document, index, document.title, document.number_of_pages)
-        /* var d = search_manager.results[index] */
-        /* console.info('set_document', d) */
-
-        var locale = Qt.locale('fr_FR');
-
+    function set_document(document) {
         title_text_area.text = document.title
         author_text_area.text = document.author
         number_of_page.text = document.number_of_pages
@@ -57,7 +51,7 @@ Rectangle {
 	    Layout.fillWidth: true
             implicitHeight: contentHeight * 1.1
             // placeholderText: qsTr('Enter title')
-            // text: qsTr('Title ...') // segfault
+            // text: qsTr('Title ...') // Fixme: segfault
             text: 'Title ...'
         }
 

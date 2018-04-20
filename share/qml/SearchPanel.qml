@@ -35,7 +35,7 @@ Rectangle {
 
     color: application_style.window_color
 
-    signal document_clicked(variant document, int index)
+    signal document_clicked(variant document)
 
     // ListModel {
     //     id: document_list_model
@@ -120,10 +120,9 @@ Rectangle {
                             }
 		        }
                         onClicked: {
-                            var document = model.modelData // .index
-                            console.info('clicked on', title, document, index)
                             document_list.currentIndex = index
-                            search_panel.document_clicked(document, index)
+                            var document = model.modelData
+                            search_panel.document_clicked(document)
                         }
                     }
                 }
