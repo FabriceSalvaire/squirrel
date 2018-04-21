@@ -42,7 +42,7 @@ Rectangle {
 	star_count_wrapper.set_star_count(document.star)
 	language_combobox.set_language(document.language)
         number_of_page.text = document.number_of_pages
-        comment_area.text = document.commentx
+        comment_area.text = document.comment
     }
 
     ColumnLayout {
