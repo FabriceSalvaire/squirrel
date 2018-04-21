@@ -107,7 +107,7 @@ Rectangle {
 	    ToolButton {
                 id: up_button
                 iconSource: 'qrc:/icons/36x36/arrow-upward-black.png'
-                // onClicked: 
+                // onClicked:
 	    }
 	}
 

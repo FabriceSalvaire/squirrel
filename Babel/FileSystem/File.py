@@ -22,7 +22,6 @@
 
 import mimetypes
 import os
-import subprocess
 
 from .Shasum import shasum
 from .UserXattr import UserXattr
@@ -49,119 +48,98 @@ def file_extension(filename):
 
 class Path:
 
-    # Fixme: versus Py3
+    # Fixme: versus pathlib
 
     ##############################################
 
     def __init__(self, path):
-
         self._path = str(path)
 
     ##############################################
 
     def __repr__(self):
-
         return 'Path ' + self._path
 
     ##############################################
 
     def __bool__(self):
-
         return self.exists()
 
     ##############################################
 
     def exists(self):
-
         return os.path.exists(self._path)
 
     ##############################################
 
     def __eq__(self, other):
-
         return self._path == str(other)
 
     ##############################################
 
     def __ne__(self, other):
-
         return self._path != str(other)
 
     ##############################################
 
     def __str__(self):
-
         return self._path
-
-    ##############################################
 
     @property
     def path(self):
-
+        # Fixme: purpose ???
         return self._path
 
     ##############################################
 
     def is_absolut(self):
-
         return os.path.isabs(self._path)
 
     ##############################################
 
     def absolut(self):
-
         return self.clone_for_path(os.path.abspath(self._path))
 
     ##############################################
 
     def normalise(self):
-
         return self.clone_for_path(os.path.normpath(self._path))
 
     ##############################################
 
     def normalise_case(self):
-
         return self.clone_for_path(os.path.normcase(self._path))
 
     ##############################################
 
     def real_path(self):
-
         return self.clone_for_path(os.path.realpath(self._path))
 
     ##############################################
 
     def is_relative_to(self, directory):
-
         return str(self).startswith(directory)
 
     ##############################################
 
     def relative_to(self, directory):
-
         return self.clone_for_path(os.path.relpath(self._path, str(directory)))
 
     ##############################################
 
     def join_path(self, path):
-
         return self.__class__(os.path.join(self._path, str(path)))
 
     ##############################################
 
     def clone_for_path(self, path):
-
         return self.__class__(path)
 
     ##############################################
 
     def split(self):
-
         """ Return ['', 'a', 'b', 'c'] for '/a/b/c' """
-
         # Fixme: remove ''?
-
         return self._path.split(os.path.sep)
 
     ##############################################
@@ -203,52 +181,44 @@ class Path:
     ##############################################
 
     def directory_part(self):
-
         return Directory(os.path.dirname(self._path))
 
     ##############################################
 
     def basename(self):
-
         return os.path.basename(self._path)
 
     ##############################################
 
     def filename_part(self):
-
         # Fixme: -> basename
         return self.basename()
 
     ##############################################
 
     def is_directory(self):
-
         return os.path.isdir(self._path)
 
     ##############################################
 
     def is_file(self):
-
         return os.path.isfile(self._path)
 
     ##############################################
 
     def is_hidden(self):
-
         return self.basename().startswith('.')
 
     ##############################################
 
     @property
     def inode(self):
-
         return os.stat(self._path).st_ino
 
     ##############################################
 
     @property
     def creation_time(self):
-
         return os.stat(self._path).st_ctime
 
 ####################################################################################################
@@ -263,20 +233,17 @@ class Directory(Path):
     ##############################################
 
     def __bool__(self):
-
          # Fixme: right ?
         return self.exists() and self.is_directory()
 
     ##############################################
 
     def join_directory(self, directory):
-
         return self.__class__(os.path.join(self._path, str(directory)))
 
     ##############################################
 
     def join_filename(self, filename):
-
         return File(filename, self._path)
 
     ##############################################
@@ -357,7 +324,6 @@ class File(Path):
     ##############################################
 
     def __bool__(self):
-
         # Fixme: right ?
         return self.exists() and os.path.isfile(self._path)
 
@@ -365,34 +331,29 @@ class File(Path):
 
     @property
     def directory(self):
-
         return self._directory
 
     ##############################################
 
     @property
     def filename(self):
-
         return self._filename
 
     ##############################################
 
     @property
     def extension(self):
-
         return file_extension(self._filename)
 
     ##############################################
 
     def split_extension(self):
-
         return os.path.splitext(self._filename)
 
     ##############################################
 
     @property
     def mime_type(self):
-
         return mimetypes.guess_type(self._filename, strict=True)[0]
 
     ##############################################
@@ -431,5 +392,4 @@ class File(Path):
     ##############################################
 
     def delete(self):
-
         os.unlink(self._path)

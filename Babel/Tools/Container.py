@@ -18,6 +18,10 @@
 #
 ####################################################################################################
 
+__all__ = [
+    'Ring',
+]
+
 ####################################################################################################
 
 class EmptyRingError(Exception):
@@ -26,6 +30,8 @@ class EmptyRingError(Exception):
 ####################################################################################################
 
 class Ring:
+
+    """Implement a circular list."""
 
     ##############################################
 
@@ -41,18 +47,22 @@ class Ring:
 
     ##############################################
 
+    def _last_index(self):
+        return len(self._items) -1
+
+    ##############################################
+
     def __bool__(self):
         return bool(self._items)
 
-    ##############################################
+    def __len__(self):
+        return len(self._items)
 
     def __iter__(self):
         return iter(self._items)
 
-    ##############################################
-
-    def __len__(self):
-        return len(self._items)
+    def __getitem__(self, slice_):
+        return self._items[slice_]
 
     ##############################################
 
@@ -60,22 +70,23 @@ class Ring:
     def closed(self):
         return self._closed
 
-    ##############################################
-
     @closed.setter
     def closed(self, value):
         self._closed = bool(value)
 
     ##############################################
 
-    def _last_index(self):
-        return len(self._items) -1
-
-    ##############################################
-
     @property
     def current_index(self):
         return self._current_index
+
+    @current_index.setter
+    def current_index(self, index):
+
+        if 0 <= index <= self._last_index():
+            self._current_index = index
+        else:
+            raise IndexError
 
     ##############################################
 
@@ -166,3 +177,8 @@ class Ring:
         current_item = self.current_item
         self._items.sort(key=key, reverse=reverse)
         self._current_index = self._items.index(current_item)
+
+    ##############################################
+
+    def find(self, item):
+        self._current_index = self._items.index(item)
