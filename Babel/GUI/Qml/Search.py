@@ -47,6 +47,12 @@ class QmlDocument(QObject):
 
     ##############################################
 
+    @property
+    def row(self):
+        return self._row
+
+    ##############################################
+
     def commit(self):
         self._row.commit()
 

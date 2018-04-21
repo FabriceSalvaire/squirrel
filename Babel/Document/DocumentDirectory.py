@@ -18,7 +18,14 @@
 #
 ####################################################################################################
 
+__all__ = [
+    'DocumentDirectory',
+]
+
+####################################################################################################
+
 # Fixme:
+#   only used in PdfBrowserMainWindow
 #   Not UI component
 #   move elsewhere? not an importer or FileSystem
 
@@ -42,7 +49,6 @@ class DocumentItem:
     ##############################################
 
     def __repr__(self):
-
         return self.__class__.__name__ + ' ' + str(self._path)
 
     ##############################################
@@ -50,6 +56,8 @@ class DocumentItem:
     @property
     def path(self):
         return self._path
+
+    ##############################################
 
     @property
     def selected(self):
@@ -63,7 +71,7 @@ class DocumentItem:
 
 class PdfDocumentItem(DocumentItem):
 
-    # Fixme: purpose
+    # Fixme: purpose ?
 
     ##############################################
 
@@ -71,7 +79,7 @@ class PdfDocumentItem(DocumentItem):
 
         super().__init__(path)
 
-        self._document = None
+        self._document = None # lazy
 
         # self._cover_page = self._pdf_document[0]
 
@@ -90,14 +98,25 @@ class DocumentList(Ring):
 
     ##############################################
 
-    def find_path(self, file_path):
+    # Unused
+    #
+    # def find_path(self, file_path):
+    #     # find_document_by_path
+    #     for document in self:
+    #         if file_path == document.path:
+    #             return document
+    #     return None
 
-        # find_document_by_path
+    ##############################################
 
-        for document in self:
-            if file_path == document.path:
-                return document
-        return None
+    def rotate_to_path(self, path):
+
+        # self.find(PdfDocumentItem(path))
+
+        for i, document in enumerate(self):
+            if path == document.path:
+                self.current_index = i
+                break
 
     ##############################################
 
@@ -130,6 +149,7 @@ class DocumentDirectory(DocumentList):
         super().__init__()
 
         self._path = Directory(path)
+
         if importable_mime_types is None:
             self._importable_mime_types = self.__importable_mime_types__
         else:
@@ -153,9 +173,9 @@ class DocumentDirectory(DocumentList):
     def _open_directory(self):
 
         # Fixme: to func
-        file_paths = sorted(self._path.iter_files(), key=lambda x: str(x.path))
+        file_paths = [path for path in self._path.iter_files() if self._is_file_importable(path)]
+        file_paths.sort(key=lambda path: str(path))
         for file_path in file_paths:
-            if self._is_file_importable(file_path):
-                document_class = self.__classes__[file_path.mime_type]
-                document = document_class(file_path)
-                self.add(document)
+            cls = self.__classes__[file_path.mime_type]
+            document = cls(file_path)
+            self.add(document)

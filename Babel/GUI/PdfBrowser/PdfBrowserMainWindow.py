@@ -24,9 +24,6 @@ import logging
 import os
 import subprocess
 
-from PyQt5 import QtCore
-from PyQt5 import QtGui
-from PyQt5 import QtQuick
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtQuickWidgets import QQuickWidget
@@ -34,15 +31,16 @@ from PyQt5.QtQuickWidgets import QQuickWidget
 from Babel.Config import ConfigInstall
 from Babel.Document.DocumentDirectory import DocumentDirectory
 from Babel.FileSystem.AutomaticFileRename import AutomaticFileRename
+from Babel.FileSystem.File import Directory, File
+from Babel.Tools.Container import EmptyRingError
 from ..Base.MainWindowBase import MainWindowBase
-from ..Widgets.IconLoader import IconLoader, IconProvider
+from ..Widgets.IconLoader import IconLoader
 from ..Widgets.MessageBox import MessageBox
 from ..Widgets.PathNavigator import PathNavigator
 from .DirectoryListWidget import DirectoryListWidget
 from .DirectoryToc import DirectoryToc
 from .DirectoryTocWidget import DirectoryTocWidget
 from .PdfViewer import ViewerController
-from Babel.Tools.Container import EmptyRingError
 
 ####################################################################################################
 
@@ -135,6 +133,7 @@ class PdfBrowserMainWindow(MainWindowBase):
         document_metadata_widget = self._create_qml_view('DocumentMetadataPanel.qml', minimum_size=(500, 300))
         document_metadata_panel = document_metadata_widget.rootObject()
         search_panel.document_clicked.connect(document_metadata_panel.set_document)
+        search_panel.document_clicked.connect(self._show_document)
         self._document_metadata_dock = self._create_dock(
             'Document Metadata',
             document_metadata_widget,
@@ -387,10 +386,21 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     ##############################################
 
-    def _show_document(self):
+    def _show_document(self, document=None):
+
+        if document is not None:
+            row = document.row
+            document_root_path = Directory(self.application.config.document_root_path)
+            absolut_path = document_root_path.join_filename(row.path)
+            parent_path = absolut_path.directory
+            self.open_directory(parent_path)
+            _ = self._document_directory.rotate_to_path(absolut_path)
+            self._logger.info('show document\n{}\n{}'.format(absolut_path, _))
+            self._pdf_browser_mode()
 
         try:
             document = self.current_document
+            self._logger.info('current_document {}'.format(document.path))
             self._file_name_label.setText(str(document.path.filename_part()))
             self._file_counter_label.setText('{} / {}'.format(
                 self._document_directory.current_index +1,
