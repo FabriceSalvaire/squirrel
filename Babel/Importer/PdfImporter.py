@@ -24,10 +24,10 @@ import logging
 
 ####################################################################################################
 
-from .ImporterRegistry import ImporterBase
-from Babel.Corpus.CorpusRegistry import CorpusRegistry
+from Babel.Corpus.LanguageId import LanguageId
 from Babel.Pdf.PdfDocument import PdfDocument, MupdfError
 from Babel.Tools.Lazy import LazyInstantiator
+from .ImporterRegistry import ImporterBase
 
 ####################################################################################################
 
@@ -53,8 +53,8 @@ class PdfImporter(ImporterBase):
         whoosh_database.index(shasum=job.shasum, content=text)
 
         # Fixme: registry
-        document_table = job.document_database.document_table
-        word_table = job.document_database.word_table
+        document_database = job.document_database
+        document_table = document_database.document_table
 
         document_row = document_table.new_row(job)
 
@@ -70,48 +70,41 @@ class PdfImporter(ImporterBase):
             last_page = number_of_pages_threshold
         else:
             last_page = pdf_document.number_of_pages -1
-        words, unknown_words = self.main_words(pdf_document, last_page)
+        self._get_main_words(pdf_document, last_page)
 
-        if len(words) > len(unknown_words):
-            document_row.indexed_until = last_page +1 # from 1
+        document_row.indexed_until = last_page +1 # from 1
+
+        if len(self._resolved_words) > len(self._unknown_words):
             if last_page == pdf_document.number_of_pages -1:
                 document_row.indexation_status = 'full'
             else:
                 document_row.indexation_status = 'partial'
-            document_row.language = 'en' # Fixme: other language !!!
-            for word_count in words:
-                word_table.add_new_row(document=document_row,
-                                       language=1, # en
-                                       word=word_count.word, count=word_count.count, rank=word_count.rank)
-            for word_count in unknown_words:
-                word_table.add_new_row(document=document_row,
-                                       language=0,
-                                       word=word_count.word, count=word_count.count, rank=word_count.rank)
-            word_table.commit()
+            document_row.language = self._document_words.dominant_language()
         else:
             self._logger.warning("Unknown language for %s", job.path)
-            document_row.indexed_until = last_page +1 # from 1
             document_row.indexation_status = 'unknown language'
-            document_row.language = '?'
+            document_row.language = LanguageId.unknown
         document_row.update_indexation_date()
 
-        document_table.add(document_row, commit=False)
+        document_table.add(document_row, commit=True)
+
+        words = self._resolved_words + self._unknown_words;
+        document_database.add_words_for_document(document_row, words)
 
         return document_row
 
     ##############################################
 
-    def main_words(self, pdf_document, last_page=None, minimum_count=5, minimum_length=3):
+    def _get_main_words(self, pdf_document, last_page=None, minimum_count=5, minimum_length=3):
 
-        corpus_registry = CorpusRegistry()
+        self._document_words = pdf_document.collect_document_words(last_page)
 
         words = []
         unknown_words = []
-        for word_count in pdf_document.collect_document_words(last_page):
+        for word_count in self._document_words:
             if word_count.count >= minimum_count and len(word_count.word) >= minimum_length:
-                corpus_entry = corpus_registry[word_count.word]
-                if corpus_entry is not None:
-                    word_entry = corpus_entry.most_probable_language
+                word_entry = word_count.word_entry
+                if word_entry is not None:
                     if word_entry.is_noun:
                         words.append(word_count)
                 else:
@@ -125,4 +118,5 @@ class PdfImporter(ImporterBase):
 
         # Fixme: filter work like 'xxxxx'
 
-        return words, unknown_words
+        self._resolved_words = words
+        self._unknown_words = unknown_words

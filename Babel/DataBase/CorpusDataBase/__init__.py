@@ -122,6 +122,7 @@ class CorpusSqliteDataBase(SqliteDataBase):
 
         super().__init__(filename, echo)
 
+        # Language ID are defined in Corpus.LanguageID
         languages = ConfigInstall.Corpus.languages
         self.init_schema(languages)
 

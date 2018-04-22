@@ -27,10 +27,10 @@ from Babel.MuPdf import MupdfError
 
 ####################################################################################################
 
+from ..Corpus.DocumentWords import DocumentWords
 from ..Document.Document import Document
 from ..Tools.AttributeDictionaryInterface import ReadOnlyAttributeDictionaryInterface
 from ..Tools.Object import clone
-from .DocumentWords import DocumentWords
 from .PdfImageCache import PdfImageCache
 from .TextPage import TextPage
 

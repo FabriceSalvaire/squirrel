@@ -20,7 +20,13 @@
 
 ####################################################################################################
 
+from .LanguageId import LanguageId
+
+####################################################################################################
+
 class WordCount:
+
+    __corpus_registry__ = None # lazy local cache for singleton
 
     ##############################################
 
@@ -29,6 +35,10 @@ class WordCount:
         self._word = str(word)
         self._count = count
         self._rank = None
+
+        self._resolved = False
+        self._corpus_entry = None
+        self._word_entry = None
 
     ##############################################
 
@@ -62,6 +72,35 @@ class WordCount:
 
         self._count += 1
 
+    ##############################################
+
+    def _resolve(self):
+
+        if not self._resolved:
+
+            if self.__corpus_registry__ is None:
+                from .CorpusRegistry import CorpusRegistry
+                self.__corpus_registry__ = CorpusRegistry()
+
+            self._corpus_entry = self.__corpus_registry__[self._word]
+
+            if self._corpus_entry is not None:
+                self._word_entry = self._corpus_entry.most_probable_language
+
+            self._resolved = True
+
+    ##############################################
+
+    @property
+    def corpus_entry(self):
+        self._resolve()
+        return self._corpus_entry
+
+    @property
+    def word_entry(self):
+        self._resolve()
+        return self._word_entry
+
 ####################################################################################################
 
 class DocumentWords:
@@ -71,22 +110,19 @@ class DocumentWords:
     def __init__(self):
 
         self._words = {}
+
         self._sorted_words = []
         self._sorted = False
 
     ##############################################
 
     def __len__(self):
-
         return len(self._words)
 
     ##############################################
 
     def __iter__(self):
-
-        if not self._sorted:
-            self.sort()
-
+        self.sort()
         return iter(self._sorted_words)
 
     ##############################################
@@ -109,6 +145,33 @@ class DocumentWords:
 
         """ Sort the word by frequency in descending order. """
 
-        self._sorted_words = sorted(iter(self._words.values()), reverse=True)
-        for rank, word_count in enumerate(self._sorted_words):
-            word_count._rank = rank
+        if not self._sorted:
+            self._sorted_words = sorted(iter(self._words.values()), reverse=True)
+            for rank, word_count in enumerate(self._sorted_words):
+                word_count._rank = rank
+            self._sorted = True
+
+    ##############################################
+
+    def language_count(self):
+
+        languages = {language:0 for language in LanguageId._member_names_} # Fixme: private API
+        for word_count in self:
+            word_entry = word_count.word_entry
+            if word_entry is None:
+                language = 'unknown'
+            else:
+                language = word_count.word_entry.language
+            languages[language] += word_count.count
+        return languages
+
+    ##############################################
+
+    def dominant_language(self):
+
+        sorted_languages = sorted(list(self.language_count().items()), key=lambda x: x[1])
+        language, count = sorted_languages[-1]
+        if count:
+            return language
+        else:
+            return None

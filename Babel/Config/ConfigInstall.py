@@ -67,5 +67,6 @@ class Icon:
 
 class Corpus:
 
+    # Language ID are defined in Corpus.LanguageID
     languages = ('en', 'fr')
     sqlite_path = Path.join_share_directory('data', 'corpus', 'corpus.sqlite')

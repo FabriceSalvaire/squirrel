@@ -29,8 +29,10 @@ from sqlalchemy.orm import relationship
 
 ####################################################################################################
 
+from Babel.Corpus.LanguageId import LanguageId
 from ..SqlAlchemyBase import SqlRow
-from .Types import FileType
+from ..Types.Choice import ChoiceType
+from ..Types.Path import FileType
 
 ####################################################################################################
 
@@ -55,7 +57,7 @@ class DocumentRowMixin(SqlRow):
 
     # Document Metadata
     author = Column(String, default='')
-    language = Column(String(10), default='') # Fixme: en
+    language = Column(ChoiceType(LanguageId), default=0) # ForeignKey
     number_of_pages = Column(Integer)
     title = Column(String, default='')
 

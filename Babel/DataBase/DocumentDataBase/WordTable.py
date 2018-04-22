@@ -24,7 +24,9 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import relationship, backref
 
-from Babel.DataBase.SqlAlchemyBase import SqlRow
+from Babel.Corpus.LanguageId import LanguageId
+from ..SqlAlchemyBase import SqlRow, SqlTable
+from ..Types.Choice import ChoiceType
 
 ####################################################################################################
 
@@ -70,7 +72,7 @@ class WordRowMixin(SqlRow):
     id = Column(Integer, primary_key=True)
 
     word = Column(String) # Fixme: uniq ?
-    language = Column(Integer, default=0) # ForeignKey, 0 = unknown, 1 = en ...
+    language = Column(ChoiceType(LanguageId), default=0) # ForeignKey
 
     ##############################################
 
@@ -79,7 +81,7 @@ class WordRowMixin(SqlRow):
     @declared_attr
     def documents(cls):
         # secondary=cls.DOCUMENT_WORD_TABLE_CLS
-        return relationship('DocumentRow', secondary='document_words', back_populates='words') 
+        return relationship('DocumentRow', secondary='document_words', back_populates='words')
 
     ##############################################
 

@@ -1,3 +1,4 @@
+
 ####################################################################################################
 #
 # Babel - An Electronic Document Management System
@@ -24,7 +25,9 @@ import logging
 
 from sqlalchemy import Index
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm.exc import NoResultFound
 
+from Babel.Corpus.LanguageId import LanguageId
 from ..SqlAlchemyBase import SqlTable
 from ..SqliteDataBase import SqliteDataBase
 
@@ -105,6 +108,33 @@ class DocumentSqliteDataBase(SqliteDataBase):
         if self.create():
             # self._create_indexes(analysis)
             pass
+
+    ##############################################
+
+    def add_words_for_document(self, document_row, words):
+
+        word_rows = []
+        for word_count in words:
+            word_entry = word_count.word_entry
+            if word_entry is None:
+                language = LanguageId.unknown
+            else:
+                language = word_entry.language
+            try:
+                word_row = self.word_table.filter_by(language=language, word=word_count.word).one() # or .one_or_none()
+            except NoResultFound:
+                word_row = self.word_table.add_new_row(language=language, word=word_count.word)
+            word_rows.append(word_row)
+        self.word_table.commit()
+
+        for word_count, word_row in zip(words, word_rows):
+            self.document_word_table.add_new_row(
+                document_id=document_row.id,
+                word_id=word_row.id,
+                count=word_count.count,
+                rank=word_count.rank,
+            )
+        self.document_word_table.commit()
 
     ##############################################
 

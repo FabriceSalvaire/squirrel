@@ -138,12 +138,12 @@ class ImportSession:
     def import_file(self, path):
 
         # Fixme: MuPDF exception
-        if str(job.relative_path) in (
-                'racine/science-appliques/electronique/fournisseurs/datasheet/introduction-68hc11.pdf',
-                'racine/science-appliques/electronique/a-trier/sensors/accelerometer-magnetometer/SENSPRODCAT.pdf',
-                'racine/technologies/construction-batiment/electricité/NF-C15-100.pdf',
-        ):
-            return
+        # if str(job.relative_path) in (
+        #         'racine/science-appliques/electronique/fournisseurs/datasheet/introduction-68hc11.pdf',
+        #         'racine/science-appliques/electronique/a-trier/sensors/accelerometer-magnetometer/SENSPRODCAT.pdf',
+        #         'racine/technologies/construction-batiment/electricité/NF-C15-100.pdf',
+        # ):
+        #     return
 
         if not path.is_relative_to(self._root_path):
             self._logger.error("File {} is not relative to root {}".format(path, self._root_path))
@@ -208,4 +208,3 @@ class ImportSession:
                 else:
                     self._logger.info("Add file {}".format(path))
                     document_row = ImporterRegistry.import_file(job)
-            self._document_table.commit()
