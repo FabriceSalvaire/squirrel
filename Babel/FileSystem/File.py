@@ -118,7 +118,7 @@ class Path:
     ##############################################
 
     def is_relative_to(self, directory):
-        return str(self).startswith(directory)
+        return str(self).startswith(str(directory))
 
     ##############################################
 
