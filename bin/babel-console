@@ -32,7 +32,6 @@ logger = Logging.setup_logging('babel')
 import argparse
 import sys
 
-from Babel.Config import Config
 from Babel.Config.ConfigFile import ConfigFile
 from Babel.FileSystem.File import Directory
 from Babel.Tools.Path import to_absolute_path
@@ -59,10 +58,10 @@ subparsers = main_parser.add_subparsers(
 ################################################################################
 
 main_parser.add_argument(
-    '--config-directory',
+    '--config',
     action=PathAction,
     default=None,
-    help='config directory',
+    help='config file',
 )
 
 main_parser.add_argument(
@@ -142,13 +141,6 @@ if args.version:
     import Babel.Version as Version
     print('Babel version is {}'.format(Version.babel))
     sys.exit(0)
-
-# Overwritte config directory
-if args.config_directory:
-    path = Directory(to_absolute_path(args.config_directory))
-    Config.Path.CONFIG_DIRECTORY = path
-    Config.Path.DATA_DIRECTORY = path
-    print(Config.DataBase.document_database())
 
 if args.subparser_name not in ('init',):
     from Babel.Application.BabelApplication import BabelApplication

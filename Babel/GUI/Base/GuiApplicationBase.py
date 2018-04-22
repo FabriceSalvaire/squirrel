@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ####################################################################################################
 #
 # Babel - An Electronic Document Management System
@@ -45,8 +43,8 @@ from ..Qml.ApplicationStyle import ApplicationStyle
 from ..Qml.CriticalErrorDialog import CriticalErrorDialog
 from ..Widgets.IconLoader import IconProvider
 from Babel.Application.ApplicationBase import ApplicationBase
-import Babel.Config.Config as Config
 import Babel.Config.ConfigInstall as ConfigInstall
+import Babel.Config.DefaultConfig as DefaultConfig # Fixme: for Help
 import Babel.Config.Messages as Messages
 import Babel.Version as Version
 
@@ -203,9 +201,9 @@ class GuiApplicationBase(ApplicationBase, QApplication):
     def open_help(self):
 
         url = QUrl()
-        url.setScheme(Config.Help.url_scheme)
-        url.setHost(Config.Help.host)
-        url.setPath(Config.Help.url_path_pattern) # % str(Version.babel))
+        url.setScheme(DefaultConfig.Help.url_scheme)
+        url.setHost(DefaultConfig.Help.host)
+        url.setPath(DefaultConfig.Help.url_path_pattern) # % str(Version.babel))
         QDesktopServices.openUrl(url)
 
     ##############################################

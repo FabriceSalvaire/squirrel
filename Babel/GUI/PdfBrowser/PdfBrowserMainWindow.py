@@ -390,7 +390,7 @@ class PdfBrowserMainWindow(MainWindowBase):
 
         if document is not None:
             row = document.row
-            document_root_path = Directory(self.application.config.document_root_path)
+            document_root_path = Directory(self.application.config.Path.DOCUMENT_ROOT_PATH)
             absolut_path = document_root_path.join_filename(row.path)
             parent_path = absolut_path.directory
             self.open_directory(parent_path)

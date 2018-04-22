@@ -28,7 +28,6 @@ import logging
 # from ..Tools.Singleton import SingletonMetaClass
 
 from ..Application.ApplicationBase import ApplicationBase
-from ..Config import Config
 from ..Config.ConfigFile import ConfigFile
 from ..DataBase.DocumentDataBase import DocumentSqliteDataBase
 from ..DataBase.WhooshDatabase import WhooshDatabase
@@ -50,7 +49,7 @@ class BabelApplication(ApplicationBase):
         self._logger.debug(str(args) + ' ' + str(kwargs))
 
         # Config.make_user_directory()
-        self._config = ConfigFile()
+        self._config = ConfigFile(args.config)
         self._open_database()
 
         from ..Importer.Importer import Importer
@@ -77,8 +76,8 @@ class BabelApplication(ApplicationBase):
 
     def _open_database(self):
 
-        self._document_database = DocumentSqliteDataBase(Config.DataBase.document_database())
-        self._whoosh_database = WhooshDatabase(Config.DataBase.whoosh_database())
+        self._document_database = DocumentSqliteDataBase(self._config.DataBase.document_database())
+        self._whoosh_database = WhooshDatabase(self._config.DataBase.whoosh_database())
 
     ###############################################
 
@@ -86,7 +85,7 @@ class BabelApplication(ApplicationBase):
 
         # Fixme: name ??? update_index, index
 
-        self._logger.info('Index {}'.format(self._config.document_root_path))
+        self._logger.info('Index {}'.format(self._config.Path.DOCUMENT_ROOT_PATH))
         import_session = self._importer.new_session()
         import_session.import_path()
 

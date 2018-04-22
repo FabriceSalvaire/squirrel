@@ -86,7 +86,7 @@ class ImportJob:
 
     @property
     def root_path(self):
-        return self.application.config.document_root_path
+        return self.application.config.Path.DOCUMENT_ROOT_PATH
 
 ####################################################################################################
 
@@ -102,7 +102,7 @@ class ImportSession:
 
         self._importer = importer
         self._document_table = self.application.document_database.document_table
-        self._root_path = self.application.config.document_root_path
+        self._root_path = self.application.config.Path.DOCUMENT_ROOT_PATH
 
     ##############################################
 

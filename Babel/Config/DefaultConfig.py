@@ -18,11 +18,33 @@
 #
 ####################################################################################################
 
+"""Define default configuration.
+
+Theses defaults are overridden in the user configuration file via sub-classing instead of monkey
+patching.  Consequently if a class depends of another one, refer to it as *ConfigFile_ClassName* so
+as to bind to the ConfigFile space, i.e. to the user version.
+
+"""
+
+####################################################################################################
+
+__all__ = [
+    'HOME_DIRECTORY',
+
+    'DataBase',
+    'Help',
+    'Path',
+    'Shortcut',
+]
+
 ####################################################################################################
 
 import os
+import pathlib
 
-from ..FileSystem.File import Directory
+####################################################################################################
+
+HOME_DIRECTORY = pathlib.Path(os.environ['HOME'])
 
 ####################################################################################################
 
@@ -30,22 +52,24 @@ class Path:
 
     # Fixme: Linux
 
-    CONFIG_DIRECTORY = Directory(os.path.join(os.environ['HOME'], '.config', 'babel'))
+    CONFIG_DIRECTORY = HOME_DIRECTORY.joinpath('.config', 'babel')
 
-    # data_directory = Directory(os.path.join(os.environ['HOME'], '.local', 'share', 'data', 'babel'))
-    DATA_DIRECTORY = Directory(os.path.join(os.environ['HOME'], '.local', 'babel'))
+    # data_directory = ('.local', 'share', 'data', 'babel')
+    DATA_DIRECTORY = HOME_DIRECTORY.joinpath('.local', 'babel')
+
+    DOCUMENT_ROOT_PATH = None # must be set in user config file
 
     ##############################################
 
     @classmethod
     def join_config_directory(cls, *args):
-        return cls.CONFIG_DIRECTORY.join_path(*args)
+        return cls.CONFIG_DIRECTORY.joinpath(*args)
 
     ##############################################
 
     @classmethod
     def join_data_directory(cls, *args):
-        return cls.DATA_DIRECTORY.join_path(*args)
+        return cls.DATA_DIRECTORY.joinpath(*args)
 
     ##############################################
 
@@ -56,21 +80,26 @@ class Path:
                 cls.CONFIG_DIRECTORY,
                 cls.DATA_DIRECTORY,
         ):
-            directory = str(directory) # Fixme: api
-            if not os.path.exists(directory):
+            if not directory.exists():
                 os.mkdir(directory)
+
+####################################################################################################
+
+ConfigFile_Path = Path
 
 ####################################################################################################
 
 class DataBase:
 
+    ##############################################
+
     @classmethod
     def document_database(cls):
-        return Path.join_data_directory('document-database.sqlite')
+        return ConfigFile_Path.join_data_directory('document-database.sqlite')
 
     @classmethod
     def whoosh_database(cls):
-        return Path.join_data_directory('whoosh-database')
+        return ConfigFile_Path.join_data_directory('whoosh-database')
 
 ####################################################################################################
 

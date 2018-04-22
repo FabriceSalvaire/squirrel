@@ -20,15 +20,22 @@
 
 ####################################################################################################
 
+import importlib.util as importlib_util
 import logging
 
-from . import Config
+from . import DefaultConfig
 
 ####################################################################################################
 
 class ConfigFile:
 
     _logger = logging.getLogger(__name__)
+
+    ##############################################
+
+    @classmethod
+    def default_path(cls):
+        return  str(DefaultConfig.Path.join_config_directory('config.py'))
 
     ##############################################
 
@@ -42,34 +49,52 @@ class ConfigFile:
 #
 ################################################################################
 
-document_root_path = '{0.document_root_path}'
+import Babel.Config.DefaultConfig as DefaultConfig
+
+################################################################################
+
+class Path(DefaultConfig.Path):
+
+    DOCUMENT_ROOT_PATH = '{0.document_root_path}'
 '''
 
-        path = cls.path()
+        path = args.config or cls.default_path()
         cls._logger.info('Create config file {}'.format(path))
         content = template.format(args).lstrip()
-        Config.Path.make_user_directory()
+        DefaultConfig.Path.make_user_directory()
         with open(path, 'w') as fh:
             fh.write(content)
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self, config_path=None):
+
+        path = config_path or self.default_path()
+        self._logger.info('Load config from {}'.format(path))
 
         try:
-            with open(self.path()) as fh:
+            with open(path) as fh:
                 code = fh.read()
         except FileNotFoundError:
             raise NameError("You must first create a configuration file using the init command")
 
-        namespace = {}
-        exec(code, {}, namespace)
-        for key, value in namespace.items():
+        # This code as issue with code in class definition ???
+        # namespace = {'__file__': path}
+        # # code_object = compile(code, path, 'exec')
+        # exec(code, {}, namespace)
+        # for key, value in namespace.items():
+        #     setattr(self, key, value)
+
+        spec = importlib_util.spec_from_file_location('Config', path)
+        Config = importlib_util.module_from_spec(spec)
+        spec.loader.exec_module(Config)
+
+        for key in DefaultConfig.__all__:
+            if hasattr(Config, key):
+                src = Config
+            else:
+                src = DefaultConfig
+            value = getattr(src, key)
             setattr(self, key, value)
-
-    ##############################################
-
-    @classmethod
-    def path(cls):
-
-        return  str(Config.Path.join_config_directory('config.py'))
+            # resolve ConfigFile_ClassName in DefaultConfig
+            setattr(DefaultConfig, 'ConfigFile_' + key, value)
