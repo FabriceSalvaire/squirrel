@@ -151,8 +151,8 @@ class CorpusEntry:
     ##############################################
 
     @property
-    def most_propable_language(self):
-        return self.sorted_languages[0]
+    def most_probable_language(self):
+        return next(self.sorted_languages)
 
 ####################################################################################################
 
@@ -193,7 +193,7 @@ class CorpusRegistry(metaclass=SingletonMetaClass):
     def _add(self, word_row, language):
 
         word = word_row.word
-        self._logger.debug('Add word "{}" for language {}'.format(word, language))
+        # self._logger.debug('Add word "{}" for language {}'.format(word, language))
         if word_row.word in self._cached_words:
             self._cached_words[word].add_language(word_row, language)
         else:
