@@ -148,6 +148,7 @@ device_rgb = _lib.fz_device_rgb
 drop_context = _lib.fz_drop_context
 # new_context
 set_aa_level = _lib.fz_set_aa_level
+caught_message = _lib.fz_caught_message
 
 # device
 drop_device = _lib.fz_drop_device

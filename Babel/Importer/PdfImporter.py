@@ -27,7 +27,7 @@ import logging
 from Babel.Corpus.LanguageId import LanguageId
 from Babel.Pdf.PdfDocument import PdfDocument, MupdfError
 from Babel.Tools.Lazy import LazyInstantiator
-from .ImporterRegistry import ImporterBase
+from .ImporterRegistry import ImporterBase, InvalidDocument
 
 ####################################################################################################
 
@@ -43,10 +43,15 @@ class PdfImporter(ImporterBase):
 
         # PdfMetaDataExtractor
 
+        if not PdfDocument.check_magic_number(job.path):
+            message = 'Invalid Magic Number for PDF Document {}'.format(job.path)
+            self._logger.error(message)
+            raise InvalidDocument(message)
+
         try:
             pdf_document = PdfDocument(job.path)
-        except MupdfError:
-            return
+        except MupdfError as exception:
+            raise InvalidDocument() # exception. ...
 
         whoosh_database = job.whoosh_database
         text = pdf_document.text()

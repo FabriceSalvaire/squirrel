@@ -163,6 +163,7 @@ fz_colorspace * fz_device_rgb (fz_context * ctx);
 
 // context
 void fz_drop_context (fz_context * ctx);
+const char *fz_caught_message(fz_context * ctx);
 fz_context * fz_new_context (fz_alloc_context * alloc, fz_locks_context * locks, unsigned int max_store);
 void fz_set_aa_level (fz_context * ctx, int bits);
 

@@ -29,7 +29,7 @@ import logging
 # from Babel.Application.BabelApplication import BabelApplication
 
 from Babel.FileSystem.File import Path, Directory, File
-from Babel.Importer.ImporterRegistry import ImporterRegistry
+from Babel.Importer.ImporterRegistry import ImporterRegistry, InvalidDocument
 
 ####################################################################################################
 
@@ -137,21 +137,18 @@ class ImportSession:
 
     def import_file(self, path):
 
-        # Fixme: MuPDF exception
-        # if str(job.relative_path) in (
-        #         'racine/science-appliques/electronique/fournisseurs/datasheet/introduction-68hc11.pdf',
-        #         'racine/science-appliques/electronique/a-trier/sensors/accelerometer-magnetometer/SENSPRODCAT.pdf',
-        #         'racine/technologies/construction-batiment/electricité/NF-C15-100.pdf',
-        # ):
-        #     return
-
         if not path.is_relative_to(self._root_path):
-            self._logger.error("File {} is not relative to root {}".format(path, self._root_path))
+            self._logger.error('File {} is not relative to root {}'.format(path, self._root_path))
             return
 
         # skip link ?
         if not path and os.path.lexists(str(path)):
-            self._logger.error("File {} is a broken link".format(path))
+            self._logger.error('File {} is a broken link'.format(path))
+            return
+
+        # skip empty file
+        if not path.size:
+            self._logger.error('File {} is empty'.format(path))
             return
 
         try:
@@ -194,7 +191,10 @@ class ImportSession:
                 paths = ' '.join([str(document_row.path) for document_row in duplicates])
                 self._logger.info("File {} is a duplicate of {}".format(path, paths))
                 # then log this file in the import session # Fixme: ???
-                document_row = ImporterRegistry.import_file(job)
+                try:
+                    document_row = ImporterRegistry.import_file(job)
+                except InvalidDocument:
+                    return
                 document_row.has_duplicate = True
                 for document_row in duplicates:
                     document_row.has_duplicate = True
@@ -207,4 +207,7 @@ class ImportSession:
                     document_row.update_shasum(path)
                 else:
                     self._logger.info("Add file {}".format(path))
-                    document_row = ImporterRegistry.import_file(job)
+                    try:
+                        document_row = ImporterRegistry.import_file(job)
+                    except InvalidDocument:
+                        return

@@ -20,12 +20,11 @@
 
 ####################################################################################################
 
+import logging
 import numpy as np
 
 import Babel.MuPdf as mupdf
 from Babel.MuPdf import MupdfError
-
-####################################################################################################
 
 from ..Corpus.DocumentWords import DocumentWords
 from ..Document.Document import Document
@@ -36,9 +35,15 @@ from .TextPage import TextPage
 
 ####################################################################################################
 
+_module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
 class PdfDocument(Document):
 
     """ This class represents a PDF Document. """
+
+    _logger = _module_logger.getChild('PdfDocument')
 
     ##############################################
 
@@ -61,7 +66,9 @@ class PdfDocument(Document):
         # except MupdfError as exception:
         #     raise exception
         if self._c_document == mupdf.NULL:
-            raise MupdfError()
+            message = mupdf.decode_utf8(mupdf.caught_message(self._context))
+            self._logger.error(message)
+            raise MupdfError(message)
         self._metadata = MetaData(self)
         self._number_of_pages = mupdf.count_pages(self._context, self._c_document)
         self._document_words = None
@@ -78,6 +85,16 @@ class PdfDocument(Document):
             mupdf.drop_document(self._context, self._c_document)
         if self._context is not None:
             mupdf.drop_context(self._context)
+
+    ##############################################
+
+    @classmethod
+    def check_magic_number(cls, path):
+
+        # %PDF-1.4^M...
+        with open(str(path), 'rb') as fh:
+            data = fh.read(32)
+        return data[:5].decode('ascii') == '%PDF-'
 
     ##############################################
 

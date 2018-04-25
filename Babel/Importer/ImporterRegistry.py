@@ -67,5 +67,10 @@ class ImporterRegistry(type):
 
 ####################################################################################################
 
+class InvalidDocument(NameError):
+    pass
+
+####################################################################################################
+
 class ImporterBase(metaclass=ImporterRegistry):
     __mime_types__ = ()

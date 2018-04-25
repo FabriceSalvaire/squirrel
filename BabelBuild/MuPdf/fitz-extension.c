@@ -81,6 +81,16 @@ init () {
 
 fz_document *
 open_document (fz_context * ctx, const char * filename) {
+  fz_try(ctx)
+  {
+    return fz_open_document(ctx, filename);
+  }
+  fz_catch(ctx)
+  {
+    return NULL;
+  }
+
+  /*
   if (! fz_setjmp(exception_buffer))
   {
     return fz_open_document(ctx, filename);
@@ -90,4 +100,5 @@ open_document (fz_context * ctx, const char * filename) {
     // PyErr_SetString(PyExc_NameError, exception_message);
     return NULL;
   }
+  */
 }

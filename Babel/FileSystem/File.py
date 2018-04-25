@@ -393,3 +393,9 @@ class File(Path):
 
     def delete(self):
         os.unlink(self._path)
+
+    ##############################################
+
+    @property
+    def size(self):
+        return os.stat(self._path).st_size
