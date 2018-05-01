@@ -27,28 +27,28 @@ class Tags(TagsAbc):
     __language__ = 'fr'
 
     __tags__ = {
-        'ADJ': 'Adjectif',
-        'ADJ:dem': 'Adjectif démonstratif',
-        'ADJ:int': 'Adjectif interrogatif',
-        'ADJ:ind': 'Adjectif indéfini',
-        'ADJ:num': 'Adjectif numérique',
-        'ADJ:pos': 'Adjectif possessif',
-        'ADV': 'Adverbe',
-        'ART:def': 'Article défini',
-        'ART:ind': 'Article indéfini',
-        'AUX': 'Auxiliaire',
-        'CON': 'Conjonction',
-        'LIA': "Liaison euphonique (l')",
-        'NOM': 'Nom commun',
-        'ONO': 'Onomatopée',
-        'PRE': 'Préposition',
-        'PRO:dem': 'Pronom démonstratif',
-        'PRO:ind': 'Pronom indéfini',
-        'PRO:int': 'Pronom interrogatif',
-        'PRO:per': 'Pronom personnel',
-        'PRO:pos': 'Pronom possessif',
-        'PRO:rel': 'Pronom relatif',
-        'VER': 'Verbe',
+        'ADJ': 'Adjectif',                  #  0
+        'ADJ:dem': 'Adjectif démonstratif', #  1
+        'ADJ:int': 'Adjectif interrogatif', #  2
+        'ADJ:ind': 'Adjectif indéfini',     #  3
+        'ADJ:num': 'Adjectif numérique',    #  4
+        'ADJ:pos': 'Adjectif possessif',    #  5
+        'ADV': 'Adverbe',                   #  6
+        'ART:def': 'Article défini',        #  7
+        'ART:ind': 'Article indéfini',      #  8
+        'AUX': 'Auxiliaire',                #  9
+        'CON': 'Conjonction',               # 10
+        'LIA': "Liaison euphonique (l')",   # 11
+        'NOM': 'Nom commun',                # 12
+        'ONO': 'Onomatopée',                # 13
+        'PRE': 'Préposition',               # 14
+        'PRO:dem': 'Pronom démonstratif',   # 15
+        'PRO:ind': 'Pronom indéfini',       # 16
+        'PRO:int': 'Pronom interrogatif',   # 17
+        'PRO:per': 'Pronom personnel',      # 18
+        'PRO:pos': 'Pronom possessif',      # 19
+        'PRO:rel': 'Pronom relatif',        # 20
+        'VER': 'Verbe',                     # 21
     }
 
     __noun_tags__ = ('NOM')
