@@ -52,8 +52,7 @@ class BabelApplication(ApplicationBase):
         self._config = ConfigFile(args.config)
         self._open_database()
 
-        from ..Importer.Importer import Importer
-        self._importer = Importer(self)
+        self._importer = None
 
         from ..Search import Searcher
         self._searcher = Searcher(self)
@@ -86,8 +85,12 @@ class BabelApplication(ApplicationBase):
         # Fixme: name ??? update_index, index
 
         self._logger.info('Index {}'.format(self._config.Path.DOCUMENT_ROOT_PATH))
-        import_session = self._importer.new_session()
-        import_session.import_path()
+
+        if self._importer is None:
+            from ..Importer.Importer import Importer
+            self._importer = Importer(self)
+
+        self._importer.import_path()
 
     ##############################################
 

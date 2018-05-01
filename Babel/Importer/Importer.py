@@ -37,35 +37,13 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class Importer:
-
-    ##############################################
-
-    def __init__(self, application):
-
-        self._application = application
-        # application = BabelApplication()
-
-    ##############################################
-
-    @property
-    def application(self):
-        return self._application
-
-    ##############################################
-
-    def new_session(self):
-        return ImportSession(self)
-
-####################################################################################################
-
 class ImportJob:
 
     ##############################################
 
-    def __init__(self, session, path, shasum):
+    def __init__(self, importer, path, shasum):
 
-        self.session = session
+        self.importer = importer
         self.path = path
         self.shasum = shasum
         self.relative_path = self.path.relative_to(self.root_path)
@@ -74,7 +52,7 @@ class ImportJob:
 
     @property
     def application(self):
-        return self.session.application
+        return self.importer.application
 
     @property
     def document_database(self):
@@ -90,17 +68,15 @@ class ImportJob:
 
 ####################################################################################################
 
-class ImportSession:
+class Importer:
 
-    # Fixme: purpose ?
-
-    _logger = _module_logger.getChild('ImportSession')
+    _logger = _module_logger.getChild('Import')
 
     ##############################################
 
-    def __init__(self, importer):
+    def __init__(self, application):
 
-        self._importer = importer
+        self._application = application
         self._document_table = self.application.document_database.document_table
         self._root_path = self.application.config.Path.DOCUMENT_ROOT_PATH
 
@@ -108,7 +84,7 @@ class ImportSession:
 
     @property
     def application(self):
-        return self._importer.application
+        return self._application
 
     ##############################################
 
@@ -190,7 +166,7 @@ class ImportSession:
                 duplicates = query.all()
                 paths = ' '.join([str(document_row.path) for document_row in duplicates])
                 self._logger.info("File {} is a duplicate of {}".format(path, paths))
-                # then log this file in the import session # Fixme: ???
+                # then log this file in the importer # Fixme: ???
                 try:
                     document_row = ImporterRegistry.import_file(job)
                 except InvalidDocument:
