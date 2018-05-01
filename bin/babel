@@ -21,27 +21,20 @@
 ####################################################################################################
 
 ####################################################################################################
-#
-# Logging
-#
 
 import Babel.Logging.Logging as Logging
-
 logger = Logging.setup_logging('babel')
 
 ####################################################################################################
 
 import argparse
 
-####################################################################################################
-
 from Babel.GUI.PdfBrowser.PdfBrowserApplication import PdfBrowserApplication
 from Babel.Tools.ProgramOptions import PathAction
 
 ####################################################################################################
-#
-# Options
-#
+
+# Fixme: duplicated code cf. .ArgumentParser
 
 argument_parser = argparse.ArgumentParser(description='PDF Brower')
 

@@ -20,135 +20,20 @@
 #
 ####################################################################################################
 
-""" Babel GUI application """
+"""Babel console application"""
 
 ####################################################################################################
 
 import Babel.Logging.Logging as Logging
 logger = Logging.setup_logging('babel')
 
-####################################################################################################
-
-import argparse
-import sys
-
-from Babel.Config.ConfigFile import ConfigFile
-from Babel.FileSystem.File import Directory
-from Babel.Tools.Path import to_absolute_path
-from Babel.Tools.ProgramOptions import PathAction
+from Babel.Application.Shell import Shell
+from Babel.Application.ArgumentParser import ArgumentParser
 
 ####################################################################################################
 
-application = None
+shell = Shell()
+parser = ArgumentParser(shell)
+parser.parse()
 
-####################################################################################################
-#
-# Options
-#
-
-main_parser = argparse.ArgumentParser(
-    description='Babel is an Electronic Document Management System',
-)
-
-subparsers = main_parser.add_subparsers(
-    dest='subparser_name',
-    help='sub-command help',
-)
-
-################################################################################
-
-main_parser.add_argument(
-    '--config',
-    action=PathAction,
-    default=None,
-    help='config file',
-)
-
-main_parser.add_argument(
-    '--version',
-    action='store_true', default=False,
-    help="show version and exit",
-)
-
-main_parser.add_argument(
-    '--user-script',
-    action=PathAction,
-    default=None,
-    help='user script to execute',
-)
-
-main_parser.add_argument(
-    '--user-script-args',
-    default='',
-    help="user script args (don't forget to quote)",
-)
-
-################################################################################
-
-init_parser = subparsers.add_parser('init', help='Generate a config file')
-
-init_parser.add_argument(
-    '--document-root-path',
-    action=PathAction,
-    required=True,
-    help='directory where are stored the documents',
-)
-
-init_parser.set_defaults(func=ConfigFile.create)
-
-################################################################################
-
-index_parser = subparsers.add_parser('index', help='Index')
-index_parser.set_defaults(func=lambda args: application.index_all(args))
-
-####################################################################################################
-
-search = subparsers.add_parser('search', help='Search in the document database')
-
-search.add_argument(
-    'query', metavar='Query',
-    help='Query',
-)
-
-search.set_defaults(func=lambda args: application.console_search(args))
-
-####################################################################################################
-
-corpus_search = subparsers.add_parser('corpus_search', help='Search in the corpus database')
-
-corpus_search.add_argument(
-    'query', metavar='Query',
-    help='Query',
-)
-
-corpus_search.set_defaults(func=lambda args: application.console_corpus_search(args))
-
-####################################################################################################
-
-database_statistics = subparsers.add_parser('database_statistics', help='Show database statistics')
-
-# database_statistics.add_argument(
-# )
-
-database_statistics.set_defaults(func=lambda args: application.console_database_statistics(args))
-
-####################################################################################################
-
-args = main_parser.parse_args()
-
-# Show version and exit
-if args.version:
-    import Babel.Version as Version
-    print('Babel version is {}'.format(Version.babel))
-    sys.exit(0)
-
-if args.subparser_name not in ('init',):
-    from Babel.Application.BabelApplication import BabelApplication
-    application = BabelApplication(args=args)
-    application.execute_given_user_script()
-
-# Call command
-if 'func' in args:
-    args.func(args)
-else:
-    print('A command is required')
+# shell.cmdloop()
