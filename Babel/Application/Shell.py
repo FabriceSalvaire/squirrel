@@ -26,37 +26,7 @@ import colors # ansicolors @PyPI
 
 from ..Config.ConfigFile import ConfigFile
 from ..Logging import LogPrinting
-
-####################################################################################################
-
-class FakeArguments:
-
-    ##############################################
-
-    def __init__(self, args, defaults=None):
-
-        # Fixme: '-' -> '_' ?
-
-        self._args = dict(defaults) if defaults else {}
-        for arg in args.split():
-            if arg:
-                if '=' in arg:
-                    key, value = arg.split('=')
-                    self._args[key] = value
-                else:
-                    self._args[arg] = True
-
-    ##############################################
-
-    def __getattr__(self, key):
-        return self._args.get(key, None)
-
-    ##############################################
-
-    def dump(self):
-
-        for key, value in self._args.items():
-            print('{} = {}'.format(key, value))
+from .Arguments import ShellArguments
 
 ####################################################################################################
 
@@ -106,7 +76,7 @@ class Shell(cmd.Cmd):
     def _check_args(self, args, defaults=None):
 
         if isinstance(args, str):
-            return FakeArguments(args, defaults)
+            return ShellArguments(args, defaults)
         else:
             return args
 
@@ -165,7 +135,7 @@ class Shell(cmd.Cmd):
 
         # Fixme:
         if isinstance(arg, str):
-            args = FakeArguments('', defaults=dict(query=arg))
+            args = ShellArguments('', defaults=dict(query=arg))
         else:
             args = arg
         self.application.console_search(args)
@@ -178,7 +148,7 @@ class Shell(cmd.Cmd):
 
         # Fixme:
         if isinstance(arg, str):
-            args = FakeArguments('', defaults=dict(query=arg))
+            args = ShellArguments('', defaults=dict(query=arg))
         else:
             args = arg
         self.application.console_corpus_search(args)

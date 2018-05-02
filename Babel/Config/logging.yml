@@ -25,6 +25,12 @@ handlers:
     formatter: ansi
     stream: ext://sys.stdout
 
+  console-stderr:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: ansi
+    stream: ext://sys.stderr
+
 ####################################################################################################
 
 root:
@@ -48,6 +54,11 @@ loggers:
     handlers: [console]
     propagate: no
 
+  babel-worker:
+    level: DEBUG
+    handlers: [console-stderr]
+    propagate: no
+
 ##################################################
 #
 # Modules
@@ -57,4 +68,4 @@ loggers:
     level: DEBUG
     #level: INFO
     #level: WARNING
-    handlers: [console]
+    handlers: [console-stderr]

@@ -20,16 +20,14 @@
 
 ####################################################################################################
 
+from datetime import timedelta
+import logging
 import os
 
-import logging
+from sidita import TaskQueue
+from sidita.Units import u_MB
 
-####################################################################################################
-
-# from Babel.Application.BabelApplication import BabelApplication
-
-from Babel.FileSystem.File import Path, Directory, File
-from Babel.Importer.ImporterRegistry import ImporterRegistry, InvalidDocument
+from ..FileSystem.File import Path, Directory
 
 ####################################################################################################
 
@@ -37,48 +35,17 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class ImportJob:
-
-    ##############################################
-
-    def __init__(self, importer, path, shasum):
-
-        self.importer = importer
-        self.path = path
-        self.shasum = shasum
-        self.relative_path = self.path.relative_to(self.root_path)
-
-    ##############################################
-
-    @property
-    def application(self):
-        return self.importer.application
-
-    @property
-    def document_database(self):
-        return self.application.document_database
-
-    @property
-    def whoosh_database(self):
-        return self.application.whoosh_database
-
-    @property
-    def root_path(self):
-        return self.application.config.Path.DOCUMENT_ROOT_PATH
-
-####################################################################################################
-
 class Importer:
 
-    _logger = _module_logger.getChild('Import')
+    _logger = _module_logger.getChild('Importer')
 
     ##############################################
 
     def __init__(self, application):
 
         self._application = application
-        self._document_table = self.application.document_database.document_table
-        self._root_path = self.application.config.Path.DOCUMENT_ROOT_PATH
+        self._document_table = self._application.document_database.document_table
+        self._root_path = self._application.config.Path.DOCUMENT_ROOT_PATH
 
     ##############################################
 
@@ -97,93 +64,89 @@ class Importer:
         if path.is_directory():
             self.import_recursively_path(Directory(path))
         else:
-            self.import_file(File(path))
+            # Fixme:
+            raise NotImplementedError
+            # self.import_file(File(path))
 
     ##############################################
 
     def import_recursively_path(self, path):
 
-        for file_path in path.walk_files():
-            if ImporterRegistry.is_importable(file_path):
-                self.import_file(file_path)
-            # else:
-            #     self._logger.info("File {} is not importable".format(file_path))
+        number_of_workers = os.cpu_count()
+
+        task_queue = ImporterTaskQueue(
+            path,
+            max_queue_size=number_of_workers*5,
+            number_of_workers = number_of_workers,
+            max_memory=128@u_MB,
+            memory_check_interval=timedelta(minutes=2),
+            task_timeout=timedelta(minutes=5),
+        )
+        task_queue.run()
+
+####################################################################################################
+
+class ImporterTaskQueue(TaskQueue):
+
+    _logger = _module_logger.getChild('ImporterTaskQueue')
 
     ##############################################
 
-    def import_file(self, path):
+    def __init__(self, path, **kwargs):
 
-        if not path.is_relative_to(self._root_path):
-            self._logger.error('File {} is not relative to root {}'.format(path, self._root_path))
-            return
+        super().__init__(
+            # python_path=Path(__file__).resolve().parent,
+            worker_module='Babel.Importer.ImporterWorker',
+            worker_cls='ImporterWorker',
+            **kwargs
+        )
 
-        # skip link ?
-        if not path and os.path.lexists(str(path)):
-            self._logger.error('File {} is a broken link'.format(path))
-            return
+        self._path = path
 
-        # skip empty file
-        if not path.size:
-            self._logger.error('File {} is empty'.format(path))
-            return
+    ##############################################
 
-        try:
-            str(path).encode('utf8')
-        except UnicodeEncodeError:
-            # UnicodeEncodeError: 'utf-8' codec can't encode character '\udce9' in position 84: surrogates not allowed
-            # /home/from-salus/fabrice/home/ged/projets/lexique/Lexique380/Licence Lexique D\xe9tails.pdf
-            self._logger.error("Unicode issue on file {}".format(str(path).encode('utf-8', 'surrogateescape')))
-            return
+    async def task_producer(self):
 
-        # self._logger.info("Look file {}".format(path))
+        from .ImporterRegistry import ImporterRegistry
 
-        # Cases:
-        #   - document is already registered (same path and checksum)
-        #   - document is a duplicate (same checksum)
-        #   - document was overwritten (same path)
-        #   - new document
+        for file_path in self._path.walk_files():
+            if ImporterRegistry.is_importable(file_path):
+                task = {
+                    'action': 'import',
+                    'path': file_path,
+                }
+                await self.submit(task)
+            # else:
+            #     self._logger.info("File {} is not importable".format(file_path))
 
-        # Store/Retrieve shasum from file's xattr
-        if 'sha' not in path.xattr:
-            shasum = path.shasum
-            try:
-                path.xattr['sha'] = shasum
-            except PermissionError:
-                self._logger.error("Permission issue for file {}".format(path))
-        else:
-            shasum = path.xattr['sha']
+        await self.send_stop()
 
-        job = ImportJob(self, path, shasum)
+    ##############################################
 
-        query = self._document_table.filter_by(path=str(job.relative_path), shasum=shasum)
-        if query.count():
-            self._logger.info("File {} is already imported".format(path))
-            # then do nothing
-            # Fixme: update case
-        else:
-            query = self._document_table.filter_by(shasum=shasum)
-            if query.count():
-                duplicates = query.all()
-                paths = ' '.join([str(document_row.path) for document_row in duplicates])
-                self._logger.info("File {} is a duplicate of {}".format(path, paths))
-                # then log this file in the importer # Fixme: ???
-                try:
-                    document_row = ImporterRegistry.import_file(job)
-                except InvalidDocument:
-                    return
-                document_row.has_duplicate = True
-                for document_row in duplicates:
-                    document_row.has_duplicate = True
-            else:
-                query = self._document_table.filter_by(path=str(job.relative_path))
-                if query.count():
-                    self._logger.info("File {} was overwritten".format(path))
-                    # then update shasum
-                    document_row = query.one()
-                    document_row.update_shasum(path)
-                else:
-                    self._logger.info("Add file {}".format(path))
-                    try:
-                        document_row = ImporterRegistry.import_file(job)
-                    except InvalidDocument:
-                        return
+    def on_task_submitted(self, task_metadata):
+
+        super().on_task_submitted(task_metadata)
+
+    ##############################################
+
+    def on_task_sent(self, task_metadata):
+
+        super().on_task_sent(task_metadata)
+
+    ##############################################
+
+    def on_result(self, task_metadata):
+
+        super().on_result(task_metadata)
+
+    ##############################################
+
+    def on_timeout_error(self, task_metadata):
+
+        pass
+
+    ##############################################
+
+    def on_stream_error(self, task_metadata):
+
+        pass

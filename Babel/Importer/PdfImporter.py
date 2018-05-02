@@ -26,7 +26,7 @@ import logging
 
 from Babel.Corpus.LanguageId import LanguageId
 from Babel.Pdf.PdfDocument import PdfDocument, MupdfError
-from Babel.Tools.Lazy import LazyInstantiator
+# from Babel.Tools.Lazy import LazyInstantiator
 from .ImporterRegistry import ImporterBase, InvalidDocument
 
 ####################################################################################################
@@ -55,7 +55,8 @@ class PdfImporter(ImporterBase):
 
         whoosh_database = job.whoosh_database
         text = pdf_document.text()
-        whoosh_database.index(shasum=job.shasum, content=text)
+        whoosh_database.index(shasum=job.shasum, content=text, async_index=True)
+        # whoosh_database.async_index(shasum=job.shasum, content=text)
 
         # Fixme: registry
         document_database = job.document_database

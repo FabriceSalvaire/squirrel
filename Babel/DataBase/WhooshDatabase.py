@@ -1,7 +1,7 @@
 ####################################################################################################
 #
 # Babel - An Electronic Document Management System
-# Copyright (C) 2017 Fabrice Salvaire
+# Copyright (C) 2018 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,9 @@
 
 ####################################################################################################
 
+import logging
 import os
+import time
 
 from whoosh.analysis import (
     RegexTokenizer,
@@ -29,11 +31,18 @@ from whoosh.analysis import (
 )
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
+from whoosh.writing import AsyncWriter
 import whoosh
 
 ####################################################################################################
 
+_module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
 class WhooshDatabase:
+
+    _logger = _module_logger.getChild('WhooshDatabase')
 
     ##############################################
 
@@ -64,20 +73,48 @@ class WhooshDatabase:
 
     ##############################################
 
-    def _new_writer(self):
+    def _new_writer(self, async_index=False):
 
-        return self._index.writer(
+        args = dict(
             limitmb=512, # maximum memory (in megabytes) the writer will use for the indexing pool
             procs=4, # number of processors the writer will use for indexing
             # multisegment=True,
         )
 
+        if async_index:
+            return AsyncWriter(self._index, delay=0.250, writerargs=args)
+        else:
+            return self._index.writer(**args)
+
     ##############################################
 
-    def index(self, shasum, content):
+    def index(self, shasum, content, async_index=False):
 
-        with self._new_writer() as writer:
+        # See http://whoosh.readthedocs.io/en/latest/threads.html#locking
+        #     http://whoosh.readthedocs.io/en/latest/api/writing.html#whoosh.writing.AsyncWriter
+        #     http://whoosh.readthedocs.io/en/latest/api/writing.html#whoosh.writing.BufferedWriter
+
+        with self._new_writer(async_index) as writer:
             writer.add_document(shasum=shasum, content=content)
+
+    ##############################################
+
+#    def async_index(self, shasum, content):
+#
+#        delay = .250 # s
+#        retry_count = 0
+#        delay_count = 0
+#        while True:
+#            try:
+#                self.index(shasum, content, async_index=False)
+#                break
+#            except whoosh.index.LockError:
+#                retry_count += 1
+#                delay_count += delay
+#                time.sleep(delay) # s
+#
+#        if retry_count:
+#            self._logger.info('Retried to get whoosh writer {} times / {:.3}s'.format(retry_count, delay_count))
 
     ##############################################
 
