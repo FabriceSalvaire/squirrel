@@ -72,10 +72,15 @@ class Importer:
 
     def import_recursively_path(self, path):
 
+        init_worker = dict(
+            config=str(self._application.args.config),
+        )
+
         number_of_workers = os.cpu_count()
 
         task_queue = ImporterTaskQueue(
             path,
+            init_worker=init_worker,
             max_queue_size=number_of_workers*5,
             number_of_workers = number_of_workers,
             max_memory=128@u_MB,

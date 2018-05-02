@@ -78,10 +78,16 @@ class ImporterWorker(Worker):
 
         super().__init__(worker_id)
 
-        self._args = Arguments(
-            # Fixme:
-            config='/home/fabrice/home/developpement/python/babel/workspace/local-for-test/config.py',
-        )
+        self._application = None
+        self._document_table = None
+        self._root_path = None
+
+    ##############################################
+
+    def _init(self, data):
+
+        self._logger.info('Init worker @{}\n{}'.format(self._worker_id, data))
+        self._args = Arguments(**data)
         self._application = BabelApplication(args=self._args)
         self._document_table = self._application.document_database.document_table
         self._root_path = self._application.config.Path.DOCUMENT_ROOT_PATH
@@ -90,12 +96,25 @@ class ImporterWorker(Worker):
 
     def on_task(self, task):
 
-        if task['action'] == 'import':
+        try:
+            action = task['action']
+        except:
+            action = None
+
+        if action == 'init_worker':
+            self._init(task['data'])
+            return {
+                'status': 'done',
+            }
+
+        elif action == 'import':
             self.import_file(task['path'])
             return {
                 'status': 'done',
             }
+
         else:
+            self._logger.error('Invalid action {}'.format(action))
             return {
                 'status': 'error',
                 'error_message': 'invalid action',
