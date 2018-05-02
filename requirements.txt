@@ -1,1 +1,2 @@
 PyYAML>=3.10
+sidita>=1.0.0
