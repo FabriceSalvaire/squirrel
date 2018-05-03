@@ -46,6 +46,13 @@ argument_parser.add_argument(
 )
 
 argument_parser.add_argument(
+    '--config',
+    action=PathAction,
+    default=None,
+    help='config file',
+)
+
+argument_parser.add_argument(
     '--user-script',
     action=PathAction,
     default=None,
