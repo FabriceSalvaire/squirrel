@@ -134,6 +134,6 @@ News
 V0 2013-02-11 
 -------------
 
-Started project
+Started project in Python 2
 
 .. End
