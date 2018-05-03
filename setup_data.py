@@ -75,9 +75,9 @@ setup_dict = dict(
     version='0.1.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
-    description='An Electronic Document Management System',
+    description='Electronic Document Management System',
     license='GPLv3',
-    keywords= 'bibliography',
+    keywords='electronic document management system pdf bibliography',
     url='https://github.com/FabriceSalvaire/Babel',
     long_description=long_description,
 )

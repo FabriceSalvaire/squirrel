@@ -15,5 +15,6 @@ recursive-include share *
 recursive-include spec *.spec *.desktop
 recursive-include tools *
 recursive-include unit-test *.py
+prune share/data/
 prune build
 prune doc/sphinx/build
