@@ -1,2 +1,6 @@
+PyQt5>=5.10.1
 PyYAML>=3.10
+cffi>=1.11.5
 sidita>=1.0.0
+xattr>=0.9.3
+
