@@ -21,12 +21,14 @@
 ####################################################################################################
 
 from datetime import timedelta
+import asyncio
 import logging
 import os
 
 from sidita import TaskQueue
 from sidita.Units import u_MB
 
+from ..DataBase.DocumentDataBase.LogTable import ImporterStatus
 from ..FileSystem.File import Path, Directory
 
 ####################################################################################################
@@ -44,14 +46,7 @@ class Importer:
     def __init__(self, application):
 
         self._application = application
-        self._document_table = self._application.document_database.document_table
         self._root_path = self._application.config.Path.DOCUMENT_ROOT_PATH
-
-    ##############################################
-
-    @property
-    def application(self):
-        return self._application
 
     ##############################################
 
@@ -79,6 +74,7 @@ class Importer:
         number_of_workers = os.cpu_count()
 
         task_queue = ImporterTaskQueue(
+            self._application,
             path,
             init_worker=init_worker,
             max_queue_size=number_of_workers*5,
@@ -97,7 +93,7 @@ class ImporterTaskQueue(TaskQueue):
 
     ##############################################
 
-    def __init__(self, path, **kwargs):
+    def __init__(self, application, path, **kwargs):
 
         super().__init__(
             # python_path=Path(__file__).resolve().parent,
@@ -106,7 +102,48 @@ class ImporterTaskQueue(TaskQueue):
             **kwargs
         )
 
+        self._application = application
         self._path = path
+
+        self._root_path = self._application.config.Path.DOCUMENT_ROOT_PATH
+        self._importer_log_table = self._application.document_database.importer_log_table
+
+    ##############################################
+
+    def _log(self, task_metadata, status):
+
+        path = task_metadata.task['path'].relative_to(self._root_path)
+
+        self._importer_log_table.add_new_row(
+            path=str(path),
+            date=task_metadata.dispatch_date,
+            time=task_metadata.task_time_s, # doesn't remove waiting
+            status=status,
+        )
+        # self._importer_log_table.commit() # freeze event loop
+
+    ##############################################
+
+    def run(self):
+
+        auxiliary_coroutines=[
+            self._commit()
+        ]
+
+        super().run(auxiliary_coroutines)
+
+    ##############################################
+
+    async def _commit(self):
+
+        while self.is_running:
+            self._commit_sleep_future = asyncio.ensure_future(asyncio.sleep(60))
+            await self._commit_sleep_future
+            self._logger.info('commit')
+            self._importer_log_table.commit()
+
+        self._logger.info('Exit commit coroutine')
+        # self._importer_log_table.commit()
 
     ##############################################
 
@@ -128,30 +165,42 @@ class ImporterTaskQueue(TaskQueue):
 
     ##############################################
 
-    def on_task_submitted(self, task_metadata):
+    def on_all_consumer_stopped(self):
 
+        super().on_all_consumer_stopped()
+        self._commit_sleep_future.cancel() # will raise CancelledError on run_until_complete
+
+    ##############################################
+
+    def on_closed_event_loop(self, task_consumers):
+
+        self._logger.info('last commit')
+        self._importer_log_table.commit()
+
+        super().on_closed_event_loop(task_consumers)
+
+    ##############################################
+
+    def on_task_submitted(self, task_metadata):
         super().on_task_submitted(task_metadata)
 
     ##############################################
 
     def on_task_sent(self, task_metadata):
-
         super().on_task_sent(task_metadata)
 
     ##############################################
 
     def on_result(self, task_metadata):
-
         super().on_result(task_metadata)
+        self._log(task_metadata, ImporterStatus.COMPLETED)
 
     ##############################################
 
     def on_timeout_error(self, task_metadata):
-
-        pass
+        self._log(task_metadata, ImporterStatus.TIMEOUT)
 
     ##############################################
 
     def on_stream_error(self, task_metadata):
-
-        pass
+        self._log(task_metadata, ImporterStatus.CRASHED)

@@ -52,6 +52,7 @@ class DocumentSqliteDataBase(SqliteDataBase):
 
         from .WordTable import WordRowMixin, DocumentWordRowMixin
         from .DocumentTable import DocumentRowMixin
+        from .LogTable import ImporterLogRowMixin
 
         # Association table for document <-> word many-to-many relation
         document_word_row_cls = type('DocumentWordRow', (DocumentWordRowMixin, declarative_base_cls), {})
@@ -73,16 +74,23 @@ class DocumentSqliteDataBase(SqliteDataBase):
             'ROW_CLASS': word_row_cls,
         })
 
+        importer_log_row_cls = type('ImporterLogRow', (ImporterLogRowMixin, declarative_base_cls), {})
+        importer_log_table_cls = type('ImporterLogTable', (SqlTable,), {
+            'ROW_CLASS': importer_log_row_cls,
+        })
+
         row_classes = {
             'document':document_row_cls,
             'document_word':document_word_row_cls,
             'word':word_row_cls,
+            'importer_log':importer_log_row_cls,
         }
 
         table_classes = {
             'document':document_table_cls,
             'document_word':document_word_table_cls,
             'word':word_table_cls,
+            'importer_log':importer_log_table_cls,
         }
 
         return declarative_base_cls, row_classes, table_classes
