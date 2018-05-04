@@ -264,14 +264,17 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
                 widget.deleteLater()
 
         for letter in directory_toc.letters:
-            letter_widget = self._letter_widgets[letter]
-            column_layout = self._letter_column_layouts[letter]
-            for directory in directory_toc[letter]:
-                # button = QtWidgets.QPushButton(directory.basename(), parent=letter_widget)
-                button = DirectoryButton(directory, parent=letter_widget)
-                column_layout.addWidget(button)
-                button.clicked.connect(self.path_changed)
-            letter_widget.updateGeometry()
+            try:
+                letter_widget = self._letter_widgets[letter]
+                column_layout = self._letter_column_layouts[letter]
+                for directory in directory_toc[letter]:
+                    # button = QtWidgets.QPushButton(directory.basename(), parent=letter_widget)
+                    button = DirectoryButton(directory, parent=letter_widget)
+                    column_layout.addWidget(button)
+                    button.clicked.connect(self.path_changed)
+                letter_widget.updateGeometry()
+            except KeyError:
+                pass # Fixme: non-alphabetic _ ...
 
         # self._widget.updateGeometry()
         self.setWidget(self._widget)
