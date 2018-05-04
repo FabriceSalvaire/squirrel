@@ -24,6 +24,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtProperty, QObject
 from PyQt5.QtGui import QPalette
 
+from Babel.Corpus import LanguageId
+
 ####################################################################################################
 
 class ApplicationStyle(QObject):
@@ -46,3 +48,9 @@ class ApplicationStyle(QObject):
     @pyqtProperty('QColor', constant=True)
     def window_color(self):
         return self._window_color
+
+    ##############################################
+
+    @pyqtProperty('QStringList', constant=True)
+    def languages(self):
+        return LanguageId.languages()

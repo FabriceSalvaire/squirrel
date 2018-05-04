@@ -18,14 +18,40 @@
 #
 ####################################################################################################
 
+"""Defines language IDs.
+
+Usage::
+
+  int(LanguageId.en)
+  LanguageId.en.name
+  LanguageId(1)
+  LanguageId['en']
+"""
+
+# Fixme: check api, en vs english
+
 ####################################################################################################
 
 import enum
 
 ####################################################################################################
 
-class LanguageId(enum.Enum):
+class LanguageId(enum.IntEnum):
 
-    unknown = 0
+    unknown = 0 # auto()
     en = 1
     fr = 2
+
+####################################################################################################
+
+_LanguageId_to_str = [
+    'unknown',
+    'english',
+    'french',
+]
+
+def languages():
+    return _LanguageId_to_str
+
+def language_id_to_str(i):
+    return _LanguageId_to_str[i]

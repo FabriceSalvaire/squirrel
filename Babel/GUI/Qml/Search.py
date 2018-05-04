@@ -25,6 +25,7 @@ import logging
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtQml import QQmlListProperty
 
+from Babel.Corpus.LanguageId import LanguageId, language_id_to_str
 from Babel.Search import Searcher
 
 ####################################################################################################
@@ -101,16 +102,21 @@ class QmlDocument(QObject):
 
     ##############################################
 
-    language_changed = pyqtSignal()
+    language_id_changed = pyqtSignal()
+    language_str_changed = pyqtSignal()
 
-    @pyqtProperty('QString', notify=language_changed)
-    def language(self):
-        return self._row.language
+    @pyqtProperty('int', notify=language_id_changed)
+    def language_id(self):
+        return int(self._row.language)
 
-    @language.setter
-    def language(self, language):
-        self._row.language = language
+    @language_id.setter
+    def language_id(self, language_id):
+        self._row.language = language_id
         self.commit()
+
+    @pyqtProperty('QString', notify=language_str_changed)
+    def language_str(self):
+        return language_id_to_str(self._row.language)
 
     ##############################################
 

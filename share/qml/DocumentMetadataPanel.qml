@@ -34,13 +34,13 @@ Rectangle {
 
     color: application_style.window_color
 
-    property var languages: ['en', 'fr']
+    property var languages: application_style.languages
 
     function set_document(document) {
         title_text_area.text = document.title
         author_text_area.text = document.author
 	star_count_wrapper.set_star_count(document.star)
-	language_combobox.set_language(document.language)
+	language_combobox.set_language(document.language_id)
         number_of_page.text = document.number_of_pages
         comment_area.text = document.comment
     }
@@ -134,11 +134,11 @@ Rectangle {
 		id: language_combobox
 		model: languages
 
-		function set_language(language) {
-		    var language_index = languages.findIndex(function(element) {
-			return element == language;
-		    })
-		    language_combobox.currentIndex = language_index
+		function set_language(language_id) {
+		    // var language_index = languages.findIndex(function(element) {
+		    // 	return element == language;
+		    // })
+		    language_combobox.currentIndex = language_id
 		}
 	    }
 	}
