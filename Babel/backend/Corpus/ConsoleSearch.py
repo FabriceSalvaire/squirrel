@@ -1,7 +1,9 @@
+#! /usr/bin/env python3
+
 ####################################################################################################
 #
 # Babel - An Electronic Document Management System
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2017 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,16 +22,20 @@
 
 ####################################################################################################
 
-# cf. http://en.wikipedia.org/wiki/Software_versioning
+from Babel.backend.Corpus.CorpusRegistry import CorpusRegistry
 
 ####################################################################################################
 
-from Babel.backend.Tools.RevisionVersion import RevisionVersion
+def console_search(args):
 
-####################################################################################################
+    word = args.query
 
-babel = RevisionVersion({'major':0,
-                         'minor':1,
-                         'revision':0,
-                         'suffix':'',
-                         })
+    corpus_registry = CorpusRegistry()
+
+    corpus_entry = corpus_registry[word]
+    if corpus_entry is not None:
+        print("Occurence found for word '{}'".format(word))
+        for word_entry in corpus_entry.sorted_languages:
+            print(word_entry)
+    else:
+        print("Any occurence found for word '{}'".format(word))

@@ -24,11 +24,11 @@
 
 ####################################################################################################
 
-import Babel.Logging.Logging as Logging
+import Babel.backend.Logging.Logging as Logging
 logger = Logging.setup_logging('babel')
 
-from Babel.Application.Shell import Shell
-from Babel.Application.ArgumentParser import ArgumentParser
+from Babel.frontend.Application.Shell import Shell
+from Babel.frontend.Application.ArgumentParser import ArgumentParser
 
 ####################################################################################################
 

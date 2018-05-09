@@ -24,7 +24,7 @@
 
 ####################################################################################################
 
-from Babel.Tools.RevisionVersion import RevisionVersion
+from Babel.backend.Tools.RevisionVersion import RevisionVersion
 
 ####################################################################################################
 

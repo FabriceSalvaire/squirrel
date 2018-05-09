@@ -24,17 +24,13 @@
 
 ####################################################################################################
 
-import Babel.Logging.Logging as Logging
+import Babel.backend.Logging.Logging as Logging
 logger = Logging.setup_logging('babel')
-
-####################################################################################################
 
 import argparse
 
-####################################################################################################
-
-from Babel.Tools.ProgramOptions import PathAction
-from Babel.Pdf.PdfMetaDataExtractor import PdfDocument
+from Babel.backend.Tools.ProgramOptions import PathAction
+from Babel.backend.Pdf.PdfMetaDataExtractor import PdfDocument
 
 ####################################################################################################
 

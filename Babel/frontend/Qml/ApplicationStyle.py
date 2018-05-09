@@ -20,16 +20,37 @@
 
 ####################################################################################################
 
-# cf. http://en.wikipedia.org/wiki/Software_versioning
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import pyqtProperty, QObject
+from PyQt5.QtGui import QPalette
+
+from Babel.backend.Corpus import LanguageId
 
 ####################################################################################################
 
-from Babel.backend.Tools.RevisionVersion import RevisionVersion
+class ApplicationStyle(QObject):
 
-####################################################################################################
+    ##############################################
 
-babel = RevisionVersion({'major':0,
-                         'minor':1,
-                         'revision':0,
-                         'suffix':'',
-                         })
+    def __init__(self):
+
+        super().__init__()
+
+        application = QtWidgets.QApplication.instance()
+
+        # palette = QtWidgets.QStyle.standardPalette()
+        palette = application.palette()
+
+        self._window_color = palette.color(QPalette.Window)
+
+    ##############################################
+
+    @pyqtProperty('QColor', constant=True)
+    def window_color(self):
+        return self._window_color
+
+    ##############################################
+
+    @pyqtProperty('QStringList', constant=True)
+    def languages(self):
+        return LanguageId.languages()

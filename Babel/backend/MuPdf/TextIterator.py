@@ -1,5 +1,3 @@
-#! /usr/bin/env python3
-
 ####################################################################################################
 #
 # Babel - An Electronic Document Management System
@@ -22,52 +20,32 @@
 
 ####################################################################################################
 
-import Babel.backend.Logging.Logging as Logging
-logger = Logging.setup_logging('babel')
+import Babel.backend.MuPdf as _mupdf
 
 ####################################################################################################
 
-import argparse
+def text_block_iterator(structured_text_page):
 
-from Babel.frontend.PdfBrowser.PdfBrowserApplication import PdfBrowserApplication
-from Babel.backend.Tools.ProgramOptions import PathAction
-
-####################################################################################################
-
-# Fixme: duplicated code cf. .ArgumentParser
-
-argument_parser = argparse.ArgumentParser(description='PDF Brower')
-
-argument_parser.add_argument(
-    'path', metavar='PATH',
-    action=PathAction,
-    nargs='?', default='.',
-    help='path',
-)
-
-argument_parser.add_argument(
-    '--config',
-    action=PathAction,
-    default=None,
-    help='config file',
-)
-
-argument_parser.add_argument(
-    '--user-script',
-    action=PathAction,
-    default=None,
-    help='user script to execute',
-)
-
-argument_parser.add_argument(
-    '--user-script-args',
-    default='',
-    help="user script args (don't forget to quote)",
-)
-
-args = argument_parser.parse_args()
+    block = structured_text_page.first_block
+    while block != _mupdf.NULL:
+        if block.type == _mupdf.FZ_STEXT_BLOCK_TEXT:
+            yield block
+        block = block.next
 
 ####################################################################################################
 
-application = PdfBrowserApplication(args=args)
-application.exec_()
+def text_line_iterator(block):
+
+    line = block.u.t.first_line
+    while line != _mupdf.NULL:
+        yield line
+        line = line.next
+
+####################################################################################################
+
+def text_char_iterator(line):
+
+    char = line.first_char
+    while char != _mupdf.NULL:
+        yield char
+        char = char.next

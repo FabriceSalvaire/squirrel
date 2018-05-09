@@ -24,20 +24,16 @@
 
 ####################################################################################################
 
-import Babel.Logging.Logging as Logging
+import Babel.backend.Logging.Logging as Logging
 logger = Logging.setup_logging('babel')
-
-####################################################################################################
 
 import argparse
 
-####################################################################################################
-
-from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpus
-from Babel.Pdf.PdfDocument import PdfDocument
-from Babel.Math.Binning import Binning1D
-from Babel.Math.Histogram import Histogram
-from Babel.Tools.ProgramOptions import PathAction
+from Babel.backend.Lexique.BritishNationalCorpus import BritishNationalCorpus
+from Babel.backend.Pdf.PdfDocument import PdfDocument
+from Babel.backend.Math.Binning import Binning1D
+from Babel.backend.Math.Histogram import Histogram
+from Babel.backend.Tools.ProgramOptions import PathAction
 
 ####################################################################################################
 
@@ -64,9 +60,6 @@ class DecodePageRange(argparse.Action):
         setattr(namespace, self.dest, pages_ranges)
 
 ####################################################################################################
-#
-# Options
-#
 
 argument_parser = argparse.ArgumentParser(description='PDF to Text.')
 

@@ -1,9 +1,7 @@
-#! /usr/bin/env python3
-
 ####################################################################################################
 #
 # Babel - An Electronic Document Management System
-# Copyright (C) 2014 Fabrice Salvaire
+# Copyright (C) 2017 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,52 +20,38 @@
 
 ####################################################################################################
 
-import Babel.backend.Logging.Logging as Logging
-logger = Logging.setup_logging('babel')
+import sqlalchemy.types as types
+
+from Babel.backend.FileSystem.File import Directory, File
 
 ####################################################################################################
 
-import argparse
+class DirectoryType(types.TypeDecorator):
 
-from Babel.frontend.PdfBrowser.PdfBrowserApplication import PdfBrowserApplication
-from Babel.backend.Tools.ProgramOptions import PathAction
+    impl = types.String
 
-####################################################################################################
+    ##############################################
 
-# Fixme: duplicated code cf. .ArgumentParser
+    def process_bind_param(self, value, dialect):
+        return str(value)
 
-argument_parser = argparse.ArgumentParser(description='PDF Brower')
+    ##############################################
 
-argument_parser.add_argument(
-    'path', metavar='PATH',
-    action=PathAction,
-    nargs='?', default='.',
-    help='path',
-)
-
-argument_parser.add_argument(
-    '--config',
-    action=PathAction,
-    default=None,
-    help='config file',
-)
-
-argument_parser.add_argument(
-    '--user-script',
-    action=PathAction,
-    default=None,
-    help='user script to execute',
-)
-
-argument_parser.add_argument(
-    '--user-script-args',
-    default='',
-    help="user script args (don't forget to quote)",
-)
-
-args = argument_parser.parse_args()
+    def process_result_value(self, value, dialect):
+        return Direcotry(value)
 
 ####################################################################################################
 
-application = PdfBrowserApplication(args=args)
-application.exec_()
+class FileType(types.TypeDecorator):
+
+    impl = types.String
+
+    ##############################################
+
+    def process_bind_param(self, value, dialect):
+        return str(value)
+
+    ##############################################
+
+    def process_result_value(self, value, dialect):
+        return File(value)

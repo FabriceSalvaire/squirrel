@@ -71,13 +71,13 @@ else:
 ####################################################################################################
 
 setup_dict = dict(
-    name='Babel',
+    name='squirrel',
     version='0.1.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
     description='Electronic Document Management System',
     license='GPLv3',
     keywords='electronic document management system pdf bibliography',
-    url='https://github.com/FabriceSalvaire/Babel',
+    url='https://github.com/FabriceSalvaire/squirrel',
     long_description=long_description,
 )

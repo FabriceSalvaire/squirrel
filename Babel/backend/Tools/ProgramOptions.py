@@ -1,5 +1,3 @@
-#! /usr/bin/env python3
-
 ####################################################################################################
 #
 # Babel - An Electronic Document Management System
@@ -22,52 +20,25 @@
 
 ####################################################################################################
 
-import Babel.backend.Logging.Logging as Logging
-logger = Logging.setup_logging('babel')
-
-####################################################################################################
-
 import argparse
 
-from Babel.frontend.PdfBrowser.PdfBrowserApplication import PdfBrowserApplication
-from Babel.backend.Tools.ProgramOptions import PathAction
+####################################################################################################
+
+from Babel.backend.Tools.Path import to_absolute_path
 
 ####################################################################################################
 
-# Fixme: duplicated code cf. .ArgumentParser
+class PathAction(argparse.Action):
 
-argument_parser = argparse.ArgumentParser(description='PDF Brower')
+    ##############################################
 
-argument_parser.add_argument(
-    'path', metavar='PATH',
-    action=PathAction,
-    nargs='?', default='.',
-    help='path',
-)
+    def __call__(self, parser, namespace, values, option_string=None):
 
-argument_parser.add_argument(
-    '--config',
-    action=PathAction,
-    default=None,
-    help='config file',
-)
-
-argument_parser.add_argument(
-    '--user-script',
-    action=PathAction,
-    default=None,
-    help='user script to execute',
-)
-
-argument_parser.add_argument(
-    '--user-script-args',
-    default='',
-    help="user script args (don't forget to quote)",
-)
-
-args = argument_parser.parse_args()
-
-####################################################################################################
-
-application = PdfBrowserApplication(args=args)
-application.exec_()
+        if values is not None:
+            if isinstance(values, list):
+                absolute_path = [to_absolute_path(x) for x in values]
+            else:
+                absolute_path = to_absolute_path(values)
+        else:
+            absolute_path = None
+        setattr(namespace, self.dest, absolute_path)

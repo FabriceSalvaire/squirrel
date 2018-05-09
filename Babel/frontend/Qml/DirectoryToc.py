@@ -18,18 +18,47 @@
 #
 ####################################################################################################
 
-####################################################################################################
-
-# cf. http://en.wikipedia.org/wiki/Software_versioning
+# Fixme: convert to QML Model
 
 ####################################################################################################
 
-from Babel.backend.Tools.RevisionVersion import RevisionVersion
+import logging
+
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtQml import QQmlListProperty
+
+
+from collections import OrderedDict
+
+from Babel.backend.FileSystem.File import Directory
 
 ####################################################################################################
 
-babel = RevisionVersion({'major':0,
-                         'minor':1,
-                         'revision':0,
-                         'suffix':'',
-                         })
+class QmlDirectoryToc(QObject):
+
+    _logger = _module_logger.getChild('QmlDirectoryToc')
+
+    ##############################################
+
+    def __init__(self, path):
+
+        self._path = Directory(path)
+
+        toc = {}
+        for directory_path in self._path.iter_directories():
+            directory = directory_path.basename()
+            first_letter = directory[0].lower()
+            if first_letter not in toc:
+                toc[first_letter] = [directory_path]
+            else:
+                toc[first_letter].append(directory_path)
+        for letter in toc:
+            toc[letter].sort(key=lambda x: x.basename().lower())
+        # letters = sorted(toc.keys())
+        self._toc = OrderedDict(sorted(toc.items(), key=lambda t: t[0]))
+
+    ##############################################
+
+    @property
+    def path(self):
+        return self._path

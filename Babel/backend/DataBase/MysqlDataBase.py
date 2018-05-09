@@ -20,16 +20,34 @@
 
 ####################################################################################################
 
-# cf. http://en.wikipedia.org/wiki/Software_versioning
+import logging
+
+from Babel.backend.Tools.Singleton import SingletonMetaClass
+from .DataBase import DataBase
 
 ####################################################################################################
 
-from Babel.backend.Tools.RevisionVersion import RevisionVersion
+class MysqlDataBase(DataBase, metaclass=SingletonMetaClass):
 
-####################################################################################################
+    _logger = logging.getLogger(__name__)
 
-babel = RevisionVersion({'major':0,
-                         'minor':1,
-                         'revision':0,
-                         'suffix':'',
-                         })
+    CONNECTION_STR = "mysql+oursql://{user_name}:{password}@{hostname}/{database}"
+
+    ###############################################
+
+    def __init__(self, database_config, echo=None):
+
+        self._logger.debug("Open MySql Database %s", self.CONNECTION_STR)
+
+        # Fixme: _ only used for one
+        connection_keys =  {'hostname':database_config.hostname,
+                            'database':database_config.database,
+                            'user_name':database_config.user_name,
+                            'password':database_config.password,
+                            }
+        connection_str = self.CONNECTION_STR.format(connection_keys)
+
+        if echo is None:
+            echo = database_config.echo
+
+        super().__init__(connection_str, echo=echo)

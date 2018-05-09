@@ -24,24 +24,16 @@
 
 ####################################################################################################
 
-import Babel.Logging.Logging as Logging
-
+import Babel.backend.Logging.Logging as Logging
 logger = Logging.setup_logging('babel')
-
-####################################################################################################
 
 import argparse
 
-####################################################################################################
-
-from Babel.Tools.ProgramOptions import PathAction
-from Babel.Pdf.PdfMetaDataExtractor import PdfMetaDataExtractor
-from Babel.Pdf.TextTokenizer import join_tokens
+from Babel.frontend.Tools.ProgramOptions import PathAction
+from Babel.frontend.Pdf.PdfMetaDataExtractor import PdfMetaDataExtractor
+from Babel.frontend.Pdf.TextTokenizer import join_tokens
 
 ####################################################################################################
-#
-# Options
-#
 
 argument_parser = argparse.ArgumentParser(description='Extract PDF Metadata.')
 

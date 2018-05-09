@@ -24,7 +24,7 @@
 
 ####################################################################################################
 
-import Babel.Logging.Logging as Logging
+import Babel.backend.Logging.Logging as Logging
 logger = Logging.setup_logging('babel')
 
 ####################################################################################################
@@ -33,10 +33,10 @@ import argparse
 
 ####################################################################################################
 
-from Babel.Lexique.BritishNationalCorpus import BritishNationalCorpus
-from Babel.Pdf.DocumentWords import DocumentWords
-from Babel.Pdf.TextTokenizer import TextTokenizer
-from Babel.Tools.ProgramOptions import PathAction
+from Babel.backend.Lexique.BritishNationalCorpus import BritishNationalCorpus
+from Babel.backend.Pdf.DocumentWords import DocumentWords
+from Babel.backend.Pdf.TextTokenizer import TextTokenizer
+from Babel.backend.Tools.ProgramOptions import PathAction
 
 ####################################################################################################
 #
