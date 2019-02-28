@@ -11,6 +11,9 @@ doc/sphinx/build/
 doc/sphinx/source/api/
 share/BabelRessource.py
 share/babel.rcc
+Babel/frontend/Base/BabelRessource.py
+Babel/frontend/Qml/qml
+squirrel.egg-info/
 
 BabelBuild/MuPdf/try-catch.c
 devel-test/
@@ -27,13 +30,14 @@ notes.txt
 notes/
 old-vcs/
 pdf-pool/
-ressources/divers/
-ressources/du.log
-ressources/indexer-test/
-ressources/lexiques/
-ressources/screenshots/
-ressources/softwares/
-ressources/unsupported-pdf/
+resources
+resources/divers/
+resources/du.log
+resources/indexer-test/
+resources/lexiques/
+resources/screenshots/
+resources/softwares/
+resources/unsupported-pdf/
 share/babel.qrc-disabled
 share/icons/36x36-unused/
 share/qml/trash.qml
@@ -49,3 +53,11 @@ workspace/babel
 workspace/pdf-pool
 workspace/test-directory/
 workspace/test/
+
+external-packages/
+pip-list.txt
+qml-test/
+resources/Squirrel_posing.jpg
+share/data/
+to-isis/
+workspace/local-for-test/
