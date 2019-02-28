@@ -24,13 +24,13 @@ import logging
 
 ####################################################################################################
 
-# from Babel.backend.DataBase.WordDataBase import WordDataBase
+# from Babel.backend.Database.WordDatabase import WordDatabase
 # from Babel.backend.Tools.Singleton import SingletonMetaClass
 
 from ..Application.ApplicationBase import ApplicationBase
 from Babel.config.ConfigFile import ConfigFile
-from Babel.backend.DataBase.DocumentDataBase import DocumentSqliteDataBase
-from Babel.backend.DataBase.WhooshDatabase import WhooshDatabase
+from Babel.backend.Database import DocumentDatabase
+from Babel.backend.Database.WhooshDatabase import WhooshDatabase
 from Babel.backend.FileSystem.File import Directory
 
 ####################################################################################################
@@ -75,8 +75,8 @@ class BabelApplication(ApplicationBase):
 
     def _open_database(self):
 
-        self._document_database = DocumentSqliteDataBase(self._config.DataBase.document_database())
-        self._whoosh_database = WhooshDatabase(self._config.DataBase.whoosh_database())
+        self._document_database = DocumentDatabase.open_database(self._config.Database)
+        self._whoosh_database = WhooshDatabase(self._config.Database.whoosh_database())
 
     ###############################################
 
@@ -106,5 +106,5 @@ class BabelApplication(ApplicationBase):
     ##############################################
 
     def console_database_statistics(self, args):
-        from Babel.backend.DataBaseStatistics import console_database_statistics
+        from Babel.backend.DatabaseStatistics import console_database_statistics
         console_database_statistics(self, args)

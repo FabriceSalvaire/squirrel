@@ -24,11 +24,11 @@ import logging
 import stat
 from pathlib import Path
 
-from .DataBase import DataBase
+from .Database import Database
 
 ####################################################################################################
 
-class SqliteDataBase(DataBase):
+class SqliteDatabase(Database):
 
     _logger = logging.getLogger(__name__)
 
@@ -65,7 +65,7 @@ class SqliteDataBase(DataBase):
         # Fixme: it don't check if there is any table
 
         if not self._created:
-            self._logger.info("Create DataBase {}".format(self._filename))
+            self._logger.info("Create Database {}".format(self._filename))
             self._declarative_base_cls.metadata.create_all(bind=self._engine)
             # Set POSIX permission, user needs the right privilege to achieve it
             self._filename.chmod(stat.S_IRUSR|stat.S_IWUSR|stat.S_IRGRP|stat.S_IWGRP)

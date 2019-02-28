@@ -32,6 +32,8 @@ _module_logger = logging.getLogger(__name__)
 
 def autoload_table(engine, table_name):
 
+    # purpose ?
+
     metadata = sqlalchemy.MetaData()
 
     return sqlalchemy.Table(table_name, metadata, autoload=True, autoload_with=engine)
@@ -181,30 +183,3 @@ class SqlTable:
     def filter_by(self, **kwargs):
 
         return self.query().filter_by(**kwargs)
-
-####################################################################################################
-
-class ColumnWidthFactory:
-
-    ##############################################
-
-    def  __init__(self, template='M', factor=1):
-
-        self._template = template
-        self._factor = factor
-
-    ##############################################
-
-    def  __call__(self, font_metrics):
-
-        return self._factor * font_metrics.width(self._template)
-
-####################################################################################################
-
-class ColumnDateWidthFactory(ColumnWidthFactory):
-
-    ##############################################
-
-    def  __init__(self, factor=1):
-
-        super(ColumnDateWidthFactory, self).__init__(template='x7777-77-77 77:77:77x', factor=factor)

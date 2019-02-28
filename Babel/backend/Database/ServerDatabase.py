@@ -22,32 +22,37 @@
 
 import logging
 
-from Babel.backend.Tools.Singleton import SingletonMetaClass
-from .DataBase import DataBase
+from .Database import Database
 
 ####################################################################################################
 
-class MysqlDataBase(DataBase, metaclass=SingletonMetaClass):
+class ServerDatabase(Database):
 
     _logger = logging.getLogger(__name__)
 
-    CONNECTION_STR = "mysql+oursql://{user_name}:{password}@{hostname}/{database}"
+    CONNECTION_STRING = "{0.driver}://{0.user_name}:{0.password}@{0.hostname}/{0.database}"
 
     ###############################################
 
     def __init__(self, database_config, echo=None):
 
-        self._logger.debug("Open MySql Database %s", self.CONNECTION_STR)
+        connection_string = self.CONNECTION_STRING.format(connection_keys)
 
-        # Fixme: _ only used for one
-        connection_keys =  {'hostname':database_config.hostname,
-                            'database':database_config.database,
-                            'user_name':database_config.user_name,
-                            'password':database_config.password,
-                            }
-        connection_str = self.CONNECTION_STR.format(connection_keys)
+        self._logger.debug('Open Database {}'.format(connection_str))
 
         if echo is None:
             echo = database_config.echo
 
         super().__init__(connection_str, echo=echo)
+
+    ##############################################
+
+    def create(self):
+
+        # Fixme: it don't check if there is any table
+
+        if not self._created:
+            self._logger.info('Create Database')
+            self._declarative_base_cls.metadata.create_all(bind=self._engine)
+            self._created = True
+        return self._created

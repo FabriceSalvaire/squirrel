@@ -23,7 +23,7 @@
 import logging
 
 from Babel.config import ConfigInstall
-from Babel.backend.DataBase.CorpusDataBase import CorpusSqliteDataBase
+from Babel.backend.Database.CorpusDatabase import CorpusSqliteDatabase
 from Babel.backend.Tools.Singleton import SingletonMetaClass
 from . import tag_registry
 
@@ -165,7 +165,7 @@ class CorpusRegistry(metaclass=SingletonMetaClass):
     def __init__(self):
 
         sqlite_path = ConfigInstall.Corpus.sqlite_path
-        self._database = CorpusSqliteDataBase(sqlite_path)
+        self._database = CorpusSqliteDatabase(sqlite_path)
         languages = ConfigInstall.Corpus.languages
         self._tables = {language:getattr(self._database, 'corpus_{}_table'.format(language))
                         for language in languages}

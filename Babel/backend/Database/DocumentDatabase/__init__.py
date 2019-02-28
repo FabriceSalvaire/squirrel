@@ -1,4 +1,3 @@
-
 ####################################################################################################
 #
 # Babel - An Electronic Document Management System
@@ -28,8 +27,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.exc import NoResultFound
 
 from Babel.backend.Corpus.LanguageId import LanguageId
+from ..ServerDatabase import ServerDatabase
 from ..SqlAlchemyBase import SqlTable
-from ..SqliteDataBase import SqliteDataBase
+from ..SqliteDatabase import SqliteDatabase
 
 ####################################################################################################
 
@@ -37,14 +37,14 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class DocumentSqliteDataBase(SqliteDataBase):
+class DocumentDatabase(SqliteDatabase):
 
-    _logger = _module_logger.getChild('DocumentSqliteDataBase')
+    _logger = _module_logger.getChild('DocumentDatabase')
 
     ##############################################
 
     @classmethod
-    def build_tables(cls):
+    def create_schema_classes(cls):
 
         cls._logger.debug('')
 
@@ -97,28 +97,6 @@ class DocumentSqliteDataBase(SqliteDataBase):
 
     ##############################################
 
-    def __init__(self, filename, echo=False):
-
-        super(DocumentSqliteDataBase, self).__init__(filename, echo)
-
-        self._declarative_base_cls, row_classes, table_classes = self.build_tables()
-
-        for name in row_classes:
-            row_cls = row_classes[name]
-            table_cls = table_classes[name]
-            setattr(self, '_{}_row_class'.format(name), row_cls)
-            setattr(self, '_{}_table_class'.format(name), table_cls)
-            setattr(self, '{}_table'.format(name), table_cls(self))
-
-        # self._document_row_class.DOCUMENT_WORD_TABLE_CLS = self._document_word_table_class
-        # self._word_row_class.DOCUMENT_WORD_TABLE_CLS = self._document_word_table_class
-
-        if self.create():
-            # self._create_indexes(analysis)
-            pass
-
-    ##############################################
-
     def add_words_for_document(self, document_row, words):
 
         word_rows = []
@@ -157,3 +135,44 @@ class DocumentSqliteDataBase(SqliteDataBase):
 
     #     for index in indexes:
     #         index.create(self._engine)
+
+####################################################################################################
+
+class DocumentSqliteDatabase(DocumentDatabase, SqliteDatabase):
+
+    ##############################################
+
+    def __init__(self, filename, echo=False):
+
+        super().__init__(filename, echo)
+
+        self.init_schema()
+
+        if self.create():
+            # self._create_indexes(analysis)
+            pass
+
+####################################################################################################
+
+class DocumentServerDatabase(DocumentDatabase, ServerDatabase):
+
+    ##############################################
+
+    def __init__(self, database_config, echo=False):
+
+        super().__init__(database_config, echo)
+
+        self.init_schema()
+
+        if self.create():
+            # self._create_indexes(analysis)
+            pass
+
+####################################################################################################
+
+def open_database(database_config):
+
+    if database_config.driver == 'sqlite':
+        return DocumentSqliteDatabase(database_config.document_database())
+    else:
+        return DocumentServerDatabase(database_config)

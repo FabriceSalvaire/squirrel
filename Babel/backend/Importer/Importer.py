@@ -28,7 +28,7 @@ import os
 from sidita import TaskQueue
 from sidita.Units import u_MB
 
-from ..DataBase.DocumentDataBase.LogTable import ImporterStatus
+from ..Database.DocumentDatabase.LogTable import ImporterStatus
 from ..FileSystem.File import Path, Directory
 
 ####################################################################################################

@@ -28,7 +28,7 @@ from sqlalchemy.orm import relationship, backref
 from Babel.config import ConfigInstall
 from Babel.backend.Corpus import tag_registry
 from ..SqlAlchemyBase import SqlRow, SqlTable
-from ..SqliteDataBase import SqliteDataBase
+from ..SqliteDatabase import SqliteDatabase
 
 ####################################################################################################
 
@@ -87,7 +87,7 @@ class WordExtendedPosMixin(WordMixin):
 
 ####################################################################################################
 
-class CorpusSqliteDataBase(SqliteDataBase):
+class CorpusSqliteDatabase(SqliteDatabase):
 
     ##############################################
 

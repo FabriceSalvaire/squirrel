@@ -31,7 +31,7 @@ as to bind to the ConfigFile space, i.e. to the user version.
 __all__ = [
     'HOME_DIRECTORY',
 
-    'DataBase',
+    'Database',
     'Help',
     'Path',
     'Shortcut',
@@ -89,7 +89,14 @@ ConfigFile_Path = Path
 
 ####################################################################################################
 
-class DataBase:
+class Database:
+
+    DRIVER = 'sqlite'
+    HOSTNAME = None
+    USER_NAME = None
+    PASSWORD = None
+    DATABASE = None
+    ECHO = False
 
     ##############################################
 
