@@ -117,6 +117,7 @@ Rectangle {
 		    function update_star_count(mouse) {
 			var star_count = Math.ceil(mouse.x / parent.width * 5) -1
 			star_count_wrapper.set_star_count(star_count)
+			document.star = star_count
 		    }
 		}
 	    }
