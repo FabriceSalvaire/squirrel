@@ -61,7 +61,7 @@ class Platform:
 
         self.os = self._get_os()
         self.node = platform.node()
-        self.distribution = ' '.join(platform.dist())
+        self.distribution = ''   # ' '.join(platform.dist())
         self.machine = platform.machine()
         self.architecture = platform.architecture()[0]
 

@@ -170,7 +170,7 @@ class ColumnLayout(QLayout):
         for item in self.items:
             # widget = item.widget()
             if not test_only:
-                item.setGeometry(QRect(QPoint(x, y), item.sizeHint()))
+                item.setGeometry(QRect(QPoint(int(x), int(y)), item.sizeHint()))
             item_height = item.sizeHint().height()
             y += item_height + spacing
             height = max(height, y)

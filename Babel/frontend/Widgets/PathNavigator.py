@@ -43,6 +43,12 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
+# Fixme:
+def make_rect(*args):
+    return QtCore.QRect(*[int(_) for _ in args])
+    
+####################################################################################################
+
 class PathNavigatorButton(QtWidgets.QPushButton):
 
     _logger = _module_logger.getChild('PathNavigatorButton')
@@ -90,7 +96,7 @@ class PathNavigatorButton(QtWidgets.QPushButton):
         # height = super(PathNavigatorButton, self).sizeHint().height()
         height = metrics.height()
         # self._logger.info("size hint {} {}".format(width, height))
-        return QtCore.QSize(width, height)
+        return QtCore.QSize(int(width), int(height))
 
     ##############################################
 
@@ -219,7 +225,7 @@ class PathNavigatorButton(QtWidgets.QPushButton):
             arrow_y = (button_height - arrow_size) / 2
             option = QtWidgets.QStyleOption()
             option.initFrom(self)
-            option.rect = QtCore.QRect(arrow_x, arrow_y, arrow_size, arrow_size)
+            option.rect = make_rect(arrow_x, arrow_y, arrow_size, arrow_size)
             option.palette = self.palette()
             option.palette.setColor(QtGui.QPalette.Text, foreground_color)
             option.palette.setColor(QtGui.QPalette.WindowText, foreground_color)
@@ -234,14 +240,14 @@ class PathNavigatorButton(QtWidgets.QPushButton):
                 painter.setBrush(hover_color)
                 hover_x = arrow_x
                 hover_x -= self.__BORDER_WIDTH__
-                painter.drawRect(QtCore.QRect(hover_x, 0, arrow_size + self.__BORDER_WIDTH__, button_height))
+                painter.drawRect(make_rect(hover_x, 0, arrow_size + self.__BORDER_WIDTH__, button_height))
 
             self.style().drawPrimitive(QtWidgets.QStyle.PE_IndicatorArrowRight, option, painter, self)
 
         # draw text
         painter.setPen(foreground_color)
         text_width -= arrow_size + 2 * self.__BORDER_WIDTH__
-        rect = QtCore.QRect(0, 0, text_width, button_height)
+        rect = make_rect(0, 0, text_width, button_height)
         # flags = QtCore.Qt.AlignCenter
         flags = QtCore.Qt.AlignVCenter
         painter.drawText(rect, flags, self._label)

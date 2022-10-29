@@ -26,7 +26,7 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtQml import QQmlListProperty
 
 from Babel.backend.Search import Searcher
-from .Document import Document
+from .Document import QmlDocument
 
 ####################################################################################################
 

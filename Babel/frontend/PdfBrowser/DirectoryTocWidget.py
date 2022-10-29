@@ -157,7 +157,7 @@ class DirectoryButton(QtWidgets.QPushButton):
         painter.setPen(foreground_color)
         brush = QtGui.QBrush(QtCore.Qt.black, QtCore.Qt.SolidPattern)
         painter.setBrush(brush)
-        painter.drawEllipse(QtCore.QPoint(self.__LEFT_MARGIN__/2, button_height/2),
+        painter.drawEllipse(QtCore.QPoint(int(self.__LEFT_MARGIN__/2), int(button_height/2)),
                             self.__BULLET_RADIUS__,  self.__BULLET_RADIUS__)
 
         # draw text

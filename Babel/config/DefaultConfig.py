@@ -91,12 +91,12 @@ ConfigFile_Path = Path
 
 class Database:
 
-    DRIVER = 'sqlite'
-    HOSTNAME = None
-    USER_NAME = None
-    PASSWORD = None
-    DATABASE = None
-    ECHO = False
+    driver = 'sqlite'
+    hostname = None
+    user_name = None
+    password = None
+    database = None
+    echo = False
 
     ##############################################
 
