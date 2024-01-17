@@ -3,9 +3,12 @@ __pycache__
 *.qmlc
 .directory
 
+__TRASH__/
+
 Babel/GUI/Base/BabelRessource.py
 _mupdf.c
-_mupdf.cpython-36m-x86_64-linux-gnu.so
+_mupdf.cpython-312-x86_64-linux-gnu.so
+lib.linux-x86_64-cpython-312
 build/
 doc/sphinx/build/
 doc/sphinx/source/api/
@@ -61,3 +64,7 @@ resources/Squirrel_posing.jpg
 share/data/
 to-isis/
 workspace/local-for-test/
+
+gcc-log.txt
+simpler/f1.txt
+simpler/f2.txt
