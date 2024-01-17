@@ -65,7 +65,6 @@ class Shell(cmd.Cmd):
     ##############################################
 
     def _yes_no(self, message, default='y'):
-
         response = input(message + ' : y/n [{}]'.format(default)).lower().strip()
         if not response:
             response = default
@@ -84,37 +83,29 @@ class Shell(cmd.Cmd):
 
     @property
     def application(self):
-
         if self._application is None:
             from Babel.frontend.Application.BabelApplication import BabelApplication
             self._application = BabelApplication(args=self._args)
             self._application.execute_given_user_script()
-
         return self._application
 
     ##############################################
 
     def do_quit(self, arg=None):
-
         'Quit shell'
-
         return True
 
     ##############################################
 
     def do_show_version(self, arg=None):
-
         'Show version'
-
         import Babel.Version as Version
         print('Babel version is {}'.format(Version.babel))
 
     ##############################################
 
     def do_init(self, arg=None):
-
         'Make config file'
-
         # Fixme:
         args = self._check_args(arg, defaults=self._args)
         ConfigFile.create(args)
@@ -122,17 +113,13 @@ class Shell(cmd.Cmd):
     ##############################################
 
     def do_index(self, arg=None):
-
         'Index'
-
         self.application.index_all(arg)
 
     ##############################################
 
     def do_search(self, arg=None):
-
         'Search'
-
         # Fixme:
         if isinstance(arg, str):
             args = ShellArguments('', defaults=dict(query=arg))
@@ -143,9 +130,7 @@ class Shell(cmd.Cmd):
     ##############################################
 
     def do_corpus_search(self, arg=None):
-
         'Corpus Search'
-
         # Fixme:
         if isinstance(arg, str):
             args = ShellArguments('', defaults=dict(query=arg))
@@ -156,7 +141,5 @@ class Shell(cmd.Cmd):
     ##############################################
 
     def do_database_statistics(self, arg=None):
-
         'Database statistics'
-
         self.application.console_database_statistics(arg)

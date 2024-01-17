@@ -31,7 +31,7 @@ from PyQt5.QtQuickWidgets import QQuickWidget
 from Babel.config import ConfigInstall
 from Babel.backend.Document.DocumentDirectory import DocumentDirectory
 from Babel.backend.FileSystem.AutomaticFileRename import AutomaticFileRename
-from Babel.backend.FileSystem.File import Directory, File
+from Babel.backend.FileSystem.File import Directory
 from Babel.backend.Tools.Container import EmptyRingError
 from ..Base.MainWindowBase import MainWindowBase
 from ..Widgets.IconLoader import IconLoader
@@ -57,11 +57,8 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def __init__(self, parent=None):
-
         super().__init__(title='Babel PDF Browser', parent=parent)
-
         self._current_path = None
-
         self._init_ui()
 
     ##############################################
@@ -73,7 +70,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def _tr(self, text):
-
         # Fixme: translate
         self._application.translate('main_window', text)
 
@@ -154,20 +150,16 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def _create_dock(self, title, widget, allowed_area, area):
-
         dock_widget = QtWidgets.QDockWidget(title, self)
         dock_widget.setAllowedAreas(allowed_area)
         dock_widget.setWidget(widget)
         self.addDockWidget(area, dock_widget)
-
         return dock_widget
 
     ##############################################
 
     def _create_qml_view(self, qml_file, minimum_size=(0,0)):
-
         path = str(ConfigInstall.Path.join_qml_path(qml_file))
-
         widget = QQuickWidget(self.qml_engine, self)
         # The view will automatically resize the root item to the size of the view.
         widget.setResizeMode(QQuickWidget.SizeRootObjectToView)
@@ -175,7 +167,6 @@ class PdfBrowserMainWindow(MainWindowBase):
         # widget.setResizeMode(QQuickWidget.SizeViewToRootObject)
         widget.setSource(QUrl(path))
         widget.resize(*minimum_size)
-
         return widget
 
     ##############################################
@@ -291,13 +282,11 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def init_menu(self):
-
         super(PdfBrowserMainWindow, self).init_menu()
 
     ##############################################
 
     def show_message(self, message=None, timeout=0, warn=False):
-
         """Hides the normal status indications and displays the given message for the specified number of
         milli-seconds (timeout). If timeout is 0 (default), the message remains displayed until the
         clearMessage() slot is called or until the showMessage() slot is called again to change the
@@ -307,7 +296,6 @@ class PdfBrowserMainWindow(MainWindowBase):
         passing a timeout of 0 is not sufficient to display a permanent message.
 
         """
-
         if warn:
             self._message_box.push_message(message)
         else:
@@ -320,7 +308,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def _directory_toc_mode(self):
-
         self._directory_toc.show()
         for widget in self._document_widgets:
             widget.hide()
@@ -328,7 +315,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def _pdf_browser_mode(self):
-
         self._directory_toc.hide()
         for widget in self._document_widgets:
             widget.show()
@@ -336,7 +322,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def open_directory(self, path):
-
         self._logger.info("open directory {}".format(str(path)))
         # Fixme: move to application?
         self._current_path = path
@@ -353,20 +338,17 @@ class PdfBrowserMainWindow(MainWindowBase):
 
     @property
     def current_path(self):
-
         return self._current_path
 
     ##############################################
 
     @property
     def current_document(self):
-
         return self._document_directory.current_item
 
     ##############################################
 
     def previous_document(self):
-
         try:
             self._document_directory.previous()
             self._show_document()
@@ -376,7 +358,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def next_document(self):
-
         try:
             # Fixme: document_directory -~-> document changed
             next(self._document_directory)
@@ -387,7 +368,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def _show_document(self, document=None):
-
         if document is not None:
             row = document.row
             document_root_path = Directory(self.application.config.Path.DOCUMENT_ROOT_PATH)
@@ -416,7 +396,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def select_document(self):
-
         pass
         # try:
         #     document = self.current_document
@@ -428,7 +407,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def open_current_document(self, extern=True):
-
         try:
             document = self.current_document
             document_path = str(document.path)
@@ -444,7 +422,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def _delete_file_from_browser(self, file_path):
-
         current_document = self.current_document # should not raise EmptyRingError
         if current_document.path != file_path:
             self._document_directory.delete(current_document)
@@ -456,7 +433,6 @@ class PdfBrowserMainWindow(MainWindowBase):
     ##############################################
 
     def move_current_file(self, dst_path):
-
         self.move_file(self.current_document.path, dst_path)
 
     ##############################################

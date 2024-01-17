@@ -25,7 +25,6 @@ class Arguments:
     ##############################################
 
     def __init__(self, **kwargs):
-
         self._args = kwargs
 
     ##############################################
@@ -47,11 +46,8 @@ class ShellArguments(Arguments):
     ##############################################
 
     def __init__(self, args, defaults=None):
-
         # Fixme: '-' -> '_' ?
-
         super().__init__(defaults)
-
         for arg in args.split():
             if arg:
                 if '=' in arg:

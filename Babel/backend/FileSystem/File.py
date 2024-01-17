@@ -29,19 +29,16 @@ from .UserXattr import UserXattr
 ####################################################################################################
 
 def file_name_has_extension(file_name, extension):
-
     return file_name.endswith(extension)
 
 ####################################################################################################
 
 def file_extension(filename):
-
     # index = filename.rfind(os.path.extsep)
     # if index == -1:
     #     return None
     # else:
     #     return filename[index:]
-
     return os.path.splitext(filename)[1]
 
 ####################################################################################################
@@ -145,11 +142,9 @@ class Path:
     ##############################################
 
     def split_iterator(self):
-
         """ Return [Path /, Path /a, Path /a/b, Path /a/b/c] for '/a/b/c' """
 
         # Fixme: name ?
-
         path = Directory(os.path.sep)
         for directory in self.split():
             path = path.join_directory(directory)
@@ -166,9 +161,7 @@ class Path:
     ##############################################
 
     def reverse_level_of_equality(self, other):
-
         """ Return the level of subdirectory from the top matching both paths. """
-
         level = 0
         for directory1, directory2 in zip(self.split_reverse_iterator(),
                                           other.split_reverse_iterator()):
@@ -249,8 +242,8 @@ class Directory(Path):
     ##############################################
 
     def iter_directories(self, hidden=False):
-
         # Fixme: hidden directories
+        # x for x in p.iterdir() if x.is_dir()
         for item in os.listdir(self._path):
             path = self.join_path(item)
             if path.is_directory() and (hidden or not path.is_hidden()):
@@ -259,7 +252,6 @@ class Directory(Path):
     ##############################################
 
     def has_subdirectory(self, hidden=False):
-
         # Fixme: hidden directories
         for item in os.listdir(self._path):
             path = self.join_path(item)
@@ -269,7 +261,6 @@ class Directory(Path):
     ##############################################
 
     def iter_files(self, hidden=False):
-
         for item in os.listdir(self._path):
             path = self.join_path(item)
             if path.is_file() and (hidden or not path.is_hidden()):
@@ -278,7 +269,6 @@ class Directory(Path):
     ##############################################
 
     def filter_entries(self, compiled_pattern):
-
         for item in os.listdir(str(self._path)):
             match = compiled_pattern.match(item)
             if match is not None:
@@ -287,7 +277,6 @@ class Directory(Path):
     ##############################################
 
     def walk_files(self, followlinks=False):
-
         for root, directories, files in os.walk(self._path, followlinks=followlinks):
             for filename in files:
                 yield File(filename, root)
@@ -295,7 +284,6 @@ class Directory(Path):
     ##############################################
 
     def walk_directories(self, followlinks=False):
-
         for root, directories, files in os.walk(self._path, followlinks=followlinks):
             for directory in directories:
                 yield Directory(os.path.join(root, directory))
@@ -309,14 +297,11 @@ class File(Path):
     ##############################################
 
     def __init__(self, filename, path=''):
-
         super(File, self).__init__(os.path.join(str(path), str(filename)))
-
         self._filename = self.filename_part()
         if not self._filename:
             raise ValueError
         self._directory = self.directory_part()
-
         # lazy
         self._shasum = None
         self._xattr = None
@@ -360,7 +345,6 @@ class File(Path):
 
     @property
     def shasum(self):
-
         # Fixme: check file don't change, modification date ?
         if self._shasum is None:
             return self.compute_shasum()
@@ -370,21 +354,17 @@ class File(Path):
     ##############################################
 
     def compute_shasum(self, algorithm=None):
-
         if algorithm is None:
             algorithm = self.default_shasum_algorithm
         # self._shasum = run_shasum(self._path, algorithm, binary=True)
         self._shasum = shasum(self._path, algorithm)
-
         return self._shasum
 
     ##############################################
 
     @property
     def xattr(self):
-
         # Fixme: api
-
         if self._xattr is None:
             self._xattr = UserXattr(self._path)
         return self._xattr

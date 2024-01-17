@@ -74,7 +74,6 @@ class BabelApplication(ApplicationBase):
     ###############################################
 
     def _open_database(self):
-
         self._document_database = DocumentDatabase.open_database(self._config.Database)
         self._whoosh_database = WhooshDatabase(self._config.Database.whoosh_database())
 

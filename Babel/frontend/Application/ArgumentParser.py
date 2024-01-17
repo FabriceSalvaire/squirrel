@@ -35,13 +35,10 @@ class ArgumentParser:
     ##############################################
 
     def __init__(self, shell):
-
         self._shell = shell
-
         self._parser = argparse.ArgumentParser(
             description='Babel is an Electronic Document Management System',
         )
-
         subparsers = self._parser.add_subparsers(
             dest='subparser_name',
             title='subcommands',
@@ -154,10 +151,8 @@ class ArgumentParser:
     ##############################################
 
     def parse(self):
-
         args = self._parser.parse_args()
         self._shell.set_args(args)
-
         # Call command
         if args.subparser_name == 'shell':
             self._shell.cmdloop()

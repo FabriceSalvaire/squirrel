@@ -33,9 +33,7 @@ class DirectoryToc:
     ##############################################
 
     def __init__(self, path):
-
         self._path = Directory(path)
-
         toc = {}
         for directory_path in self._path.iter_directories():
             directory = directory_path.basename()

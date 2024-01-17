@@ -95,7 +95,6 @@ class GuiApplicationBase(ApplicationBase, QApplication):
     ##############################################
 
     def _exception_hook(self, exception_type, exception_value, exception_traceback):
-
         traceback.print_exception(exception_type, exception_value, exception_traceback)
         dialog = CriticalErrorDialog(
             exception_type, exception_value, exception_traceback,
@@ -104,7 +103,6 @@ class GuiApplicationBase(ApplicationBase, QApplication):
         rc = dialog.exec_()
         if rc == -1:
             self.exit()
-
         # return sys.__excepthook__(exception_type, exception_value, exception_traceback)
 
     ##############################################
@@ -164,15 +162,11 @@ class GuiApplicationBase(ApplicationBase, QApplication):
     ##############################################
 
     def post_init(self):
-
         # self._splash.finish(self._main_window)
         # self.processEvents()
         # del self._splash
-
         QTimer.singleShot(0, self.execute_given_user_script)
-
         self.show_message('Welcome to Babel')
-
         # return to main and then enter to event loop
 
     ##############################################
@@ -197,7 +191,6 @@ class GuiApplicationBase(ApplicationBase, QApplication):
     ##############################################
 
     def open_help(self):
-
         url = QUrl()
         url.setScheme(DefaultConfig.Help.url_scheme)
         url.setHost(DefaultConfig.Help.host)
@@ -207,17 +200,15 @@ class GuiApplicationBase(ApplicationBase, QApplication):
     ##############################################
 
     def about(self):
-
         message = Messages.about_babel % {'version':str(Version.babel)}
         QMessageBox.about(self.main_window, 'About Babel', message)
 
     ##############################################
 
     def show_system_information(self):
-
         fields = dict(self._platform.__dict__)
         fields.update({
-                'babel_version': str(Version.babel),
-                })
+            'babel_version': str(Version.babel),
+        })
         message = Messages.system_information_message_pattern % fields
         QMessageBox.about(self.main_window, 'System Information', message)

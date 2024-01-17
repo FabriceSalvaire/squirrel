@@ -79,7 +79,6 @@ class DirectoryButton(QtWidgets.QPushButton):
     ##############################################
 
     def sizeHint(self):
-
         font = self.font()
         metrics = QtGui.QFontMetrics(font)
         width = metrics.width(self._label) + self.__LEFT_MARGIN__ + self.__MARGIN__
@@ -91,7 +90,6 @@ class DirectoryButton(QtWidgets.QPushButton):
     ##############################################
 
     def enterEvent(self, event):
-
         super(DirectoryButton, self).enterEvent(event)
         self._entered = True
         self.update()
@@ -99,7 +97,6 @@ class DirectoryButton(QtWidgets.QPushButton):
     ##############################################
 
     def leaveEvent(self, event):
-
         super(DirectoryButton, self).leaveEvent(event)
         self._entered = False
         self.update()
@@ -107,14 +104,12 @@ class DirectoryButton(QtWidgets.QPushButton):
     ##############################################
 
     def mousePressEvent(self, event):
-
         self.clicked.emit(self._path)
         # super(PathNavigatorButton, self).mousePressEvent(event)
 
     ##############################################
 
     def _draw_hover_background(self, painter):
-
         if self._entered:
             # The QStyleOptionViewItem class is used to describe the parameters necessary for
             # drawing a frame.
@@ -127,14 +122,11 @@ class DirectoryButton(QtWidgets.QPushButton):
     ##############################################
 
     def _foreground_color(self):
-
         foreground_color = self.palette().color(self.foregroundRole())
-
         # alpha = 255
         # if self._entered:
         #     alpha -= alpha / 4
         # foreground_color.setAlpha(alpha)
-
         return foreground_color
 
     ##############################################
@@ -177,11 +169,8 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
     ##############################################
 
     def __init__(self, parent=None):
-
         super().__init__(parent)
-
         self._directory_toc = None
-
         self._init_ui()
 
     ##############################################
@@ -241,7 +230,6 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
     ##############################################
 
     def letter_iterator(self):
-
         for letter in range(ord('a'), ord('z') +1):
             yield chr(letter)
 
@@ -282,8 +270,6 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
     ##############################################
 
     def _go_up(self):
-
         # signal to model
-
         path = self._directory_toc.path.parent()
         self.path_changed.emit(path)

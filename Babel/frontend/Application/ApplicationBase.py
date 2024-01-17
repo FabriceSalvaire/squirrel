@@ -40,11 +40,8 @@ class ApplicationBase:
     ##############################################
 
     def __init__(self, args, **kwargs):
-
         self._logger.debug(str(args) + ' ' + str(kwargs))
-
         sys.excepthook = self._exception_hook
-
         self._args = args
         self._platform = Platform()
 
@@ -62,25 +59,21 @@ class ApplicationBase:
 
     def _exception_hook(self, exception_type, exception_value, exception_traceback):
         traceback.print_exception(exception_type, exception_value, exception_traceback)
-
         # return sys.__excepthook__(exception_type, exception_value, exception_traceback)
 
     ##############################################
 
     def execute_given_user_script(self):
-
         if self._args.user_script is not None:
             self.execute_user_script(self._args.user_script)
 
     ##############################################
 
     def execute_user_script(self, file_name):
-
         """Execute an user script provided by file *file_name* in a context where is defined a variable
         *application* that is a reference to the application instance.
 
         """
-
         file_name = to_absolute_path(file_name)
         self.show_message(message='Execute user script: ' + file_name, echo=True)
         source = open(file_name).read()

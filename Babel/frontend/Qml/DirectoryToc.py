@@ -22,12 +22,11 @@
 
 ####################################################################################################
 
+from collections import OrderedDict
 import logging
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtQml import QQmlListProperty
-
-from collections import OrderedDict
 
 from Babel.backend.FileSystem.File import Directory
 

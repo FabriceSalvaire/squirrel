@@ -40,25 +40,18 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
     ###############################################
 
     def __init__(self, args):
-
-
         super(PdfBrowserApplication, self).__init__(args=args)
         self._logger.debug(str(args))
-
         from .PdfBrowserMainWindow import PdfBrowserMainWindow
         self._main_window = PdfBrowserMainWindow()
         self._main_window.showMaximized()
-
         self.post_init()
 
     ##############################################
 
     def _initialise_qml_engine(self):
-
         super()._initialise_qml_engine()
-
         qmlRegisterType(QmlDocument, 'Local', 1, 0, 'Document')
-
         context = self.qml_context
         self._qml_search_manager = QmlSearchManager(self)
         context.setContextProperty('search_manager', self._qml_search_manager)
@@ -66,20 +59,17 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
     ##############################################
 
     def _init_actions(self):
-
         super(PdfBrowserApplication, self)._init_actions()
 
     ##############################################
 
     def post_init(self):
-
         super(PdfBrowserApplication, self).post_init()
         self._main_window.open_directory(self._args.path)
 
     ##############################################
 
     def show_message(self, message=None, timeout=0, warn=False):
-
         """ Hides the normal status indications and displays the given message for the specified
         number of milli-seconds (timeout). If timeout is 0 (default), the message remains displayed
         until the clearMessage() slot is called or until the showMessage() slot is called again to
@@ -88,5 +78,4 @@ class PdfBrowserApplication(GuiApplicationBase, BabelApplication):
         Note that showMessage() is called to show temporary explanations of tool tip texts, so
         passing a timeout of 0 is not sufficient to display a permanent message.
         """
-
         self._main_window.show_message(message, timeout, warn)

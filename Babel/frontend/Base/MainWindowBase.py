@@ -42,11 +42,8 @@ class MainWindowBase(QtWidgets.QMainWindow):
     ##############################################
 
     def __init__(self, title='', parent=None):
-
         super(MainWindowBase, self).__init__(parent)
-
         self.setWindowTitle(title)
-
         self._application = QtWidgets.QApplication.instance()
         self.init_menu()
 
@@ -71,12 +68,9 @@ class MainWindowBase(QtWidgets.QMainWindow):
     ##############################################
 
     def init_menu(self):
-
         application = self._application
-
         self._file_menu = file_menu = self.menu_bar.addMenu('File')
         file_menu.addAction(application.exit_action) # Fixme: At the end
-
         self._help_menu = help_menu = self.menu_bar.addMenu('Help')
         help_menu.addAction(application.help_action)
         help_menu.addSeparator()
@@ -86,7 +80,6 @@ class MainWindowBase(QtWidgets.QMainWindow):
     ##############################################
 
     def show_message(self, message=None, echo=False, timeout=0):
-
         """ Hides the normal status indications and displays the given message for the specified
         number of milli-seconds (timeout). If timeout is 0 (default), the message remains displayed
         until the clearMessage() slot is called or until the showMessage() slot is called again to
@@ -95,7 +88,6 @@ class MainWindowBase(QtWidgets.QMainWindow):
         Note that showMessage() is called to show temporary explanations of tool tip texts, so
         passing a timeout of 0 is not sufficient to display a permanent message.
         """
-
         status_bar = self.statusBar()
         if message is None:
             status_bar.clearMessage()
@@ -108,5 +100,4 @@ class MainWindowBase(QtWidgets.QMainWindow):
     ##############################################
 
     def translate(self, text):
-
         return self._application.translate(self.__class__.__name__, text)
