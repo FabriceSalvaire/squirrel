@@ -196,7 +196,8 @@ class PdfDocument:
         # page2 = self._doc.load_page(1)
         # for page in doc.pages(start, stop, step):
         if areas:
-            data = self._page.get_text('dict')
+            # data = self._page.get_text('dict')
+            data = self._page.get_textpage().extractDICT(sort=True)
             for block in data['blocks']:
                 if 'lines' in block:
                     for line in block['lines']:
@@ -359,6 +360,8 @@ class DirectoryScanner:
                     pdf.print_name(split=False)
                     print(f"  {Fore.BLUE}{pdf.title}")
                     if isinstance(line, str):
+                        # wrong
+                        # line = line.replace(keyword, f'{Fore.RED}{keyword}{Fore.GREEN}')
                         print(f"  {Fore.GREEN}{line}")
 
 ####################################################################################################
