@@ -70,11 +70,14 @@ class PdfDocument:
 
     ##############################################
 
-    def print_name(self: Self) -> None:
+    def print_name(self: Self, split: bool = True) -> None:
         print()
         rprint(Fore.BLUE + '_'*100)
-        rprint(f"{Fore.RED}{self.parent}")
-        rprint(f"  {Fore.RED}{self.name}")
+        if split:
+            rprint(f"{Fore.RED}{self.parent}")
+            rprint(f"  {Fore.RED}{self.name}")
+        else:
+            rprint(f"{Fore.RED}{self._path}")
 
     ##############################################
 
@@ -134,7 +137,17 @@ class PdfDocument:
             self._doc = fitz.open(str(self._path))
             self._page = self._doc.load_page(0)
         except fitz.fitz.FileDataError:
+            print()
             rprint(f"{Fore.RED} File Error")
+
+    ##############################################
+
+    @property
+    def title(self: Self) -> str:
+        self.load_pdf()
+        if self._doc is not None:
+            return self._doc.metadata['title']
+        return ''
 
     ##############################################
 
@@ -150,7 +163,7 @@ class PdfDocument:
             # 'subject',
         ):
             _ = self._doc.metadata[key]
-            print(Fore.BLUE + f"  {key}: {_}")
+            print(f"  {Fore.BLUE}{key}: {_}")
         # toc = doc.get_toc()
         # print(toc)
         # text = page.get_text('text')
@@ -175,22 +188,26 @@ class PdfDocument:
 
     ##############################################
 
-    def search(self: Self, keyword: str) -> bool:
+    def search(self: Self, keyword: str) -> str:
         self.load_pdf()
         if self._doc is None:
-            return False
+            return None
         areas = self._page.search_for(keyword)
+        # page2 = self._doc.load_page(1)
+        # for page in doc.pages(start, stop, step):
         if areas:
             data = self._page.get_text('dict')
             for block in data['blocks']:
                 if 'lines' in block:
                     for line in block['lines']:
-                        for span in line['spans']:
+                        spans = line['spans']
+                        for span in spans:
                             text = span['text']
-                            if keyword in text:
-                                print(text)
-                                return True
-        return False
+                            if keyword in text.lower():
+                                line_text = ''.join([_['text'] for _ in spans])
+                                return line_text
+            return True
+        return None
 
     ##############################################
 
@@ -281,7 +298,7 @@ class DirectoryScanner:
 
     ##############################################
 
-    def scan(self: Self, **kwargs) -> Generator(str, None, None):
+    def scan(self: Self, **kwargs) -> Generator[str, None, None]:
         file_counter = 0
         for root, dirs, files in self._top_path.walk(
             top_down=True,
@@ -301,24 +318,48 @@ class DirectoryScanner:
 
     def on_file(self: Self, path: Path, kwargs) -> None:
         if path.suffix.lower() == '.pdf':
-            self.on_pdf(path, kwargs)
+            if kwargs.get('on_pdf', False):
+                self.on_pdf(path, kwargs)
             return True
         return False
 
     ##############################################
 
-    def on_pdf(self: Self, path: Path, kwargs: dict) -> None:
+    def load_pdf(self: Self, path: Path) -> PdfDocument:
         try:
-            _ = PdfDocument(path)
+            return PdfDocument(path)
+        except (UnicodeDecodeError, UnicodeEncodeError):
+            rprint(f"{Fore.RED} Unicode error")
+            return None
+
+    ##############################################
+
+    def on_pdf(self: Self, path: Path, kwargs: dict) -> None:
+        _ = self.load_pdf(path)
+        if _ is not None:
             # _.fix_name()
             # _.print_name()
             # _.dump()
             # _.cli()
-            if 'search' in kwargs:
-                if _.search(kwargs['search']):
-                    _.print_name()
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            rprint(f"{Fore.RED} Unicode error")
+            # if 'search' in kwargs:
+            #     if _.search(kwargs['search']):
+            #         _.print_name()
+            pass
+
+    ##############################################
+
+    def search(self: Self, keyword: str) -> None:
+        files = list(self.scan(on_pdf=False))
+        # rprint(f"Found {Fore.RED}{len(files)}{Fore.BLACK} files")
+        for _ in files:
+            pdf = self.load_pdf(_)
+            if pdf is not None:
+                line = pdf.search(keyword)
+                if line:
+                    pdf.print_name(split=False)
+                    print(f"  {Fore.BLUE}{pdf.title}")
+                    if isinstance(line, str):
+                        print(f"  {Fore.GREEN}{line}")
 
 ####################################################################################################
 
@@ -348,9 +389,12 @@ def main() -> None:
     path = Path(args.path).resolve()
     if path.is_dir():
         _ = DirectoryScanner(path)
-        _.scan(
-            search=args.search,
-        )
+        if args.search:
+            _.search(args.search)
+        else:
+            _.scan(
+                # search=args.search,
+            )
     print()
     rprint(f"{Fore.RED}Done")
     # logging.info("Done")
