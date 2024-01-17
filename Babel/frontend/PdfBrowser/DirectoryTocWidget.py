@@ -29,6 +29,7 @@
 
 ####################################################################################################
 
+from string import ascii_lowercase
 import logging
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -230,8 +231,8 @@ class DirectoryTocWidget(QtWidgets.QScrollArea):
     ##############################################
 
     def letter_iterator(self):
-        for letter in range(ord('a'), ord('z') +1):
-            yield chr(letter)
+        for _ in ascii_lowercase + '_':
+            yield _
 
     ##############################################
 
