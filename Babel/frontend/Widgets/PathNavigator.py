@@ -270,7 +270,7 @@ class PathNavigatorButton(QtWidgets.QPushButton):
 
         popup_x = self.width() - self._arrow_width() - self.__BORDER_WIDTH__
         popup_position  = self.parentWidget().mapToGlobal(self.geometry().bottomLeft() +
-                                                          QtCore.QPoint(popup_x, 0))
+                                                          QtCore.QPoint(int(popup_x), 0))
 
         action = menu.exec_(popup_position)
         if action:

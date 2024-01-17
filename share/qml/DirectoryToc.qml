@@ -32,7 +32,7 @@ Rectangle {
 
     anchors.fill: parent
 
-    color: application_style.window_color
+    // color: application_style.window_color
 
     ListModel {
         id: directory_list_model
@@ -104,9 +104,11 @@ Rectangle {
 	RowLayout {
             Layout.fillWidth: true
 
-	    ToolButton {
+	    // ToolButton {
+            Button {
                 id: up_button
                 iconSource: 'qrc:/icons/36x36/arrow-upward-black.png'
+                text: 'upward'
                 // onClicked:
 	    }
 	}
@@ -141,11 +143,13 @@ Rectangle {
                 delegate: Button {
 		    x: directory_list.x + 30
                     text: name
+                    /*
                     style: ButtonStyle {
 			background: Rectangle {
                             color: Qt.lighter(directory_toc.color, control.pressed ? 0 : (control.hovered ? 5 : 0))
 			}
                     }
+                    */
                     onClicked: console.info('Clicked on', name)
                 }
 

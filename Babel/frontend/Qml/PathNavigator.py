@@ -40,9 +40,7 @@ class QmlPathNavigator(QObject):
     ##############################################
 
     def __init__(self, parent=None, path=None):
-
         super().__init__(parent)
-
         self._path = None
         if path is not None:
             self.path = path
@@ -72,9 +70,7 @@ class QmlPathNavigator(QObject):
     ##############################################
 
     def _set_path(self, path, emit=True):
-
         self._path = Path(path)
-
         if emit:
             self.path_changed.emit(self._path)
 
@@ -88,9 +84,8 @@ class QmlPathNavigator(QObject):
 
     ##############################################
 
-    @pyqtSlot()
-    def directory_list(self):
-
-        directories = sorted([directory.basename() for directory in self._path.XXX()],
-                             key=lambda x: x.lower())
-        return directory
+    # @pyqtSlot()
+    # def directory_list(self):
+    #     directories = sorted([directory.basename() for directory in self._path.XXX()],
+    #                          key=lambda x: x.lower())
+    #     return directory

@@ -33,7 +33,7 @@ Rectangle {
 
     anchors.fill: parent
 
-    color: application_style.window_color
+    // color: application_style.window_color
 
     ListModel {
         id: path_model
@@ -66,11 +66,13 @@ Rectangle {
         delegate: Row {
             Button {
                 text: name
+                /*
                 style: ButtonStyle {
                     background: Rectangle {
                         color: Qt.lighter(path_navigator.color, control.pressed ? 0 : (control.hovered ? 5 : 0))
                     }
                 }
+                */
                 onClicked: {
                     console.info('Clicked on directory', model.index)
                 }
@@ -89,7 +91,9 @@ Rectangle {
                     }
                 }
 	    }
-            ToolButton {
+            // ToolButton {
+            Button {
+                text: '>'
                 iconSource: 'qrc:/icons/36x36/chevron-right-black.png'
                 onClicked: menu.open()
             }

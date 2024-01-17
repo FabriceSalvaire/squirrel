@@ -32,7 +32,7 @@ Rectangle {
 
     anchors.fill: parent
 
-    color: application_style.window_color
+    // color: application_style.window_color
 
     ListModel {
         id: destination_list_model
@@ -55,16 +55,20 @@ Rectangle {
 	RowLayout {
             Layout.fillWidth: true
 
-	    ToolButton {
+	    // ToolButton {
+            Button {
                 id: add_destination_button
                 iconSource: 'qrc:/icons/36x36/playlist-add-black.png'
+                text: 'add'
                 // Fixme: don't work ???
                 // iconSource: 'image://icon_provider/playlist-add-black@36'
                 onClicked: fill_destination_list()
 	    }
-	    ToolButton {
+	    // ToolButton {
+            Button {
                 id: clear_button
                 iconSource: 'qrc:/icons/36x36/delete-black.png'
+                text: 'delete'
                 onClicked: destination_list_model.clear()
 	    }
 	}
@@ -89,9 +93,10 @@ Rectangle {
                         text: name
                         onClicked: console.info('Clicked on destination', model.index)
                     }
-	            ToolButton {
+	            // ToolButton {
+                    Button {
+                        text: 'Delete'
                         iconSource: 'qrc:/icons/36x36/delete-black.png'
-
                         onClicked: destination_list_model.remove(model.index)
 	            }
                 }
