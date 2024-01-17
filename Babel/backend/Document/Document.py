@@ -31,7 +31,6 @@ class Document:
     ##############################################
 
     def __init__(self, path):
-
         self._path = path
 
     ##############################################
@@ -39,5 +38,3 @@ class Document:
     @property
     def path(self):
         return clone(self._path)
-
-    ##############################################

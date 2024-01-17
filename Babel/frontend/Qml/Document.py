@@ -39,9 +39,7 @@ class QmlDocument(QObject):
     ##############################################
 
     def __init__(self, row_document,  parent=None):
-
         super().__init__(parent)
-
         self._row = row_document
 
     ##############################################

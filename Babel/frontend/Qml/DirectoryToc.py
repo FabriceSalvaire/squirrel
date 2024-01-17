@@ -27,7 +27,6 @@ import logging
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtQml import QQmlListProperty
 
-
 from collections import OrderedDict
 
 from Babel.backend.FileSystem.File import Directory
@@ -41,9 +40,7 @@ class QmlDirectoryToc(QObject):
     ##############################################
 
     def __init__(self, path):
-
         self._path = Directory(path)
-
         toc = {}
         for directory_path in self._path.iter_directories():
             directory = directory_path.basename()

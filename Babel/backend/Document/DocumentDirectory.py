@@ -42,7 +42,6 @@ class DocumentItem:
     ##############################################
 
     def __init__(self, path):
-
         self._path = path
         self._selected = False
 
@@ -76,18 +75,14 @@ class PdfDocumentItem(DocumentItem):
     ##############################################
 
     def __init__(self, path):
-
         super().__init__(path)
-
         self._document = None # lazy
-
         # self._cover_page = self._pdf_document[0]
 
     ##############################################
 
     @property
     def document(self):
-
         if self._document is None:
             self._document = PdfDocument(self._path)
         return self._document
@@ -110,9 +105,7 @@ class DocumentList(Ring):
     ##############################################
 
     def rotate_to_path(self, path):
-
         # self.find(PdfDocumentItem(path))
-
         for i, document in enumerate(self):
             if path == document.path:
                 self.current_index = i
@@ -121,9 +114,7 @@ class DocumentList(Ring):
     ##############################################
 
     def delete_path(self, file_path):
-
         # delete_document_by_path
-
         for i, document in enumerate(self):
             if file_path == document.path:
                 self.delete_index(i) # return
@@ -145,11 +136,8 @@ class DocumentDirectory(DocumentList):
     ##############################################
 
     def __init__(self, path, importable_mime_types=None):
-
         super().__init__()
-
         self._path = Directory(path)
-
         if importable_mime_types is None:
             self._importable_mime_types = self.__importable_mime_types__
         else:
@@ -171,7 +159,6 @@ class DocumentDirectory(DocumentList):
     ##############################################
 
     def _open_directory(self):
-
         # Fixme: to func
         file_paths = [path for path in self._path.iter_files() if self._is_file_importable(path)]
         file_paths.sort(key=lambda path: str(path))

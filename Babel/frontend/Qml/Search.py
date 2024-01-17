@@ -41,12 +41,9 @@ class QmlSearchManager(QObject):
     ##############################################
 
     def __init__(self, application): # , parent=None
-
         super().__init__(application)
-
         self._application = application
         self._searcher = Searcher(application)
-
         self._results = []
         self._query = ''
 
@@ -90,7 +87,6 @@ class QmlSearchManager(QObject):
 
     @query.setter
     def query(self, query):
-
         self._logger.debug('Update query:{}'.format(query))
         self._query = query
         self._results = [QmlDocument(row) for row in self._searcher.search_in_word_table(query)]
